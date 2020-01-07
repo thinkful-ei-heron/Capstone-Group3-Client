@@ -1,11 +1,6 @@
-<<<<<<< HEAD:src/firebase/firebase.js
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-=======
-import app from "firebase/app";
-import "firebase/auth";
->>>>>>> e0eb17d7bb4b74edfb1bb9e85ac1efebc51164b6:src/services/firebase.js
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -15,7 +10,7 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 class Firebase {
@@ -40,13 +35,6 @@ class Firebase {
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
-<<<<<<< HEAD:src/firebase/firebase.js
-
-  // *** User API ***
-  user = uid => this.db.ref(`users/${uid}`);
-  users = () => this.db.ref('users');
-=======
->>>>>>> e0eb17d7bb4b74edfb1bb9e85ac1efebc51164b6:src/services/firebase.js
 }
 
 export default Firebase;

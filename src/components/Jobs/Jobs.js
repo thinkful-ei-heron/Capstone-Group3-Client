@@ -7,20 +7,22 @@ export default class Jobs extends Component {
     userRole: ''
   }
 
+//props passed down to this component should be structured like below. 
+//   job: 
+//   {
+//     jobId: 1,
+//     jobName: 'Rock Faces',
+//     jobDetails: 'Sing really well',
+//     jobProgress: 50,
+//     jobApproval: false,
+//     jobRevision: false,
+//     jobEmployees: ['Brennan Huff', 'Dr. Doback']
+//   }
+// ,
+// userRole: 'employee'
+
   state = {
-    expandJob: false,
-    job: 
-      {
-        jobId: 1,
-        jobName: 'Rock Faces',
-        jobDetails: 'Sing really well',
-        jobProgress: 50,
-        jobApproval: false,
-        jobRevision: false,
-        jobEmployees: ['Brennan Huff', 'Dr. Doback']
-      }
-    ,
-    userRole: 'employee'
+    expandJob: false
   }
 
   renderEmployeeList = (employees) => {
@@ -33,14 +35,14 @@ export default class Jobs extends Component {
   }
 
   renderProjectButtons(approval, progress) {
-    if (this.state.userRole === 'employee') {
+    if (this.props.userRole === 'employee') {
       if (approval || progress !== 100) {
         return <button disabled>Submit for Approval</button>
       } else {
         return <button>Submit for Approval</button>
       }
     }
-    if (this.state.userRole === 'project manager' || this.state.userRole === 'owner') {
+    if (this.props.userRole === 'project manager' || this.props.userRole === 'owner') {
       return <div className="manager__buttons">
         <span>{!approval && progress === 100 ? 'AWAITING APPROVAL' : ''}</span>
         <button>Assign</button>
@@ -56,7 +58,7 @@ export default class Jobs extends Component {
   }
 
   render() {
-    let job = this.state.job
+    let job = this.props.job
     return (
       <>
          <li key={job.jobId} id={job.jobId}>

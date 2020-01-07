@@ -14,7 +14,7 @@ function App() {
         <Switch>
           {/* routes go here */}
           {/* <Route exact path="/login" component={Login} /> */}
-          <Route exact path="/register" component={Register} />
+          {/* <Route exact path="/register" component={Register} /> */}
           {/* <Route exact path="/logout" render={() => firebase.logout}/> */}
         </Switch>
       </main>

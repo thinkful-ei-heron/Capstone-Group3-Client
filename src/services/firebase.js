@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore'
 
 
 const firebaseConfig = {
@@ -16,7 +17,7 @@ const firebaseConfig = {
 class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
-
+    this.db = app.firestore()
     this.auth = app.auth();
   }
 

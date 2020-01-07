@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Project from './components/Project/Project'
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       </header>
       <main className="app__main">
         <Switch>
-          {/* routes go here */}
+          <Route path='/' component={Project}/>
         </Switch>
       </main>
     </>

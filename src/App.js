@@ -1,6 +1,7 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import Project from './components/Project/Project'
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import Project from "./routes/Project/Project";
+import { FirebaseContext } from "./services";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       </header>
       <main className="app__main">
         <Switch>
-          <Route path='/' component={Project}/>
+          <Route path="/" component={Project} />
         </Switch>
       </main>
     </>

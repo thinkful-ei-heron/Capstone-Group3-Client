@@ -21,6 +21,18 @@ class Firebase {
     this.auth = app.auth();
   }
 
+  getOrgs = () => 
+    this.db.collection('organizations')
+      .get()
+
+  getProjects= () =>
+    this.db.collection('organizations/HkeHO8n1eIaJSu6mnsd5/projects')
+      .get()
+      
+  getJobs = (project_id) =>
+    this.db.collection(`organizations/HkeHO8n1eIaJSu6mnsd5/projects/${project_id}/jobs`)
+      .get()
+
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 

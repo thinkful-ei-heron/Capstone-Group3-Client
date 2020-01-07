@@ -22,7 +22,7 @@ export default class Header extends Component {
         <Link to="/login">
           <li>Log In</li>
         </Link>
-        <Link to="/signup">
+        <Link to="/register">
           <li>Sign Up</li>
         </Link>
       </ul>

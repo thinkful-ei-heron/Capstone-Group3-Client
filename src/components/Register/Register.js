@@ -64,6 +64,7 @@ class RegisterFormBase extends React.Component {
               type="password"
               placeholder="password"
               minLength="8"
+              maxLength="12"
               required
               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$"
             />
@@ -75,6 +76,7 @@ class RegisterFormBase extends React.Component {
               type="password"
               placeholder="confirm password"
               minLength="8"
+              maxLength="12"
               required
               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$"
             />

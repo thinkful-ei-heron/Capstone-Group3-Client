@@ -11,7 +11,6 @@ function App() {
         <Header />
       </header>
       <main className="app__main">
-        <Jobs />
         <Switch>
           {/* routes go here */}
         </Switch>

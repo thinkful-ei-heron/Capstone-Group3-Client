@@ -60,7 +60,7 @@ export default class Jobs extends Component {
     let job = this.props.job
     return (
       <>
-         <li key={job.jobId} id={job.jobId}>
+         <li key={this.props.id} id={this.props.id}>
             <button onClick={this.toggleExpand}>{this.state.expandJob ? '-' : '+'}</button>
             <h4>{job.jobName}</h4>
             <span>{job.jobDetails}</span>

@@ -1,0 +1,24 @@
+.user__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.app__header {
+  display: flex;
+  align-items: normal;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.header__login, .header__logout {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+  list-style-type: none;
+}
+
+.app__header ul li {
+  padding: 10px;
+}

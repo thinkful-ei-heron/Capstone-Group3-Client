@@ -4,22 +4,21 @@ import { ProgressBar } from '../ProgressBar/ProgressBar';
 export default class Jobs extends Component {
   static defaultProps = {
     job: {},
-    userRole: ''
+    id: ''
   }
 
 //props passed down to this component should be structured like below. 
 //   job: 
 //   {
-//     jobId: 1,
 //     jobName: 'Rock Faces',
 //     jobDetails: 'Sing really well',
 //     jobProgress: 50,
 //     jobApproval: false,
 //     jobRevision: false,
 //     jobEmployees: ['Brennan Huff', 'Dr. Doback']
-//   }
-// ,
-// userRole: 'employee'
+//   }, 
+//   index: 1
+
 
   state = {
     expandJob: false
@@ -42,7 +41,7 @@ export default class Jobs extends Component {
         return <button>Submit for Approval</button>
       }
     }
-    if (this.props.userRole === 'project manager' || this.props.userRole === 'owner') {
+    if (this.context.userRole === 'project manager' || this.context.userRole === 'owner') {
       return <div className="manager__buttons">
         <span>{!approval && progress === 100 ? 'AWAITING APPROVAL' : ''}</span>
         <button>Assign</button>

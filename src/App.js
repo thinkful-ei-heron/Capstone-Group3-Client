@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Header from './components/Header/Header'
 
 function App() {
   return (
     <>
-      <header className="app__header">
-        <h1>Capstone App</h1>
+      <header>
+        <Header />
       </header>
       <main className="app__main">
         <Switch>

@@ -5,11 +5,12 @@ import './Header.css';
 export default class Header extends Component {
   state = {
     loggedIn: false,
-    userName: 'Balay',
-    role: 'Project Manager'
+    userName: 'Balay', //this will be replaced with context
+    role: 'Project Manager' //this will be replaced with context
   }
 
   handleLogout = () => {
+    //this will be replaced with code to handle logout through firebase
     this.setState({
       loggedIn: !this.state.loggedIn
     })

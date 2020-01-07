@@ -52,24 +52,31 @@ class RegisterFormBase extends React.Component {
               name="email"
               value={email}
               onChange={this.onChange}
-              type="text"
+              type="email"
               placeholder="Email Address"
+              required
             />
             <label htmlFor="password">password: </label>
             <input
               name="password"
               value={password}
               onChange={this.onChange}
-              type="text"
+              type="password"
               placeholder="password"
+              minLength="8"
+              required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$"
             />
             <label htmlFor="confirm-password">confirm-password: </label>
             <input
               name="confirmPassword"
               value={confirmPassword}
               onChange={this.onChange}
-              type="text"
+              type="password"
               placeholder="confirm password"
+              minLength="8"
+              required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$"
             />
             <button disabled={isInvalid} type="submit">
               Register
@@ -77,6 +84,14 @@ class RegisterFormBase extends React.Component {
           </fieldset>
           {error && <p>{error.message}</p>}
         </form>
+        <div>
+          <h3>Password Requirements</h3>
+          <p>At least 1 Uppercase</p>
+          <p>At least 1 Lowercase,</p>
+          <p>At least 1 Number,</p>
+          <p>At least 1 Symbol: !@#$%^&*_=+-,</p>
+          <p>Min 8 chars and Max 12 chars</p>
+        </div>
       </div>
     );
   }

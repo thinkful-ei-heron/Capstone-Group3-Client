@@ -6,18 +6,6 @@ export default class Jobs extends Component {
     job: {},
     id: ''
   }
-//props passed down to this component should be structured like below. 
-//   job: 
-//   {
-//     jobName: 'Rock Faces',
-//     jobDetails: 'Sing really well',
-//     jobProgress: 50,
-//     jobApproval: false,
-//     jobRevision: false,
-//     jobEmployees: ['Brennan Huff', 'Dr. Doback']
-//   }, 
-//   index: 1
-
 
   state = {
     expandJob: false,
@@ -32,9 +20,11 @@ export default class Jobs extends Component {
       </li>
     })
   }
+
   //All userRoles will be changed to context!!
   renderProjectButtons(approval, progress) {
     if (this.state.userRole === 'employee') {
+
       if (approval || progress !== 100) {
         return <button disabled>Submit for Approval</button>
       } else {
@@ -69,6 +59,7 @@ export default class Jobs extends Component {
             </div>
             {this.renderProjectButtons(job.approval, job.progress)}
             {this.state.expandJob ? <ul>{this.renderEmployeeList(job.employees)}</ul> : ''}
+
           </li>
       </>
     )

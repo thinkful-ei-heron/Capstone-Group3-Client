@@ -19,24 +19,24 @@ export default class Header extends Component {
     });
   };
 
-  renderLoginLink() {
-    return (
-      <ul className="header__login">
-        <Link to="/login">
-          <li>Log In</li>
-        </Link>
-        {this.context.auth.currentUser === null ? (
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-        ) : (
-          <Link to="/logout">
-            <li>Log Out</li>
-          </Link>
-        )}
-      </ul>
-    );
-  }
+  // renderLoginLink() {
+  //   return (
+  //     <ul className="header__login">
+  //       <Link to="/login">
+  //         <li>Log In</li>
+  //       </Link>
+  //       {this.context.auth.currentUser === null ? (
+  //         <li>
+  //           <Link to="/register">Register</Link>
+  //         </li>
+  //       ) : (
+  //         <Link to="/logout">
+  //           <li>Log Out</li>
+  //         </Link>
+  //       )}
+  //     </ul>
+  //   );
+  // }
 
   renderLogoutLink() {
     return (
@@ -56,14 +56,14 @@ export default class Header extends Component {
     return (
       <>
         <nav className="app__header">
-          <h1>
+          {/* <h1>
             <Link to="/">
               <img src="" alt="app__logo" />
             </Link>
           </h1>
           {this.state.loggedIn
             ? this.renderLogoutLink()
-            : this.renderLoginLink()}
+            : this.renderLoginLink()} */}
         </nav>
         {/* <button onClick={this.handleLogout}>toggle login</button> */}
       </>

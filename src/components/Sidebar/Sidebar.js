@@ -15,7 +15,7 @@ export default class Sidebar extends Component {
     }
   }
 
-  static contextType = FirebaseContext
+  static contextType = ContextProvider
 
   toggleExpand = (e) => {
     e.preventDefault()

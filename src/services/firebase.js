@@ -41,6 +41,18 @@ class Firebase {
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  
+  doGetProject = (org_id = 'HkeHO8n1eIaJSu6mnsd5') => {
+    return this.db.collection('organizations').doc(org_id).collection('projects').get();
+  }
+
+  doGetProjectJobs = (org_id = 'HkeHO8n1eIaJSu6mnsd5', project_id = 'FUFRX6873V2Llg9XQJBt') => {
+    return this.db.collection('organizations').doc(org_id).collection('projects').doc(project_id).collection('jobs').get();
+  }
+
+  getUsers = () => {
+    return this.db.collection('users').get();
+  }
 }
 
 export default Firebase;

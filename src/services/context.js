@@ -9,6 +9,7 @@ const FirebaseContext = React.createContext({
       id: "",
       name: ""
     },
+    role: ''
   },
     employees: [],
     projects: [],
@@ -40,10 +41,12 @@ export class ContextProvider extends React.Component {
         id: "",
         name: ""
       },
+      role: '',
+    },
       employees: [],
       projects: [],
       jobs: []
-    }
+    
   };
 
   setUser = email => {

@@ -9,8 +9,8 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID
+  appId: process.env.REACT_APP_APP_ID
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 class Firebase {
@@ -168,13 +168,21 @@ class Firebase {
       )
       .get();
 
+  watchAuth = () => this.auth().onAuthStateChanged(user => user);
+
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
-  doSignOut = () => this.auth.signOut();
+
+  doSignOut = () =>
+    this.auth
+      .signOut()
+      .then(res => res)
+      .catch(error => console.log(error));
+
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 

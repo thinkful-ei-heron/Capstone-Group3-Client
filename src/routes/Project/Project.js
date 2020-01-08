@@ -1,5 +1,5 @@
 import React from "react";
-import Firebase, { FirebaseContext } from "../../services/index";
+import { FirebaseContext } from "../../services/index";
 import Jobs from '../../components/Jobs/Jobs'
 
 class Project extends React.Component {
@@ -14,7 +14,12 @@ class Project extends React.Component {
     await this.context
       .getProjects()
       .then(snapshot => {
+        console.log(snapshot)
+        const array = []
         snapshot.forEach(doc => {
+          console.log(doc)
+          array.push(doc.data())
+          console.log(array)
           this.setState({
             projects: [
               {
@@ -27,16 +32,23 @@ class Project extends React.Component {
       })
       .catch(error => console.log(error));
 
-    this.state.projects.forEach(project => {
-      this.context.getJobs(project.id).then(snapshot => {
-        this.setState({
-            jobs: snapshot.docs
-        })
-      });
-    });
+    // this.state.projects.forEach(project => {
+    //   this.context.getJobs(project.id).then(snapshot => {
+    //     this.setState({
+    //         jobs: snapshot.docs
+    //     })
+    //   });
+    // });
   }
 
-  estimatedProgress(jobs) {}
+  calculateProgress(jobs) {
+    // const totalProgress = []
+    // jobs.forEach(job => {
+    //   totalProgress.push(job.progress)
+    // })
+    // return totalProgress.reduce((a, b) => a + b)
+    
+  }
 
   render() {
     return (
@@ -52,14 +64,14 @@ class Project extends React.Component {
                 </h3>
                 <p className="project_description">{project.description}</p>
                 <span className="project_estPro">
-                  Estimated Progress: {this.estimatedProgress()}
+                  Estimated Progress: {this.calculateProgress()}
                 </span>
                 <span>Deadline:</span>
               </div>
               <ul>
                {this.state.jobs &&
                this.state.jobs.map(job => {
-                 console.log(job.data())
+                 
                   return <Jobs key={job.id} id={job.id} job={job.data()}/>
                })}
               </ul>

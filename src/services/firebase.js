@@ -1,7 +1,6 @@
-import app from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore'
-
+import app from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -17,21 +16,157 @@ const firebaseConfig = {
 class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
-    this.db = app.firestore()
+    this.db = app.firestore();
     this.auth = app.auth();
+    this.state = {
+      user: {
+        id: "",
+        name: "",
+        org: {
+          id: "",
+          name: ""
+        },
+        role: ""
+      },
+      employees: [],
+      projects: [],
+      jobs: []
+    };
   }
 
-  getOrgs = () => 
-    this.db.collection('organizations')
+  setUser = email => {
+    this.db
+      .collection("users")
+      .where("email", "==", `${email}`)
       .get()
+      .then(snapshot => {
+        const user = snapshot.forEach(doc => {
+          return doc;
+        });
+        this.setState({
+          user: {
+            id: user.id,
+            name: user.data().name,
+            org: {
+              name: user.data().organization
+            },
+            role: user.data().role
+          }
+        });
+      })
+      .catch(error => console.log(error));
+  };
 
-  getProjects= () =>
-    this.db.collection('organizations/HkeHO8n1eIaJSu6mnsd5/projects')
+  setOrgId = org => {
+    this.db
+      .collection("organizations")
+      .where("name", "==", `${org}`)
       .get()
-      
-  getJobs = (project_id) =>
-    this.db.collection(`organizations/HkeHO8n1eIaJSu6mnsd5/projects/${project_id}/jobs`)
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          this.setState({
+            user: {
+              org: {
+                id: doc.data().id
+              }
+            }
+          });
+        });
+      })
+      .catch(error => console.log(error));
+  };
+
+  setEmployees = org => {
+    this.db
+      .collection("users")
+      .where("organization", "==", `${org}`)
       .get()
+      .then(snapshot => {
+        const employees = [];
+        snapshot.forEach(doc => {
+          employees.push(doc.data());
+        });
+        this.setState({
+          employees: employees
+        });
+      })
+      .catch(error => console.log(error));
+  };
+
+  setProjects = (role, name, org) => {
+    this.db
+      .collection(`organizations/${this.state.user.org.id}/projects`)
+      .get()
+      .then(snapshot => {
+        const projects = [];
+        if (role === "project worker") {
+          snapshot.forEach(doc => {
+            if (doc.data().project_workers.includes(name)) {
+              projects.push(doc);
+            }
+          });
+        } else if (role === "project manager") {
+          snapshot.forEach(doc => {
+            if (doc.data().project_manager === name) {
+              projects.push(doc);
+            }
+          });
+        } else {
+          snapshot.forEach(doc => {
+            projects.push(doc);
+          });
+        }
+        this.setState({
+          projects: projects
+        });
+      })
+      .catch(error => console.log(error));
+  };
+
+  setJobs = (role, name) => {
+    this.state.projects.forEach(project => {
+      this.db
+        .collection(
+          `organization/${this.state.user.org.id}/projects/${project.id}/jobs`
+        )
+        .get()
+        .then(snapshot => {
+          const jobs = [];
+          if (role === "project worker") {
+            snapshot.forEach(doc => {
+              if (doc.data().project_workers.includes(name)) {
+                jobs.push(doc.data());
+              }
+            });
+          } else if (role === "project manager") {
+            snapshot.forEach(doc => {
+              if (doc.data().project_manager === name) {
+                jobs.push(doc.data());
+              }
+            });
+          } else {
+            snapshot.forEach(doc => {
+              jobs.push(doc.data());
+            });
+          }
+          this.setState({
+            jobs: [...this.state.jobs, jobs]
+          });
+        })
+        .catch(error => console.log(error));
+    });
+  };
+
+  getProjects = () =>
+    // this.db.collection('organizations/HkeHO8n1eIaJSu6mnsd5/projects')
+    this.db.collection(`organizations/HkeHO8n1eIaJSu6mnsd5/projects`).get();
+
+  getJobs = project_id =>
+    this.db
+      .collection(
+        `organizations/HkeHO8n1eIaJSu6mnsd5/projects/${project_id}/jobs`
+      )
+      .get();
 
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
@@ -43,8 +178,7 @@ class Firebase {
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = password =>
-    this.auth.currentUser.updatePassword(password);
+  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 }
 
 export default Firebase;

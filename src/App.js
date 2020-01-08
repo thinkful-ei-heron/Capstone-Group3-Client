@@ -19,7 +19,7 @@ const App = props => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/logout" component={Logout} />
-          <Route exact path="/employee" component={ProjectView} />
+          <Route exact path="/project" component={ProjectView} />
         </Switch>
       </main>
     </BrowserRouter>

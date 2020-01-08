@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 
-import Dashboard from "./components/Dashboard/Dashboard";
-import Header from "./components/Header/Header";
-import { Login, Logout, Register } from "./components/Account/index";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import Header from "./Components/Header/Header";
+import { Login, Logout, Register } from "./Components/Account/index";
 
 const App = props => {
   return (

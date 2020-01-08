@@ -1,21 +1,29 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import Project from "./routes/Project/Project";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Header from "./components/Header/Header";
+import { Login, Logout, Register } from "./components/Account/index";
 
-
-function App() {
+const App = props => {
   return (
-    <>
-      <header className="app__header">
-        <h1>Capstone App</h1>
+    <BrowserRouter>
+      <header>
+        <Header />
       </header>
       <main className="app__main">
         <Switch>
-          <Route path="/" component={Project} />
+
+
+          <Route exact path={"/dashboard"} component={Dashboard} />
+          {/* routes go here */}
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/logout" component={Logout} />
+
         </Switch>
       </main>
-    </>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

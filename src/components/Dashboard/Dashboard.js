@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import React, { Component } from 'react';
+import { Redirect, Link } from 'react-router-dom';
 
-import FirebaseContext from "../../services/context";
-import Person from "../Person/Person";
-import Loading from "../Loading/Loading";
+import FirebaseContext from '../../services/context';
+import Person from '../Person/Person';
+import Loading from '../Loading/Loading';
 
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
     projects: [
       {
-        name: "Project Management App",
-        date_created: "January 7, 2020 at 5:00:00 AM UTC-8",
-        project_manager: "Manager",
-      },
+        name: 'Project Management App',
+        date_created: 'January 7, 2020 at 5:00:00 AM UTC-8',
+        project_manager: 'Manager'
+      }
     ],
     users: [],
-    loading: true,
+    loading: true
   };
 
   componentDidMount() {
@@ -42,14 +42,14 @@ export default class Dashboard extends Component {
           <section className="Dashboard__container">
             <div className="Dashboard__header">
               <h2>COMPANY NAME</h2>
-              <span className="Dashboard__date">
-                {new Date().toLocaleString()}
-              </span>
+              <span className="Dashboard__date">{new Date().toLocaleString()}</span>
             </div>
             <section className="Dashboard__projects">
               <div>
                 <h1>PROJECTS</h1>
-                <button>NEW</button>
+                <Link to="/new_project">
+                  <button>NEW</button>
+                </Link>
               </div>
               <div className="Dashboard__projects_container">
                 <ul>

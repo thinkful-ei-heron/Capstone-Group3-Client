@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { ContextProvider } from "../../services/context";
+import FirebaseContext from '../../services/context.js'
 import { ProgressBar } from '../ProgressBar/ProgressBar'
 import './ProjectView.css'
 import Loading from '../Loading/Loading'
 import Jobs from '../Jobs/Jobs'
-import ProjectManagerSelector from '../ProjectManagerSelector/ProjectManagerSelector'
+import Dropdown from '../Dropdown/Dropdown'
 import Statistics from '../Statistics/Statistics'
 import Sidebar from '../Sidebar/Sidebar'
 
@@ -36,7 +36,7 @@ export default class ProjectView extends Component  {
       }
     ],
       userName: 'Brennan Huff', //pass in through props or context
-      userRole: 'employee',
+      userRole: 'owner',
       companyName: 'EI35 - Group 3', //pass in through props or context
       date: new Date().toDateString(),
       projectName: 'Catalina Wine Mixer',
@@ -137,7 +137,10 @@ export default class ProjectView extends Component  {
             <div>Est. Progress</div>
             <ProgressBar percentage={this.state.projectProgress}/>
             <div id='projectDeadline'>Deadline: {this.state.projectDeadline}</div>
-            {this.state.userRole === 'employee' ? <></> : <ProjectManagerSelector />} 
+            {this.state.userRole === 'employee' ? <></> : <div>
+              <h3>SELECT Project Manager</h3>
+              <Dropdown path='project'/>
+            </div>} 
           </header>
         </div>
         <div id='employee-view-jobs'>

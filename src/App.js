@@ -4,6 +4,7 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Header from "./Components/Header/Header";
 import { Login, Logout, Register } from "./Components/Account/index";
+import ProjectView from "./Components/ProjectView/ProjectView";
 
 const App = props => {
   return (
@@ -18,6 +19,7 @@ const App = props => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/logout" component={Logout} />
+          <Route exact path="/employee" component={ProjectView} />
         </Switch>
       </main>
     </BrowserRouter>

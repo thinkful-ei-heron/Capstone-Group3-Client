@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import Firebase from '../../services/index.js'
-import FirebaseContext from '../../services/context.js'
+import { ContextProvider } from "../../services/context";
 import { ProgressBar } from '../ProgressBar/ProgressBar'
 import Loading from '../Loading/Loading'
 
@@ -18,7 +17,7 @@ export default class Sidebar extends Component {
     }
   }
 
-  static contextType = FirebaseContext
+  static contextType = ContextProvider
 
   toggleExpand = (e) => {
     e.preventDefault()

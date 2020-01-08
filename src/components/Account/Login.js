@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { useInput } from "../../hooks/useInput";
-import { FirebaseContext } from "../../services";
+import { ContextProvider } from "../../services/context";
 
 const Login = props => {
-  const fbContext = useContext(FirebaseContext);
+  const fbContext = useContext(ContextProvider);
   const { value: email, bind: bindEmail, reset: resetEmail } = useInput("");
   const {
     value: password,

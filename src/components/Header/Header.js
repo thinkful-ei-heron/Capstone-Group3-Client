@@ -6,7 +6,7 @@ const Header = props => {
   // return <p>blah</p>;
   return (
     <ul>
-      {props.user ? (
+      {props.user.email ? (
         <>
           <li>Hello, {props.user.email}</li>
           <Link to="/logout">
@@ -14,9 +14,14 @@ const Header = props => {
           </Link>
         </>
       ) : (
-        <li>
-          <Link to="/register">Register</Link>
-        </li>
+        <>
+          <Link to="/login">
+            <li>Log In</li>
+          </Link>
+          <Link to="/register">
+            <li>Register</li>
+          </Link>
+        </>
       )}
     </ul>
   );
@@ -40,9 +45,9 @@ const Header = props => {
 //     <>
 //       <div>Hello, {user.displayName}</div>
 //       <ul className="header__login">
-//         <Link to="/login">
-//           <li>Log In</li>
-//         </Link>
+// <Link to="/login">
+//   <li>Log In</li>
+// </Link>
 // this.context.auth.currentUser === null ? (
 //           <li>
 //             <Link to="/register">Register</Link>

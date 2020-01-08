@@ -1,0 +1,10 @@
+.filler {
+    background-color: darkgreen;
+  }
+  
+  .progress-bar {
+    background-color: greenyellow;
+    width: 50%;
+    color: red;
+    text-align: center;
+  }

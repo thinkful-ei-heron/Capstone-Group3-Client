@@ -13,8 +13,7 @@ const App = props => {
       </header>
       <main className="app__main">
         <Switch>
-          <Route exact path={"/dashboard"} component={Dashboard} />
-          {/* routes go here */}
+          <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/logout" component={Logout} />

@@ -9,7 +9,6 @@ import myFirebase from "./services/firebase";
 import userContext from "./services/userContext";
 import LogOut from "./components/Account/Logout";
 import ProjectView from "./components/ProjectView/ProjectView";
-import testContext from "./components/testcontext";
 
 class App extends React.Component {
   constructor(props) {

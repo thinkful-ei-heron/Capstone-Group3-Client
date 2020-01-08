@@ -6,6 +6,7 @@ import { Login, Register } from "./components/Account/index";
 import { FirebaseContext } from "./services/index";
 import myFirebase from "./services/firebase";
 import userContext from "./services/userContext";
+import LogOut from "./components/Account/Logout";
 
 class App extends React.Component {
   constructor(props) {
@@ -16,20 +17,18 @@ class App extends React.Component {
   }
   updateUser = user => {
     this.setState({ user: user });
+    userContext.email = user.email;
   };
 
   componentDidMount() {
-    this.getUser();
-  }
-
-  getUser = () =>
     myFirebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({ user: user });
+        this.updateUser(user);
       } else {
-        this.setState({ user: {} });
+        this.updateUser({});
       }
     });
+  }
 
   render() {
     return (
@@ -41,7 +40,7 @@ class App extends React.Component {
             </header>
             <main className="app__main">
               <Switch>
-                <Route exact path="/dashboard" component={Dashboard} />
+                <Route exact path="/dashboard" render={() => <Dashboard />} />
                 <Route
                   exact
                   path="/login"
@@ -53,17 +52,7 @@ class App extends React.Component {
                 <Route
                   exact
                   path="/logout"
-                  render={props =>
-                    myFirebase
-                      .auth()
-                      .signOut()
-                      .then(() => {
-                        this.updateUser({ user: {} });
-                      })
-                      .catch(function(error) {
-                        throw new Error(error);
-                      })
-                  }
+                  render={() => <LogOut updateUser={this.updateUser} />}
                 />
               </Switch>
             </main>

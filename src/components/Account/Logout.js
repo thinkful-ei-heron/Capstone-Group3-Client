@@ -1,16 +1,18 @@
+import React from "react";
 import myFirebase from "../../services/firebase";
+import { Redirect } from "react-router-dom";
 
-const Logout = props => {
+const LogOut = props => {
   myFirebase
     .auth()
     .signOut()
     .then(() => {
       props.updateUser({});
-      props.history.push("/dashboard");
     })
     .catch(function(error) {
       throw new Error(error);
     });
+  return <Redirect to="/" />;
 };
 
-export { Logout };
+export default LogOut;

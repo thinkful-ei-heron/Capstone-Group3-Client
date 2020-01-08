@@ -1,12 +1,16 @@
-import React, { useContext } from "react";
-import { Redirect } from "react-router-dom";
-import FirebaseContext from "../../services/context";
+import myFirebase from "../../services/firebase";
 
 const Logout = props => {
-  const fbContext = useContext(FirebaseContext);
-  return fbContext.doSignOut().then(() => {
-    return <Redirect to="/" />;
-  });
+  myFirebase
+    .auth()
+    .signOut()
+    .then(() => {
+      props.updateUser({});
+      props.history.push("/dashboard");
+    })
+    .catch(function(error) {
+      throw new Error(error);
+    });
 };
 
 export { Logout };

@@ -19,15 +19,15 @@ export default class Dashboard extends Component {
     loading: true,
   };
 
-  componentDidMount() {
-    let users = [];
-    this.context.getUsers().then(snapshot => {
-      snapshot.forEach(doc => {
-        users.push(doc.data());
-      });
-      this.setState({ users: users, loading: false });
-    });
-  }
+  // componentDidMount() {
+  //   let users = [];
+  //   this.context.getUsers().then(snapshot => {
+  //     snapshot.forEach(doc => {
+  //       users.push(doc.data());
+  //     });
+  //     this.setState({ users: users, loading: false });
+  //   });
+  // }
 
   render() {
     if (this.state.loading) return <Loading />;

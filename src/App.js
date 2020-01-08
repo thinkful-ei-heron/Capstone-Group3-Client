@@ -1,31 +1,28 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import Firebase, { FirebaseContext } from "./services/index";
-import { BrowserRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 
 import Dashboard from "./components/Dashboard/Dashboard";
 import Header from "./components/Header/Header";
-// import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
+import Login from "./components/Login/Login";
+import Logout from "./components/Logout/Logout";
+import RegisterForm from "./components/Register/Register";
 
-const App = () => {
+const App = props => {
   return (
-    <FirebaseContext.Provider value={new Firebase()}>
-      <BrowserRouter>
-        <header>
-          <Header />
-        </header>
-        <main className="app__main">
-          <Switch>
-            <Route exact path={"/"} component={Dashboard} />
-            {/* routes go here */}
-            {/* <Route exact path="/login" component={Login} /> */}
-            <Route exact path="/register" component={Register} />
-            {/* <Route exact path="/logout" render={() => firebase.logout}/> */}
-          </Switch>
-        </main>
-      </BrowserRouter>
-    </FirebaseContext.Provider>
+    <BrowserRouter>
+      <header>
+        <Header />
+      </header>
+      <main className="app__main">
+        <Switch>
+          <Route exact path={"/dashboard"} component={Dashboard} />
+          {/* routes go here */}
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={RegisterForm} />
+          <Route exact path="/logout" component={Logout} />
+        </Switch>
+      </main>
+    </BrowserRouter>
   );
 };
 

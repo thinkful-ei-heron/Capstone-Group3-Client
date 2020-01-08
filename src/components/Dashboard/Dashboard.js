@@ -34,7 +34,7 @@ export default class Dashboard extends Component {
     else
       return (
         <>
-          {this.context.auth.currentUser.isAnonymous === true ? (
+          {this.context.auth.currentUser === null ? (
             <Redirect to="/register" />
           ) : (
             <p>Current user's email: {this.context.auth.currentUser.email}</p>

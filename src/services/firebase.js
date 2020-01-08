@@ -18,9 +18,9 @@ class Firebase {
     app.initializeApp(firebaseConfig);
     this.auth = app.auth();
     this.db = app.firestore();
-    this.loggedIn = false;
-    this.userEmail = null;
   }
+
+  watchAuth = () => this.auth().onAuthStateChanged(user => user);
 
   getUsers = () => {
     return this.db.collection("users").get();
@@ -32,7 +32,11 @@ class Firebase {
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
-  doSignOut = () => this.auth.signOut();
+  doSignOut = () =>
+    this.auth
+      .signOut()
+      .then(res => res)
+      .catch(error => console.log(error));
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 

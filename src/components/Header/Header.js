@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+
+import FirebaseContext from "../../services/context";
 import "./Header.css";
 
 export default class Header extends Component {
+  static contextType = FirebaseContext;
   state = {
     loggedIn: false,
     userName: "Balay", //this will be replaced with context
@@ -22,9 +26,14 @@ export default class Header extends Component {
         <Link to="/login">
           <li>Log In</li>
         </Link>
-        <Link to="/register">
-          <li>Sign Up</li>
-        </Link>
+        {this.context.auth.currentUser &&
+        this.context.auth.currentUser.isAnonymous === true ? (
+          <Redirect to="/register" />
+        ) : (
+          <Link to="/logout">
+            <li>Log Out</li>
+          </Link>
+        )}
       </ul>
     );
   }

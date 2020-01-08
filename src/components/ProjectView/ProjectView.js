@@ -63,7 +63,7 @@ export default class ProjectView extends Component  {
     }
   }
 
-  static contextType = FirebaseContext
+  static contextType = ContextProvider
 
   renderEmployeeList = (employees) => {
     return employees.map((employee, index) => {

@@ -34,13 +34,13 @@ img {
 }
 
 button {
-  width: 250px;
-  height: 75px;
+  width: 220px;
+  height: 65px;
   margin-bottom: 75px;
   border: none;
   border-radius: 20px;
   font-family: 'Oxygen', sans-serif;
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: white;
   background-color: #dc2e5e;
 }

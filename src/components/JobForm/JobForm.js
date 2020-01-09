@@ -12,7 +12,7 @@ export default class JobForm extends Component {
         const data = {
             name: name.value,
             description: description.value,
-            deadline: deadline.value,
+            deadline: new Date(deadline.value),
             approval: false,
             date_created: new Date(),
             organization: this.context.user.org.name,
@@ -24,6 +24,7 @@ export default class JobForm extends Component {
             status: 'completed',
         }
         this.context.addJob(data, this.props.project_id)
+        this.props.history.push(`/project/${this.props.project_id}`)
     }
 
     render() {

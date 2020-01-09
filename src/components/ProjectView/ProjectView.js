@@ -10,6 +10,8 @@ import Sidebar from "../Sidebar/Sidebar";
 import NewJob from '../NewJob/NewJob';
 
 export default class ProjectView extends Component {
+  static contextType = FirebaseContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,12 +32,12 @@ export default class ProjectView extends Component {
     };
   }
 
-  static contextType = FirebaseContext;
+  
 
   componentDidMount() {
     console.log(this.props.id);
     const jobs = this.context.jobs;
-    console.log(jobs);
+    //console.log(jobs);
     const projects = this.context.projects;
     const proj = projects.find(project => project.id === this.props.id);
     this.setState({
@@ -53,7 +55,7 @@ export default class ProjectView extends Component {
 
   setJob = () => {
     this.setState({
-      toggleState: true
+      toggleState: !this.state.toggleState
     })
     // this.context.setNewJob(job)
     // console.log(this.context.jobs)
@@ -67,7 +69,7 @@ export default class ProjectView extends Component {
   };
 
   renderJobList = () => {
-    return this.state.projectJobs.map((job, index) => {
+    return this.context.jobs.map((job, index) => {
       return (
         <li key={index} id={index}>
           <button>^</button>

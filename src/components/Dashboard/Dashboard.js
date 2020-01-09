@@ -2,35 +2,64 @@ import React from "react";
 // import { Redirect } from "react-router-dom";
 import userContext from "../../services/userContext";
 import FirebaseContext from "../../services/context";
+import myFirebase from "../../services/firebase";
 // import Person from "../Person/Person";
 // import Loading from "../Loading/Loading";
 
 const Dashboard = props => {
-  let uc = React.useContext(userContext);
-  let fb = React.useContext(FirebaseContext);
-
-  const callSet = () => {
-    console.log(fb);
-    // fb.setProjects("project worker", "reif");
+  const uc = React.useContext(userContext);
+  const fb = React.useContext(FirebaseContext);
+  let projects = [];
+  const setProjects = (role, name) => {
+    myFirebase
+      .firestore()
+      .collection(`organizations/HkeHO8n1eIaJSu6mnsd5/projects`)
+      .get()
+      .then(snapshot => {
+        if (role === "project worker") {
+          snapshot.forEach(doc => {
+            if (doc.data().project_workers.includes(name)) {
+              projects.push(doc);
+            }
+          });
+        } else if (role === "project manager") {
+          snapshot.forEach(doc => {
+            if (doc.data().project_manager === name) {
+              projects.push(doc);
+            }
+          });
+        } else {
+          snapshot.forEach(doc => {
+            projects.push(doc);
+          });
+        }
+      })
+      .catch(error => console.log(error));
   };
 
-  React.useEffect(() => callSet());
+  React.useEffect(() => {
+    console.log("effect triggered");
+    // setStuff();
+    fb.setProjects("project worker", "Reif");
+    console.log(fb);
+    console.log(projects);
+    setProjects("project worker", "Reif");
+    console.log(projects);
+  });
 
   return (
     <>
       <div>{uc.email}</div>
-      {/* <div>
-        {fb.projects
-          ? fb.projects.map(proj => <p>{proj.data().name}</p>)
-          : null}
-      </div> */}
+      <div>
+        {projects ? projects.map(proj => <p>{proj.data().name}</p>) : null}
+      </div>
     </>
   );
 };
-export default Dashboard;
+// export default Dashboard;
 
 // class Dashboard extends React.Component {
-//   static contextType = userContext;
+//   static contextType = FirebaseContext;
 //   constructor() {
 //     super();
 //     this.state = {
@@ -44,6 +73,9 @@ export default Dashboard;
 //       users: [],
 //       loading: true,
 //     };
+//   }
+//   componentDidMount() {
+//     this.context.setProjects("project worker", "Reif");
 //   }
 //   render() {
 //     let user = this.context;
@@ -151,3 +183,5 @@ export default Dashboard;
 //       );
 //   }
 // }
+
+export default Dashboard;

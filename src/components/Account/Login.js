@@ -16,14 +16,19 @@ const Login = props => {
     fbContext
       .doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
-        console.log(`Logging in: ${authUser.user.email}`);
+        // user id => authUser.user.uid
+        // console.log(`logged in user id: ${authUser.user.uid}`);
+        // console.log(`logged in user: ${authUser.user}`);
       })
-      .then(() => fbContext.setUser(email))
-      .then(() => {
-        resetEmail();
-        resetPassword();
-        props.history.push("/dashboard");
-      });
+      .then(() =>
+        fbContext.getOrgName(email).then(orgName => {
+          fbContext.setUser(email, orgName).then(() => {
+            resetEmail();
+            resetPassword();
+            props.history.push("/dashboard");
+          });
+        }),
+      );
   };
 
   return (

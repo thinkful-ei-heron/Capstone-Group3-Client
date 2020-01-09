@@ -1,14 +1,12 @@
 import React from "react";
 // import { Redirect } from "react-router-dom";
 import userContext from "../../services/userContext";
-import FirebaseContext from "../../services/context";
 import myFirebase from "../../services/firebase";
 // import Person from "../Person/Person";
 // import Loading from "../Loading/Loading";
 
 const Dashboard = props => {
   const uc = React.useContext(userContext);
-  const fb = React.useContext(FirebaseContext);
   let projects = [];
   const setProjects = (role, name) => {
     myFirebase
@@ -19,18 +17,18 @@ const Dashboard = props => {
         if (role === "project worker") {
           snapshot.forEach(doc => {
             if (doc.data().project_workers.includes(name)) {
-              projects.push(doc);
+              projects.push(doc.data());
             }
           });
         } else if (role === "project manager") {
           snapshot.forEach(doc => {
             if (doc.data().project_manager === name) {
-              projects.push(doc);
+              projects.push(doc.data());
             }
           });
         } else {
           snapshot.forEach(doc => {
-            projects.push(doc);
+            projects.push(doc.data());
           });
         }
       })
@@ -38,11 +36,6 @@ const Dashboard = props => {
   };
 
   React.useEffect(() => {
-    console.log("effect triggered");
-    // setStuff();
-    fb.setProjects("project worker", "Reif");
-    console.log(fb);
-    console.log(projects);
     setProjects("project worker", "Reif");
     console.log(projects);
   });

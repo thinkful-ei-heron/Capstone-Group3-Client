@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useInput } from "../../hooks/useInput";
-import myFirebase from "../../services/firebase";
+import { FirebaseContext } from "../../services/index";
 
 const Login = props => {
+  const fbCon = useContext(FirebaseContext);
   const { value: email, bind: bindEmail, reset: resetEmail } = useInput("");
   const {
     value: password,
@@ -12,9 +13,8 @@ const Login = props => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    myFirebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
+    fbCon
+      .doSignInWithEmailAndPassword(email, password)
       .then(resp => {
         console.log(resp.user.email);
         props.updateUser(resp.user);

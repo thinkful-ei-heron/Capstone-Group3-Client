@@ -4,6 +4,7 @@ import { Redirect, Link } from "react-router-dom";
 import FirebaseContext from "../../services/context";
 import Person from "../Person/Person";
 import Loading from "../Loading/Loading";
+import { Sidebar } from "../Sidebar/Sidebar2";
 
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
@@ -35,9 +36,9 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    console.log("this.context.user", this.context.user);
-    console.log("this.context.projects", this.context.projects);
-    console.log("this.context.employees", this.context.employees);
+    //console.log("this.context.user", this.context.user);
+    //console.log("this.context.projects", this.context.projects);
+    //console.log("this.context.employees", this.context.employees);
     if (this.state.loading) return <Loading />;
     else
       return (
@@ -87,6 +88,7 @@ export default class Dashboard extends Component {
               </ul>
             </section>
           </section>
+          <Sidebar />
         </>
       );
   }

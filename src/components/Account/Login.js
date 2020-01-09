@@ -16,7 +16,7 @@ const Login = props => {
     fbContext
       .doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
-        console.log(`Logging in: ${authUser.user.email}`);
+        ////console.log(`Logging in: ${authUser.user.email}`);
       })
       .then(() => fbContext.setUser(email))
       .then(() => {

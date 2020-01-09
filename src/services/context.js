@@ -54,7 +54,7 @@ export class ContextProvider extends React.Component {
       .get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          console.log(doc.data());
+          //console.log(doc.data());
           this.setState({
             user: {
               id: doc.id,
@@ -72,7 +72,7 @@ export class ContextProvider extends React.Component {
   };
 
   setOrgId = org => {
-    console.log(org);
+    //console.log(org);
     return db
       .collection("organizations")
       .where("name", "==", `${org}`)
@@ -94,7 +94,7 @@ export class ContextProvider extends React.Component {
   };
 
   setEmployees = org => {
-    console.log(org);
+    //console.log(org);
     return db
       .collection("users")
       .where("organization", "==", `${org}`)
@@ -167,11 +167,11 @@ export class ContextProvider extends React.Component {
   };
 
   setJobs = (role, name) => {
-    console.log(role, name);
+    //console.log(role, name);
     this.state.projects.forEach(project => {
-      console.log(
-        `organization/${this.state.user.org.id}/projects/${project.id}/jobs`,
-      );
+      //console.log(
+      //   `organization/${this.state.user.org.id}/projects/${project.id}/jobs`,
+      // );
       db.collection(
         `organizations/${this.state.user.org.id}/projects/${project.id}/jobs`,
       )
@@ -179,10 +179,10 @@ export class ContextProvider extends React.Component {
         .then(snapshot => {
           const jobs = [];
           if (role === "project worker") {
-            console.log("Getting jobs");
-            console.log(snapshot);
+            //console.log("Getting jobs");
+            //console.log(snapshot);
             snapshot.forEach(doc => {
-              console.log(doc.data());
+              //console.log(doc.data());
               if (doc.data().project_workers.includes(name)) {
                 jobs.push({ id: doc.id, ...doc.data() });
               }
@@ -198,8 +198,8 @@ export class ContextProvider extends React.Component {
               jobs.push({ id: doc.id, ...doc.data() });
             });
           }
-          console.log(jobs);
-          console.log(this.state.jobs);
+          //console.log(jobs);
+          //console.log(this.state.jobs);
           this.setState({
             jobs: [...this.state.jobs, jobs],
           });

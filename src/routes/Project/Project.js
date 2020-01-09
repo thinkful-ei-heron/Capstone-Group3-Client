@@ -14,12 +14,12 @@ class Project extends React.Component {
     await this.context
       .getProjects()
       .then(snapshot => {
-        console.log(snapshot)
+        //console.log(snapshot)
         const array = []
         snapshot.forEach(doc => {
-          console.log(doc)
+          //console.log(doc)
           array.push(doc.data())
-          console.log(array)
+          //console.log(array)
           this.setState({
             projects: [
               {
@@ -30,7 +30,7 @@ class Project extends React.Component {
           });
         });
       })
-      .catch(error => console.log(error));
+      .catch(error => //console.log(error));
 
     // this.state.projects.forEach(project => {
     //   this.context.getJobs(project.id).then(snapshot => {

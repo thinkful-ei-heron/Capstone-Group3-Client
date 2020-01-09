@@ -16,7 +16,7 @@ const Register = props => {
     fbContext
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
-        console.log(`Signing up: ${authUser.user.email}`);
+        //console.log(`Signing up: ${authUser.user.email}`);
       })
       .then(() => {
         resetEmail();

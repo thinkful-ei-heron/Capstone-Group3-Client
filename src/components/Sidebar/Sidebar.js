@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import FirebaseContext from "../../services/context.js";
+import { db } from '../../services/firebase'
 
 export default class Sidebar extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class Sidebar extends Component {
 
   toggleExpand = e => {
     e.preventDefault();
-    console.log(e.target.id);
+    //console.log(e.target.id);
     if (!this.state.expanded.includes(e.target.id)) {
       let newExpanded = this.state.expanded;
       newExpanded.push(e.target.id);
@@ -46,11 +47,14 @@ export default class Sidebar extends Component {
 
   renderSubList = values => {
     if (this.state.userType === "owner" && this.props.view !== "project") {
+      if(!values[0]) return <span>No Projects Assigned</span>
+      else {
       return values[0].map((project, index) => {
-        console.log(project);
         return <li key={index}>{project}</li>;
-      });
+      })};
     } else {
+      if(!values[0]) return <span>No Jobs Assigned</span>
+      else {
       return values[0].map((project, index) => {
         return (
           <li key={index}>
@@ -70,7 +74,7 @@ export default class Sidebar extends Component {
             )}
           </li>
         );
-      });
+      })};
     }
   };
 
@@ -116,8 +120,41 @@ export default class Sidebar extends Component {
     }
   };
 
+  populateProjects = (name) => {
+    try{
+        console.log(name)
+        // let projectArray = []
+        // db.collection('projects').where('project_manager','==',name).get().then(snapshot => console.log(snapshot.doc.data()))
+        // return projectArray
+    } catch(error) { console.log(error) }
+    
+  }
+
+  populateLists = () => {
+    let newEmployees = []
+    let newProjectManagers = []
+    this.context.employees.map((employee) => {
+      if(employee.role === 'project worker') {
+        let newEntry = {[employee.name]: null}
+        newEmployees.push(newEntry)
+      } else if(employee.role === 'project manager') {
+        let newProjects = this.populateProjects(employee.name)
+        let newEntry = {[employee.name]: newProjects}
+        newProjectManagers.push(newEntry)
+      }
+      return this.setState({
+        employees: newEmployees,
+        projectManagers: newProjectManagers
+      })
+    })
+  }
+
+  componentDidMount() {
+    this.populateLists()
+  }
+
   render() {
-    if (this.state.userType === "employee" && this.props.view !== "project")
+    if (this.state.userType === "project worker" && this.props.view !== "project")
       return <></>;
     else {
       return (

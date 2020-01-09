@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { ContextProvider } from "../../services/context";
-import { ProgressBar } from '../ProgressBar/ProgressBar'
-import Loading from '../Loading/Loading'
+import FirebaseContext from '../../services/context.js'
 
 export default class Sidebar extends Component {
   constructor(props) {

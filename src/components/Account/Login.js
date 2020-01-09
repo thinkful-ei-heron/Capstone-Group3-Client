@@ -19,6 +19,7 @@ const Login = props => {
         console.log(`Logging in: ${authUser.user.email}`);
       })
       .then(() => {
+        
         resetEmail();
         resetPassword();
         props.history.push("/dashboard");

@@ -1,6 +1,32 @@
+.LandingPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #6289b5;
+  background-image: linear-gradient(195deg, transparent 0 70%, #7fcce9 70% 100%),
+    linear-gradient(200deg, transparent 0 50%, #6bbde2 50% 80%),
+    linear-gradient(205deg, transparent 0 30%, #5c9ad1 30% 60%);
+}
+
+.LandingPage__hero_text {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-bottom: 150px;
+  margin-left: 50px;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 4.5rem;
+  line-height: 10rem;
+  color: #c4f7ff;
+}
+
 img {
   position: absolute;
   bottom: 0;
-  left: 150px;
-  width: 40%;
+  left: 15%;
+  height: 60%;
+  width: auto;
 }

@@ -39,11 +39,11 @@ export class ContextProvider extends React.Component {
         id: '',
         name: ''
       },
-      role: '',
+      role: ''
     },
-      employees: [],
-      projects: [],
-      jobs: []
+    employees: [],
+    projects: [],
+    jobs: []
   };
 
   setUser = email => {
@@ -125,34 +125,12 @@ export class ContextProvider extends React.Component {
         } else if (role === 'project manager') {
           snapshot.forEach(doc => {
             if (doc.data().project_manager === name) {
-              const projectObj = {
-                id: doc.id,
-                date_created: doc.data().date_created,
-                deadline: doc.data().deadline,
-                description: doc.data().description,
-                name: doc.data().name,
-                org_id: doc.data().org_id,
-                progress: doc.data().progress,
-                project_manager: doc.data().project_manager,
-                project_workers: doc.data().project_workers,
-              }
-              projects.push(projectObj);
+              projects.push({ id: doc.id, ...doc.data() });
             }
           });
         } else {
           snapshot.forEach(doc => {
-            const projectObj = {
-              id: doc.id,
-              date_created: doc.data().date_created,
-              deadline: doc.data().deadline,
-              description: doc.data().description,
-              name: doc.data().name,
-              org_id: doc.data().org_id,
-              progress: doc.data().progress,
-              project_manager: doc.data().project_manager,
-              project_workers: doc.data().project_workers,
-            }
-            projects.push(projectObj);
+            projects.push({ id: doc.id, ...doc.data() });
           });
         }
         this.setState({
@@ -202,21 +180,18 @@ export class ContextProvider extends React.Component {
         .catch(error => console.log(error));
     });
   };
-  
-  addProject = (newProject) => {
-    db.collection(`organization/${this.state.user.org.id}/projects`)
-      .add(newProject)
-  }
+
+  addProject = newProject => {
+    db.collection(`organization/${this.state.user.org.id}/projects`).add(newProject);
+  };
 
   addJob = (newJob, project_id) => {
-    db.collection(`organization/${this.state.user.org.id}/projects/${project_id}/jobs`)
-      .add(newJob)
-  }
+    db.collection(`organization/${this.state.user.org.id}/projects/${project_id}/jobs`).add(newJob);
+  };
 
-  addUser = (newUser) => {
-    db.collection('users').add(newUser)
-  }
-
+  addUser = newUser => {
+    db.collection('users').add(newUser);
+  };
 
   watchAuth = () => this.auth().onAuthStateChanged(user => user);
 

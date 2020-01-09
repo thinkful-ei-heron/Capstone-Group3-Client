@@ -8,25 +8,29 @@ import Loading from '../Loading/Loading';
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    projects: [
-      {
-        name: 'Project Management App',
-        date_created: 'January 7, 2020 at 5:00:00 AM UTC-8',
-        project_manager: 'Manager'
-      }
-    ],
+    orgName: null,
+    projects: [],
     users: [],
     loading: true
   };
 
   componentDidMount() {
-    let users = [];
-    this.context.getUsers().then(snapshot => {
-      snapshot.forEach(doc => {
-        users.push(doc.data());
-      });
-      this.setState({ users: users, loading: false });
-    });
+    this.context.setOrgId(this.context.user.org.name).then(() =>
+      this.context
+        .setEmployees(this.context.user.org.name)
+
+        .then(() => {
+          console.log(this.context.user);
+          this.context.setProjects(this.context.user.role, this.context.user.name).then(() =>
+            this.setState({
+              orgName: this.context.user.org.name,
+              users: this.context.employees,
+              projects: this.context.projects,
+              loading: false
+            })
+          );
+        })
+    );
   }
 
   render() {
@@ -34,14 +38,14 @@ export default class Dashboard extends Component {
     else
       return (
         <>
-          {this.context.auth.currentUser === null ? (
+          {false ? (
             <Redirect to="/register" />
           ) : (
-            <p>Current user's email: {this.context.auth.currentUser.email}</p>
+            <p>Current user's email: {/*this.context.auth.currentUser.email*/}</p>
           )}
           <section className="Dashboard__container">
             <div className="Dashboard__header">
-              <h2>COMPANY NAME</h2>
+              <h2>{this.state.orgName}</h2>
               <span className="Dashboard__date">{new Date().toLocaleString()}</span>
             </div>
             <section className="Dashboard__projects">
@@ -55,7 +59,7 @@ export default class Dashboard extends Component {
                 <ul>
                   {this.state.projects.map((proj, i) => {
                     return (
-                      <Link to="/project/1">
+                      <Link to={`/project/${proj.id}`}>
                         <li key={i}>
                           <span>{proj.name}</span>
                           <span>Manager: {proj.project_manager}</span>

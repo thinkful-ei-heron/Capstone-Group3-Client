@@ -12,14 +12,14 @@ export default class ProjectForm extends Component {
       name: name.value,
       description: description.value,
       project_manager: projectManager.value,
-      deadline: deadline.value,
+      deadline: new Date(deadline.value),
       date_created: new Date(),
       org_id: this.context.user.org.id,
       progress: 0,
       project_workers: [],
     };
     this.context.addProject(data)
-    
+    this.props.history.push('/dashboard')
   };
 
   render() {

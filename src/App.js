@@ -21,8 +21,8 @@ const App = props => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/logout" component={Logout} />
-          <Route exact path="/new_project" component={NewProject} />
-          <Route exact path='/new_job' component={NewJob} />
+          <Route exact path="/new_project" render={props => <NewProject {...props}/>} />
+          <Route exact path='/new_job' render={props => <NewJob {...props} />} />
           <Route exact path="/project/:id" component={props => <ProjectView id={props.match.params.id} />} />
         </Switch>
       </main>

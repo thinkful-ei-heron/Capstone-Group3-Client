@@ -7,7 +7,7 @@ export default class NewJob extends React.Component {
     return (
       <>
         <h1>NewJob</h1>
-        <JobForm project_id={this.props.location.state.project_id} project_manager={this.props.location.state.project_manager}/>
+        <JobForm project_id={this.props.location.state.project_id} project_manager={this.props.location.state.project_manager} {...this.props}/>
       </>
     );
   }

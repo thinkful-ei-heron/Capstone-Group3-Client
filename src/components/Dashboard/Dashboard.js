@@ -20,7 +20,6 @@ export default class Dashboard extends Component {
         .setEmployees(this.context.user.org.name)
 
         .then(() => {
-          console.log(this.context.user);
           this.context.setProjects(this.context.user.role, this.context.user.name).then(() =>
             this.setState({
               orgName: this.context.user.org.name,
@@ -34,6 +33,9 @@ export default class Dashboard extends Component {
   }
 
   render() {
+    console.log('this.context.user', this.context.user);
+    console.log('this.context.projects', this.context.projects);
+    console.log('this.context.employees', this.context.employees);
     if (this.state.loading) return <Loading />;
     else
       return (

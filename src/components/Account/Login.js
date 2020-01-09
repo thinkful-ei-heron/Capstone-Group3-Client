@@ -16,6 +16,7 @@ const Login = props => {
       })
       .then(() => fbContext.setUser(email))
       .then(() => {
+        
         resetEmail();
         resetPassword();
         props.history.push('/dashboard');

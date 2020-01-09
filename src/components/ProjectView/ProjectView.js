@@ -41,6 +41,8 @@ export default class ProjectView extends Component {
     const projects = this.context.projects;
     const proj = projects.find(project => project.id === this.props.id);
     this.setState({
+      userName: this.context.user.name,
+      userRole: this.context.user.role,
       companyName: this.context.user.org.name,
       projectJobs: jobs,
       projectName: proj.name,
@@ -119,7 +121,6 @@ export default class ProjectView extends Component {
   // }
 
   render() {
-    console.log(this.state.projectEmployees);
     if (this.state.loading) {
       return <Loading />;
     } else {
@@ -140,10 +141,10 @@ export default class ProjectView extends Component {
               <div id="projectDescription">{this.state.projectDescription}</div>
               <div>Est. Progress</div>
               <ProgressBar percentage={this.state.projectProgress} />
-              <div id="projectDeadline">
-                Deadline: {this.state.projectDeadline}
-              </div>
-              {this.state.userRole === "employee" ? (
+
+              <div id="projectDeadline">Deadline: {this.state.projectDeadline}</div>
+              {this.state.userRole === 'project worker' ? (
+
                 <></>
               ) : (
                 <div>
@@ -154,7 +155,9 @@ export default class ProjectView extends Component {
             </header>
           </div>
           <div id="employee-view-jobs">
-            {this.state.userRole === "employee" ? <></> : <Statistics />}
+
+            {this.state.userRole === 'project worker' ? <></> : <Statistics />}
+
             <h3>Your Jobs</h3>
             <button onClick={this.showJobForm}>Add Job</button>
             {this.state.showJobForm ? <NewJob {...this.props} setJob={this.setJob} state={this.state} showJobForm={this.showJobForm} projectId={this.props.id}/> : ''}

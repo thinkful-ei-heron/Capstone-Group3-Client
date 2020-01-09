@@ -208,9 +208,6 @@ export class ContextProvider extends React.Component {
       .add(newProject)
   }
 
-<<<<<<< HEAD
-  watchAuth = () => auth.onAuthStateChanged(user => user);
-=======
   addJob = (newJob, project_id) => {
     db.collection(`organization/${this.state.user.org.id}/projects/${project_id}/jobs`)
       .add(newJob)
@@ -222,7 +219,6 @@ export class ContextProvider extends React.Component {
 
 
   watchAuth = () => this.auth().onAuthStateChanged(user => user);
->>>>>>> 6ba15de025a107f70ca413263c16e56bb8198417
 
   doCreateUserWithEmailAndPassword = (email, password) =>
     auth.createUserWithEmailAndPassword(email, password);
@@ -268,6 +264,9 @@ export class ContextProvider extends React.Component {
       setEmployees: this.setEmployees,
       setProjects: this.setProjects,
       setJobs: this.setJobs,
+      addProject: this.addProject,
+      addJob: this.addJob,
+      addUser: this.addUser,
       watchAuth: this.watchAuth,
       doCreateUserWithEmailAndPassword: this.doCreateUserWithEmailAndPassword,
       doSignInWithEmailAndPassword: this.doSignInWithEmailAndPassword,

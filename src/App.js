@@ -3,36 +3,12 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Header from "./components/Header/Header";
 
-import { Login, Register } from "./components/Account/index";
-import { FirebaseContext } from "./services/index";
-import myFirebase from "./services/firebase";
-import userContext from "./services/userContext";
-import LogOut from "./components/Account/Logout";
+import { Login, Logout, Register } from "./components/Account/index";
 import ProjectView from "./components/ProjectView/ProjectView";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: {},
-    };
-  }
-  updateUser = user => {
-    this.setState({ user: user });
-    userContext.email = user.email;
-  };
-  componentDidMount() {
-    myFirebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.updateUser(user);
-      } else {
-        this.updateUser({});
-      }
-    });
-  }
 
-  render() {
-    return (
+const App = props => {
+  return (
       <FirebaseContext.Provider value={myFirebase}>
         <userContext.Provider value={this.state.user}>
           <BrowserRouter>

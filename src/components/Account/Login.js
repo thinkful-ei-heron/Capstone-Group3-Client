@@ -15,9 +15,10 @@ const Login = props => {
     evt.preventDefault();
     fbCon
       .doSignInWithEmailAndPassword(email, password)
-      .then(resp => {
-        console.log(resp.user.email);
-        props.updateUser(resp.user);
+      .then(authUser => {
+        console.log(`Logging in: ${authUser.user.email}`);
+      })
+      .then(() => {
         resetEmail();
         resetPassword();
         props.history.push("/dashboard");

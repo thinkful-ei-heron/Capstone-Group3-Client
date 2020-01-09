@@ -46,7 +46,6 @@ export class ContextProvider extends React.Component {
       employees: [],
       projects: [],
       jobs: []
-    
   };
 
   setUser = email => {
@@ -112,18 +111,51 @@ export class ContextProvider extends React.Component {
         if (role === "project worker") {
           snapshot.forEach(doc => {
             if (doc.data().project_workers.includes(name)) {
-              projects.push(doc);
+              let projectObj = {
+                id: doc.id,
+                date_created: doc.data().date_created,
+                deadline: doc.data().deadline,
+                description: doc.data().description,
+                name: doc.data().name,
+                org_id: doc.data().org_id,
+                progress: doc.data().progress,
+                project_manager: doc.data().project_manager,
+                project_workers: doc.data().project_workers,
+              }
+              projects.push(projectObj);
             }
           });
         } else if (role === "project manager") {
           snapshot.forEach(doc => {
             if (doc.data().project_manager === name) {
-              projects.push(doc);
+              const projectObj = {
+                id: doc.id,
+                date_created: doc.data().date_created,
+                deadline: doc.data().deadline,
+                description: doc.data().description,
+                name: doc.data().name,
+                org_id: doc.data().org_id,
+                progress: doc.data().progress,
+                project_manager: doc.data().project_manager,
+                project_workers: doc.data().project_workers,
+              }
+              projects.push(projectObj);
             }
           });
         } else {
           snapshot.forEach(doc => {
-            projects.push(doc);
+            const projectObj = {
+              id: doc.id,
+              date_created: doc.data().date_created,
+              deadline: doc.data().deadline,
+              description: doc.data().description,
+              name: doc.data().name,
+              org_id: doc.data().org_id,
+              progress: doc.data().progress,
+              project_manager: doc.data().project_manager,
+              project_workers: doc.data().project_workers,
+            }
+            projects.push(projectObj);
           });
         }
         this.setState({
@@ -140,31 +172,74 @@ export class ContextProvider extends React.Component {
       )
         .get()
         .then(snapshot => {
-          const jobs = [];
           if (role === "project worker") {
             snapshot.forEach(doc => {
               if (doc.data().project_workers.includes(name)) {
-                jobs.push(doc.data());
+                const jobObj = {
+                  id: doc.id,
+                  approval: doc.data().approval,
+                  date_created: doc.data().date_created,
+                  deadline: doc.data().deadline,
+                  description: doc.data().description,
+                  name: doc.data().name,
+                  organization: doc.data().organization,
+                  progress: doc.data().progress,
+                  project_manager: doc.data().project_manager,
+                  project_workers: doc.data().project_workers,
+                  revision: doc.data().revision,
+                  status: doc.data().status,
+                }
               }
             });
           } else if (role === "project manager") {
             snapshot.forEach(doc => {
               if (doc.data().project_manager === name) {
-                jobs.push(doc.data());
+                const jobObj = {
+                  id: doc.id,
+                  approval: doc.data().approval,
+                  date_created: doc.data().date_created,
+                  deadline: doc.data().deadline,
+                  description: doc.data().description,
+                  name: doc.data().name,
+                  organization: doc.data().organization,
+                  progress: doc.data().progress,
+                  project_manager: doc.data().project_manager,
+                  project_workers: doc.data().project_workers,
+                  revision: doc.data().revision,
+                  status: doc.data().status,
+                }
               }
             });
           } else {
             snapshot.forEach(doc => {
-              jobs.push(doc.data());
+              const jobObj = {
+                id: doc.id,
+                approval: doc.data().approval,
+                date_created: doc.data().date_created,
+                deadline: doc.data().deadline,
+                description: doc.data().description,
+                name: doc.data().name,
+                organization: doc.data().organization,
+                progress: doc.data().progress,
+                project_manager: doc.data().project_manager,
+                project_workers: doc.data().project_workers,
+                revision: doc.data().revision,
+                status: doc.data().status,
+              }
             });
           }
           this.setState({
-            jobs: [...this.state.jobs, jobs]
+            jobs: [...this.state.jobs, jobObj]
           });
         })
         .catch(error => console.log(error));
     });
   };
+
+  addProject = (newProject) => {
+    db.collection(`organization/${this.state.user.org.id}/projects`)
+      .add(newProject)
+  }
 
   watchAuth = () => this.auth().onAuthStateChanged(user => user);
 

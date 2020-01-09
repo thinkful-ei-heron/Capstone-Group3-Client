@@ -4,7 +4,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Header from "./components/Header/Header";
 import { Login, Logout, Register } from "./components/Account/index";
 import ProjectView from "./components/ProjectView/ProjectView";
-import testContext from './components/testcontext'
+
 
 const App = props => {
   return (
@@ -14,8 +14,6 @@ const App = props => {
       </header>
       <main className="app__main">
         <Switch>
-
-          <Route exact path='/' component={testContext}></Route>
           <Route exact path={"/dashboard"} component={Dashboard} />
           {/* routes go here */}
           <Route exact path="/login" component={Login} /> 

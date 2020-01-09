@@ -100,7 +100,7 @@ export default class ProjectView extends Component {
   // }
 
   render() {
-    console.log(this.state.projectJobs);
+    console.log('this.context.jobs', this.context.jobs);
     if (this.state.loading) {
       return <Loading />;
     } else {

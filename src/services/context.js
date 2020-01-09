@@ -59,11 +59,9 @@ export class ContextProvider extends React.Component {
       .where("name", "==", org)
       .get()
       .then(snapshot => {
-
         let orgId = 0;
         snapshot.forEach(doc => (orgId = doc.id));
         return orgId;
-
       })
       .then(orgId => {
         db.collection("users")
@@ -218,7 +216,6 @@ export class ContextProvider extends React.Component {
     });
   };
 
-
   addProject = newProject => {
     db.collection(`organization/${this.state.user.org.id}/projects`).add(
       newProject,
@@ -230,7 +227,6 @@ export class ContextProvider extends React.Component {
       `organization/${this.state.user.org.id}/projects/${project_id}/jobs`,
     ).add(newJob);
   };
-
 
   addUser = newUser => {
     db.collection("users").add(newUser);

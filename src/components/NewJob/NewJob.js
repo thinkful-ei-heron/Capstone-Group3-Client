@@ -15,13 +15,10 @@ const NewJob = props => {
     e.preventDefault();
     let employees = []
     selected.map(itm => employees.push(itm.value))
-    let date = deadline
-    date.split("-")
-    let newDate = date[1] + '/' + date[0] + '/' + date[2]
     const jobObj = {
       approval: false,
-      date_created: Date.now(),
-      deadline: new Date(newDate).getTime(),
+      date_created: new Date(),
+      deadline: new Date(deadline),
       description: description,
       name: name,
       organization: props.state.companyName,
@@ -34,12 +31,10 @@ const NewJob = props => {
     }
     const promise = new Promise(() => fbContext.addJob(jobObj, props.projectId))
     promise.then(() => props.setJob())
-    //fbContext.addJob(jobObj, props.projectId).then(() => props.setJob())
     resetName()
     resetDescription()
     resetDeadline()
     props.showJobForm()
-    props.history.push(`/project/${props.projectId}`)
   }
 
   return (

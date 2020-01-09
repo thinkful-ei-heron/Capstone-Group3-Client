@@ -241,6 +241,16 @@ export class ContextProvider extends React.Component {
       .add(newProject)
   }
 
+  addJob = (newJob, project_id) => {
+    db.collection(`organization/${this.state.user.org.id}/projects/${project_id}/jobs`)
+      .add(newJob)
+  }
+
+  addUser = (newUser) => {
+    db.collection('users').add(newUser)
+  }
+
+
   watchAuth = () => this.auth().onAuthStateChanged(user => user);
 
   doCreateUserWithEmailAndPassword = (email, password) =>

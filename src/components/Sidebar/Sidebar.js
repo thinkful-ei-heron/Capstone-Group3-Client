@@ -1,18 +1,26 @@
-import React, { Component } from 'react';
-import FirebaseContext from '../../services/context.js';
+import React, { Component } from "react";
+import FirebaseContext from "../../services/context.js";
 
 export default class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userType: 'owner',
+      userType: "owner",
       employees: [
-        { Bill: [{ 'project one': 'Make Bread' }, { 'project two': 'Clean Oven' }] },
-        { Ben: [{ 'project one': 'Prepare Egg Wash' }] },
-        { Betsy: [{ 'project two': 'Mop floors' }] }
+        {
+          Bill: [
+            { "project one": "Make Bread" },
+            { "project two": "Clean Oven" },
+          ],
+        },
+        { Ben: [{ "project one": "Prepare Egg Wash" }] },
+        { Betsy: [{ "project two": "Mop floors" }] },
       ],
-      projectManagers: [{ Dave: ['project one', 'project three'] }, { Darla: ['project two'] }],
-      expanded: []
+      projectManagers: [
+        { Dave: ["project one", "project three"] },
+        { Darla: ["project two"] },
+      ],
+      expanded: [],
     };
   }
 
@@ -25,19 +33,19 @@ export default class Sidebar extends Component {
       let newExpanded = this.state.expanded;
       newExpanded.push(e.target.id);
       this.setState({
-        expanded: newExpanded
+        expanded: newExpanded,
       });
     } else {
       let newExpanded = this.state.expanded;
       newExpanded = newExpanded.filter(item => item !== e.target.id);
       this.setState({
-        expanded: newExpanded
+        expanded: newExpanded,
       });
     }
   };
 
   renderSubList = values => {
-    if (this.state.userType === 'owner' && this.props.view !== 'project') {
+    if (this.state.userType === "owner" && this.props.view !== "project") {
       return values[0].map((project, index) => {
         console.log(project);
         return <li key={index}>{project}</li>;
@@ -46,7 +54,10 @@ export default class Sidebar extends Component {
       return values[0].map((project, index) => {
         return (
           <li key={index}>
-            <button onClick={e => this.toggleExpand(e)} id={Object.keys(project)[0] + index}>
+            <button
+              onClick={e => this.toggleExpand(e)}
+              id={Object.keys(project)[0] + index}
+            >
               expand
             </button>
             <h6>{Object.keys(project)[0]}</h6>
@@ -64,11 +75,14 @@ export default class Sidebar extends Component {
   };
 
   renderList = () => {
-    if (this.state.userType === 'owner' && this.props.view !== 'project') {
+    if (this.state.userType === "owner" && this.props.view !== "project") {
       return this.state.projectManagers.map((manager, index) => {
         return (
           <li key={index}>
-            <button onClick={e => this.toggleExpand(e)} id={Object.keys(manager)[0] + index}>
+            <button
+              onClick={e => this.toggleExpand(e)}
+              id={Object.keys(manager)[0] + index}
+            >
               expand
             </button>
             <h5>{Object.keys(manager)[0]}</h5>
@@ -84,7 +98,10 @@ export default class Sidebar extends Component {
       return this.state.employees.map((employee, index) => {
         return (
           <li key={index}>
-            <button onClick={e => this.toggleExpand(e)} id={Object.keys(employee)[0] + index}>
+            <button
+              onClick={e => this.toggleExpand(e)}
+              id={Object.keys(employee)[0] + index}
+            >
               expand
             </button>
             <h5>{Object.keys(employee)[0]}</h5>
@@ -100,11 +117,12 @@ export default class Sidebar extends Component {
   };
 
   render() {
-    if (this.state.userType === 'employee' && this.props.view !== 'project') return <></>;
+    if (this.state.userType === "employee" && this.props.view !== "project")
+      return <></>;
     else {
       return (
         <div>
-          {this.state.userType === 'owner' && this.props.view !== 'project' ? (
+          {this.state.userType === "owner" && this.props.view !== "project" ? (
             <div>
               <h3>Project Managers</h3>
               <ul>{this.renderList()}</ul>

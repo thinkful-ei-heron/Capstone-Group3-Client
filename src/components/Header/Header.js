@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
-import FirebaseContext from '../../services/context';
-import './Header.css';
+import FirebaseContext from "../../services/context";
+import "./Header.css";
 
 export default class Header extends Component {
   static contextType = FirebaseContext;

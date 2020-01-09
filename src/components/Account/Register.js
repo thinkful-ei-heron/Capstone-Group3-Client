@@ -1,26 +1,42 @@
 import React, { useContext } from "react";
 import { useInput } from "../../hooks/useInput";
-import { ContextProvider } from "../../services/context";
+import FirebaseContext from "../../services/context";
 
 const Register = props => {
-  const fbContext = useContext(ContextProvider);
+  const fbContext = useContext(FirebaseContext);
   const { value: email, bind: bindEmail, reset: resetEmail } = useInput("");
   const {
     value: password,
     bind: bindPassword,
     reset: resetPassword,
   } = useInput("");
+  const { value: name, bind: bindName, reset: resetName } = useInput("");
+  const { value: orgName, bind: bindOrgName, reset: resetOrgName } = useInput(
+    "",
+  );
+  const { value: role, bind: bindRole, reset: resetRole } = useInput("");
 
   const handleSubmit = evt => {
     evt.preventDefault();
     fbContext
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
-        console.log(`Signing up: ${authUser.user.email}`);
+        // console.log(`Signing up: ${authUser.user.email}`);
+        fbContext.addUser({
+          email: email,
+          id: authUser.user.uid,
+          org: { name: orgName },
+          role: role,
+          name: name,
+        });
       })
       .then(() => {
+        fbContext.setUser(email, orgName);
         resetEmail();
         resetPassword();
+        resetOrgName();
+        resetRole();
+        resetName();
         props.history.push("/dashboard");
       });
   };
@@ -32,6 +48,12 @@ const Register = props => {
           <legend>Register</legend>
           <label htmlFor="email">Email:</label>
           <input type="email" name="email" {...bindEmail} required />
+          <label htmlFor="username">Username:</label>
+          <input type="username" name="username" {...bindName} required />
+          <label htmlFor="orgName">Orginization Name:</label>
+          <input type="orgName" name="orgName" {...bindOrgName} required />
+          <label htmlFor="role">Role:</label>
+          <input type="role" name="role" {...bindRole} required />
           <label htmlFor="password">Password:</label>
           <input
             name="password"

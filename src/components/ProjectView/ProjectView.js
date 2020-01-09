@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ContextProvider from "../../services/context.js";
+import FirebaseContext from "../../services/context.js";
 import { ProgressBar } from "../ProgressBar/ProgressBar";
 import "./ProjectView.css";
 import Loading from "../Loading/Loading";
@@ -12,65 +12,44 @@ export default class ProjectView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      jobs: [
-        {
-          id: 1,
-          details: {
-            name: "Rock Faces",
-            details: "Sing really well",
-            progress: 50,
-            approval: false,
-            revision: false,
-            employees: ["Brennan Huff", "Dr. Doback"],
-          },
-        },
-        {
-          id: 2,
-          details: {
-            name: "Practice Family Singing",
-            details: "Do NOT Be Flat!",
-            progress: 100,
-            approval: false,
-            revision: false,
-            employees: ["Brennan Huff", "Derek Huff", "Alice Huff"],
-          },
-        },
-      ],
       userName: "Brennan Huff", //pass in through props or context
       userRole: "owner",
-      companyName: "EI35 - Group 3", //pass in through props or context
+      companyName: "", //pass in through props or context
       date: new Date().toDateString(),
-      projectName: "Catalina Wine Mixer",
-      projectDescription: "Biggest Helicopter Rental Event in all of SoCal",
-      projectProgress: 67,
-      projectDeadline: "2/18/2020",
-      projectManager: "Dale Doback",
-      projectJobs: [
-        {
-          jobName: "Rock Faces",
-          jobDetails: "Sing really well",
-          jobProgress: 50,
-          jobApproval: false,
-          jobRevision: false,
-          jobEmployees: ["Brennan Huff", "Dr. Doback"],
-        },
-        {
-          jobName: "Practice Family Singing",
-          jobDetails: "Do NOT Be Flat!",
-          jobProgress: 100,
-          jobApproval: false,
-          jobRevision: false,
-          jobEmployees: ["Brennan Huff", "Derek Huff", "Alice Huff"],
-        },
-      ],
+      projectName: "",
+      projectDescription: "",
+      projectProgress: 0,
+      projectDeadline: "",
+      projectManager: "",
+      projectJobs: [],
+      projectEmployees: [],
       loading: true,
     };
   }
 
-  static contextType = ContextProvider;
+  static contextType = FirebaseContext;
 
-  renderEmployeeList = employees => {
-    return employees.map((employee, index) => {
+  componentDidMount() {
+    console.log(this.props.id);
+    const jobs = this.context.jobs;
+    console.log(jobs);
+    const projects = this.context.projects;
+    const proj = projects.find(project => project.id === this.props.id);
+    this.setState({
+      companyName: this.context.user.org.name,
+      projectJobs: jobs,
+      projectName: proj.name,
+      projectDescription: proj.description,
+      projectProgress: proj.progress,
+      projectDeadline: proj.Deadline,
+      projectManager: proj.project_manager,
+      projectEmployees: proj.project_workers,
+      loading: false,
+    });
+  }
+
+  renderEmployeeList = job => {
+    return job.project_workers.map((employee, index) => {
       let itemKey = index + employee;
       return <li key={itemKey}>{employee}</li>;
     });
@@ -91,38 +70,37 @@ export default class ProjectView extends Component {
           ) : (
             <button>Submit For Approval</button>
           )}
-          <ul>{this.renderEmployeeList(job.jobEmployees)}</ul>
+          <ul>{this.renderEmployeeList(job)}</ul>
         </li>
       );
     });
   };
 
-  componentDidMount() {
-    this.context.doGetProject().then(snapshot => {
-      snapshot.forEach(doc => {
-        if (doc.data().name === "Project Management App") {
-          //Pass in prop of Project Name to grab correct data
-          let newProjectName = doc.data().name;
-          let newProjetDescription = doc.data().description;
-          let newProjectDeadline = new Date(
-            doc.data().deadline.seconds * 1000,
-          ).toDateString();
-          let newProjectManager = doc.data().project_manager;
-          let newProjectProgress = doc.data().progress;
-          this.setState({
-            projectName: newProjectName,
-            projectDescription: newProjetDescription,
-            projectDeadline: newProjectDeadline,
-            projectManager: newProjectManager,
-            projectProgress: newProjectProgress,
-            loading: false,
-          });
-        }
-      });
-    });
-  }
+  // componentDidMount() {
+  //   this.context.doGetProject().then(snapshot => {
+  //     snapshot.forEach(doc => {
+  //       if (doc.data().name === 'Project Management App') {
+  //         //Pass in prop of Project Name to grab correct data
+  //         let newProjectName = doc.data().name;
+  //         let newProjetDescription = doc.data().description;
+  //         let newProjectDeadline = new Date(doc.data().deadline.seconds * 1000).toDateString();
+  //         let newProjectManager = doc.data().project_manager;
+  //         let newProjectProgress = doc.data().progress;
+  //         this.setState({
+  //           projectName: newProjectName,
+  //           projectDescription: newProjetDescription,
+  //           projectDeadline: newProjectDeadline,
+  //           projectManager: newProjectManager,
+  //           projectProgress: newProjectProgress,
+  //           loading: false
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
 
   render() {
+    console.log("this.context.jobs", this.context.jobs);
     if (this.state.loading) {
       return <Loading />;
     } else {
@@ -159,12 +137,12 @@ export default class ProjectView extends Component {
           <div id="employee-view-jobs">
             {this.state.userRole === "employee" ? <></> : <Statistics />}
             <h3>Your Jobs</h3>
-            {/* <ul>{this.renderJobList()}</ul> */}
+            {<ul>{this.renderJobList()}</ul>}
             <ul>
               {this.state.jobs &&
-                this.state.jobs.map(job => {
+                this.state.projectJobs.map((job, i) => {
                   //  console.log(job.data())
-                  return <Jobs key={job.id} id={job.id} job={job.details} />;
+                  return <Jobs key={i} id={job.id} job={job.details} />;
                 })}
             </ul>
           </div>

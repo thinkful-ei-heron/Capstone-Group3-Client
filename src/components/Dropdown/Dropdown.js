@@ -1,69 +1,38 @@
 import React, { Component } from "react";
-import MultiSelectReact from "multi-select-react";
+import Select from 'react-select';
 
 export default class Dropdown extends Component {
   constructor() {
     super();
     this.state = {
-      multiSelect: [],
-      isSingleSelect: false,
-      userRole: "owner",
+      selectedOption: null,
+      userRole: "project manager",
     };
+  }
+
+  handleChange = selectedOption => {
+    this.setState({ selectedOption })
+    this.props.setSelected(selectedOption);
   }
 
   populateOptions = array => {
     let selectArray = [];
-    array.map((name, index) => {
-      let newObj = { label: name, id: index };
+    array.map(name => {
+      let newObj = { value: name, label: name };
       return selectArray.push(newObj);
     });
-    console.log(selectArray);
     return selectArray;
   };
 
-  componentDidMount() {
-    if (
-      this.state.userRole === "project manager" &&
-      this.props.path === "dash"
-    ) {
-      this.setState({
-        isSingleSelect: false,
-      });
-    } else {
-      this.setState({
-        isSingleSelect: true,
-      });
-    }
-    this.setState({
-      multiSelect: this.populateOptions(["Bill", "Dave", "Steve", "Yes"]),
-    });
-  }
-
   render() {
-    const selectedOptionsStyles = {
-      color: "#3c763d",
-      backgroundColor: "#dff0d8",
-    };
-    const optionsListStyles = {
-      backgroundColor: "#dff0d8",
-      color: "#3c763d",
-    };
+    const { selectedOption } = this.state;
     return (
-      <MultiSelectReact
-        options={this.state.multiSelect}
-        optionClicked={this.optionClicked.bind(this)}
-        selectedBadgeClicked={this.selectedBadgeClicked.bind(this)}
-        selectedOptionsStyles={selectedOptionsStyles}
-        optionsListStyles={optionsListStyles}
-        isSingleSelect={this.state.isSingleSelect}
+      <Select
+        value={selectedOption}
+        onChange={this.handleChange}
+        options={this.populateOptions(this.props.employees)}
+        isMulti={true}
       />
-    );
-  }
-
-  optionClicked(optionsList) {
-    this.setState({ multiSelect: optionsList });
-  }
-  selectedBadgeClicked(optionsList) {
-    this.setState({ multiSelect: optionsList });
+    )
   }
 }

@@ -24,7 +24,7 @@ const App = props => {
           <Route
             exact
             path="/project/:id"
-            component={props => <ProjectView id={props.match.params.id} />}
+            render={props => <ProjectView id={props.match.params.id} {...props}/>}
           />
         </Switch>
       </main>

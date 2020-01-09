@@ -25,7 +25,7 @@ const FirebaseContext = React.createContext({
   doPasswordReset: () => {},
   doPasswordUpdate: () => {},
   doGetProject: () => {},
-
+  setNewJob: () => {},
   doGetProjectJobs: () => {},
 });
 
@@ -201,7 +201,7 @@ export class ContextProvider extends React.Component {
           console.log(jobs);
           console.log(this.state.jobs);
           this.setState({
-            jobs: [...this.state.jobs, jobs],
+            jobs: [...this.state.jobs, ...jobs],
           });
         })
         .catch(error => console.log(error));
@@ -209,15 +209,29 @@ export class ContextProvider extends React.Component {
   };
 
   addProject = newProject => {
-    db.collection(`organization/${this.state.user.org.id}/projects`).add(
+    db.collection(`organizations/${this.state.user.org.id}/projects`).add(
       newProject,
     );
   };
 
+  setNewJob = job => {
+    this.setState({
+      jobs: [...this.state.jobs, job]
+    })
+  }
+
   addJob = (newJob, project_id) => {
     db.collection(
-      `organization/${this.state.user.org.id}/projects/${project_id}/jobs`,
-    ).add(newJob);
+      `organizations/${this.state.user.org.id}/projects/${project_id}/jobs`,
+    ).add(newJob).then(() => {
+      this.setState({
+        jobs: [...this.state.jobs, newJob]
+      }, () => 'success')
+      //return newJob
+    })
+    .catch(error => {
+      console.log(error)
+    })
   };
 
   addUser = newUser => {
@@ -225,16 +239,19 @@ export class ContextProvider extends React.Component {
   };
 
   addProject = newProject => {
-    db.collection(`organization/${this.state.user.org.id}/projects`).add(
+    db.collection(`organizations/${this.state.user.org.id}/projects`).add(
       newProject,
     );
   };
 
-  addJob = (newJob, project_id) => {
-    db.collection(
-      `organization/${this.state.user.org.id}/projects/${project_id}/jobs`,
-    ).add(newJob);
-  };
+  // addJob = (newJob, project_id) => {
+  //   console.log('adding job!')
+  //   db.collection(
+  //     `organizations/${this.state.user.org.id}/projects/${project_id}/jobs`,
+  //   ).add(newJob).then(doc => {
+  //     console.log(doc)
+  //   })
+  // };
 
   addUser = newUser => {
     db.collection("users").add(newUser);
@@ -301,6 +318,7 @@ export class ContextProvider extends React.Component {
       doPasswordUpdate: this.doPasswordUpdate,
       doGetProject: this.doGetProject,
       doGetProjectJobs: this.doGetProjectJobs,
+      setNewJob: this.setNewJob
     };
     return (
       <FirebaseContext.Provider value={value}>

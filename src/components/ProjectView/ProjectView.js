@@ -1,4 +1,6 @@
+
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import FirebaseContext from '../../services/context.js';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import './ProjectView.css';
@@ -8,22 +10,23 @@ import Dropdown from '../Dropdown/Dropdown';
 import Statistics from '../Statistics/Statistics';
 import Sidebar from '../Sidebar/Sidebar';
 
+
 export default class ProjectView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: 'Brennan Huff', //pass in through props or context
-      userRole: 'owner',
-      companyName: '', //pass in through props or context
+      userName: "Brennan Huff", //pass in through props or context
+      userRole: "owner",
+      companyName: "", //pass in through props or context
       date: new Date().toDateString(),
-      projectName: '',
-      projectDescription: '',
+      projectName: "",
+      projectDescription: "",
       projectProgress: 0,
-      projectDeadline: '',
-      projectManager: '',
+      projectDeadline: "",
+      projectManager: "",
       projectJobs: [],
       projectEmployees: [],
-      loading: true
+      loading: true,
     };
   }
 
@@ -36,6 +39,8 @@ export default class ProjectView extends Component {
     const projects = this.context.projects;
     const proj = projects.find(project => project.id === this.props.id);
     this.setState({
+      userName: this.context.user.name,
+      userRole: this.context.user.role,
       companyName: this.context.user.org.name,
       projectJobs: jobs,
       projectName: proj.name,
@@ -44,7 +49,7 @@ export default class ProjectView extends Component {
       projectDeadline: proj.Deadline,
       projectManager: proj.project_manager,
       projectEmployees: proj.project_workers,
-      loading: false
+      loading: false,
     });
   }
 
@@ -76,6 +81,7 @@ export default class ProjectView extends Component {
     });
   };
 
+
   // componentDidMount() {
   //   this.context.doGetProject().then(snapshot => {
   //     snapshot.forEach(doc => {
@@ -100,7 +106,6 @@ export default class ProjectView extends Component {
   // }
 
   render() {
-    console.log('this.context.jobs', this.context.jobs);
     if (this.state.loading) {
       return <Loading />;
     } else {
@@ -114,13 +119,17 @@ export default class ProjectView extends Component {
             <header id="employee-view-project-header">
               <div id="project-name-manager">
                 <h3 id="projectName">{this.state.projectName}</h3>
-                <h4 id="projectManager">Manager: {this.state.projectManager}</h4>
+                <h4 id="projectManager">
+                  Manager: {this.state.projectManager}
+                </h4>
               </div>
               <div id="projectDescription">{this.state.projectDescription}</div>
               <div>Est. Progress</div>
               <ProgressBar percentage={this.state.projectProgress} />
+
               <div id="projectDeadline">Deadline: {this.state.projectDeadline}</div>
-              {this.state.userRole === 'employee' ? (
+              {this.state.userRole === 'project worker' ? (
+
                 <></>
               ) : (
                 <div>
@@ -131,8 +140,20 @@ export default class ProjectView extends Component {
             </header>
           </div>
           <div id="employee-view-jobs">
-            {this.state.userRole === 'employee' ? <></> : <Statistics />}
+
+            {this.state.userRole === 'project worker' ? <></> : <Statistics />}
+
             <h3>Your Jobs</h3>
+            {this.state.userRole === 'project worker' ? <></> : 
+            <Link to={{
+              pathname: '/new_job',
+              state: {
+                project_id: this.props.id,
+                project_manager: this.state.projectManager
+              }
+            }}>
+            <button type='button' id='addJob'>Add Job</button>
+            </Link>}
             {<ul>{this.renderJobList()}</ul>}
             <ul>
               {this.state.jobs &&

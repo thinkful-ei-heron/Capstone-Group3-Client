@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { useInput } from "../../hooks/useInput";
-import { FirebaseContext } from "../../services/index";
+import FirebaseContext from "../../services/context";
 
 const Login = props => {
-  const fbCon = useContext(FirebaseContext);
+  const fbContext = useContext(FirebaseContext);
   const { value: email, bind: bindEmail, reset: resetEmail } = useInput("");
   const {
     value: password,
@@ -13,18 +13,16 @@ const Login = props => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    fbCon
+    fbContext
       .doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
         console.log(`Logging in: ${authUser.user.email}`);
       })
+      .then(() => fbContext.setUser(email))
       .then(() => {
         resetEmail();
         resetPassword();
         props.history.push("/dashboard");
-      })
-      .catch(function(error) {
-        throw new Error(error);
       });
   };
 
@@ -34,9 +32,15 @@ const Login = props => {
         <fieldset>
           <legend>Login</legend>
           <label htmlFor="email">Email:</label>
-          <input type="email" name="email" {...bindEmail} required />
+          <input type="email" name="email" id="email" {...bindEmail} required />
           <label htmlFor="password">Password:</label>
-          <input name="password" type="password" {...bindPassword} required />
+          <input
+            name="password"
+            id="password"
+            type="password"
+            {...bindPassword}
+            required
+          />
           <input type="submit" value="Submit" />
         </fieldset>
       </form>

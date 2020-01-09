@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ContextProvider from "../../services/context.js";
+import FirebaseContext from "../../services/context.js";
 
 export default class Sidebar extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class Sidebar extends Component {
     };
   }
 
-  static contextType = ContextProvider;
+  static contextType = FirebaseContext;
 
   toggleExpand = e => {
     e.preventDefault();

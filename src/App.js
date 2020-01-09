@@ -17,7 +17,6 @@ const App = props => {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route exact path={'/dashboard'} component={Dashboard} />
-          {/* routes go here */}
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/logout" component={Logout} />

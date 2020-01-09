@@ -1,22 +1,15 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import FirebaseContext from "../../services/context";
-import "./Header.css";
+import FirebaseContext from '../../services/context';
+import './Header.css';
 
 export default class Header extends Component {
   static contextType = FirebaseContext;
-  state = {
-    loggedIn: false,
-    userName: "Balay", //this will be replaced with context
-    role: "Project Manager", //this will be replaced with context
-  };
 
   handleLogout = () => {
     //this will be replaced with code to handle logout through firebase
-    this.setState({
-      loggedIn: !this.state.loggedIn,
-    });
+    this.context.doSignOut();
   };
 
   renderLoginLink() {
@@ -25,7 +18,7 @@ export default class Header extends Component {
         <Link to="/login">
           <li>Log In</li>
         </Link>
-        {this.context.auth.currentUser === null ? (
+        {this.context.user === null ? (
           <li>
             <Link to="/register">Register</Link>
           </li>
@@ -42,8 +35,8 @@ export default class Header extends Component {
     return (
       <ul className="header__logout">
         <li className="user__info">
-          <span>Welcome, {this.state.userName}!</span>
-          <span>Role: {this.state.role}</span>
+          <span>Welcome, {this.context.user.name}!</span>
+          <span>Role: {this.context.user.role}</span>
         </li>
         <Link to="/" onClick={this.handleLogout}>
           <li>Log Out</li>
@@ -61,11 +54,8 @@ export default class Header extends Component {
               <img src="" alt="app__logo" />
             </Link>
           </h1>
-          {this.state.loggedIn
-            ? this.renderLogoutLink()
-            : this.renderLoginLink()}
+          {this.context.user ? this.renderLogoutLink() : this.renderLoginLink()}
         </nav>
-        {/* <button onClick={this.handleLogout}>toggle login</button> */}
       </>
     );
   }

@@ -2,7 +2,7 @@ import React from "react";
 import myFirebase from "../../services/firebase";
 import { Redirect } from "react-router-dom";
 
-const LogOut = props => {
+const Logout = props => {
   myFirebase
     .auth()
     .signOut()
@@ -15,4 +15,4 @@ const LogOut = props => {
   return <Redirect to="/" />;
 };
 
-export default LogOut;
+export { Logout };

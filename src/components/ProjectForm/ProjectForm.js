@@ -11,15 +11,20 @@ export default class ProjectForm extends Component {
     const data = {
       name: name.value,
       description: description.value,
-      projectManager: projectManager.value,
-      deadline: deadline.value
+      project_manager: projectManager.value,
+      deadline: deadline.value,
+      date_created: new Date(),
+      org_id: this.context.user.org.id,
+      progress: 0,
+      project_workers: [],
     };
-    this.context.addNewProject(data).catch(error => console.log(error));
+    this.context.addProject(data)
+    
   };
 
   render() {
     return (
-      <form className="ProjectForm" onSubmit={this.handleSubmit}>
+      <form className="ProjectForm" onSubmit={(e) => this.handleSubmit(e)}>
         <Label htmlFor="project_name">Name</Label>
         <Input name="name" id="project_name" type="text" placeholder="Project Name" required />
         <Label htmlFor="project_description">Description</Label>

@@ -59,7 +59,7 @@ export class ContextProvider extends React.Component {
               id: doc.id,
               name: doc.data().name,
               org: {
-                name: doc.data().organization
+                name: doc.data().org.name
               },
               role: doc.data().role
             }
@@ -193,8 +193,6 @@ export class ContextProvider extends React.Component {
               jobs.push({ id: doc.id, ...doc.data() });
             });
           }
-          console.log(jobs);
-          console.log(this.state.jobs);
           this.setState({
             jobs: [...jobs]
           });
@@ -204,12 +202,13 @@ export class ContextProvider extends React.Component {
   };
   
   addProject = (newProject) => {
-    db.collection(`organization/${this.state.user.org.id}/projects`)
+    console.log(newProject)
+    db.collection(`organizations/${this.state.user.org.id}/projects`)
       .add(newProject)
   }
 
   addJob = (newJob, project_id) => {
-    db.collection(`organization/${this.state.user.org.id}/projects/${project_id}/jobs`)
+    db.collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`)
       .add(newJob)
   }
 

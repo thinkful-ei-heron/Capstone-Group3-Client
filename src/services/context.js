@@ -5,6 +5,7 @@ const FirebaseContext = React.createContext({
   user: {
     id: "",
     name: "",
+    email: "",
     org: {
       id: "",
       name: "",
@@ -13,8 +14,10 @@ const FirebaseContext = React.createContext({
   employees: [],
   projects: [],
   jobs: [],
+  loading: true,
+  setLoading: () => {},
   setUser: () => {},
-  setOrgId: () => {},
+  getOrgName: () => {},
   setEmployees: () => {},
   setProjects: () => {},
   setJobs: () => {},
@@ -25,7 +28,6 @@ const FirebaseContext = React.createContext({
   doPasswordReset: () => {},
   doPasswordUpdate: () => {},
   doGetProject: () => {},
-
   doGetProjectJobs: () => {},
 });
 
@@ -35,66 +37,70 @@ export class ContextProvider extends React.Component {
   state = {
     user: {
       id: "",
+      role: "",
       name: "",
       org: {
         id: "",
         name: "",
       },
-      role: "",
     },
     employees: [],
     projects: [],
     jobs: [],
   };
 
-  setUser = email => {
-    return db
-      .collection("users")
-      .where("email", "==", `${email}`)
-      .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          console.log(doc.data());
-          this.setState({
-            user: {
-              id: doc.id,
-              name: doc.data().name,
-              org: {
-                name: doc.data().organization,
-              },
-              role: doc.data().role,
-            },
-          });
-        });
-      })
-      .then(() => console.log(this.state))
-      .catch(error => console.log(error));
+  setLoading = bool => {
+    this.setState({ loading: bool });
   };
 
-  setOrgId = org => {
-    console.log(org);
+  setUser = (email, org) => {
     return db
       .collection("organizations")
-      .where("name", "==", `${org}`)
+      .where("name", "==", org)
       .get()
       .then(snapshot => {
-        snapshot.forEach(doc => {
-          this.setState({
-            user: {
-              ...this.state.user,
-              org: {
-                ...this.state.user.org,
-                id: doc.id,
-              },
-            },
-          });
-        });
+        let orgId = 0;
+        snapshot.forEach(doc => (orgId = doc.id));
+        return orgId;
+      })
+      .then(orgId => {
+        db.collection("users")
+          .where("email", "==", email)
+          .get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              console.log("current user:");
+              console.log(doc.data());
+              this.setState({
+                user: {
+                  id: doc.id,
+                  name: doc.data().name,
+                  email: doc.data().email,
+                  org: { name: doc.data().org.name, id: orgId },
+                  role: doc.data().role,
+                },
+              });
+            });
+          })
+          .catch(error => console.log(error));
+      });
+  };
+
+  getOrgName = email => {
+    return db
+      .collection("users")
+      .where("email", "==", email)
+      .get()
+      .then(snapshot => {
+        let orgName = "";
+        snapshot.forEach(doc => (orgName = doc.data().org.name));
+        return orgName;
       })
       .catch(error => console.log(error));
   };
 
   setEmployees = org => {
-    console.log(org);
+    // console.log(org);
     return db
       .collection("users")
       .where("organization", "==", `${org}`)
@@ -167,11 +173,11 @@ export class ContextProvider extends React.Component {
   };
 
   setJobs = (role, name) => {
-    console.log(role, name);
+    // console.log(role, name);
     this.state.projects.forEach(project => {
-      console.log(
-        `organization/${this.state.user.org.id}/projects/${project.id}/jobs`,
-      );
+      // console.log(
+      //   `organization/${this.state.user.org.id}/projects/${project.id}/jobs`,
+      // );
       db.collection(
         `organizations/${this.state.user.org.id}/projects/${project.id}/jobs`,
       )
@@ -179,10 +185,10 @@ export class ContextProvider extends React.Component {
         .then(snapshot => {
           const jobs = [];
           if (role === "project worker") {
-            console.log("Getting jobs");
-            console.log(snapshot);
+            // console.log("Getting jobs");
+            // console.log(snapshot);
             snapshot.forEach(doc => {
-              console.log(doc.data());
+              // console.log(doc.data());
               if (doc.data().project_workers.includes(name)) {
                 jobs.push({ id: doc.id, ...doc.data() });
               }
@@ -198,8 +204,8 @@ export class ContextProvider extends React.Component {
               jobs.push({ id: doc.id, ...doc.data() });
             });
           }
-          console.log(jobs);
-          console.log(this.state.jobs);
+          // console.log(jobs);
+          // console.log(this.state.jobs);
           this.setState({
             jobs: [...this.state.jobs, jobs],
           });
@@ -286,7 +292,7 @@ export class ContextProvider extends React.Component {
       projects: this.state.projects,
       jobs: this.state.jobs,
       setUser: this.setUser,
-      setOrgId: this.setOrgId,
+      getOrgName: this.getOrgName,
       setEmployees: this.setEmployees,
       setProjects: this.setProjects,
       setJobs: this.setJobs,
@@ -301,6 +307,7 @@ export class ContextProvider extends React.Component {
       doPasswordUpdate: this.doPasswordUpdate,
       doGetProject: this.doGetProject,
       doGetProjectJobs: this.doGetProjectJobs,
+      setLoading: this.setLoading,
     };
     return (
       <FirebaseContext.Provider value={value}>

@@ -7,6 +7,7 @@ import Jobs from "../Jobs/Jobs";
 import Dropdown from "../Dropdown/Dropdown";
 import Statistics from "../Statistics/Statistics";
 import Sidebar from "../Sidebar/Sidebar";
+import NewJob from '../NewJob/NewJob';
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -23,7 +24,9 @@ export default class ProjectView extends Component {
       projectManager: "",
       projectJobs: [],
       projectEmployees: [],
+      showJobForm: false,
       loading: true,
+      toggleState: false
     };
   }
 
@@ -48,6 +51,14 @@ export default class ProjectView extends Component {
     });
   }
 
+  setJob = () => {
+    this.setState({
+      toggleState: true
+    })
+    // this.context.setNewJob(job)
+    // console.log(this.context.jobs)
+  }
+
   renderEmployeeList = job => {
     return job.project_workers.map((employee, index) => {
       let itemKey = index + employee;
@@ -60,12 +71,12 @@ export default class ProjectView extends Component {
       return (
         <li key={index} id={index}>
           <button>^</button>
-          <h4>{job.jobName}</h4>
-          <span>{job.jobDetails}</span>
+          <h4>{job.name}</h4>
+          <span>{job.description}</span>
           <div className="job-progress">
-            <ProgressBar percentage={job.jobProgress} />
+            <ProgressBar percentage={job.progress} />
           </div>
-          {job.jobApproval || job.jobProgress !== 100 ? (
+          {job.approval || job.progress !== 100 ? (
             <button disabled>Submit For Approval</button>
           ) : (
             <button>Submit For Approval</button>
@@ -75,6 +86,12 @@ export default class ProjectView extends Component {
       );
     });
   };
+
+  showJobForm = () => {
+    this.setState({
+      showJobForm: !this.state.showJobForm
+    })
+  }
 
   // componentDidMount() {
   //   this.context.doGetProject().then(snapshot => {
@@ -100,7 +117,7 @@ export default class ProjectView extends Component {
   // }
 
   render() {
-    console.log("this.context.jobs", this.context.jobs);
+    console.log(this.state.projectEmployees);
     if (this.state.loading) {
       return <Loading />;
     } else {
@@ -129,7 +146,7 @@ export default class ProjectView extends Component {
               ) : (
                 <div>
                   <h3>SELECT Project Manager</h3>
-                  <Dropdown path="project" />
+                  {/* <Dropdown path="project" /> */}
                 </div>
               )}
             </header>
@@ -137,6 +154,8 @@ export default class ProjectView extends Component {
           <div id="employee-view-jobs">
             {this.state.userRole === "employee" ? <></> : <Statistics />}
             <h3>Your Jobs</h3>
+            <button onClick={this.showJobForm}>Add Job</button>
+            {this.state.showJobForm ? <NewJob {...this.props} setJob={this.setJob} state={this.state} showJobForm={this.showJobForm} projectId={this.props.id}/> : ''}
             {<ul>{this.renderJobList()}</ul>}
             <ul>
               {this.state.jobs &&

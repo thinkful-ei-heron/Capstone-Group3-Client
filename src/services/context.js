@@ -202,8 +202,6 @@ export class ContextProvider extends React.Component {
           console.log(this.state.jobs);
           this.setState({
             jobs: [...this.state.jobs, jobs],
-            jobs: [...this.state.jobs, jobObj],
-            jobs: [...jobs],
           });
         })
         .catch(error => console.log(error));

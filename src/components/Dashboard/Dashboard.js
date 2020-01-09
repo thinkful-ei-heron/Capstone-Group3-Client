@@ -67,8 +67,8 @@ export default class Dashboard extends Component {
                 <ul>
                   {this.state.projects.map((proj, i) => {
                     return (
-                      <Link to={`/project/${proj.id}`}>
-                        <li key={i}>
+                      <Link to={`/project/${proj.id}`} key={proj.id}>
+                        <li>
                           <span>{proj.name}</span>
                           <span>Manager: {proj.project_manager}</span>
                         </li>

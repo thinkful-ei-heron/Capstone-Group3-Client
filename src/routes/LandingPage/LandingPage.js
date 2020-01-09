@@ -12,6 +12,7 @@ export default function LandingPage() {
           <span>Build Faster</span>
         </div>
       </h2>
+      <button>Register Now!</button>
     </div>
   );
 }

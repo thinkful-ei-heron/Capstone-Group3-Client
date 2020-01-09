@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
+import FirebaseContext from "../../services/context.js";
 
 export default class Jobs extends Component {
   static defaultProps = {
-    job: {},
-    id: ''
+    job: {}
   }
 
   state = {
     expandJob: false,
     userRole: 'project manager'
   }
+
+  static contextType = FirebaseContext;
 
   renderEmployeeList = (employees) => {
     return employees.map((employee, index) => {
@@ -46,11 +48,19 @@ export default class Jobs extends Component {
     })
   }
 
+  componentDidMount() {
+    this.setState({
+      userRole: this.context.user.role,
+    })
+  }
+
   render() {
+    console.log('jobs')
+    console.log(this.props.job)
     let job = this.props.job
     return (
       <>
-         <li key={this.props.id} id={this.props.id}>
+         <li key={job.id} id={job.id}>
             <button onClick={this.toggleExpand}>{this.state.expandJob ? '-' : '+'}</button>
             <h4>{job.name}</h4>
             <span>{job.description}</span>
@@ -58,7 +68,7 @@ export default class Jobs extends Component {
               <ProgressBar percentage={job.progress} />
             </div>
             {this.renderProjectButtons(job.approval, job.progress)}
-            {this.state.expandJob ? <ul>{this.renderEmployeeList(job.employees)}</ul> : ''}
+            {this.state.expandJob ? <ul>{this.renderEmployeeList(job.project_workers)}</ul> : ''}
 
           </li>
       </>

@@ -17,7 +17,7 @@ export default class Dropdown extends Component {
       let newObj = { label: name, id: index };
       return selectArray.push(newObj);
     });
-    console.log(selectArray);
+    //console.log(selectArray);
     return selectArray;
   };
 

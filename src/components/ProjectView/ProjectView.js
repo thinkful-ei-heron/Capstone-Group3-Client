@@ -12,8 +12,8 @@ export default class ProjectView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "Brennan Huff", //pass in through props or context
-      userRole: "owner",
+      userName: "", //pass in through props or context
+      userRole: "",
       companyName: "", //pass in through props or context
       date: new Date().toDateString(),
       projectName: "",
@@ -30,11 +30,10 @@ export default class ProjectView extends Component {
   static contextType = FirebaseContext;
 
   componentDidMount() {
-    console.log(this.props.id);
     const jobs = this.context.jobs;
-    console.log(jobs);
     const projects = this.context.projects;
     const proj = projects.find(project => project.id === this.props.id);
+    console.log(proj)
     this.setState({
       companyName: this.context.user.org.name,
       projectJobs: jobs,
@@ -45,6 +44,7 @@ export default class ProjectView extends Component {
       projectManager: proj.project_manager,
       projectEmployees: proj.project_workers,
       loading: false,
+      userRole: this.context.user.role
     });
   }
 
@@ -76,29 +76,6 @@ export default class ProjectView extends Component {
     });
   };
 
-  // componentDidMount() {
-  //   this.context.doGetProject().then(snapshot => {
-  //     snapshot.forEach(doc => {
-  //       if (doc.data().name === 'Project Management App') {
-  //         //Pass in prop of Project Name to grab correct data
-  //         let newProjectName = doc.data().name;
-  //         let newProjetDescription = doc.data().description;
-  //         let newProjectDeadline = new Date(doc.data().deadline.seconds * 1000).toDateString();
-  //         let newProjectManager = doc.data().project_manager;
-  //         let newProjectProgress = doc.data().progress;
-  //         this.setState({
-  //           projectName: newProjectName,
-  //           projectDescription: newProjetDescription,
-  //           projectDeadline: newProjectDeadline,
-  //           projectManager: newProjectManager,
-  //           projectProgress: newProjectProgress,
-  //           loading: false
-  //         });
-  //       }
-  //     });
-  //   });
-  // }
-
   render() {
     console.log("this.context.jobs", this.context.jobs);
     if (this.state.loading) {
@@ -124,25 +101,28 @@ export default class ProjectView extends Component {
               <div id="projectDeadline">
                 Deadline: {this.state.projectDeadline}
               </div>
-              {this.state.userRole === "employee" ? (
+              {this.state.userRole === "project worker" ? (
                 <></>
               ) : (
                 <div>
-                  <h3>SELECT Project Manager</h3>
-                  <Dropdown path="project" />
+                  {!this.state.projectManager ?
+                    <div>
+                      <h3>SELECT Project Manager</h3>
+                      <Dropdown path="project" />
+                    </div> : <></>
+                  }  
                 </div>
               )}
             </header>
           </div>
           <div id="employee-view-jobs">
-            {this.state.userRole === "employee" ? <></> : <Statistics />}
-            <h3>Your Jobs</h3>
-            {<ul>{this.renderJobList()}</ul>}
+            {this.state.userRole === "project worker" ? <></> : <Statistics />}
+            {this.state.userRole === "project worker" ?<h3>Your Jobs</h3> : <h3>Jobs</h3>}
             <ul>
-              {this.state.jobs &&
+              {this.state.projectJobs &&
                 this.state.projectJobs.map((job, i) => {
-                  //  console.log(job.data())
-                  return <Jobs key={i} id={job.id} job={job.details} />;
+                  console.log(job[0])
+                  return <Jobs key={i} job={job[0]} />;
                 })}
             </ul>
           </div>

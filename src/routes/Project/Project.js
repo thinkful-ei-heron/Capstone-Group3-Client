@@ -1,6 +1,6 @@
 import React from "react";
 import { FirebaseContext } from "../../services/index";
-import Jobs from '../../components/Jobs/Jobs'
+import Jobs from "../../components/Jobs/Jobs";
 
 class Project extends React.Component {
   state = {
@@ -14,12 +14,12 @@ class Project extends React.Component {
     await this.context
       .getProjects()
       .then(snapshot => {
-        console.log(snapshot)
-        const array = []
+        console.log(snapshot);
+        const array = [];
         snapshot.forEach(doc => {
-          console.log(doc)
-          array.push(doc.data())
-          console.log(array)
+          console.log(doc);
+          array.push(doc.data());
+          console.log(array);
           this.setState({
             projects: [
               {
@@ -47,7 +47,6 @@ class Project extends React.Component {
     //   totalProgress.push(job.progress)
     // })
     // return totalProgress.reduce((a, b) => a + b)
-    
   }
 
   render() {
@@ -56,26 +55,25 @@ class Project extends React.Component {
         {this.state.projects &&
           this.state.projects.map(project => {
             return (
-            <div key={project.id}> 
-              <div >
-                <h2 className="project_title">{project.name}</h2>
-                <h3 className="project_manager">
-                  Manager: {project.project_manager}
-                </h3>
-                <p className="project_description">{project.description}</p>
-                <span className="project_estPro">
-                  Estimated Progress: {this.calculateProgress()}
-                </span>
-                <span>Deadline:</span>
+              <div key={project.id}>
+                <div>
+                  <h2 className="project_title">{project.name}</h2>
+                  <h3 className="project_manager">
+                    Manager: {project.project_manager}
+                  </h3>
+                  <p className="project_description">{project.description}</p>
+                  <span className="project_estPro">
+                    Estimated Progress: {this.calculateProgress()}
+                  </span>
+                  <span>Deadline:</span>
+                </div>
+                <ul>
+                  {this.state.jobs &&
+                    this.state.jobs.map(job => {
+                      return <Jobs key={job.id} id={job.id} job={job.data()} />;
+                    })}
+                </ul>
               </div>
-              <ul>
-               {this.state.jobs &&
-               this.state.jobs.map(job => {
-                 
-                  return <Jobs key={job.id} id={job.id} job={job.data()}/>
-               })}
-              </ul>
-            </div>
             );
           })}
       </div>

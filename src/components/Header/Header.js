@@ -54,9 +54,8 @@ export default class Header extends Component {
               <img src="" alt="app__logo" />
             </Link>
           </h1>
-          {this.context.user.email
-            ? this.renderLogoutLink()
-            : this.renderLoginLink()}
+          {this.renderLogoutLink()}
+          {this.renderLoginLink()}
         </nav>
       </>
     );

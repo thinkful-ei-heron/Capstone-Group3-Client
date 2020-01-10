@@ -3,13 +3,14 @@ import { db, auth } from "./firebase";
 
 const FirebaseContext = React.createContext({
   user: {
-    id,
-    name,
+    id: '',
+    name: '',
+    email: '',
     org: {
-      name,
-      id
+      name: '',
+      id: ''
     },
-    role
+    role: ''
   },
   employees: [],
   projects: [],
@@ -37,13 +38,13 @@ export default FirebaseContext;
 export class ContextProvider extends React.Component {
   state = {
     user: {
-      id,
-      name,
+      id: '',
+      name: '',
       org: {
-        name,
-        id
+        name: '',
+        id: ''
       },
-      role
+      role: ''
     },
     employees: [],
     projects: [],

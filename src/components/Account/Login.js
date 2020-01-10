@@ -5,16 +5,8 @@ import { auth } from "../../services/firebase";
 
 const Login = props => {
   const fbContext = useContext(FirebaseContext);
-  const {
-    value: email,
-    bind: bindEmail,
-    // reset: resetEmail
-  } = useInput("");
-  const {
-    value: password,
-    bind: bindPassword,
-    // reset: resetPassword,
-  } = useInput("");
+  const { value: email, bind: bindEmail } = useInput("");
+  const { value: password, bind: bindPassword } = useInput("");
 
   const handleSubmit = evt => {
     evt.preventDefault();

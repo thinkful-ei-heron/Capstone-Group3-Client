@@ -31,6 +31,7 @@ export default class ProjectView extends Component {
   static contextType = FirebaseContext;
 
   componentDidMount() {
+    console.log(this.context.user)
     const jobs = this.context.jobs;
     const projects = this.context.projects;
     const proj = projects.find(project => project.id === this.props.id);
@@ -59,9 +60,10 @@ export default class ProjectView extends Component {
   }
 
   renderJobList = () => {
-    return this.state.project.jobs.map(job => {
+    const jobs = this.context.jobs.filter(job => job.project_id === this.props.id)
+    return jobs.map(job => {
       return (
-        <Jobs job={job} />
+        <Jobs job={job} key={job.id}/>
       )
     });
   };
@@ -109,7 +111,7 @@ export default class ProjectView extends Component {
               </div>
               <ProgressBar percentage={project.progress} />
               <div id="project_deadline">
-                <span>Deadline: {project.deadline}</span>
+                <span>Deadline: {new Date(project.deadline.toString()).toDateString()}</span>
               </div>
               {this.context.user.role === 'owner' && project.project_manager === 'unassigned' ? (
                 <div id="select_pm">

@@ -1,12 +1,15 @@
-import React, { Component } from "react";
-import FirebaseContext from "../../services/context.js";
-import { ProgressBar } from "../ProgressBar/ProgressBar";
-import "./ProjectView.css";
-import Loading from "../Loading/Loading";
-import Jobs from "../Jobs/Jobs";
-import Dropdown from "../Dropdown/Dropdown";
-import Statistics from "../Statistics/Statistics";
-import Sidebar from "../Sidebar/Sidebar";
+
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
+import FirebaseContext from '../../services/context.js';
+import { ProgressBar } from '../ProgressBar/ProgressBar';
+import './ProjectView.css';
+import Loading from '../Loading/Loading';
+import Jobs from '../Jobs/Jobs';
+import Dropdown from '../Dropdown/Dropdown';
+import Statistics from '../Statistics/Statistics';
+import Sidebar from '../Sidebar/Sidebar';
+
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -35,6 +38,8 @@ export default class ProjectView extends Component {
     const proj = projects.find(project => project.id === this.props.id);
     console.log(proj)
     this.setState({
+      userName: this.context.user.name,
+      userRole: this.context.user.role,
       companyName: this.context.user.org.name,
       projectJobs: jobs,
       projectName: proj.name,
@@ -43,8 +48,7 @@ export default class ProjectView extends Component {
       projectDeadline: proj.Deadline,
       projectManager: proj.project_manager,
       projectEmployees: proj.project_workers,
-      loading: false,
-      userRole: this.context.user.role
+      loading: false
     });
   }
 
@@ -76,8 +80,31 @@ export default class ProjectView extends Component {
     });
   };
 
+
+  // componentDidMount() {
+  //   this.context.doGetProject().then(snapshot => {
+  //     snapshot.forEach(doc => {
+  //       if (doc.data().name === 'Project Management App') {
+  //         //Pass in prop of Project Name to grab correct data
+  //         let newProjectName = doc.data().name;
+  //         let newProjetDescription = doc.data().description;
+  //         let newProjectDeadline = new Date(doc.data().deadline.seconds * 1000).toDateString();
+  //         let newProjectManager = doc.data().project_manager;
+  //         let newProjectProgress = doc.data().progress;
+  //         this.setState({
+  //           projectName: newProjectName,
+  //           projectDescription: newProjetDescription,
+  //           projectDeadline: newProjectDeadline,
+  //           projectManager: newProjectManager,
+  //           projectProgress: newProjectProgress,
+  //           loading: false
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
+
   render() {
-    console.log("this.context.jobs", this.context.jobs);
     if (this.state.loading) {
       return <Loading />;
     } else {
@@ -98,10 +125,10 @@ export default class ProjectView extends Component {
               <div id="projectDescription">{this.state.projectDescription}</div>
               <div>Est. Progress</div>
               <ProgressBar percentage={this.state.projectProgress} />
-              <div id="projectDeadline">
-                Deadline: {this.state.projectDeadline}
-              </div>
-              {this.state.userRole === "project worker" ? (
+
+              <div id="projectDeadline">Deadline: {this.state.projectDeadline}</div>
+              {this.state.userRole === 'project worker' ? (
+
                 <></>
               ) : (
                 <div>
@@ -116,8 +143,21 @@ export default class ProjectView extends Component {
             </header>
           </div>
           <div id="employee-view-jobs">
-            {this.state.userRole === "project worker" ? <></> : <Statistics />}
-            {this.state.userRole === "project worker" ?<h3>Your Jobs</h3> : <h3>Jobs</h3>}
+
+            {this.state.userRole === 'project worker' ? <></> : <Statistics />}
+
+            <h3>Your Jobs</h3>
+            {this.state.userRole === 'project worker' ? <></> : 
+            <Link to={{
+              pathname: '/new_job',
+              state: {
+                project_id: this.props.id,
+                project_manager: this.state.projectManager
+              }
+            }}>
+            <button type='button' id='addJob'>Add Job</button>
+            </Link>}
+            {<ul>{this.renderJobList()}</ul>}
             <ul>
               {this.state.projectJobs &&
                 this.state.projectJobs.map((job, i) => {

@@ -2,43 +2,32 @@ import React, { Component } from "react";
 import { Redirect, Link } from "react-router-dom";
 
 import FirebaseContext from "../../services/context";
-import Person from "../Person/Person";
 import Loading from "../Loading/Loading";
 import { Sidebar } from "../Sidebar/Sidebar2";
 
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    orgName: null,
-    projects: [],
-    users: [],
     loading: true,
   };
 
   componentDidMount() {
-    this.context.setOrgId(this.context.user.org.name).then(() =>
+    this.context.setEmployees(this.context.user.org.name).then(() => {
       this.context
-        .setEmployees(this.context.user.org.name)
-
-        .then(() => {
-          this.context
-            .setProjects(this.context.user.role, this.context.user.name)
-            .then(() =>
-              this.setState({
-                orgName: this.context.user.org.name,
-                users: this.context.employees,
-                projects: this.context.projects,
-                loading: false,
-              }),
-            );
-        }),
-    );
+        .setProjects(this.context.user.role, this.context.user.name)
+        .then(() =>
+          this.setState({
+            loading: !this.state.loading,
+          }),
+        );
+    });
   }
 
   render() {
-    //console.log("this.context.user", this.context.user);
-    //console.log("this.context.projects", this.context.projects);
-    //console.log("this.context.employees", this.context.employees);
+    // console.log("this.context.user", this.context.user);
+    // console.log("this.context.projects", this.context.projects);
+    // console.log("this.context.employees", this.context.employees);
+    // console.log("this.context.org", this.context.org);
     if (this.state.loading) return <Loading />;
     else
       return (
@@ -46,13 +35,11 @@ export default class Dashboard extends Component {
           {false ? (
             <Redirect to="/register" />
           ) : (
-            <p>
-              Current user's email: {/*this.context.auth.currentUser.email*/}
-            </p>
+            <p>Current user's email: {this.context.user.email}</p>
           )}
           <section className="Dashboard__container">
             <div className="Dashboard__header">
-              <h2>{this.state.orgName}</h2>
+              {/* <h2>{this.context.user.org.name}</h2> */}
               <span className="Dashboard__date">
                 {new Date().toLocaleString()}
               </span>
@@ -66,7 +53,7 @@ export default class Dashboard extends Component {
               </div>
               <div className="Dashboard__projects_container">
                 <ul>
-                  {this.state.projects.map((proj, i) => {
+                  {this.context.projects.map((proj, i) => {
                     return (
                       <Link to={`/project/${proj.id}`} key={proj.id}>
                         <li>
@@ -82,9 +69,9 @@ export default class Dashboard extends Component {
             <section className="Dashboard__personel">
               <h1>PERSONNEL</h1>
               <ul>
-                {this.state.users.map((user, i) => {
+                {/* {this.context.users.map((user, i) => {
                   return <Person person={user} key={i} />;
-                })}
+                })} */}
               </ul>
             </section>
           </section>

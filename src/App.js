@@ -9,14 +9,10 @@ import LandingPage from "./routes/LandingPage/LandingPage";
 // import NewJob from "./components/NewJob/NewJob";
 
 // import { auth } from "./services/firebase";
-import FirebaseContext from "./services/context";
+// import FirebaseContext from "./services/context";
 // import db from "./services/firebase";
 
 const App = props => {
-  const fbContext = React.useContext(FirebaseContext);
-
-  fbContext.setEmployees("orgOne");
-  fbContext.newGetProj();
   return (
     <BrowserRouter>
       <header>

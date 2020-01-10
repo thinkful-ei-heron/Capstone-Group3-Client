@@ -20,11 +20,11 @@ export default class ProjectView extends Component {
         deadline: "",
         project_manager: "",
         jobs: [],
-        project_workers: [],
+        project_workers: []
       },
       showJobForm: false,
       loading: true,
-      toggleState: false,
+      toggleState: false
     };
   }
 
@@ -44,16 +44,16 @@ export default class ProjectView extends Component {
         deadline: proj.deadline,
         project_manager: proj.project_manager,
         jobs: projJobs,
-        project_workers: proj.project_workers,
+        project_workers: proj.project_workers
       },
       selectedProjectManager: null,
-      loading: false,
+      loading: false
     });
   }
 
   setJob = () => {
     this.setState({
-      toggleState: !this.state.toggleState,
+      toggleState: !this.state.toggleState
     });
     // this.context.setNewJob(job)
     // console.log(this.context.jobs)
@@ -61,7 +61,7 @@ export default class ProjectView extends Component {
 
   renderJobList = () => {
     const jobs = this.context.jobs.filter(
-      job => job.project_id === this.props.id,
+      job => job.project_id === this.props.id
     );
     return jobs.map(job => {
       return <Jobs job={job} key={job.id} />;
@@ -70,13 +70,13 @@ export default class ProjectView extends Component {
 
   showJobForm = () => {
     this.setState({
-      showJobForm: !this.state.showJobForm,
+      showJobForm: !this.state.showJobForm
     });
   };
 
   setSelected = employee => {
     this.setState({
-      selectedProjectManager: employee,
+      selectedProjectManager: employee
     });
   };
 
@@ -120,7 +120,7 @@ export default class ProjectView extends Component {
                   <h3>SELECT Project Manager</h3>
                   <Dropdown
                     employees={this.context.employees.filter(
-                      emp => emp.role === "project manager",
+                      emp => emp.role === "project manager"
                     )}
                     isMulti={false}
                     setSelected={this.setSelected}

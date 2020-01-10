@@ -6,7 +6,7 @@ export default class Jobs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expandJob: false,
+      expandJob: false
     };
   }
 
@@ -43,7 +43,7 @@ export default class Jobs extends Component {
 
   toggleExpand = () => {
     this.setState({
-      expandJob: !this.state.expandJob,
+      expandJob: !this.state.expandJob
     });
   };
 

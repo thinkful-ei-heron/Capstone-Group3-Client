@@ -1,27 +1,26 @@
 import React, { Component } from "react";
 import { ProgressBar } from "../ProgressBar/ProgressBar";
+import FirebaseContext from "../../services/context.js";
 
 export default class Jobs extends Component {
-  static defaultProps = {
-    job: {},
-    id: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      expandJob: false,
+    };
+  }
 
-  state = {
-    expandJob: false,
-    userRole: "project manager"
-  };
+  static contextType = FirebaseContext;
 
-  renderEmployeeList = employees => {
-    return employees.map((employee, index) => {
+  renderEmployeeList = jobWorkers => {
+    return jobWorkers.map((employee, index) => {
       let itemKey = index + employee;
       return <li key={itemKey}>{employee}</li>;
     });
   };
 
-  //All userRoles will be changed to context!!
   renderProjectButtons(approval, progress) {
-    if (this.state.userRole === "employee") {
+    if (this.context.user.role === "project worker") {
       if (approval || progress !== 100) {
         return <button disabled>Submit for Approval</button>;
       } else {
@@ -29,24 +28,22 @@ export default class Jobs extends Component {
       }
     }
     if (
-      this.state.userRole === "project manager" ||
+      this.context.user.role === "project manager" ||
       this.state.userRole === "owner"
     ) {
       return (
-        <div className="manager__buttons">
-          <span>
-            {!approval && progress === 100 ? "AWAITING APPROVAL" : ""}
-          </span>
+        <>
+          {!approval && progress === 100 ? <span>AWAITING APPROVAL</span> : ""}
           <button>Assign</button>
           <button>Edit</button>
-        </div>
+        </>
       );
     }
   }
 
   toggleExpand = () => {
     this.setState({
-      expandJob: !this.state.expandJob
+      expandJob: !this.state.expandJob,
     });
   };
 
@@ -54,7 +51,7 @@ export default class Jobs extends Component {
     let job = this.props.job;
     return (
       <>
-        <li key={this.props.id} id={this.props.id}>
+        <li key={job.id} id={job.id}>
           <button onClick={this.toggleExpand}>
             {this.state.expandJob ? "-" : "+"}
           </button>
@@ -65,7 +62,7 @@ export default class Jobs extends Component {
           </div>
           {this.renderProjectButtons(job.approval, job.progress)}
           {this.state.expandJob ? (
-            <ul>{this.renderEmployeeList(job.employees)}</ul>
+            <ul>{this.renderEmployeeList(job.job_workers)}</ul>
           ) : (
             ""
           )}

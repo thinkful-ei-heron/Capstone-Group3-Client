@@ -25,7 +25,7 @@ const App = props => {
       <main className="app__main">
         <Switch>
           <Route exact path="/" component={LandingPage} />
-          <Route exact path={"/dashboard"} component={Dashboard} />
+          <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/logout" component={Logout} />
@@ -35,11 +35,11 @@ const App = props => {
             path="/new_project"
             render={props => <NewProject {...props} />}
           />
-          <Route
+          {/* <Route
             exact
             path="/new_job"
             render={props => <NewJob {...props} />}
-          />
+          /> */}
           <Route
             exact
             path="/project/:id"

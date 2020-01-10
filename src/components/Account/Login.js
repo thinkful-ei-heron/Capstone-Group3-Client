@@ -10,7 +10,7 @@ const Login = props => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    auth.setPersistence("session").then(() => {
+    auth.setPersistence("local").then(() => {
       fbContext
         .doSignInWithEmailAndPassword(email, password)
         .then(token => {

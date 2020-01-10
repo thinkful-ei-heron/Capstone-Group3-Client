@@ -1,29 +1,33 @@
 import React, { useContext } from "react";
 import { useInput } from "../../hooks/useInput";
 import FirebaseContext from "../../services/context";
+import { auth } from "../../services/firebase";
 
 const Login = props => {
   const fbContext = useContext(FirebaseContext);
   const {
     value: email,
-    bind: bindEmail,
+    bind: bindEmail
     // reset: resetEmail
   } = useInput("");
   const {
     value: password,
-    bind: bindPassword,
+    bind: bindPassword
     // reset: resetPassword,
   } = useInput("");
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    fbContext.doSignInWithEmailAndPassword(email, password).then(() =>
-      fbContext.getOrgName(email).then(orgName => {
-        fbContext.setUser(email, orgName).then(() => {
-          props.history.push("/dashboard");
-        });
-      }),
-    );
+    auth.setPersistence("session").then(() => {
+      fbContext.doSignInWithEmailAndPassword(email, password).then(token =>
+        fbContext
+          .getOrgName(token.user.displayName)
+          .then(orgName => {
+            fbContext.newSetUser(email, orgName);
+          })
+          .then(() => props.history.push("/dashboard"))
+      );
+    });
   };
 
   return (

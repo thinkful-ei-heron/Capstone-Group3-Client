@@ -60,17 +60,18 @@ export class ContextProvider extends React.Component {
       .get()
       .then(snapshot => {
         let orgId = 0;
-        snapshot.forEach(doc => (orgId = doc.id));
+        snapshot.forEach(doc => {
+          orgId = doc.id;
+        });
         return orgId;
       })
       .then(orgId => {
-        db.collection('users')
+        return db
+          .collection('users')
           .where('email', '==', email)
           .get()
           .then(snapshot => {
             snapshot.forEach(doc => {
-              console.log('current user:');
-              console.log(doc.data());
               this.setState({
                 user: {
                   id: doc.id,
@@ -103,7 +104,7 @@ export class ContextProvider extends React.Component {
     // console.log(org);
     return db
       .collection('users')
-      .where('organization', '==', `${org}`)
+      .where('organizations', '==', `${org}`)
       .get()
       .then(snapshot => {
         const employees = [];
@@ -118,10 +119,13 @@ export class ContextProvider extends React.Component {
   };
 
   setProjects = (role, name) => {
+    console.log(`organizations/${this.state.user.org.id}/projects`);
     return db
-      .collection(`organizations/HkeHO8n1eIaJSu6mnsd5/projects`)
+      .collection(`organizations/${this.state.user.org.id}/projects`)
       .get()
       .then(snapshot => {
+        console.log('users role is ' + role);
+        console.log(role === 'project manager');
         const projects = [];
         if (role === 'project worker') {
           snapshot.forEach(doc => {
@@ -131,6 +135,7 @@ export class ContextProvider extends React.Component {
           });
         } else if (role === 'project manager') {
           snapshot.forEach(doc => {
+            console.log(doc.data().project_manager + name);
             if (doc.data().project_manager === name) {
               projects.push({ id: doc.id, ...doc.data() });
             }
@@ -193,11 +198,11 @@ export class ContextProvider extends React.Component {
   };
 
   addProject = newProject => {
-    db.collection(`organization/${this.state.user.org.id}/projects`).add(newProject);
+    db.collection(`organizations/${this.state.user.org.id}/projects`).add(newProject);
   };
 
   addJob = (newJob, project_id) => {
-    db.collection(`organization/${this.state.user.org.id}/projects/${project_id}/jobs`).add(newJob);
+    db.collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`).add(newJob);
   };
 
   addUser = newUser => {
@@ -205,11 +210,11 @@ export class ContextProvider extends React.Component {
   };
 
   addProject = newProject => {
-    db.collection(`organization/${this.state.user.org.id}/projects`).add(newProject);
+    db.collection(`organizations/${this.state.user.org.id}/projects`).add(newProject);
   };
 
   addJob = (newJob, project_id) => {
-    db.collection(`organization/${this.state.user.org.id}/projects/${project_id}/jobs`).add(newJob);
+    db.collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`).add(newJob);
   };
 
   addUser = newUser => {

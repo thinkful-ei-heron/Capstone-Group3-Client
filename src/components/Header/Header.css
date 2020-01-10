@@ -1,29 +1,96 @@
-nav {
+.Header {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+.Header__link {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.Header__logo {
+  width: 60px;
+  height: 60px;
+  background-color: #638ab7;
+  border-radius: 50%;
+}
+
+.Header__app_name {
+  margin-left: 20px;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 2.5rem;
+  color: #021143;
 }
 
 .user__info {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin-left: 15px;
 }
 
-.app__header {
+.Header__sub_container {
+  width: 100%;
   display: flex;
-  align-items: normal;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-.header__login,
-.header__logout {
+.Header__login {
   display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: flex-end;
-  list-style-type: none;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.Header__btn {
+  display: grid;
+  place-items: center;
+  width: 100px;
+  height: 30px;
+  margin-right: 15px;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1.2 rem;
+  color: white;
+  border-radius: 10px;
+  background-color: #dc2e5e;
+}
+
+.Header__alt {
+  background-color: #638ab7;
 }
 
 .app__header ul li {
   padding: 10px;
+}
+
+@media only screen and (min-width: 700px) {
+  .Header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .Header__link {
+    margin-left: 45px;
+  }
+
+  .Header__app_name {
+    font-size: 3rem;
+  }
+
+  .Header__sub_container {
+    width: 350px;
+    margin-right: 30px;
+  }
+
+  .Header__btn {
+    width: 120px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
 }

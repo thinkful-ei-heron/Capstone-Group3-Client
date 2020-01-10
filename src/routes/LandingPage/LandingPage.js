@@ -12,7 +12,7 @@ export default function LandingPage() {
           <span>Build Faster</span>
         </div>
       </h2>
-      <button>Register Now!</button>
+      <button className="LandingPage__btn">Register Now!</button>
     </div>
   );
 }

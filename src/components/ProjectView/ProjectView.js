@@ -1,20 +1,19 @@
-
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-import FirebaseContext from '../../services/context.js';
-import { ProgressBar } from '../ProgressBar/ProgressBar';
-import './ProjectView.css';
-import Loading from '../Loading/Loading';
-import Jobs from '../Jobs/Jobs';
-import Dropdown from '../Dropdown/Dropdown';
-import Statistics from '../Statistics/Statistics';
-import Sidebar from '../Sidebar/Sidebar';
-
+import React, { Component } from "react";
+import FirebaseContext from "../../services/context.js";
+import { ProgressBar } from "../ProgressBar/ProgressBar";
+import "./ProjectView.css";
+import Loading from "../Loading/Loading";
+import Jobs from "../Jobs/Jobs";
+import Dropdown from "../Dropdown/Dropdown";
+import Statistics from "../Statistics/Statistics";
+import Sidebar from "../Sidebar/Sidebar";
+import NewJob from '../NewJob/NewJob';
 
 export default class ProjectView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+<<<<<<< HEAD
       userName: "", //pass in through props or context
       userRole: "",
       companyName: "", //pass in through props or context
@@ -26,13 +25,27 @@ export default class ProjectView extends Component {
       projectManager: "",
       projectJobs: [],
       projectEmployees: [],
+=======
+      project: {
+        name: "",
+        description: "",
+        progress: "",
+        deadline: "",
+        project_manager: "",
+        jobs: [],
+        project_workers: []
+      },
+      showJobForm: false,
+>>>>>>> origin
       loading: true,
+      toggleState: false
     };
   }
 
   static contextType = FirebaseContext;
 
   componentDidMount() {
+<<<<<<< HEAD
     const jobs = this.context.jobs;
     const projects = this.context.projects;
     const proj = projects.find(project => project.id === this.props.id);
@@ -49,79 +62,81 @@ export default class ProjectView extends Component {
       projectManager: proj.project_manager,
       projectEmployees: proj.project_workers,
       loading: false
+=======
+    console.log(this.context.user)
+    const jobs = this.context.jobs;
+    const projects = this.context.projects;
+    const proj = projects.find(project => project.id === this.props.id);
+    const projJobs = jobs.filter(job => job.project_id === this.props.id);
+    this.setState({
+      project: {
+        name: proj.name,
+        description: proj.description,
+        progress: proj.progress,
+        deadline: proj.deadline,
+        project_manager: proj.project_manager,
+        jobs: projJobs,
+        project_workers: proj.project_workers
+      },
+      selectedProjectManager: null,
+      loading: false,
+>>>>>>> origin
     });
   }
 
-  renderEmployeeList = job => {
-    return job.project_workers.map((employee, index) => {
-      let itemKey = index + employee;
-      return <li key={itemKey}>{employee}</li>;
-    });
-  };
+  setJob = () => {
+    this.setState({
+      toggleState: !this.state.toggleState
+    })
+    // this.context.setNewJob(job)
+    // console.log(this.context.jobs)
+  }
 
   renderJobList = () => {
-    return this.state.projectJobs.map((job, index) => {
+    const jobs = this.context.jobs.filter(job => job.project_id === this.props.id)
+    return jobs.map(job => {
       return (
-        <li key={index} id={index}>
-          <button>^</button>
-          <h4>{job.jobName}</h4>
-          <span>{job.jobDetails}</span>
-          <div className="job-progress">
-            <ProgressBar percentage={job.jobProgress} />
-          </div>
-          {job.jobApproval || job.jobProgress !== 100 ? (
-            <button disabled>Submit For Approval</button>
-          ) : (
-            <button>Submit For Approval</button>
-          )}
-          <ul>{this.renderEmployeeList(job)}</ul>
-        </li>
-      );
+        <Jobs job={job} key={job.id}/>
+      )
     });
   };
 
+  showJobForm = () => {
+    this.setState({
+      showJobForm: !this.state.showJobForm
+    })
+  }
 
-  // componentDidMount() {
-  //   this.context.doGetProject().then(snapshot => {
-  //     snapshot.forEach(doc => {
-  //       if (doc.data().name === 'Project Management App') {
-  //         //Pass in prop of Project Name to grab correct data
-  //         let newProjectName = doc.data().name;
-  //         let newProjetDescription = doc.data().description;
-  //         let newProjectDeadline = new Date(doc.data().deadline.seconds * 1000).toDateString();
-  //         let newProjectManager = doc.data().project_manager;
-  //         let newProjectProgress = doc.data().progress;
-  //         this.setState({
-  //           projectName: newProjectName,
-  //           projectDescription: newProjetDescription,
-  //           projectDeadline: newProjectDeadline,
-  //           projectManager: newProjectManager,
-  //           projectProgress: newProjectProgress,
-  //           loading: false
-  //         });
-  //       }
-  //     });
-  //   });
-  // }
+  setSelected = employee => {
+    this.setState({
+      selectedProjectManager: employee
+    })
+  }
+
+  setProjectManager = () => {
+    //code to set new PM for project
+  }
 
   render() {
+    const { project, showJobForm } = this.state
     if (this.state.loading) {
       return <Loading />;
     } else {
       return (
         <div>
-          <header id="employee-view-header-company">
-            <h2 id="companyName">{this.state.companyName}</h2>
-            <span id="">{this.state.date}</span>
+          <header id="company_header">
+            <h2 id="companyName">{this.context.user.org.name}</h2>
+            <span id="currentDate">{new Date().toDateString()}</span>
           </header>
           <div>
-            <header id="employee-view-project-header">
-              <div id="project-name-manager">
-                <h3 id="projectName">{this.state.projectName}</h3>
+            <header id="project_header">
+              <div id="name_manager">
+                <h3 id="projectName">{project.name}</h3>
                 <h4 id="projectManager">
-                  Manager: {this.state.projectManager}
+                  Manager: {project.project_manager}
                 </h4>
               </div>
+<<<<<<< HEAD
               <div id="projectDescription">{this.state.projectDescription}</div>
               <div>Est. Progress</div>
               <ProgressBar percentage={this.state.projectProgress} />
@@ -138,10 +153,36 @@ export default class ProjectView extends Component {
                       <Dropdown path="project" />
                     </div> : <></>
                   }  
+=======
+              <div id="project_description">
+                <span>{project.description}</span>
+              </div>
+              <div id="project_progress">
+                <span>Est. Progress</span>
+              </div>
+              <ProgressBar percentage={project.progress} />
+              <div id="project_deadline">
+                <span>Deadline: {new Date(project.deadline.toString()).toDateString()}</span>
+              </div>
+              {this.context.user.role === 'owner' && project.project_manager === 'unassigned' ? (
+                <div id="select_pm">
+                  <h3>SELECT Project Manager</h3>
+                  <Dropdown 
+                    employees={this.context.employees.filter(emp => emp.role === 'project manager')} 
+                    isMulti={false}
+                    setSelected={this.setSelected}
+                  />
+                  {this.state.selectedProjectManager ? 
+                    <div id="submit_pm">
+                      <button onClick={this.setProjectManager}></button>
+                    </div>
+                    : ''}
+>>>>>>> origin
                 </div>
-              )}
+              ) : ''}
             </header>
           </div>
+<<<<<<< HEAD
           <div id="employee-view-jobs">
 
             {this.state.userRole === 'project worker' ? <></> : <Statistics />}
@@ -165,6 +206,23 @@ export default class ProjectView extends Component {
                   return <Jobs key={i} job={job[0]} />;
                 })}
             </ul>
+=======
+          <div id="jobs_stats_container">
+            {this.context.user.role === 'project worker' ? <></> : <Statistics />}
+            <div id="jobs_container">
+              {this.context.user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
+              {this.context.user.role === 'project worker' ? '' : <button onClick={this.showJobForm}>Add Job</button>}
+              {showJobForm ? 
+                <NewJob 
+                  {...this.props} 
+                  setJob={this.setJob} 
+                  project={project} 
+                  showJobForm={this.showJobForm} 
+                  projectId={this.props.id}
+                /> : ''}
+              {<ul>{this.renderJobList()}</ul>}
+            </div>
+>>>>>>> origin
           </div>
           <Sidebar view="project" />
         </div>

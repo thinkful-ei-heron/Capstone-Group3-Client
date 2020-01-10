@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import FirebaseContext from "../../services/context";
-import "./Header.css";
+import FirebaseContext from '../../services/context';
+import './Header.css';
 
 export default class Header extends Component {
   static contextType = FirebaseContext;
@@ -14,44 +14,47 @@ export default class Header extends Component {
 
   renderLoginLink() {
     return (
-      <ul className="header__login">
-        <Link to="/login">
-          <li>Log In</li>
-        </Link>
-        {this.context.user === null ? (
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-        ) : (
-          <Link to="/logout">
-            <li>Log Out</li>
+      <div className="Header__sub_container">
+        <div className="Header__login">
+          <Link className="Header__btn Header__alt" to="/login">
+            Log In
           </Link>
-        )}
-      </ul>
+          {this.context.user === null ? (
+            <Link className="Header__btn" to="/register">
+              Register
+            </Link>
+          ) : (
+            <Link className="Header__btn" to="/logout">
+              Log Out
+            </Link>
+          )}
+        </div>
+      </div>
     );
   }
 
   renderLogoutLink() {
     return (
-      <ul className="header__logout">
-        <li className="user__info">
+      <div className="Header__sub_container">
+        <div className="user__info">
           <span>Welcome, {this.context.user.name}!</span>
           <span>Role: {this.context.user.role}</span>
-        </li>
-        <Link to="/" onClick={this.handleLogout}>
-          <li>Log Out</li>
+        </div>
+        <Link className="Header__btn" to="/" onClick={this.handleLogout}>
+          Log Out
         </Link>
-      </ul>
+      </div>
     );
   }
 
   render() {
     return (
       <>
-        <nav className="app__header">
+        <nav className="Header">
           <h1>
-            <Link to="/">
-              <img src="" alt="app__logo" />
+            <Link className="Header__link" to="/">
+              <div className="Header__logo"></div>
+              <span className="Header__app_name">App Name</span>
             </Link>
           </h1>
           {this.context.user ? this.renderLogoutLink() : this.renderLoginLink()}

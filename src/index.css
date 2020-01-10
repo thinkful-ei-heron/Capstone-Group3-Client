@@ -10,3 +10,27 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+a,
+a:hover,
+a:visited {
+  text-decoration: none;
+}
+
+.Header {
+  height: 150px;
+}
+
+.app__main {
+  height: calc(100vh - 150px);
+}
+
+@media only screen and (min-width: 700px) {
+  .Header {
+    height: 120px;
+  }
+
+  .app__main {
+    height: calc(100vh - 120px);
+  }
+}

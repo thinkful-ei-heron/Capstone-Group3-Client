@@ -4,31 +4,26 @@ import FirebaseContext from "../../services/context";
 
 const Login = props => {
   const fbContext = useContext(FirebaseContext);
-  const { value: email, bind: bindEmail, reset: resetEmail } = useInput("");
+  const {
+    value: email,
+    bind: bindEmail,
+    // reset: resetEmail
+  } = useInput("");
   const {
     value: password,
     bind: bindPassword,
-    reset: resetPassword,
+    // reset: resetPassword,
   } = useInput("");
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    fbContext
-      .doSignInWithEmailAndPassword(email, password)
-      .then(authUser => {
-        // user id => authUser.user.uid
-        // console.log(`logged in user id: ${authUser.user.uid}`);
-        // console.log(`logged in user: ${authUser.user}`);
-      })
-      .then(() =>
-        fbContext.getOrgName(email).then(orgName => {
-          fbContext.setUser(email, orgName).then(() => {
-            resetEmail();
-            resetPassword();
-            props.history.push("/dashboard");
-          });
-        }),
-      );
+    fbContext.doSignInWithEmailAndPassword(email, password).then(() =>
+      fbContext.getOrgName(email).then(orgName => {
+        fbContext.setUser(email, orgName).then(() => {
+          props.history.push("/dashboard");
+        });
+      }),
+    );
   };
 
   return (

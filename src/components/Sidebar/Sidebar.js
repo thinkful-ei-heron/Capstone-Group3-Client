@@ -121,13 +121,11 @@ export default class Sidebar extends Component {
   };
 
   populateProjects = (name) => {
-    try{
-        console.log(name)
-        // let projectArray = []
-        // db.collection('projects').where('project_manager','==',name).get().then(snapshot => console.log(snapshot.doc.data()))
-        // return projectArray
-    } catch(error) { console.log(error) }
-    
+    console.log(this.context.projects)
+    let newArray
+    this.context.projects.map((project) => {
+      if(project.project_manager === name) 
+    })
   }
 
   populateLists = () => {

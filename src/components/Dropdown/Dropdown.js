@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import Select from 'react-select';
+import FirebaseContext from "../../services/context";
 
 export default class Dropdown extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      selectedOption: null,
-      userRole: "project manager",
+      selectedOption: null
     };
   }
+
+  static contextType = FirebaseContext;
+
 
   handleChange = selectedOption => {
     this.setState({ selectedOption })
@@ -31,7 +34,7 @@ export default class Dropdown extends Component {
         value={selectedOption}
         onChange={this.handleChange}
         options={this.populateOptions(this.props.employees)}
-        isMulti={true}
+        isMulti={this.props.isMulti ? true : false}
       />
     )
   }

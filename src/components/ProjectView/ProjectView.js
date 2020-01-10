@@ -45,6 +45,7 @@ export default class ProjectView extends Component {
         jobs: projJobs,
         project_workers: proj.project_workers
       },
+      selectedProjectManager: null,
       loading: false,
     });
   }
@@ -57,31 +58,11 @@ export default class ProjectView extends Component {
     // console.log(this.context.jobs)
   }
 
-  renderEmployeeList = jobWorkers => {
-    return jobWorkers.map((employee, index) => {
-      let itemKey = index + employee;
-      return <li key={itemKey}>{employee}</li>;
-    });
-  };
-
   renderJobList = () => {
     return this.state.project.jobs.map(job => {
       return (
-        <li key={job.id} id={job.id}>
-          <button>^</button>
-          <h4>{job.name}</h4>
-          <span>{job.description}</span>
-          <div className="job-progress">
-            <ProgressBar percentage={job.progress} />
-          </div>
-          {job.approval || job.progress !== 100 ? (
-            <button disabled>Submit For Approval</button>
-          ) : (
-            <button>Submit For Approval</button>
-          )}
-          <ul>{this.renderEmployeeList(job.job_workers)}</ul>
-        </li>
-      );
+        <Jobs job={job} />
+      )
     });
   };
 
@@ -91,6 +72,16 @@ export default class ProjectView extends Component {
     })
   }
 
+  setSelected = employee => {
+    this.setState({
+      selectedProjectManager: employee
+    })
+  }
+
+  setProjectManager = () => {
+    //code to set new PM for project
+  }
+
   render() {
     const { project, showJobForm } = this.state
     if (this.state.loading) {
@@ -98,49 +89,60 @@ export default class ProjectView extends Component {
     } else {
       return (
         <div>
-          <header id="employee-view-header-company">
+          <header id="company_header">
             <h2 id="companyName">{this.context.user.org.name}</h2>
-            <span id="">{new Date().toDateString()}</span>
+            <span id="currentDate">{new Date().toDateString()}</span>
           </header>
           <div>
-            <header id="employee-view-project-header">
-              <div id="project-name-manager">
+            <header id="project_header">
+              <div id="name_manager">
                 <h3 id="projectName">{project.name}</h3>
                 <h4 id="projectManager">
                   Manager: {project.project_manager}
                 </h4>
               </div>
-              <div id="projectDescription">{project.description}</div>
-              <div>Est. Progress</div>
+              <div id="project_description">
+                <span>{project.description}</span>
+              </div>
+              <div id="project_progress">
+                <span>Est. Progress</span>
+              </div>
               <ProgressBar percentage={project.progress} />
-
-              <div id="projectDeadline">Deadline: {project.deadline}</div>
-              {this.context.user.role === 'project worker' ? (
-
-                <></>
-              ) : (
-                <div>
+              <div id="project_deadline">
+                <span>Deadline: {project.deadline}</span>
+              </div>
+              {this.context.user.role === 'owner' && project.project_manager === 'unassigned' ? (
+                <div id="select_pm">
                   <h3>SELECT Project Manager</h3>
-                  {/* <Dropdown path="project" /> */}
+                  <Dropdown 
+                    employees={this.context.employees.filter(emp => emp.role === 'project manager')} 
+                    isMulti={false}
+                    setSelected={this.setSelected}
+                  />
+                  {this.state.selectedProjectManager ? 
+                    <div id="submit_pm">
+                      <button onClick={this.setProjectManager}></button>
+                    </div>
+                    : ''}
                 </div>
-              )}
+              ) : ''}
             </header>
           </div>
-          <div id="employee-view-jobs">
-
+          <div id="jobs_stats_container">
             {this.context.user.role === 'project worker' ? <></> : <Statistics />}
-
-            <h3>Your Jobs</h3>
-            <button onClick={this.showJobForm}>Add Job</button>
-            {showJobForm ? <NewJob {...this.props} setJob={this.setJob} project={project} showJobForm={this.showJobForm} projectId={this.props.id}/> : ''}
-            {<ul>{this.renderJobList()}</ul>}
-            {/* <ul>
-              {this.state.project.jobs &&
-                this.state.projectJobs.map((job, i) => {
-                  //  console.log(job.data())
-                  return <Jobs key={i} id={job.id} job={job.details} />;
-                })}
-            </ul> */}
+            <div id="jobs_container">
+              {this.context.user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
+              {this.context.user.role === 'project worker' ? '' : <button onClick={this.showJobForm}>Add Job</button>}
+              {showJobForm ? 
+                <NewJob 
+                  {...this.props} 
+                  setJob={this.setJob} 
+                  project={project} 
+                  showJobForm={this.showJobForm} 
+                  projectId={this.props.id}
+                /> : ''}
+              {<ul>{this.renderJobList()}</ul>}
+            </div>
           </div>
           <Sidebar view="project" />
         </div>

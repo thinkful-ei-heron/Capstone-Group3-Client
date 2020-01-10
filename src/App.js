@@ -6,7 +6,7 @@ import { Login, Logout, Register } from "./components/Account/index";
 import NewProject from "./components/NewProject/NewProject";
 import ProjectView from "./components/ProjectView/ProjectView";
 import LandingPage from "./routes/LandingPage/LandingPage";
-import NewJob from "./components/NewJob/NewJob";
+//import NewJob from "./components/NewJob/NewJob";
 // import FirebaseContext from "./services/context";
 
 const App = props => {
@@ -26,28 +26,22 @@ const App = props => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/logout" component={Logout} />
-<<<<<<< HEAD
-          <Route exact path="/new_project" render={props => <NewProject {...props}/>} />
-          <Route exact path='/new_job' render={props => <NewJob {...props} />} />
-          <Route exact path="/project/:id" component={props => <ProjectView id={props.match.params.id} />} />
-=======
 
           <Route
             exact
             path="/new_project"
             render={props => <NewProject {...props} />}
           />
-          <Route
+          {/* <Route
             exact
             path="/new_job"
             render={props => <NewJob {...props} />}
-          />
+          /> */}
           <Route
             exact
             path="/project/:id"
             component={props => <ProjectView id={props.match.params.id} />}
           />
->>>>>>> 7486b3609a1680f1b60dacf91a23a96b143d53c6
         </Switch>
       </main>
     </BrowserRouter>

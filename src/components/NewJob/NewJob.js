@@ -49,7 +49,7 @@ const NewJob = props => {
             <label htmlFor="deadline">Deadline: </label>
             <input type="date" name="deadline" id="deadline" {...bindDeadline} required />
             <label htmlFor="employees">Assign employees: </label>
-            <Dropdown employees={props.project.project_workers} path="dash" setSelected={setSelected}/>
+            <Dropdown employees={props.project.project_workers} isMulti={true} setSelected={setSelected}/>
             <input type="submit" value="Submit" />
             <input type="button" value="Cancel" onClick={props.showJobForm} />
         </fieldset>

@@ -7,7 +7,7 @@ export default class Dropdown extends Component {
     this.state = {
       multiSelect: [],
       isSingleSelect: false,
-      userRole: "owner",
+      userRole: "owner"
     };
   }
 
@@ -27,26 +27,26 @@ export default class Dropdown extends Component {
       this.props.path === "dash"
     ) {
       this.setState({
-        isSingleSelect: false,
+        isSingleSelect: false
       });
     } else {
       this.setState({
-        isSingleSelect: true,
+        isSingleSelect: true
       });
     }
     this.setState({
-      multiSelect: this.populateOptions(["Bill", "Dave", "Steve", "Yes"]),
+      multiSelect: this.populateOptions(["Bill", "Dave", "Steve", "Yes"])
     });
   }
 
   render() {
     const selectedOptionsStyles = {
       color: "#3c763d",
-      backgroundColor: "#dff0d8",
+      backgroundColor: "#dff0d8"
     };
     const optionsListStyles = {
       backgroundColor: "#dff0d8",
-      color: "#3c763d",
+      color: "#3c763d"
     };
     return (
       <MultiSelectReact

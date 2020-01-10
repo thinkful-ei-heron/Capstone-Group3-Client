@@ -2,26 +2,26 @@ import React, { Component } from "react";
 import { Redirect, Link } from "react-router-dom";
 
 import FirebaseContext from "../../services/context";
-import Person from "../Person/Person";
+// import Person from "../Person/Person";
 import Loading from "../Loading/Loading";
 
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    loading: true,
+    loading: true
   };
 
-  componentDidMount() {
-    // console.log(this.context.user.email);
-    this.context.user
-      ? this.context.setEmployees(this.context.user.org.name).then(() => {
-          this.context.setProjects(
-            this.context.user.role,
-            this.context.user.name,
-          );
-        })
-      : console.log("no user");
-  }
+  // componentDidMount() {
+  //   // console.log(this.context.user.email);
+  //   this.context.user
+  //     ? this.context.setEmployees(this.context.user.org.name).then(() => {
+  //         this.context.setProjects(
+  //           this.context.user.role,
+  //           this.context.user.name,
+  //         );
+  //       })
+  //     : console.log("no user");
+  // }
 
   render() {
     // console.log("this.context.user", this.context.user);

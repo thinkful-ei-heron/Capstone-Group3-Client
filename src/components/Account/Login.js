@@ -7,26 +7,24 @@ const Login = props => {
   const fbContext = useContext(FirebaseContext);
   const {
     value: email,
-    bind: bindEmail
+    bind: bindEmail,
     // reset: resetEmail
   } = useInput("");
   const {
     value: password,
-    bind: bindPassword
+    bind: bindPassword,
     // reset: resetPassword,
   } = useInput("");
 
   const handleSubmit = evt => {
     evt.preventDefault();
     auth.setPersistence("session").then(() => {
-      fbContext.doSignInWithEmailAndPassword(email, password).then(token =>
-        fbContext
-          .getOrgName(token.user.displayName)
-          .then(orgName => {
-            fbContext.newSetUser(email, orgName);
-          })
-          .then(() => props.history.push("/dashboard"))
-      );
+      fbContext
+        .doSignInWithEmailAndPassword(email, password)
+        .then(token => {
+          fbContext.newSetUser(email, token.user.displayName);
+        })
+        .then(() => props.history.push("/dashboard"));
     });
   };
 

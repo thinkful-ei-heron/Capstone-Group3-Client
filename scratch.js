@@ -1,43 +1,35 @@
-User => 
-{
+User => {
+  id, name, org, role;
+};
+
+Project => {
   id,
-  name,
-  org: {
-    name
-    id
-  },
-  role
-}
+    date_created,
+    deadline,
+    description,
+    name,
+    org_id,
+    progress,
+    project_manager,
+    project_workers;
+};
 
-Project =>
-{
-  id,
-  date_created,
-  deadline,
-  description,
-  name,
-  org_id,
-  progress,
-  project_manager,
-  project_workers
-}
+Job => {
+  id, approval;
+  date_created;
+  deadline;
+  description;
+  name;
+  organization;
+  progress;
+  project_id;
+  project_manager;
+  revision;
+  status;
+};
 
-Job => 
-{
-  id,
-  approval
-  date_created
-  deadline
-  description
-  name
-  organization
-  progress
-  project_id
-  project_manager
-  revision
-  status
-}
+Org => {
+  admin, name;
+};
 
-Org => { admin, name }
-
-Employees => [user1,user2,user3]
+Employees => [user1, user2, user3];

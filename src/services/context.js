@@ -226,13 +226,14 @@ export class ContextProvider extends React.Component {
             // console.log("Getting jobs");
             // console.log(snapshot);
             snapshot.forEach(doc => {
-              // console.log(doc.data());
+               console.log(doc.data());
               if (doc.data().project_workers.includes(name)) {
                 jobs.push({ id: doc.id, ...doc.data() });
               }
             });
           } else if (role === "project manager") {
             snapshot.forEach(doc => {
+              console.log(doc.data())
               if (doc.data().project_manager === name) {
                 jobs.push({ id: doc.id, ...doc.data() });
               }
@@ -243,8 +244,8 @@ export class ContextProvider extends React.Component {
             });
           }
 
-          // console.log(jobs);
-          // console.log(this.state.jobs);
+          console.log(jobs);
+          console.log(this.state.jobs);
 
           this.setState({
             jobs: [...this.state.jobs, jobs]

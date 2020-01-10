@@ -67,7 +67,7 @@ export class ContextProvider extends React.Component {
         return orgId;
       })
       .then(orgId => {
-        db.collection("users")
+        return db.collection("users")
           .where("email", "==", email)
           .get()
           .then(snapshot => {
@@ -122,7 +122,7 @@ export class ContextProvider extends React.Component {
 
   setProjects = (role, name) => {
     return db
-      .collection(`organizations/HkeHO8n1eIaJSu6mnsd5/projects`)
+      .collection(`organizations/${this.state.user.org.id}/projects`)
       .get()
       .then(snapshot => {
         const projects = [];

@@ -12,15 +12,15 @@ export default class Dashboard extends Component {
   };
 
   componentDidMount() {
-    this.context.setEmployees(this.context.user.org.name).then(() => {
-      this.context
-        .setProjects(this.context.user.role, this.context.user.name)
-        .then(() =>
-          this.setState({
-            loading: !this.state.loading,
-          }),
-        );
-    });
+    // console.log(this.context.user.email);
+    this.context.user
+      ? this.context.setEmployees(this.context.user.org.name).then(() => {
+          this.context.setProjects(
+            this.context.user.role,
+            this.context.user.name,
+          );
+        })
+      : console.log("no user");
   }
 
   render() {
@@ -28,7 +28,7 @@ export default class Dashboard extends Component {
     // console.log("this.context.projects", this.context.projects);
     // console.log("this.context.employees", this.context.employees);
     // console.log("this.context.org", this.context.org);
-    if (this.state.loading) return <Loading />;
+    if (!this.context.user) return <Loading />;
     else
       return (
         <>

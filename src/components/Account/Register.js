@@ -1,45 +1,75 @@
 import React, { useContext } from "react";
 import { useInput } from "../../hooks/useInput";
 import FirebaseContext from "../../services/context";
+// import { auth } from "../../services/firebase";
 
 const Register = props => {
   const fbContext = useContext(FirebaseContext);
-  const { value: email, bind: bindEmail, reset: resetEmail } = useInput("");
+  const {
+    value: email,
+    bind: bindEmail
+    // reset: resetEmail
+  } = useInput("");
   const {
     value: password,
-    bind: bindPassword,
-    reset: resetPassword,
+    bind: bindPassword
+    // reset: resetPassword,
   } = useInput("");
-  const { value: name, bind: bindName, reset: resetName } = useInput("");
-  const { value: orgName, bind: bindOrgName, reset: resetOrgName } = useInput(
-    "",
-  );
-  const { value: role, bind: bindRole, reset: resetRole } = useInput("");
+  const {
+    value: name,
+    bind: bindName
+    // reset: resetName
+  } = useInput("");
+  const {
+    value: orgName,
+    bind: bindOrgName
+    // reset: resetOrgName
+  } = useInput("");
+  const {
+    value: role,
+    bind: bindRole
+    // reset: resetRole
+  } = useInput("");
 
   const handleSubmit = evt => {
     evt.preventDefault();
     fbContext
       .doCreateUserWithEmailAndPassword(email, password)
-      .then(authUser => {
-        // console.log(`Signing up: ${authUser.user.email}`);
-        fbContext.addUser({
-          email: email,
-          id: authUser.user.uid,
-          org: { name: orgName },
-          role: role,
-          name: name,
+      .then(response => {
+        return response.user.updateProfile({
+          displayName: orgName
         });
-      })
-      .then(() => {
-        fbContext.setUser(email, orgName);
-        resetEmail();
-        resetPassword();
-        resetOrgName();
-        resetRole();
-        resetName();
-        props.history.push("/login");
       });
+    fbContext
+      .createUserInOrg(
+        {
+          email: email,
+          role: role,
+          name: name
+        },
+        orgName // this is actually orgName
+      )
+      .then(() => props.history.push("/login"));
   };
+  // .then(authUser => {
+  //   // console.log(`Signing up: ${authUser.user.email}`);
+  //   fbContext.addUser({
+  //     email: email,
+  //     id: authUser.user.uid,
+  //     org: { name: orgName },
+  //     role: role,
+  //     name: name,
+  //   });
+  // })
+  // .then(() => {
+  //   fbContext.setUser(email, orgName);
+  //   resetEmail();
+  //   resetPassword();
+  //   resetOrgName();
+  //   resetRole();
+  //   resetName();
+  //   props.history.push("/login");
+  // });
 
   return (
     <>

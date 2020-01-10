@@ -21,11 +21,11 @@ const NewJob = props => {
       deadline: new Date(deadline),
       description: description,
       name: name,
-      organization: props.state.companyName,
+      organization: fbContext.user.org.name,
       progress: 0,
       project_id: props.projectId,
-      project_manager: props.state.projectManager,
-      project_workers: employees,
+      project_manager: props.project.project_manager,
+      job_workers: employees,
       revision: false,
       status: "in progress"
     }
@@ -49,9 +49,9 @@ const NewJob = props => {
             <label htmlFor="deadline">Deadline: </label>
             <input type="date" name="deadline" id="deadline" {...bindDeadline} required />
             <label htmlFor="employees">Assign employees: </label>
-            <Dropdown employees={props.state.projectEmployees} path="dash" setSelected={setSelected}/>
+            <Dropdown employees={props.project.project_workers} path="dash" setSelected={setSelected}/>
             <input type="submit" value="Submit" />
-            <button onClick={props.showJobForm}>Cancel</button>
+            <input type="button" value="Cancel" onClick={props.showJobForm} />
         </fieldset>
       </form>
     </>

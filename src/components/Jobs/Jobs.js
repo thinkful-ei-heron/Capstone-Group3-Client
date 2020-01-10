@@ -5,7 +5,7 @@ export default class Jobs extends Component {
   static defaultProps = {
     job: {},
     id: ''
-  }
+  } 
 
   state = {
     expandJob: false,

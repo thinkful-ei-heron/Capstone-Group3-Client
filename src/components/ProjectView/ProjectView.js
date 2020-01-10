@@ -34,7 +34,7 @@ export default class ProjectView extends Component {
     const jobs = this.context.jobs;
     const projects = this.context.projects;
     const proj = projects.find(project => project.id === this.props.id);
-    const projJobs = jobs.find(job => job.project_id === this.props.id);
+    const projJobs = jobs.filter(job => job.project_id === this.props.id);
     this.setState({
       project: {
         name: proj.name,

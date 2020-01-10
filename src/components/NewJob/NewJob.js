@@ -11,12 +11,12 @@ const NewJob = props => {
   const {
     value: description,
     bind: bindDescription,
-    reset: resetDescription,
+    reset: resetDescription
   } = useInput("");
   const {
     value: deadline,
     bind: bindDeadline,
-    reset: resetDeadline,
+    reset: resetDeadline
   } = useInput("");
 
   const handleSubmit = e => {
@@ -35,10 +35,10 @@ const NewJob = props => {
       project_manager: props.project.project_manager,
       job_workers: employees,
       revision: false,
-      status: "in progress",
+      status: "in progress"
     };
     const promise = new Promise(() =>
-      fbContext.addJob(jobObj, props.projectId),
+      fbContext.addJob(jobObj, props.projectId)
     );
     promise.then(() => props.setJob());
     resetName();

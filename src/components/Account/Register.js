@@ -37,7 +37,7 @@ const Register = props => {
         resetOrgName();
         resetRole();
         resetName();
-        props.history.push("/dashboard");
+        props.history.push("/login");
       });
   };
 

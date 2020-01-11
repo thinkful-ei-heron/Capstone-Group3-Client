@@ -1,27 +1,11 @@
 import React, { Component } from "react";
 import FirebaseContext from "../../services/context.js";
-import { db } from '../../services/firebase'
 
 export default class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userType: "owner",
-      employees: [
-        {
-          Bill: [
-            { "project one": "Make Bread" },
-            { "project two": "Clean Oven" },
-          ],
-        },
-        { Ben: [{ "project one": "Prepare Egg Wash" }] },
-        { Betsy: [{ "project two": "Mop floors" }] },
-      ],
-      projectManagers: [
-        { Dave: ["project one", "project three"] },
-        { Darla: ["project two"] },
-      ],
-      expanded: [],
+      expanded: []
     };
   }
 
@@ -128,24 +112,24 @@ export default class Sidebar extends Component {
     })
   }
 
-  populateLists = () => {
-    let newEmployees = []
-    let newProjectManagers = []
-    this.context.employees.map((employee) => {
-      if(employee.role === 'project worker') {
-        let newEntry = {[employee.name]: null}
-        newEmployees.push(newEntry)
-      } else if(employee.role === 'project manager') {
-        let newProjects = this.populateProjects(employee.name)
-        let newEntry = {[employee.name]: newProjects}
-        newProjectManagers.push(newEntry)
-      }
-      return this.setState({
-        employees: newEmployees,
-        projectManagers: newProjectManagers
-      })
-    })
-  }
+  // populateLists = () => {
+  //   let newEmployees = []
+  //   let newProjectManagers = []
+  //   this.context.employees.map((employee) => {
+  //     if(employee.role === 'project worker') {
+  //       let newEntry = {[employee.name]: null}
+  //       newEmployees.push(newEntry)
+  //     } else if(employee.role === 'project manager') {
+  //       let newProjects = this.populateProjects(employee.name)
+  //       let newEntry = {[employee.name]: newProjects}
+  //       newProjectManagers.push(newEntry)
+  //     }
+  //     return this.setState({
+  //       employees: newEmployees,
+  //       projectManagers: newProjectManagers
+  //     })
+  //   })
+  // }
 
   componentDidMount() {
     this.populateLists()

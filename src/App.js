@@ -6,14 +6,13 @@ import { Login, Logout, Register } from "./components/Account/index";
 import NewProject from "./components/NewProject/NewProject";
 import ProjectView from "./components/ProjectView/ProjectView";
 import LandingPage from "./routes/LandingPage/LandingPage";
-//import NewJob from "./components/NewJob/NewJob";
+// import NewJob from "./components/NewJob/NewJob";
+
+// import { auth } from "./services/firebase";
 // import FirebaseContext from "./services/context";
+// import db from "./services/firebase";
 
 const App = props => {
-  // let [currentUser, setCurrentUser] = React.useState({});
-  // const fbContext = React.useContext(FirebaseContext);
-
-  // console.log(currentUser);
   return (
     <BrowserRouter>
       <header>

@@ -10,17 +10,17 @@ export default class Sidebar extends Component {
         {
           Bill: [
             { "project one": "Make Bread" },
-            { "project two": "Clean Oven" },
-          ],
+            { "project two": "Clean Oven" }
+          ]
         },
         { Ben: [{ "project one": "Prepare Egg Wash" }] },
-        { Betsy: [{ "project two": "Mop floors" }] },
+        { Betsy: [{ "project two": "Mop floors" }] }
       ],
       projectManagers: [
         { Dave: ["project one", "project three"] },
-        { Darla: ["project two"] },
+        { Darla: ["project two"] }
       ],
-      expanded: [],
+      expanded: []
     };
   }
 
@@ -33,13 +33,13 @@ export default class Sidebar extends Component {
       let newExpanded = this.state.expanded;
       newExpanded.push(e.target.id);
       this.setState({
-        expanded: newExpanded,
+        expanded: newExpanded
       });
     } else {
       let newExpanded = this.state.expanded;
       newExpanded = newExpanded.filter(item => item !== e.target.id);
       this.setState({
-        expanded: newExpanded,
+        expanded: newExpanded
       });
     }
   };

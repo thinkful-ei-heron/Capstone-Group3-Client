@@ -6,10 +6,11 @@ const FirebaseContext = React.createContext({
     name: null,
     role: null,
     email: null,
-    org: null
+    org: null,
   },
   employees: [],
   projects: [],
+  project_managers: [],
   jobs: [],
   loading: true,
 
@@ -23,6 +24,8 @@ const FirebaseContext = React.createContext({
   createUserInorg: () => {},
   newSetUser: () => {},
   getOrgName: () => {},
+  getProjectManagers: () => {},
+  setProjectManagersState: () => {},
 
   setNewJob: () => {},
   watchAuth: () => {},
@@ -30,7 +33,7 @@ const FirebaseContext = React.createContext({
   doSignInWithEmailAndPassword: () => {},
   doSignOut: () => {},
   doPasswordReset: () => {},
-  doPasswordUpdate: () => {}
+  doPasswordUpdate: () => {},
 
   // DEPRECATED
   // setUser: () => {},
@@ -47,11 +50,12 @@ export class ContextProvider extends React.Component {
     user: {
       id: "",
       name: "",
-      org: ""
+      org: "",
     },
     employees: [],
     projects: [],
-    jobs: []
+    project_managers: [],
+    jobs: [],
   };
 
   setLoading = bool => {
@@ -116,6 +120,24 @@ export class ContextProvider extends React.Component {
     this.setState({ employees: emps });
   };
 
+  getProjectManagers = org => {
+    let pms = [];
+    db.collection("organizations")
+      .doc(org)
+      .collection("users")
+      .where("role", "==", "project manager")
+      .onSnapshot(snap => {
+        snap.forEach(i => {
+          pms.push(i.data());
+        });
+      });
+    return pms;
+  };
+
+  setProjectManagersState = pms => {
+    this.setState({ project_managers: pms });
+  };
+
   createUserInOrg = (newUser, org) => {
     return db
       .collection("organizations")
@@ -136,8 +158,8 @@ export class ContextProvider extends React.Component {
             email: snapshot.data().email,
             name: snapshot.data().name,
             role: snapshot.data().role,
-            org: org
-          }
+            org: org,
+          },
         });
       });
   };
@@ -157,27 +179,27 @@ export class ContextProvider extends React.Component {
 
   addProject = newProject => {
     db.collection(`organization/${this.state.user.org.id}/projects`).add(
-      newProject
+      newProject,
     );
   };
 
   setNewJob = job => {
     this.setState({
-      jobs: [...this.state.jobs, job]
+      jobs: [...this.state.jobs, job],
     });
   };
 
   addJob = (newJob, project_id) => {
     db.collection(
-      `organizations/${this.state.user.org.id}/projects/${project_id}/jobs`
+      `organizations/${this.state.user.org.id}/projects/${project_id}/jobs`,
     )
       .add(newJob)
       .then(() => {
         this.setState(
           {
-            jobs: [...this.state.jobs, newJob]
+            jobs: [...this.state.jobs, newJob],
           },
-          () => "success"
+          () => "success",
         );
         //return newJob
       })
@@ -192,7 +214,7 @@ export class ContextProvider extends React.Component {
 
   addProject = newProject => {
     db.collection(`organizations/${this.state.user.org.id}/projects`).add(
-      newProject
+      newProject,
     );
   };
 
@@ -212,7 +234,7 @@ export class ContextProvider extends React.Component {
     auth
       .signOut()
       .then(res =>
-        this.setState({ user: null, projects: [], employees: [], jobs: [] })
+        this.setState({ user: null, projects: [], employees: [], jobs: [] }),
       )
       .catch(error => console.log(error));
 
@@ -392,6 +414,7 @@ export class ContextProvider extends React.Component {
       user: this.state.user,
       employees: this.state.employees,
       projects: this.state.projects,
+      project_managers: this.state.project_managers,
       jobs: this.state.jobs,
       getOrgName: this.getOrgName,
       addProject: this.addProject,
@@ -412,7 +435,9 @@ export class ContextProvider extends React.Component {
       setEmployeeState: this.setEmployeeState,
       setProjectState: this.setProjectState,
       getJobs: this.getJobs,
-      setJobsState: this.setJobsState
+      setJobsState: this.setJobsState,
+      getProjectManagers: this.getProjectManagers,
+      setProjectManagersState: this.setProjectManagersState,
 
       // DEPRECATED
       // setProjects: this.setProjects,

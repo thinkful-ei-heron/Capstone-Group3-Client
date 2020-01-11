@@ -8,24 +8,27 @@ import Loading from "../Loading/Loading";
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
     let emps = [],
       projs = [],
-      jobs = [];
+      jobs = [],
+      pms = [];
     // React made me do this...
     try {
       emps = this.context.getEmployees("orgOne");
       projs = this.context.getProjects("orgOne");
       jobs = this.context.getJobs("orgOne");
+      pms = this.context.getProjectManagers("orgOne");
     } catch (error) {
       throw new Error(error);
     } finally {
       this.context.setProjectState(projs);
       this.context.setEmployeeState(emps);
       this.context.setJobsState(jobs);
+      this.context.setProjectManagersState(pms);
     }
     // sorry not sorry
     // #WorksOnMyMachine

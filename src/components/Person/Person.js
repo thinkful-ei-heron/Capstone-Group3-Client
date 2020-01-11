@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PersonDetails from '../PersonDetails/PersonDetails';
+import React, { Component } from "react";
+import PersonDetails from "../PersonDetails/PersonDetails";
 
 export default class Person extends Component {
   state = {
@@ -7,7 +7,7 @@ export default class Person extends Component {
   };
 
   handleClick() {
-    //console.log('person was clicked');
+    console.log("person was clicked");
     this.setState({ expanded: !this.state.expanded });
   }
 

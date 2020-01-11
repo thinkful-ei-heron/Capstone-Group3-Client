@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Redirect, Link } from "react-router-dom";
 
 import FirebaseContext from "../../services/context";
+// import Person from "../Person/Person";
 import Loading from "../Loading/Loading";
 import { Sidebar } from "../Sidebar/Sidebar3";
 
@@ -12,15 +13,23 @@ export default class Dashboard extends Component {
   };
 
   componentDidMount() {
-    // console.log(this.context.user.email);
-    this.context.user
-      ? this.context.setEmployees(this.context.user.org.name).then(() => {
-          this.context.setProjects(
-            this.context.user.role,
-            this.context.user.name
-          );
-        })
-      : console.log("no user");
+    let emps = [],
+      projs = [],
+      jobs = [];
+    // React made me do this...
+    try {
+      emps = this.context.getEmployees("orgOne");
+      projs = this.context.getProjects("orgOne");
+      jobs = this.context.getJobs("orgOne");
+    } catch (error) {
+      throw new Error(error);
+    } finally {
+      this.context.setProjectState(projs);
+      this.context.setEmployeeState(emps);
+      this.context.setJobsState(jobs);
+    }
+    // sorry not sorry
+    // #WorksOnMyMachine
   }
 
   render() {
@@ -55,7 +64,7 @@ export default class Dashboard extends Component {
                 <ul>
                   {this.context.projects.map((proj, i) => {
                     return (
-                      <Link to={`/project/${proj.id}`} key={proj.id}>
+                      <Link to={`/project/${proj.id}`} key={i}>
                         <li>
                           <span>{proj.name}</span>
                           <span>Manager: {proj.project_manager}</span>

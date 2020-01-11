@@ -6,7 +6,7 @@ export default class NewProject extends Component {
     return (
       <>
         <h1>New Project</h1>
-        <ProjectForm {...this.props}/>
+        <ProjectForm {...this.props} />
       </>
     );
   }

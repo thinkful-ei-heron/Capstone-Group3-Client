@@ -19,36 +19,43 @@ export default class Dashboard extends Component {
   componentDidMount() {
     let emps = [],
       projs = [],
-      jobs = [];
-    // React made me do this...
-    try {
-      emps = this.context.getEmployees('orgOne');
-      projs = this.context.getProjects('orgOne');
-      jobs = this.context.getJobs('orgOne');
-    } catch (error) {
-      throw new Error(error);
-    } finally {
-      this.context.setProjectState(projs);
-      this.context.setEmployeeState(emps);
-      this.context.setJobsState(jobs);
-    }
-    // sorry not sorry
-    // #WorksOnMyMachine
+      jobs = [],
+      pms = [];
+    this.context
+      .getProjects('orgOne')
+      .then(snapshot => {
+        snapshot.forEach(async i => {
+          projs.push(i.data());
+          await this.context.getJobs('orgOne', i.id).then(snap => snap.forEach(job => jobs.push(job.data())));
+        });
+      })
+      .then(() => this.context.getEmployees('orgOne'))
+      .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
+      .then(() => this.context.getProjectManagers('orgOne'))
+      .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
+      .then(() => {
+        console.log(jobs);
+        this.context.setProjectState(projs);
+        this.context.setJobsState(jobs);
+        this.context.setEmployeeState(emps);
+        this.context.setProjectManagersState(pms);
+      });
   }
 
   render() {
-    // console.log("this.context.user", this.context.user);
-    //console.log('this.context.projects', this.context.projects);
-    // console.log("this.context.employees", this.context.employees);
-    // console.log("this.context.org", this.context.org);
-    if (this.state.loading) return <Loading />;
+    //console.log('this.context.user', this.context.user);
+    console.log('this.context.projects ', this.context.projects);
+    console.log('this.context.jobs ', this.context.jobs);
+    console.log('this.context.employees', this.context.employees);
+    console.log('this.context.project_managers', this.context.project_managers);
+    if (!this.context.user) return <Loading />;
     else
       return (
         <>
           {!this.context.user && <Redirect to="/register" />}
           <section className="Dashboard__container">
             <div className="Dashboard__header">
-              {<h2>{this.context.user.org.name}</h2>}
+              {<h2>{this.context.user.org}</h2>}
               <span className="Dashboard__date">{new Date().toLocaleString()}</span>
             </div>
             <section className="Dashboard__projects">

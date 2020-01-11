@@ -4,11 +4,12 @@ import { Redirect, Link } from "react-router-dom";
 import FirebaseContext from "../../services/context";
 // import Person from "../Person/Person";
 import Loading from "../Loading/Loading";
+import { Sidebar } from "../Sidebar/Sidebar";
 
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    loading: true,
+    loading: true
   };
 
   componentDidMount() {
@@ -30,8 +31,6 @@ export default class Dashboard extends Component {
       this.context.setJobsState(jobs);
       this.context.setProjectManagersState(pms);
     }
-    // sorry not sorry
-    // #WorksOnMyMachine
   }
 
   render() {
@@ -86,6 +85,7 @@ export default class Dashboard extends Component {
               </ul>
             </section>
           </section>
+          <Sidebar />
         </>
       );
   }

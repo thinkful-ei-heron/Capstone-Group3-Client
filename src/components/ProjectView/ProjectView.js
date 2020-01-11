@@ -6,7 +6,7 @@ import Loading from "../Loading/Loading";
 import Jobs from "../Jobs/Jobs";
 import Dropdown from "../Dropdown/Dropdown";
 import Statistics from "../Statistics/Statistics";
-import Sidebar from "../Sidebar/Sidebar";
+import { Sidebar } from "../Sidebar/Sidebar";
 import NewJob from "../NewJob/NewJob";
 
 export default class ProjectView extends Component {
@@ -30,8 +30,29 @@ export default class ProjectView extends Component {
 
   static contextType = FirebaseContext;
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.id !== this.props.id) {
+      const jobs = this.context.jobs;
+      const projects = this.context.projects;
+      const proj = projects.find(project => project.id === this.props.id);
+      const projJobs = jobs.filter(job => job.project_id === this.props.id);
+      this.setState({
+        project: {
+          name: proj.name,
+          description: proj.description,
+          progress: proj.progress,
+          deadline: new Date(proj.deadline.seconds * 1000),
+          project_manager: proj.project_manager,
+          jobs: projJobs,
+          project_workers: proj.project_workers
+        },
+        selectedProjectManager: null,
+        loading: false
+      });
+    }
+  }
+
   componentDidMount() {
-    console.log(this.context.user);
     const jobs = this.context.jobs;
     const projects = this.context.projects;
     const proj = projects.find(project => project.id === this.props.id);
@@ -41,7 +62,7 @@ export default class ProjectView extends Component {
         name: proj.name,
         description: proj.description,
         progress: proj.progress,
-        deadline: proj.deadline,
+        deadline: new Date(proj.deadline.seconds * 1000),
         project_manager: proj.project_manager,
         jobs: projJobs,
         project_workers: proj.project_workers

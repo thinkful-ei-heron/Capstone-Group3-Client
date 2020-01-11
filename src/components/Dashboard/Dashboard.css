@@ -1,0 +1,57 @@
+.Dashboard__container {
+}
+
+.Dashboard__header,
+.Dashboard__project_header,
+.Dashboard__personnnel_header {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.Dashboard__personnnel_header,
+.Dashboard__project_header {
+  height: 60px;
+  background-color: #5c9ad1;
+}
+
+.Dashboard__list {
+  margin: 0;
+  padding-left: 25px;
+  list-style: none;
+}
+
+.Dashboard__li {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.Dashboard__proj_name {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+.Dashboard__proj_mgr {
+  font-size: 1rem;
+}
+
+.Dashboard__proj_prog_date {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Dashhboard__proj_prog {
+  width: 150px;
+}
+
+.Dashboard__container a,
+.Dashboard__container a:hover,
+.Dashboard__container a:visited {
+  color: black;
+}

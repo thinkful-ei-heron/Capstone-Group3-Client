@@ -6,7 +6,7 @@ const FirebaseContext = React.createContext({
     name: null,
     role: null,
     email: null,
-    org: null
+    org: null,
   },
   employees: [],
   projects: [],
@@ -33,7 +33,7 @@ const FirebaseContext = React.createContext({
   doSignInWithEmailAndPassword: () => {},
   doSignOut: () => {},
   doPasswordReset: () => {},
-  doPasswordUpdate: () => {}
+  doPasswordUpdate: () => {},
 
   // DEPRECATED
   // setUser: () => {},
@@ -50,12 +50,12 @@ export class ContextProvider extends React.Component {
     user: {
       id: "",
       name: "",
-      org: ""
+      org: "",
     },
     employees: [],
     projects: [],
     project_managers: [],
-    jobs: []
+    jobs: [],
   };
 
   setLoading = bool => {
@@ -158,8 +158,8 @@ export class ContextProvider extends React.Component {
             email: snapshot.data().email,
             name: snapshot.data().name,
             role: snapshot.data().role,
-            org: org
-          }
+            org: org,
+          },
         });
       });
   };
@@ -179,27 +179,27 @@ export class ContextProvider extends React.Component {
 
   addProject = newProject => {
     db.collection(`organization/${this.state.user.org.id}/projects`).add(
-      newProject
+      newProject,
     );
   };
 
   setNewJob = job => {
     this.setState({
-      jobs: [...this.state.jobs, job]
+      jobs: [...this.state.jobs, job],
     });
   };
 
   addJob = (newJob, project_id) => {
     db.collection(
-      `organizations/${this.state.user.org.id}/projects/${project_id}/jobs`
+      `organizations/${this.state.user.org.id}/projects/${project_id}/jobs`,
     )
       .add(newJob)
       .then(() => {
         this.setState(
           {
-            jobs: [...this.state.jobs, newJob]
+            jobs: [...this.state.jobs, newJob],
           },
-          () => "success"
+          () => "success",
         );
         //return newJob
       })
@@ -214,7 +214,7 @@ export class ContextProvider extends React.Component {
 
   addProject = newProject => {
     db.collection(`organizations/${this.state.user.org.id}/projects`).add(
-      newProject
+      newProject,
     );
   };
 
@@ -234,7 +234,7 @@ export class ContextProvider extends React.Component {
     auth
       .signOut()
       .then(res =>
-        this.setState({ user: null, projects: [], employees: [], jobs: [] })
+        this.setState({ user: null, projects: [], employees: [], jobs: [] }),
       )
       .catch(error => console.log(error));
 
@@ -437,7 +437,11 @@ export class ContextProvider extends React.Component {
       getJobs: this.getJobs,
       setJobsState: this.setJobsState,
       getProjectManagers: this.getProjectManagers,
+<<<<<<< HEAD
       setProjectManagersState: this.setProjectManagersState
+=======
+      setProjectManagersState: this.setProjectManagersState,
+>>>>>>> 4152c0271adb279cad5424682e2d8ad1396fe7ab
 
       // DEPRECATED
       // setProjects: this.setProjects,

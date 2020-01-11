@@ -7,9 +7,10 @@ const FirebaseContext = React.createContext({
     name: '',
     email: '',
     org: {
-      id: '',
-      name: ''
-    }
+      name: '',
+      id: ''
+    },
+    role: ''
   },
   employees: [],
   projects: [],
@@ -28,6 +29,7 @@ const FirebaseContext = React.createContext({
   doPasswordReset: () => {},
   doPasswordUpdate: () => {},
   doGetProject: () => {},
+  setNewJob: () => {},
   doGetProjectJobs: () => {}
 });
 
@@ -37,16 +39,17 @@ export class ContextProvider extends React.Component {
   state = {
     user: {
       id: '',
-      role: '',
       name: '',
       org: {
-        id: '',
-        name: ''
-      }
+        name: '',
+        id: ''
+      },
+      role: ''
     },
     employees: [],
     projects: [],
-    jobs: []
+    jobs: [],
+    loading: true
   };
 
   setLoading = bool => {
@@ -119,13 +122,13 @@ export class ContextProvider extends React.Component {
   };
 
   setProjects = (role, name) => {
-    console.log(`organizations/${this.state.user.org.id}/projects`);
+    //console.log(`organizations/${this.state.user.org.id}/projects`);
     return db
       .collection(`organizations/${this.state.user.org.id}/projects`)
       .get()
       .then(snapshot => {
-        console.log('users role is ' + role);
-        console.log(role === 'project manager');
+        //console.log('users role is ' + role);
+        //console.log(role === 'project manager');
         const projects = [];
         if (role === 'project worker') {
           snapshot.forEach(doc => {
@@ -135,7 +138,7 @@ export class ContextProvider extends React.Component {
           });
         } else if (role === 'project manager') {
           snapshot.forEach(doc => {
-            console.log(doc.data().project_manager + name);
+            //console.log(doc.data().project_manager + name);
             if (doc.data().project_manager === name) {
               projects.push({ id: doc.id, ...doc.data() });
             }
@@ -190,7 +193,7 @@ export class ContextProvider extends React.Component {
           // console.log(this.state.jobs);
 
           this.setState({
-            jobs: [...this.state.jobs, jobs]
+            jobs: [...this.state.jobs, ...jobs]
           });
         })
         .catch(error => console.log(error));
@@ -201,8 +204,27 @@ export class ContextProvider extends React.Component {
     db.collection(`organizations/${this.state.user.org.id}/projects`).add(newProject);
   };
 
+  setNewJob = job => {
+    this.setState({
+      jobs: [...this.state.jobs, job]
+    });
+  };
+
   addJob = (newJob, project_id) => {
-    db.collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`).add(newJob);
+    db.collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`)
+      .add(newJob)
+      .then(() => {
+        this.setState(
+          {
+            jobs: [...this.state.jobs, newJob]
+          },
+          () => 'success'
+        );
+        //return newJob
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   addUser = newUser => {
@@ -213,9 +235,14 @@ export class ContextProvider extends React.Component {
     db.collection(`organizations/${this.state.user.org.id}/projects`).add(newProject);
   };
 
-  addJob = (newJob, project_id) => {
-    db.collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`).add(newJob);
-  };
+  // addJob = (newJob, project_id) => {
+  //   console.log('adding job!')
+  //   db.collection(
+  //     `organizations/${this.state.user.org.id}/projects/${project_id}/jobs`,
+  //   ).add(newJob).then(doc => {
+  //     console.log(doc)
+  //   })
+  // };
 
   addUser = newUser => {
     db.collection('users').add(newUser);
@@ -278,6 +305,7 @@ export class ContextProvider extends React.Component {
       doPasswordUpdate: this.doPasswordUpdate,
       doGetProject: this.doGetProject,
       doGetProjectJobs: this.doGetProjectJobs,
+      setNewJob: this.setNewJob,
       setLoading: this.setLoading
     };
     return <FirebaseContext.Provider value={value}>{this.props.children}</FirebaseContext.Provider>;

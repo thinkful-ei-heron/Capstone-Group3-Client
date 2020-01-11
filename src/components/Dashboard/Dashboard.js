@@ -9,8 +9,7 @@ import { Sidebar } from "../Sidebar/Sidebar";
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    loading: true,
-    loggedIn: false
+    loading: true
   };
 
   componentDidMount() {
@@ -31,13 +30,6 @@ export default class Dashboard extends Component {
       this.context.setEmployeeState(emps);
       this.context.setJobsState(jobs);
       this.context.setProjectManagersState(pms);
-      if (this.context.user) {
-        this.setState({
-          loggedIn: true
-        });
-      }
-      // sorry not sorry
-      // #WorksOnMyMachine
     }
   }
 

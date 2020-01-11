@@ -9,15 +9,11 @@ const ProjectWorkers = props => {
 
   const toggleExpand = props.toggleExpand;
 
-  const projectWorkerList = context.employees.filter(
-    employee => employee.role !== "project manager" && employee.role !== "admin"
-  );
-
   let completeWorkerList = [];
 
   const populateCompleteWorkerList = () => {
     completeWorkerList = [];
-    projectWorkerList.map(worker => {
+    context.employees.map(worker => {
       let projectKeys = [];
       let jobObject = {};
       let newObj = { [worker.name]: [] };
@@ -45,8 +41,8 @@ const ProjectWorkers = props => {
   };
 
   const onLinkClick = name => {
-    let project = context.projects.filter(proj => proj.name !== name);
-    console.log(project[0].id);
+    let project = context.projects.filter(proj => proj.name === name);
+    console.log(project);
     return project[0].id;
   };
 
@@ -67,8 +63,6 @@ const ProjectWorkers = props => {
         let jobs = Object.values(project);
         console.log(name);
         let itemId = "workerProject" + index;
-        //li Link
-        //wire up expanded toggle
         return (
           <li key={index}>
             <button id={itemId} onClick={e => props.toggleExpand(e)}>

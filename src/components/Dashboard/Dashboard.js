@@ -4,32 +4,41 @@ import { Redirect, Link } from "react-router-dom";
 import FirebaseContext from "../../services/context";
 // import Person from "../Person/Person";
 import Loading from "../Loading/Loading";
-import { Sidebar } from "../Sidebar/Sidebar3";
+import { Sidebar } from "../Sidebar/Sidebar";
 
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    loading: true
+    loading: true,
+    loggedIn: false
   };
 
   componentDidMount() {
     let emps = [],
       projs = [],
-      jobs = [];
+      jobs = [],
+      pms = [];
     // React made me do this...
     try {
       emps = this.context.getEmployees("orgOne");
       projs = this.context.getProjects("orgOne");
       jobs = this.context.getJobs("orgOne");
+      pms = this.context.getProjectManagers("orgOne");
     } catch (error) {
       throw new Error(error);
     } finally {
       this.context.setProjectState(projs);
       this.context.setEmployeeState(emps);
       this.context.setJobsState(jobs);
+      this.context.setProjectManagersState(pms);
+      if (this.context.user) {
+        this.setState({
+          loggedIn: true
+        });
+      }
+      // sorry not sorry
+      // #WorksOnMyMachine
     }
-    // sorry not sorry
-    // #WorksOnMyMachine
   }
 
   render() {

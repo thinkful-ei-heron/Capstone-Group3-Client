@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import FirebaseContext from '../../services/context';
-import { ProgressBar } from '../ProgressBar/ProgressBar';
 import Person from '../Person/Person';
+import { ProgressBar } from '../ProgressBar/ProgressBar';
 import Loading from '../Loading/Loading';
 import './Dashboard.css';
 
@@ -17,14 +17,23 @@ export default class Dashboard extends Component {
   };
 
   componentDidMount() {
-    console.log(this.context.user);
-    this.context.user
-      ? this.context.setEmployees(this.context.user.org.name).then(() => {
-          this.context
-            .setProjects(this.context.user.role, this.context.user.name)
-            .then(this.setState({ loading: false }));
-        })
-      : this.setState({ loading: false });
+    let emps = [],
+      projs = [],
+      jobs = [];
+    // React made me do this...
+    try {
+      emps = this.context.getEmployees('orgOne');
+      projs = this.context.getProjects('orgOne');
+      jobs = this.context.getJobs('orgOne');
+    } catch (error) {
+      throw new Error(error);
+    } finally {
+      this.context.setProjectState(projs);
+      this.context.setEmployeeState(emps);
+      this.context.setJobsState(jobs);
+    }
+    // sorry not sorry
+    // #WorksOnMyMachine
   }
 
   render() {

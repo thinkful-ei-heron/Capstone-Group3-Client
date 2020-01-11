@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Select from 'react-select';
+import Select from "react-select";
 import FirebaseContext from "../../services/context";
 
 export default class Dropdown extends Component {
@@ -12,11 +12,10 @@ export default class Dropdown extends Component {
 
   static contextType = FirebaseContext;
 
-
   handleChange = selectedOption => {
-    this.setState({ selectedOption })
+    this.setState({ selectedOption });
     this.props.setSelected(selectedOption);
-  }
+  };
 
   populateOptions = array => {
     let selectArray = [];
@@ -36,6 +35,6 @@ export default class Dropdown extends Component {
         options={this.populateOptions(this.props.employees)}
         isMulti={this.props.isMulti ? true : false}
       />
-    )
+    );
   }
 }

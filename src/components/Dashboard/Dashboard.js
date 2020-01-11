@@ -8,7 +8,7 @@ import Loading from "../Loading/Loading";
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    loading: true,
+    loading: true
   };
 
   componentDidMount() {

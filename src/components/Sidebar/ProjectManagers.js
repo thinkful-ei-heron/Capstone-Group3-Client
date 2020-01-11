@@ -7,14 +7,10 @@ const ProjectManagers = props => {
 
   const expanded = props.expanded;
 
-  const projectManagerList = context.employees.filter(
-    employee => employee.role !== "project worker" && employee.role !== "admin"
-  );
-
   let completeManagerList = [];
 
   const populateCompleteManagerList = () => {
-    projectManagerList.map(manager => {
+    context.project_managers.map(manager => {
       let projectArray = [];
       context.projects.map(project => {
         if (project.project_manager === manager.name)
@@ -26,7 +22,7 @@ const ProjectManagers = props => {
   };
 
   const onLinkClick = name => {
-    let project = context.projects.filter(proj => proj.name !== name);
+    let project = context.projects.filter(proj => proj.name === name);
     return project[0].id;
   };
 

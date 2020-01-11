@@ -10,6 +10,7 @@ const FirebaseContext = React.createContext({
   },
   employees: [],
   projects: [],
+  project_managers: [],
   jobs: [],
   loading: true,
 
@@ -23,6 +24,8 @@ const FirebaseContext = React.createContext({
   createUserInorg: () => {},
   newSetUser: () => {},
   getOrgName: () => {},
+  getProjectManagers: () => {},
+  setProjectManagersState: () => {},
 
   setNewJob: () => {},
   watchAuth: () => {},
@@ -51,6 +54,7 @@ export class ContextProvider extends React.Component {
     },
     employees: [],
     projects: [],
+    project_managers: [],
     jobs: []
   };
 
@@ -114,6 +118,24 @@ export class ContextProvider extends React.Component {
 
   setEmployeeState = emps => {
     this.setState({ employees: emps });
+  };
+
+  getProjectManagers = org => {
+    let pms = [];
+    db.collection("organizations")
+      .doc(org)
+      .collection("users")
+      .where("role", "==", "project manager")
+      .onSnapshot(snap => {
+        snap.forEach(i => {
+          pms.push(i.data());
+        });
+      });
+    return pms;
+  };
+
+  setProjectManagersState = pms => {
+    this.setState({ project_managers: pms });
   };
 
   createUserInOrg = (newUser, org) => {
@@ -392,6 +414,7 @@ export class ContextProvider extends React.Component {
       user: this.state.user,
       employees: this.state.employees,
       projects: this.state.projects,
+      project_managers: this.state.project_managers,
       jobs: this.state.jobs,
       getOrgName: this.getOrgName,
       addProject: this.addProject,
@@ -412,7 +435,9 @@ export class ContextProvider extends React.Component {
       setEmployeeState: this.setEmployeeState,
       setProjectState: this.setProjectState,
       getJobs: this.getJobs,
-      setJobsState: this.setJobsState
+      setJobsState: this.setJobsState,
+      getProjectManagers: this.getProjectManagers,
+      setProjectManagersState: this.setProjectManagersState
 
       // DEPRECATED
       // setProjects: this.setProjects,

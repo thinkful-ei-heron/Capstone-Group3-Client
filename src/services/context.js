@@ -106,7 +106,7 @@ export class ContextProvider extends React.Component {
     // console.log(org);
     return db
       .collection("users")
-      .where("organization", "==", `${org}`)
+      .where("org.name", "==", `${org}`)
       .get()
       .then(snapshot => {
         const employees = [];

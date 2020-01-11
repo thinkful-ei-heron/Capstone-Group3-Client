@@ -3,33 +3,15 @@ import { ProgressBar } from '../ProgressBar/ProgressBar';
 import FirebaseContext from "../../services/context.js";
 
 export default class Jobs extends Component {
-<<<<<<< HEAD
-  static defaultProps = {
-    job: {}
-=======
   constructor(props) {
     super(props);
     this.state = {
       expandJob: false
     }
->>>>>>> origin
   }
 
   static contextType = FirebaseContext;
 
-<<<<<<< HEAD
-  static contextType = FirebaseContext;
-
-  renderEmployeeList = (employees) => {
-    return employees.map((employee, index) => {
-      let itemKey = index+employee
-      return <li key={itemKey}>
-        {employee}
-      </li>
-    })
-  }
-=======
->>>>>>> origin
 
   renderEmployeeList = jobWorkers => {
     return jobWorkers.map((employee, index) => {
@@ -75,11 +57,7 @@ export default class Jobs extends Component {
     let job = this.props.job
     return (
       <>
-<<<<<<< HEAD
-         <li key={job.id} id={job.id}>
-=======
         <li key={job.id} id={job.id}>
->>>>>>> origin
             <button onClick={this.toggleExpand}>{this.state.expandJob ? '-' : '+'}</button>
             <h4>{job.name}</h4>
             <span>{job.description}</span>
@@ -87,14 +65,8 @@ export default class Jobs extends Component {
               <ProgressBar percentage={job.progress} />
             </div>
             {this.renderProjectButtons(job.approval, job.progress)}
-<<<<<<< HEAD
-            {this.state.expandJob ? <ul>{this.renderEmployeeList(job.project_workers)}</ul> : ''}
-
-          </li>
-=======
             {this.state.expandJob ? <ul>{this.renderEmployeeList(job.job_workers)}</ul> : ''}
         </li>
->>>>>>> origin
       </>
     )
   }

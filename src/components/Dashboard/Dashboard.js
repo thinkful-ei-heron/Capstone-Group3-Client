@@ -3,12 +3,12 @@ import { Redirect, Link } from "react-router-dom";
 
 import FirebaseContext from "../../services/context";
 import Loading from "../Loading/Loading";
-import { Sidebar } from "../Sidebar/Sidebar2";
+import { Sidebar } from "../Sidebar/Sidebar3";
 
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    loading: true,
+    loading: true
   };
 
   componentDidMount() {
@@ -17,7 +17,7 @@ export default class Dashboard extends Component {
       ? this.context.setEmployees(this.context.user.org.name).then(() => {
           this.context.setProjects(
             this.context.user.role,
-            this.context.user.name,
+            this.context.user.name
           );
         })
       : console.log("no user");

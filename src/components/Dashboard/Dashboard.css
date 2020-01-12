@@ -19,16 +19,29 @@
   background-color: #5c9ad1;
 }
 
+.Dashboard__projects_container {
+}
+
+.Dashboard__project_container {
+  width: 100%;
+  padding: 15px;
+}
+
 .Dashboard__list {
-  margin: 0;
-  padding-left: 25px;
   list-style: none;
+}
+
+.Dashboard__list li:nth-child(even) ul {
+  background-color: rgba(127, 204, 233, 0.8);
+}
+
+.Dashboard__list li:nth-child(odd) ul {
+  background-color: rgba(127, 204, 233, 0.5);
 }
 
 .Dashboard__li {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
 }
 
 .Dashboard__proj_name {

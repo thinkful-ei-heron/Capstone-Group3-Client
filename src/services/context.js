@@ -82,7 +82,7 @@ export class ContextProvider extends React.Component {
           projects: projs,
           jobs: jobs,
           employees: emps,
-          project_managers: postMessage
+          project_managers: pms
         });
       });
   };

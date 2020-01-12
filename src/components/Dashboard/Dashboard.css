@@ -1,0 +1,70 @@
+.Dashboard__container {
+}
+
+.Dashboard__header,
+.Dashboard__project_header,
+.Dashboard__personnnel_header {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.Dashboard__personnnel_header,
+.Dashboard__project_header {
+  height: 60px;
+  background-color: #5c9ad1;
+}
+
+.Dashboard__projects_container {
+}
+
+.Dashboard__project_container {
+  width: 100%;
+  padding: 15px;
+}
+
+.Dashboard__list {
+  list-style: none;
+}
+
+.Dashboard__list li:nth-child(even) ul {
+  background-color: rgba(127, 204, 233, 0.8);
+}
+
+.Dashboard__list li:nth-child(odd) ul {
+  background-color: rgba(127, 204, 233, 0.5);
+}
+
+.Dashboard__li {
+  display: flex;
+  flex-direction: column;
+}
+
+.Dashboard__proj_name {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+.Dashboard__proj_mgr {
+  font-size: 1rem;
+}
+
+.Dashboard__proj_prog_date {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Dashhboard__proj_prog {
+  width: 150px;
+}
+
+.Dashboard__container a,
+.Dashboard__container a:hover,
+.Dashboard__container a:visited {
+  color: black;
+}

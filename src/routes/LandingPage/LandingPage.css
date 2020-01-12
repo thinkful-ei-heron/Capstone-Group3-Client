@@ -1,6 +1,69 @@
+.LandingPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100vw;
+  height: 100%;
+  background-color: #6289b5;
+  background-image: linear-gradient(195deg, transparent 0 70%, #7fcce9 70% 100%),
+    linear-gradient(200deg, transparent 0 50%, #6bbde2 50% 80%),
+    linear-gradient(205deg, transparent 0 30%, #5c9ad1 30% 60%);
+}
+
+.LandingPage__hero_text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-bottom: 40px;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 2.5rem;
+  line-height: 6rem;
+  color: #c4f7ff;
+  z-index: 1;
+}
+
 img {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  left: 150px;
-  width: 40%;
+  left: 10%;
+  height: 40%;
+  z-index: 0;
+}
+
+.LandingPage__btn {
+  width: 190px;
+  height: 55px;
+  margin-bottom: 0;
+  border: none;
+  border-radius: 20px;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1.4rem;
+  color: white;
+  background-color: #dc2e5e;
+  z-index: 1;
+}
+
+@media only screen and (min-width: 700px) {
+  .LandingPage__hero_text {
+    margin-bottom: 0;
+    margin-left: 50px;
+    font-family: 'Oxygen', sans-serif;
+    font-size: 4rem;
+    line-height: 8rem;
+    color: #fff;
+  }
+
+  .LandingPage__btn {
+    width: 240px;
+    height: 65px;
+    margin-bottom: 75px;
+    font-size: 1.8rem;
+  }
+
+  img {
+    left: 15%;
+    height: 60%;
+  }
 }

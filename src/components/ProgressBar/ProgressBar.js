@@ -1,17 +1,11 @@
-import React from "react";
-
-const Filler = props => {
-  return (
-    <div className="filler" style={{ width: `${props.percentage}%` }}>
-      {props.percentage}%
-    </div>
-  );
-};
+import React from 'react';
+import './ProgressBar.css';
 
 export const ProgressBar = props => {
   return (
-    <div className="progress-bar">
-      <Filler percentage={props.percentage} />
+    <div className="ProgressBar__meter">
+      <span className="ProgressBar__fill" style={{ width: props.percentage + '%' }}></span>
+      <span className="ProgressBar__text">{props.percentage}%</span>
     </div>
   );
 };

@@ -7,12 +7,12 @@ import NewProject from "./components/NewProject/NewProject";
 import ProjectView from "./components/ProjectView/ProjectView";
 import LandingPage from "./routes/LandingPage/LandingPage";
 // import NewJob from "./components/NewJob/NewJob";
-
-// import { auth } from "./services/firebase";
-// import FirebaseContext from "./services/context";
-// import db from "./services/firebase";
+import Firebase from "./services/index";
 
 const App = props => {
+  Firebase.auth().onAuthStateChanged(user => {
+    if (user) console.table(`email: ${user.email}`, `org: ${user.displayName}`);
+  });
   return (
     <BrowserRouter>
       <header>

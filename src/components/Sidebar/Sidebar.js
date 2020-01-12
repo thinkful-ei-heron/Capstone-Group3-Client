@@ -1,140 +1,66 @@
-import React, { Component } from "react";
-import FirebaseContext from "../../services/context.js";
+import React, { useContext, useState } from "react";
+import FirebaseContext from "../../services/context";
+import { ProjectManagers } from "./ProjectManagers";
+import { ProjectWorkers } from "./ProjectWorkers";
 
-export default class Sidebar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userType: "owner",
-      employees: [
-        {
-          Bill: [
-            { "project one": "Make Bread" },
-            { "project two": "Clean Oven" }
-          ]
-        },
-        { Ben: [{ "project one": "Prepare Egg Wash" }] },
-        { Betsy: [{ "project two": "Mop floors" }] }
-      ],
-      projectManagers: [
-        { Dave: ["project one", "project three"] },
-        { Darla: ["project two"] }
-      ],
-      expanded: []
-    };
-  }
+const Sidebar = props => {
+  const context = useContext(FirebaseContext);
 
-  static contextType = FirebaseContext;
+  let [expanded, setExpanded] = useState([]);
+  let [clicked, setClick] = useState(false);
+  let [location, setLocation] = useState("");
+  let [locationUpdated, setUpdate] = useState(false);
 
-  toggleExpand = e => {
-    e.preventDefault();
-    console.log(e.target.id);
-    if (!this.state.expanded.includes(e.target.id)) {
-      let newExpanded = this.state.expanded;
+  console.log(window.location.href.includes("project"));
+
+  const toggleExpand = e => {
+    setClick(true);
+    let newExpanded = [];
+    if (!expanded.includes(e.target.id)) {
+      newExpanded = expanded;
       newExpanded.push(e.target.id);
-      this.setState({
-        expanded: newExpanded
-      });
+      setExpanded(newExpanded);
     } else {
-      let newExpanded = this.state.expanded;
-      newExpanded = newExpanded.filter(item => item !== e.target.id);
-      this.setState({
-        expanded: newExpanded
-      });
+      newExpanded = expanded.filter(id => id !== e.target.id);
+      setExpanded(newExpanded);
     }
+    return expanded;
   };
 
-  renderSubList = values => {
-    if (this.state.userType === "owner" && this.props.view !== "project") {
-      return values[0].map((project, index) => {
-        console.log(project);
-        return <li key={index}>{project}</li>;
-      });
-    } else {
-      return values[0].map((project, index) => {
-        return (
-          <li key={index}>
-            <button
-              onClick={e => this.toggleExpand(e)}
-              id={Object.keys(project)[0] + index}
-            >
-              expand
-            </button>
-            <h6>{Object.keys(project)[0]}</h6>
-            {this.state.expanded.includes(Object.keys(project)[0] + index) ? (
-              <div>
-                <span>{Object.values(project)[0]}</span>
-              </div>
-            ) : (
-              <></>
-            )}
-          </li>
-        );
-      });
-    }
-  };
+  if (clicked === true) setClick(false);
 
-  renderList = () => {
-    if (this.state.userType === "owner" && this.props.view !== "project") {
-      return this.state.projectManagers.map((manager, index) => {
-        return (
-          <li key={index}>
-            <button
-              onClick={e => this.toggleExpand(e)}
-              id={Object.keys(manager)[0] + index}
-            >
-              expand
-            </button>
-            <h5>{Object.keys(manager)[0]}</h5>
-            {this.state.expanded.includes(Object.keys(manager)[0] + index) ? (
-              <ul>{this.renderSubList(Object.values(manager))}</ul>
-            ) : (
-              <></>
-            )}
-          </li>
-        );
-      });
-    } else {
-      return this.state.employees.map((employee, index) => {
-        return (
-          <li key={index}>
-            <button
-              onClick={e => this.toggleExpand(e)}
-              id={Object.keys(employee)[0] + index}
-            >
-              expand
-            </button>
-            <h5>{Object.keys(employee)[0]}</h5>
-            {this.state.expanded.includes(Object.keys(employee)[0] + index) ? (
-              <ul>{this.renderSubList(Object.values(employee))}</ul>
-            ) : (
-              <></>
-            )}
-          </li>
-        );
-      });
-    }
-  };
-
-  render() {
-    if (this.state.userType === "employee" && this.props.view !== "project")
-      return <></>;
-    else {
-      return (
-        <div>
-          {this.state.userType === "owner" && this.props.view !== "project" ? (
-            <div>
-              <h3>Project Managers</h3>
-              <ul>{this.renderList()}</ul>
-            </div>
-          ) : (
-            <div>
-              <h3>Employees</h3>
-              <ul>{this.renderList()}</ul>
-            </div>
-          )}
-        </div>
-      );
-    }
+  if (!window.location.href.includes("project") && locationUpdated === true) {
+    setUpdate(false);
   }
-}
+
+  if (window.location.href.includes("project") && locationUpdated === false) {
+    setLocation("project");
+    setUpdate(true);
+  }
+
+  if (context.user.role === "project worker" && location !== "project") {
+    return <></>;
+  } else if (
+    context.user.role === "project manager" ||
+    context.user.role === "project worker"
+  ) {
+    return (
+      <>
+        <h2>Employees</h2>
+        <ul>
+          {<ProjectWorkers expanded={expanded} toggleExpand={toggleExpand} />}
+        </ul>
+      </>
+    );
+  } else if (context.user.role === "admin") {
+    //change to admin
+    return (
+      <>
+        <h2>PROJECT MANAGERS</h2>
+        <ProjectManagers expanded={expanded} toggleExpand={toggleExpand} />
+      </>
+    );
+  } else return null;
+};
+
+export { Sidebar };

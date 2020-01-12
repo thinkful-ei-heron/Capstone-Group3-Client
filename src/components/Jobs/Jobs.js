@@ -47,10 +47,17 @@ export default class Jobs extends Component {
     });
   };
 
+  componentDidMount() {
+    this.setState({
+      userRole: this.context.user.role
+    });
+  }
+
   render() {
     let job = this.props.job;
     return (
       <>
+        {/* JOB ID IS NOT ATTACHED TO JOB OBJECT, KEY WAS UNDEFINED AND NOT UNIQUE*/}
         <li key={job.id} id={job.id}>
           <button onClick={this.toggleExpand}>
             {this.state.expandJob ? "-" : "+"}

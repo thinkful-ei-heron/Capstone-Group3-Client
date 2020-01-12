@@ -18,7 +18,6 @@ export default class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    await this.context.getJobs('orgOne', 'aQKZoTwXVxmWbTAhFKB6');
     await this.context.initState();
   }
 

@@ -19,6 +19,12 @@ a:visited {
   text-decoration: none;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .Header {
   height: 150px;
 }

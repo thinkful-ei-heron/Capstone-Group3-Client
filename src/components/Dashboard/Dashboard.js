@@ -17,29 +17,9 @@ export default class Dashboard extends Component {
     loading: true
   };
 
-  componentDidMount() {
-    let emps = [],
-      projs = [],
-      jobs = [],
-      pms = [];
-    this.context
-      .getProjects('orgOne')
-      .then(snapshot => {
-        snapshot.forEach(async i => {
-          projs.push(i.data());
-          await this.context.getJobs('orgOne', i.id).then(snap => snap.forEach(job => jobs.push(job.data())));
-        });
-      })
-      .then(() => this.context.getEmployees('orgOne'))
-      .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
-      .then(() => this.context.getProjectManagers('orgOne'))
-      .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
-      .then(() => {
-        this.context.setProjectState(projs);
-        this.context.setJobsState(jobs);
-        this.context.setEmployeeState(emps);
-        this.context.setProjectManagersState(pms);
-      });
+  async componentDidMount() {
+    await this.context.getJobs('orgOne', 'aQKZoTwXVxmWbTAhFKB6');
+    await this.context.initState();
   }
 
   render() {
@@ -70,21 +50,25 @@ export default class Dashboard extends Component {
                   {this.context.projects &&
                     this.context.projects.map((proj, i) => {
                       return (
-                        <Link to={`/project/${proj.id}`} key={proj.id}>
-                          <li className="Dashboard__li">
-                            <span className="Dashboard__proj_name">{proj.name}</span>
-                            <span className="Dashboard__proj_mgr">Manager: {proj.project_manager}</span>
-                          </li>
-                          <li>{proj.description}</li>
-                          <li>
-                            <div className="Dashboard__proj_prog_date">
-                              <div className="Dashhboard__proj_prog">
-                                Est. Progress <ProgressBar percentage={proj.progress} />
-                              </div>
-                              {new Date(proj.deadline.seconds * 1000).toISOString().slice(0, 10)}
-                            </div>
-                          </li>
-                        </Link>
+                        <li>
+                          <ul className="Dashboard__project_container">
+                            <Link to={`/project/${proj.id}`} key={proj.id}>
+                              <li className="Dashboard__li">
+                                <span className="Dashboard__proj_name">{proj.name}</span>
+                                <span className="Dashboard__proj_mgr">Manager: {proj.project_manager}</span>
+                              </li>
+                              <li>{proj.description}</li>
+                              <li>
+                                <div className="Dashboard__proj_prog_date">
+                                  <div className="Dashhboard__proj_prog">
+                                    Est. Progress <ProgressBar percentage={proj.progress} />
+                                  </div>
+                                  {new Date(proj.deadline.seconds * 1000).toISOString().slice(0, 10)}
+                                </div>
+                              </li>
+                            </Link>
+                          </ul>
+                        </li>
                       );
                     })}
                 </ul>

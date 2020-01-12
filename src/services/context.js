@@ -13,7 +13,7 @@ const FirebaseContext = React.createContext({
   project_managers: [],
   jobs: [],
   loading: true,
-
+  initState: () => {},
   setLoading: () => {},
   getJobs: () => {},
   setJobsState: () => {},
@@ -26,7 +26,6 @@ const FirebaseContext = React.createContext({
   getOrgName: () => {},
   getProjectManagers: () => {},
   setProjectManagersState: () => {},
-
   setNewJob: () => {},
   watchAuth: () => {},
   doCreateUserWithEmailAndPassword: () => {},
@@ -60,6 +59,32 @@ export class ContextProvider extends React.Component {
 
   setLoading = bool => {
     this.setState({ loading: bool });
+  };
+
+  initState = () => {
+    let emps = [],
+      projs = [],
+      jobs = [],
+      pms = [];
+    this.getProjects('orgOne')
+      .then(snapshot => {
+        snapshot.forEach(async proj => {
+          projs.push(proj.data());
+          await this.getJobs('orgOne', proj.id).then(snap => snap.forEach(job => jobs.push(job.data())));
+        });
+      })
+      .then(() => this.getEmployees('orgOne'))
+      .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
+      .then(() => this.getProjectManagers('orgOne'))
+      .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
+      .then(() => {
+        this.setState({
+          projects: projs,
+          jobs: jobs,
+          employees: emps,
+          project_managers: postMessage
+        });
+      });
   };
 
   getJobs = (org, id) => {
@@ -383,6 +408,7 @@ export class ContextProvider extends React.Component {
       projects: this.state.projects,
       project_managers: this.state.project_managers,
       jobs: this.state.jobs,
+      initState: this.initState,
       getOrgName: this.getOrgName,
       addProject: this.addProject,
       addJob: this.addJob,

@@ -5,6 +5,7 @@ import Person from '../Person/Person';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import Loading from '../Loading/Loading';
 import './Dashboard.css';
+import { Sidebar } from '../Sidebar/Sidebar';
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -34,7 +35,6 @@ export default class Dashboard extends Component {
       .then(() => this.context.getProjectManagers('orgOne'))
       .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
       .then(() => {
-        console.log(jobs);
         this.context.setProjectState(projs);
         this.context.setJobsState(jobs);
         this.context.setEmployeeState(emps);
@@ -102,6 +102,7 @@ export default class Dashboard extends Component {
               </ul>
             </section>
           </section>
+          <Sidebar />
         </>
       );
   }

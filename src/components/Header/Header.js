@@ -8,10 +8,10 @@ import './Header.css';
 export default class Header extends Component {
   static contextType = AuthContext;
 
-  handleLogout = () => {
-    //this will be replaced with code to handle logout through firebase
-    app.auth().signOut();
-  };
+  // handleLogout = () => {
+  //   //this will be replaced with code to handle logout through firebase
+  //   app.auth().signOut();
+  // };
 
   renderLoginLink() {
     return (
@@ -45,7 +45,7 @@ export default class Header extends Component {
           <Link to="/dashboard">
             <h3>Dashboard</h3>
           </Link>
-          <Link className="Header__btn" to="/" onClick={this.handleLogout}>
+          <Link className="Header__btn" to="/logout">
             Log Out
           </Link>
         </div>

@@ -1,0 +1,28 @@
+.ProjectBar__project_container {
+  width: 100%;
+  padding: 15px;
+}
+
+.ProjectBar__li {
+  display: flex;
+  flex-direction: column;
+}
+
+.ProjectBar__proj_name {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+.ProjectBar__proj_mgr {
+  font-size: 1rem;
+}
+
+.ProjectBar__proj_prog_date {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Dashhboard__proj_prog {
+  width: 150px;
+}

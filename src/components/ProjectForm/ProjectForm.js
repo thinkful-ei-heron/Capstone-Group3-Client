@@ -15,7 +15,7 @@ export default class ProjectForm extends Component {
       project_manager: projectManager.value,
       deadline: new Date(deadline.value),
       date_created: new Date(),
-      org_id: this.context.user.org.id,
+      org_id: this.context.user.org,
       progress: 0,
       project_workers: []
     };

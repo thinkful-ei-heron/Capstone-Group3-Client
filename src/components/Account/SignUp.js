@@ -26,7 +26,12 @@ const SignUp = ({ history }) => {
           orgName.value,
         );
       })
-      .then(() => history.push("/login"));
+      .then(async () => {
+        await app
+          .auth()
+          .signInWithEmailAndPassword(email.value, password.value);
+        history.push("/dashboard");
+      });
   };
 
   return (

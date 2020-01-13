@@ -2,11 +2,8 @@ import React, { useCallback, useContext } from 'react';
 import { withRouter, Redirect } from 'react-router';
 import app from '../../services/base.js';
 import { AuthContext } from '../../services/Auth.js';
-import FirebaseContext from '../../services/context';
 
 const Login = ({ history }) => {
-  const context = useContext(FirebaseContext);
-  const { currentUser } = useContext(AuthContext);
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
@@ -20,6 +17,8 @@ const Login = ({ history }) => {
     },
     [history]
   );
+
+  const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
     return <Redirect to="/dashboard" />;

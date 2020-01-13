@@ -12,9 +12,9 @@ const FirebaseContext = React.createContext({
   projects: [],
   project_managers: [],
   jobs: [],
-  loading: true,
+  loaded: false,
   initState: () => {},
-  setLoading: () => {},
+  setloaded: () => {},
   getJobs: () => {},
   setJobsState: () => {},
   getProjects: () => {},
@@ -59,8 +59,8 @@ export class ContextProvider extends React.Component {
 
   db = app.firestore();
 
-  setLoading = bool => {
-    this.setState({ loading: bool });
+  setloaded = bool => {
+    this.setState({ loaded: bool });
   };
 
   initState = (email, org) => {
@@ -85,7 +85,8 @@ export class ContextProvider extends React.Component {
           projects: projs,
           jobs: jobs,
           employees: emps,
-          project_managers: postMessage
+          project_managers: postMessage,
+          loaded: true
         });
       });
   };
@@ -411,7 +412,7 @@ export class ContextProvider extends React.Component {
       addJob: this.addJob,
       addUser: this.addUser,
       setNewJob: this.setNewJob,
-      setLoading: this.setLoading,
+      setloaded: this.setloaded,
       createUserInOrg: this.createUserInOrg,
       newSetUser: this.newSetUser,
       getProjects: this.getProjects,

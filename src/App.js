@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
-import Dashboard from './components/Dashboard/Dashboard';
-import Header from './components/Header/Header';
-import Login from './components/Account/Login';
+import React, { useContext, useEffect, useState } from "react";
+import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Header from "./components/Header/Header";
+import Login from "./components/Account/Login";
 
-import SignUp from './components/Account/SignUp';
-import NewProject from './components/NewProject/NewProject';
-import ProjectView from './components/ProjectView/ProjectView';
-import LandingPage from './routes/LandingPage/LandingPage';
-import PrivateRoute from './services/PrivateRoute';
-import { AuthContext } from './services/Auth.js';
-import FirebaseContext from './services/context';
-import Loading from './components/Loading/Loading';
-import './App.css';
+import SignUp from "./components/Account/SignUp";
+import NewProject from "./components/NewProject/NewProject";
+import ProjectView from "./components/ProjectView/ProjectView";
+import LandingPage from "./routes/LandingPage/LandingPage";
+import PrivateRoute from "./services/PrivateRoute";
+import { AuthContext } from "./services/Auth.js";
+import FirebaseContext from "./services/context";
+import Loading from "./components/Loading/Loading";
+import "./App.css";
 // import NewJob from "./components/NewJob/NewJob";
-import Firebase from './services/index';
+import Firebase from "./services/index";
 
 const App = props => {
   const { currentUser } = useContext(AuthContext);
@@ -29,8 +29,9 @@ const App = props => {
       setLoading(false);
     };
 
-    if (currentUser) {
-      if (!context.loaded) initState(currentUser.email, currentUser.displayName);
+    if (currentUser && currentUser.displayName) {
+      if (!context.loaded)
+        initState(currentUser.email, currentUser.displayName);
     } else setLoading(false);
   }, [currentUser]);
 
@@ -44,7 +45,11 @@ const App = props => {
         <main className="app__main">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PrivateRoute exact path="/dashboard" component={() => <Dashboard user={currentUser} />} />
+            <PrivateRoute
+              exact
+              path="/dashboard"
+              component={() => <Dashboard user={currentUser} />}
+            />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={SignUp} />
 

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import app from '../../services/base.js';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import app from "../../services/base.js";
 
-import { AuthContext } from '../../services/Auth';
-import './Header.css';
+import { AuthContext } from "../../services/Auth";
+import "./Header.css";
 
 export default class Header extends Component {
   static contextType = AuthContext;
@@ -58,7 +58,9 @@ export default class Header extends Component {
               <span className="Header__app_name">App Name</span>
             </Link>
           </h1>
-          {this.context.currentUser ? this.renderLogoutLink() : this.renderLoginLink()}
+          {this.context.currentUser
+            ? this.renderLogoutLink()
+            : this.renderLoginLink()}
         </nav>
       </>
     );

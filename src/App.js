@@ -29,7 +29,7 @@ const App = props => {
       setLoading(false);
     };
 
-    if (currentUser) {
+    if (currentUse) {
       if (!context.loaded) initState(currentUser.email, currentUser.displayName);
     } else setLoading(false);
   }, [currentUser]);

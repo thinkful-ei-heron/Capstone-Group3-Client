@@ -19,6 +19,7 @@ const FirebaseContext = React.createContext({
   setJobsState: () => {},
   getProjects: () => {},
   setProjectState: () => {},
+  addProject: () => {},
   getEmployees: () => {},
   setEmployeeState: () => {},
   createUserInorg: () => {},
@@ -26,13 +27,7 @@ const FirebaseContext = React.createContext({
   getOrgName: () => {},
   getProjectManagers: () => {},
   setProjectManagersState: () => {},
-  setNewJob: () => {},
-  watchAuth: () => {},
-  doCreateUserWithEmailAndPassword: () => {},
-  doSignInWithEmailAndPassword: () => {},
-  doSignOut: () => {},
-  doPasswordReset: () => {},
-  doPasswordUpdate: () => {}
+  setNewJob: () => {}
 
   // DEPRECATED
   // setUser: () => {},
@@ -71,7 +66,15 @@ export class ContextProvider extends React.Component {
       pms = [];
     let name = '';
     let role = '';
-    this.getProjects('orgOne')
+
+    this.getUser(email, org)
+      .then(snapshot =>
+        snapshot.forEach(user => {
+          name = user.data().name;
+          role = user.data().role;
+        })
+      )
+      .then(() => this.getProjects('orgOne'))
       .then(snapshot => {
         snapshot.forEach(async proj => {
           projs.push(proj.data());
@@ -82,13 +85,6 @@ export class ContextProvider extends React.Component {
       .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
       .then(() => this.getProjectManagers('orgOne'))
       .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
-      .then(() => this.getUser(email, org))
-      .then(snapshot =>
-        snapshot.forEach(user => {
-          name = user.data().name;
-          role = user.data().role;
-        })
-      )
       .then(() => {
         this.setState({
           user: { id: email, name: name, role: role, org: org },
@@ -202,8 +198,9 @@ export class ContextProvider extends React.Component {
       .catch(error => console.log(error));
   };
 
-  addProject = newProject => {
-    this.db.collection(`organization/${this.state.user.org.id}/projects`).add(newProject);
+  addProject = async newProject => {
+    await this.db.collection(`organizations/${this.state.user.org}/projects`).add(newProject);
+    this.setState({ projects: [...this.state.projects, newProject] });
   };
 
   setNewJob = job => {
@@ -214,7 +211,7 @@ export class ContextProvider extends React.Component {
 
   addJob = (newJob, project_id) => {
     return this.db
-      .collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`)
+      .collection(`organizations/${this.state.user.org}/projects/${project_id}/jobs`)
       .add(newJob)
       .then(() => {
         this.setState(
@@ -228,14 +225,6 @@ export class ContextProvider extends React.Component {
       .catch(error => {
         console.log(error);
       });
-  };
-
-  addUser = newUser => {
-    this.db.collection('users').add(newUser);
-  };
-
-  addProject = newProject => {
-    this.db.collection(`organizations/${this.state.user.org.id}/projects`).add(newProject);
   };
 
   addUser = newUser => {

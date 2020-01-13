@@ -31,11 +31,11 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    console.log('this.context.user', this.context.user);
-    console.log('this.context.projects ', this.context.projects);
-    console.log('this.context.jobs ', this.context.jobs);
-    console.log('this.context.employees', this.context.employees);
-    console.log('this.context.project_managers', this.context.project_managers);
+    // console.log('this.context.user', this.context.user);
+    // console.log('this.context.projects ', this.context.projects);
+    // console.log('this.context.jobs ', this.context.jobs);
+    // console.log('this.context.employees', this.context.employees);
+    // console.log('this.context.project_managers', this.context.project_managers);
     if (!this.context.user) return <Loading />;
     else
       return (

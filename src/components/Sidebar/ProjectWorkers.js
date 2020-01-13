@@ -22,7 +22,6 @@ const ProjectWorkers = props => {
           projectKeys.push(project.name);
         }
         let jobArray = [];
-        console.log(context.jobs);
         context.jobs.map(job => {
           if (
             job.project_id === project.id &&
@@ -44,26 +43,26 @@ const ProjectWorkers = props => {
 
   const onLinkClick = name => {
     let project = context.projects.filter(proj => proj.name === name);
-    console.log(project);
+    //console.log(project);
     return project[0].id;
   };
 
   const renderWorkerJobs = jobs => {
     if (jobs[0].length === 0) return <h5>No Jobs Assigned</h5>;
     return jobs.map((job, index) => {
-      console.log(jobs);
+      //console.log(jobs);
       return <li key={index}>{job}</li>;
     });
   };
 
   const renderWorkerProjects = worker => {
-    console.log(Object.values(worker));
+    //console.log(Object.values(worker));
     return Object.values(worker).map(projects => {
       if (projects.length === 0) return <h4>No Projects Assigned</h4>;
       return projects.map((project, index) => {
         let name = Object.keys(project)[0];
         let jobs = Object.values(project);
-        console.log(name);
+        //console.log(name);
         let itemId = 'workerProject' + index;
         return (
           <li key={index}>

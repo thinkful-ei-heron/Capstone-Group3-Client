@@ -26,7 +26,7 @@ export default class Dashboard extends Component {
 
   toggleExpandPersonnel = e => {
     e.stopPropagation();
-    this.setState({ expandProjects: !this.state.expandPersonnel });
+    this.setState({ expandPersonnel: !this.state.expandPersonnel });
   };
 
   render() {

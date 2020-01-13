@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import app from '../../services/base';
 import FirebaseContext from '../../services/context';
+import { Label, Input } from '../Form/Form';
 
 const SignUp = ({ history }) => {
   const fbContext = React.useContext(FirebaseContext);
@@ -30,19 +31,29 @@ const SignUp = ({ history }) => {
   };
 
   return (
-    <div>
+    <div className="Login">
       <h1>Sign up</h1>
-      <form onSubmit={handleSignUp}>
-        <label>Email</label>
-        <input name="email" type="email" placeholder="Email" required />
-        <label>Password</label>
-        <input name="password" type="password" placeholder="Password" required />
-        <label htmlFor="username">Username:</label>
-        <input type="username" name="name" placeholder="Username" required />
-        <label htmlFor="orgName">Orginization Name:</label>
-        <input type="orgName" name="orgName" placeholder="Organization name" required />
-        <label htmlFor="role">Role:</label>
-        <input type="role" name="role" placeholder="role" required />
+      <form className="Login__form" onSubmit={handleSignUp}>
+        <Label>
+          email
+          <Input name="email" type="email" placeholder="Email" required />
+        </Label>
+        <Label>
+          Password
+          <Input name="password" type="password" placeholder="Password" required />
+        </Label>
+        <Label htmlFor="username">
+          Username
+          <Input type="username" name="name" placeholder="Username" required />
+        </Label>
+        <Label htmlFor="orgName">
+          Orginization Name
+          <Input type="orgName" name="orgName" placeholder="Organization name" required />
+        </Label>
+        <Label htmlFor="role">
+          Role
+          <Input type="role" name="role" placeholder="role" required />
+        </Label>
         <button type="submit">Sign Up</button>
       </form>
     </div>

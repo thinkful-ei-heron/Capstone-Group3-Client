@@ -72,9 +72,9 @@ export default class Dashboard extends Component {
               )}
             </section>
             <section className="Dashboard__personnel">
-              <div className="Dashboard__personnnel_header" onClick={this.toggleExpandPersonnel}>
+              <div className="Dashboard__personnel_header" onClick={this.toggleExpandPersonnel}>
                 <div className="Dashboard__fa_h1">
-                  {StyleIcon({ style: `${this.state.expandProjects ? 'minus' : 'plus'}` })}
+                  {StyleIcon({ style: `${this.state.expandPersonnel ? 'minus' : 'plus'}` })}
                   <h1>PERSONNEL</h1>
                 </div>
               </div>

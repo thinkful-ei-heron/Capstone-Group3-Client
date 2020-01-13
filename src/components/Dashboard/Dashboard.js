@@ -51,9 +51,11 @@ export default class Dashboard extends Component {
                   {StyleIcon({ style: `${this.state.expandProjects ? 'minus' : 'plus'}` })}
                   <h1>PROJECTS</h1>
                 </div>
-                <Link to="/new_project">
-                  <button>NEW</button>
-                </Link>
+                {this.context.user.role !== 'project worker' && (
+                  <Link to="/new_project">
+                    <button>NEW</button>
+                  </Link>
+                )}
               </div>
               {this.state.expandProjects && (
                 <div className="Dashboard__projects_container">

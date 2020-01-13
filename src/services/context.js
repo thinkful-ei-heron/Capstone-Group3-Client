@@ -235,7 +235,7 @@ export class ContextProvider extends React.Component {
     let orgId = this.state.user.org;
     let newId = null;
     let db = this.db;
-    this.db
+    await this.db
       .collection(
         `organizations/${this.state.user.org}/projects/${project_id}/jobs`
       )

@@ -99,6 +99,12 @@ export default class ProjectView extends Component {
     });
   };
 
+  renderPmList = () => {
+    let result = []
+    this.context.project_managers.forEach(pm => result.push(pm.name));
+    return result
+  }
+
   setProjectManager = () => {
     //code to set new PM for project
   };
@@ -134,7 +140,7 @@ export default class ProjectView extends Component {
                 <div id="select_pm">
                   <h3>SELECT Project Manager</h3>
                   <Dropdown
-                    employees={this.context.employees.filter(emp => emp.role === 'project manager')}
+                    employees={this.renderPmList()}
                     isMulti={false}
                     setSelected={this.setSelected}
                   />

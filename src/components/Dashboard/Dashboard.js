@@ -16,7 +16,7 @@ export default class Dashboard extends Component {
   state = {
     loading: true,
     expandProjects: true,
-    expandPersonnel: true,
+    expandPersonnel: true
   };
 
   toggleExpandProjects = e => {
@@ -54,7 +54,7 @@ export default class Dashboard extends Component {
               >
                 <div className="Dashboard__fa_h1">
                   {StyleIcon({
-                    style: `${this.state.expandProjects ? "minus" : "plus"}`,
+                    style: `${this.state.expandProjects ? "minus" : "plus"}`
                   })}
                   <h1>PROJECTS</h1>
                 </div>
@@ -84,7 +84,7 @@ export default class Dashboard extends Component {
               >
                 <div className="Dashboard__fa_h1">
                   {StyleIcon({
-                    style: `${this.state.expandPersonnel ? "minus" : "plus"}`,
+                    style: `${this.state.expandPersonnel ? "minus" : "plus"}`
                   })}
                   <h1>PERSONNEL</h1>
                 </div>

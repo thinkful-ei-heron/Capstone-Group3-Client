@@ -13,7 +13,7 @@ const SignUp = ({ history }) => {
       .createUserWithEmailAndPassword(email.value, password.value)
       .then(response => {
         return response.user.updateProfile({
-          displayName: orgName
+          displayName: orgName.value
         });
       })
       .then(() => {
@@ -21,12 +21,12 @@ const SignUp = ({ history }) => {
           {
             email: email.value,
             role: role.value,
-            name: name.value,
-            org: orgName.value
-          } // this is actually orgName
+            name: name.value
+          },
+          orgName.value
         );
-      });
-    history.push('/login');
+      })
+      .then(() => history.push('/login'));
   };
 
   return (

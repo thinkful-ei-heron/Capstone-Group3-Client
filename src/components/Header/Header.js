@@ -41,6 +41,9 @@ export default class Header extends Component {
           <span>Welcome, {this.props.userName}!</span>
           <span>Role: {this.props.role}</span>
         </div>
+        <Link to="/dashboard">
+          <h3>Dashboard</h3>
+        </Link>
         <Link className="Header__btn" to="/" onClick={this.handleLogout}>
           Log Out
         </Link>

@@ -1,8 +1,8 @@
-import app from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 
-const firebaseConfig = {
+const app = firebase.initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_DATABASE_URL,
@@ -11,9 +11,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
-};
+});
 
-const myFirebase = app.initializeApp(firebaseConfig);
-export const db = myFirebase.firestore();
-export const auth = myFirebase.auth();
-export default myFirebase;
+export default app;

@@ -7,6 +7,8 @@ import Loading from '../Loading/Loading';
 import './Dashboard.css';
 import { Sidebar } from '../Sidebar/Sidebar';
 
+import { AuthContext } from '../../services/Auth.js';
+
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
 // Do not change it.  If something doesn't work ask me to fix it. //
@@ -18,7 +20,11 @@ export default class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    await this.context.initState();
+    console.log(this.props.user);
+    console.log(this.props.user.email);
+    console.log(this.props.user.displayName);
+    await this.context.initState(this.props.user.email, this.props.user.displayName);
+    //console.log(this.context.currentUser);
   }
 
   render() {

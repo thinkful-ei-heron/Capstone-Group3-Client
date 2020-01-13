@@ -1,11 +1,13 @@
 .ProjectBar__project_container {
+  box-sizing: border-box;
   width: 100%;
   padding: 15px;
 }
 
-.ProjectBar__li {
+.ProjectBar__header {
   display: flex;
   flex-direction: column;
+  margin-bottom: 15px;
 }
 
 .ProjectBar__proj_name {
@@ -17,12 +19,30 @@
   font-size: 1rem;
 }
 
+.ProjectBar__description {
+  margin-bottom: 15px;
+}
+
 .ProjectBar__proj_prog_date {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
-.Dashhboard__proj_prog {
+.ProjectBar__proj_prog {
   width: 150px;
+}
+
+@media only screen and (min-width: 700px) {
+  .ProjectBar__link_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+
+  .ProjectBar__proj_prog {
+    margin-right: 15px;
+  }
 }

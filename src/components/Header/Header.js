@@ -1,17 +1,11 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import app from '../../services/base.js';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
-import { AuthContext } from '../../services/Auth';
-import './Header.css';
+import { AuthContext } from "../../services/Auth";
+import "./Header.css";
 
 export default class Header extends Component {
   static contextType = AuthContext;
-
-  // handleLogout = () => {
-  //   //this will be replaced with code to handle logout through firebase
-  //   app.auth().signOut();
-  // };
 
   renderLoginLink() {
     return (
@@ -63,7 +57,9 @@ export default class Header extends Component {
               <span className="Header__app_name">ManageLazily</span>
             </Link>
           </h1>
-          {this.context.currentUser ? this.renderLogoutLink() : this.renderLoginLink()}
+          {this.context.currentUser
+            ? this.renderLogoutLink()
+            : this.renderLoginLink()}
         </nav>
       </>
     );

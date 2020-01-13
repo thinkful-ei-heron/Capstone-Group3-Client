@@ -31,6 +31,7 @@ const FirebaseContext = React.createContext({
   setNewProject: () => {},
   updateProjectWorkers: () => {},
   setStateOnLogout: () => {},
+  createOwner: () => {},
 });
 
 export default FirebaseContext;
@@ -111,6 +112,36 @@ export class ContextProvider extends React.Component {
           loaded: true,
         });
       });
+  };
+
+  createOwner = async (user, org) => {
+    const addOrg = async () =>
+      await this.db
+        .collection("organizations")
+        .doc(org)
+        .set({
+          name: org,
+        });
+    const addProjectCollection = async () => {
+      await this.db
+        .collection("organizations")
+        .doc(org)
+        .collection("projects")
+        .add({});
+    };
+    const addUsersCollection = async () => {
+      await this.db
+        .collection("organizations")
+        .doc(org)
+        .collection("users")
+        .add({});
+    };
+
+    await addOrg().then(async () => {
+      await addProjectCollection();
+      await addUsersCollection();
+    });
+    this.createUserInOrg(user, org);
   };
 
   getUser = (email, org) => {
@@ -308,6 +339,7 @@ export class ContextProvider extends React.Component {
       setNewProject: this.setNewProject,
       updateProjectWorkers: this.updateProjectWorkers,
       setStateOnLogout: this.setStateOnLogout,
+      createOwner: this.createOwner,
     };
     return (
       <FirebaseContext.Provider value={value}>

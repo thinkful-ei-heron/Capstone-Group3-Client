@@ -107,11 +107,11 @@ export default class ProjectView extends Component {
     const { project, showJobForm } = this.state;
     if (this.state.loading) {
       return <Loading />;
-    } else {
+    } else { 
       return (
-        <div>
+        <>
           <header id="company_header">
-            <h2 id="companyName">{this.context.user.org.name}</h2>
+            <h2 id="companyName">{this.context.user.org}</h2>
             <span id="currentDate">{new Date().toDateString()}</span>
           </header>
           <div>
@@ -125,8 +125,8 @@ export default class ProjectView extends Component {
               </div>
               <div id="project_progress">
                 <span>Est. Progress</span>
+                <ProgressBar percentage={project.progress} />
               </div>
-              <ProgressBar percentage={project.progress} />
               <div id="project_deadline">
                 <span>Deadline: {new Date(project.deadline.toString()).toDateString()}</span>
               </div>
@@ -151,31 +151,36 @@ export default class ProjectView extends Component {
               )}
             </header>
           </div>
-          <div id="jobs_stats_container">
-            {this.context.user.role === 'project worker' ? <></> : <Statistics />}
-            <div id="jobs_container">
-              {this.context.user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
-              {this.context.user.role === 'project worker' ? (
-                ''
-              ) : (
-                <button onClick={this.showJobForm}>Add Job</button>
-              )}
-              {showJobForm ? (
-                <NewJob
-                  {...this.props}
-                  setJob={this.setJob}
-                  project={project}
-                  showJobForm={this.showJobForm}
-                  projectId={this.props.id}
-                />
-              ) : (
-                ''
-              )}
-              {<ul>{this.renderJobList()}</ul>}
+          <div id="projectView_main">
+            <div id="jobs_stats_container">
+              {this.context.user.role === 'project worker' ? <></> : <Statistics />}
+              <div id="jobs_container">
+                {this.context.user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
+                {this.context.user.role === 'project worker' ? (
+                  ''
+                ) : (
+                  <button onClick={this.showJobForm}>Add Job</button>
+                )}
+                </div>
+                {showJobForm ? (
+                  <NewJob
+                    {...this.props}
+                    setJob={this.setJob}
+                    project={project}
+                    showJobForm={this.showJobForm}
+                    projectId={this.props.id}
+                  />
+                ) : (
+                  ''
+                )}
+                {<ul>{this.renderJobList()}</ul>}
+              
+            </div>
+            <div id="sidebar_container">
+              <Sidebar view="project" />
             </div>
           </div>
-          <Sidebar view="project" />
-        </div>
+        </>
       );
     }
   }

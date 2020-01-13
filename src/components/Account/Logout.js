@@ -1,9 +1,9 @@
-import React from "react";
-import myFirebase from "../../services/firebase";
-import { Redirect } from "react-router-dom";
+import React from 'react';
+import app from '../../services/base.js';
+import { Redirect } from 'react-router-dom';
 
 const Logout = props => {
-  myFirebase.auth().signOut();
+  app.auth().signOut();
   return <Redirect to="/" />;
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { db, auth } from './firebase';
+import app from './base';
 
 const FirebaseContext = React.createContext({
   user: {
@@ -12,13 +12,14 @@ const FirebaseContext = React.createContext({
   projects: [],
   project_managers: [],
   jobs: [],
-  loading: true,
+  loaded: false,
   initState: () => {},
-  setLoading: () => {},
+  setloaded: () => {},
   getJobs: () => {},
   setJobsState: () => {},
   getProjects: () => {},
   setProjectState: () => {},
+  addProject: () => {},
   getEmployees: () => {},
   setEmployeeState: () => {},
   createUserInorg: () => {},
@@ -26,13 +27,7 @@ const FirebaseContext = React.createContext({
   getOrgName: () => {},
   getProjectManagers: () => {},
   setProjectManagersState: () => {},
-  setNewJob: () => {},
-  watchAuth: () => {},
-  doCreateUserWithEmailAndPassword: () => {},
-  doSignInWithEmailAndPassword: () => {},
-  doSignOut: () => {},
-  doPasswordReset: () => {},
-  doPasswordUpdate: () => {}
+  setNewJob: () => {}
 
   // DEPRECATED
   // setUser: () => {},
@@ -49,6 +44,7 @@ export class ContextProvider extends React.Component {
     user: {
       id: '',
       name: '',
+      role: '',
       org: ''
     },
     employees: [],
@@ -57,16 +53,28 @@ export class ContextProvider extends React.Component {
     jobs: []
   };
 
-  setLoading = bool => {
-    this.setState({ loading: bool });
+  db = app.firestore();
+
+  setloaded = bool => {
+    this.setState({ loaded: bool });
   };
 
-  initState = () => {
+  initState = (email, org) => {
     let emps = [],
       projs = [],
       jobs = [],
       pms = [];
-    this.getProjects('orgOne')
+    let name = '';
+    let role = '';
+
+    this.getUser(email, org)
+      .then(snapshot =>
+        snapshot.forEach(user => {
+          name = user.data().name;
+          role = user.data().role;
+        })
+      )
+      .then(() => this.getProjects('orgOne'))
       .then(snapshot => {
         snapshot.forEach(async proj => {
           projs.push(proj.data());
@@ -79,17 +87,28 @@ export class ContextProvider extends React.Component {
       .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
       .then(() => {
         this.setState({
+          user: { id: email, name: name, role: role, org: org },
           projects: projs,
           jobs: jobs,
           employees: emps,
-          project_managers: pms
+          project_managers: pms,
+          loaded: true
         });
       });
   };
 
+  getUser = (email, org) => {
+    return this.db
+      .collection('organizations')
+      .doc(org)
+      .collection('users')
+      .where('email', '==', email)
+      .get();
+  };
+
   getJobs = (org, id) => {
     //console.log(org, id);
-    return db
+    return this.db
       .collection('organizations')
       .doc(org)
       .collection('projects')
@@ -103,7 +122,7 @@ export class ContextProvider extends React.Component {
   };
 
   getProjects = org => {
-    return db
+    return this.db
       .collection('organizations')
       .doc(org)
       .collection('projects')
@@ -114,7 +133,7 @@ export class ContextProvider extends React.Component {
   };
 
   getEmployees = org => {
-    return db
+    return this.db
       .collection('organizations')
       .doc(org)
       .collection('users')
@@ -127,7 +146,7 @@ export class ContextProvider extends React.Component {
   };
 
   getProjectManagers = org => {
-    return db
+    return this.db
       .collection('organizations')
       .doc(org)
       .collection('users')
@@ -140,7 +159,7 @@ export class ContextProvider extends React.Component {
   };
 
   createUserInOrg = (newUser, org) => {
-    return db
+    return this.db
       .collection('organizations')
       .doc(org)
       .collection('users')
@@ -149,7 +168,8 @@ export class ContextProvider extends React.Component {
   };
 
   newSetUser = (email, org) => {
-    db.collection('organizations')
+    this.db
+      .collection('organizations')
       .doc(org)
       .collection('users')
       .doc(email)
@@ -167,7 +187,7 @@ export class ContextProvider extends React.Component {
 
   getOrgName = org => {
     // console.log(org);
-    return db
+    return this.db
       .collection('organizations')
       .doc(org)
       .get()
@@ -178,8 +198,9 @@ export class ContextProvider extends React.Component {
       .catch(error => console.log(error));
   };
 
-  addProject = newProject => {
-    db.collection(`organization/${this.state.user.org.id}/projects`).add(newProject);
+  addProject = async newProject => {
+    await this.db.collection(`organizations/${this.state.user.org}/projects`).add(newProject);
+    this.setState({ projects: [...this.state.projects, newProject] });
   };
 
   setNewJob = job => {
@@ -189,7 +210,8 @@ export class ContextProvider extends React.Component {
   };
 
   addJob = (newJob, project_id) => {
-    db.collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`)
+    return this.db
+      .collection(`organizations/${this.state.user.org}/projects/${project_id}/jobs`)
       .add(newJob)
       .then(() => {
         this.setState(
@@ -206,36 +228,11 @@ export class ContextProvider extends React.Component {
   };
 
   addUser = newUser => {
-    db.collection('users').add(newUser);
+    this.db.collection('users').add(newUser);
   };
-
-  addProject = newProject => {
-    db.collection(`organizations/${this.state.user.org.id}/projects`).add(newProject);
-  };
-
-  addUser = newUser => {
-    db.collection('users').add(newUser);
-  };
-
-  watchAuth = () => this.auth.onAuthStateChanged(user => user);
-
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    auth.createUserWithEmailAndPassword(email, password);
-
-  doSignInWithEmailAndPassword = (email, password) => auth.signInWithEmailAndPassword(email, password);
-
-  doSignOut = () =>
-    auth
-      .signOut()
-      .then(res => this.setState({ user: null, projects: [], employees: [], jobs: [] }))
-      .catch(error => console.log(error));
-
-  doPasswordReset = email => auth.sendPasswordResetEmail(email);
-
-  doPasswordUpdate = password => auth.currentUser.updatePassword(password);
 
   doGetProject = (org_id = 'HkeHO8n1eIaJSu6mnsd5') => {
-    return db
+    return this.db
       .collection('organizations')
       .doc(org_id)
       .collection('projects')
@@ -244,7 +241,7 @@ export class ContextProvider extends React.Component {
 
   // DEPRECATED
   // setUser = (email, org) => {
-  //   return db
+  //   return this.db
   //     .collection("organizations")
   //     .where("name", "==", org)
   //     .get()
@@ -254,7 +251,7 @@ export class ContextProvider extends React.Component {
   //       return orgId;
   //     })
   //     .then(orgId => {
-  //       db.collection("users")
+  //       this.db.collection("users")
   //         .where("email", "==", email)
   //         .get()
   //         .then(snapshot => {
@@ -278,7 +275,7 @@ export class ContextProvider extends React.Component {
 
   // DEPRECATED
   // setProjects = (role, name) => {
-  //   return db
+  //   return this.db
   //     .collection(`organizations/${this.state.user.org.id}/projects`)
   //     .get()
   //     .then(snapshot => {
@@ -339,7 +336,7 @@ export class ContextProvider extends React.Component {
   //     // console.log(
   //     //   `organization/${this.state.user.org.id}/projects/${project.id}/jobs`,
   //     // );
-  //     db.collection(
+  //     this.db.collection(
   //       `organizations/${this.state.user.org.id}/projects/${project.id}/jobs`,
   //     )
   //       .get()
@@ -380,7 +377,7 @@ export class ContextProvider extends React.Component {
 
   // addJob = (newJob, project_id) => {
   //   console.log('adding job!')
-  //   db.collection(
+  //   this.db.collection(
   //     `organizations/${this.state.user.org.id}/projects/${project_id}/jobs`,
   //   ).add(newJob).then(doc => {
   //     console.log(doc)
@@ -392,7 +389,7 @@ export class ContextProvider extends React.Component {
   //   org_id = "HkeHO8n1eIaJSu6mnsd5",
   //   project_id = "FUFRX6873V2Llg9XQJBt",
   // ) => {
-  //   return db
+  //   return this.db
   //     .collection("organizations")
   //     .doc(org_id)
   //     .collection("projects")
@@ -413,14 +410,8 @@ export class ContextProvider extends React.Component {
       addProject: this.addProject,
       addJob: this.addJob,
       addUser: this.addUser,
-      watchAuth: this.watchAuth,
-      doCreateUserWithEmailAndPassword: this.doCreateUserWithEmailAndPassword,
-      doSignInWithEmailAndPassword: this.doSignInWithEmailAndPassword,
-      doSignOut: this.doSignOut,
-      doPasswordReset: this.doPasswordReset,
-      doPasswordUpdate: this.doPasswordUpdate,
       setNewJob: this.setNewJob,
-      setLoading: this.setLoading,
+      setloaded: this.setloaded,
       createUserInOrg: this.createUserInOrg,
       newSetUser: this.newSetUser,
       getProjects: this.getProjects,

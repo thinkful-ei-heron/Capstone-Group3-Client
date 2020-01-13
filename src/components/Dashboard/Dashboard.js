@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import FirebaseContext from '../../services/context';
 import Person from '../Person/Person';
-import { ProgressBar } from '../ProgressBar/ProgressBar';
 import Loading from '../Loading/Loading';
 import './Dashboard.css';
 import { Sidebar } from '../Sidebar/Sidebar';
+import StyleIcon from '../StyleIcon/StyleIcon';
+import ProjectBar from '../ProjectBar/ProjectBar';
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -14,19 +15,27 @@ import { Sidebar } from '../Sidebar/Sidebar';
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
-    loading: true
+    loading: true,
+    expandProjects: true,
+    expandPersonnel: true
   };
 
-  async componentDidMount() {
-    await this.context.initState();
-  }
+  toggleExpandProjects = e => {
+    e.stopPropagation();
+    this.setState({ expandProjects: !this.state.expandProjects });
+  };
+
+  toggleExpandPersonnel = e => {
+    e.stopPropagation();
+    this.setState({ expandProjects: !this.state.expandPersonnel });
+  };
 
   render() {
-    //console.log('this.context.user', this.context.user);
-    console.log('this.context.projects ', this.context.projects);
-    console.log('this.context.jobs ', this.context.jobs);
-    console.log('this.context.employees', this.context.employees);
-    console.log('this.context.project_managers', this.context.project_managers);
+    // console.log('this.context.user', this.context.user);
+    // console.log('this.context.projects ', this.context.projects);
+    // console.log('this.context.jobs ', this.context.jobs);
+    // console.log('this.context.employees', this.context.employees);
+    // console.log('this.context.project_managers', this.context.project_managers);
     if (!this.context.user) return <Loading />;
     else
       return (
@@ -38,54 +47,40 @@ export default class Dashboard extends Component {
               <span className="Dashboard__date">{new Date().toLocaleString()}</span>
             </div>
             <section className="Dashboard__projects">
-              <div className="Dashboard__project_header">
-                <h1>PROJECTS</h1>
+              <div className="Dashboard__project_header" onClick={this.toggleExpandProjects}>
+                <div className="Dashboard__fa_h1">
+                  {StyleIcon({ style: `${this.state.expandProjects ? 'minus' : 'plus'}` })}
+                  <h1>PROJECTS</h1>
+                </div>
                 <Link to="/new_project">
                   <button>NEW</button>
                 </Link>
               </div>
-              <div className="Dashboard__projects_container">
-                <ul className="Dashboard__list">
-                  {this.context.projects &&
-                    this.context.projects.map((proj, i) => {
-                      return (
-                        <li>
-                          <ul className="Dashboard__project_container">
-                            <Link to={`/project/${proj.id}`} key={proj.id}>
-                              <li className="Dashboard__li">
-                                <span className="Dashboard__proj_name">{proj.name}</span>
-                                <span className="Dashboard__proj_mgr">Manager: {proj.project_manager}</span>
-                              </li>
-                              <li>{proj.description}</li>
-                              <li>
-                                <div className="Dashboard__proj_prog_date">
-                                  <div className="Dashhboard__proj_prog">
-                                    Est. Progress <ProgressBar percentage={proj.progress} />
-                                  </div>
-                                  {new Date(proj.deadline.seconds * 1000).toISOString().slice(0, 10)}
-                                </div>
-                              </li>
-                            </Link>
-                          </ul>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </div>
+              {this.state.expandProjects && (
+                <div className="Dashboard__projects_container">
+                  <ul className="Dashboard__list">
+                    {this.context.projects &&
+                      this.context.projects.map((proj, i) => {
+                        return (
+                          <li>
+                            <ProjectBar proj={proj} />
+                          </li>
+                        );
+                      })}
+                  </ul>
+                </div>
+              )}
             </section>
             <section className="Dashboard__personnel">
-              <div className="Dashboard__personnnel_header">
-                <h1>PERSONNEL</h1>
+              <div className="Dashboard__personnnel_header" onClick={this.toggleExpandPersonnel}>
+                <div className="Dashboard__fa_h1">
+                  {StyleIcon({ style: `${this.state.expandProjects ? 'minus' : 'plus'}` })}
+                  <h1>PERSONNEL</h1>
+                </div>
               </div>
-              <ul>
-                {this.context.users &&
-                  this.context.users.map((user, i) => {
-                    return <Person person={user} key={i} />;
-                  })}
-              </ul>
+              {this.state.expandPersonnel && <Sidebar />}
             </section>
           </section>
-          <Sidebar />
         </>
       );
   }

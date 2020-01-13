@@ -12,6 +12,7 @@ import PrivateRoute from './services/PrivateRoute';
 import { AuthContext } from './services/Auth.js';
 import FirebaseContext from './services/context';
 import Loading from './components/Loading/Loading';
+import './App.css';
 // import NewJob from "./components/NewJob/NewJob";
 
 // import { auth } from "./services/firebase";

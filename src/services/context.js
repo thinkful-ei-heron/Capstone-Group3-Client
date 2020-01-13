@@ -31,6 +31,7 @@ const FirebaseContext = React.createContext({
   setNewProject: () => {},
   updateProjectWorkers: () => {},
   setStateOnLogout: () => {},
+  createOwner: () => {},
 });
 
 export default FirebaseContext;
@@ -88,18 +89,18 @@ export class ContextProvider extends React.Component {
           role = user.data().role;
         }),
       )
-      .then(() => this.getProjects("orgOne"))
+      .then(() => this.getProjects("org"))
       .then(snapshot => {
         snapshot.forEach(async proj => {
           projs.push(proj.data());
-          await this.getJobs("orgOne", proj.id).then(snap =>
+          await this.getJobs("org", proj.id).then(snap =>
             snap.forEach(job => jobs.push(job.data())),
           );
         });
       })
-      .then(() => this.getEmployees("orgOne"))
+      .then(() => this.getEmployees("org"))
       .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
-      .then(() => this.getProjectManagers("orgOne"))
+      .then(() => this.getProjectManagers("org"))
       .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
       .then(() => {
         this.setState({
@@ -111,6 +112,36 @@ export class ContextProvider extends React.Component {
           loaded: true,
         });
       });
+  };
+
+  createOwner = async (user, org) => {
+    const addOrg = async () =>
+      await this.db
+        .collection("organizations")
+        .doc(org)
+        .set({
+          name: org,
+        });
+    const addProjectCollection = async () => {
+      await this.db
+        .collection("organizations")
+        .doc(org)
+        .collection("projects")
+        .add({});
+    };
+    const addUsersCollection = async () => {
+      await this.db
+        .collection("organizations")
+        .doc(org)
+        .collection("users")
+        .add({});
+    };
+
+    await addOrg().then(async () => {
+      await addProjectCollection();
+      await addUsersCollection();
+    });
+    this.createUserInOrg(user, org);
   };
 
   getUser = (email, org) => {
@@ -278,7 +309,7 @@ export class ContextProvider extends React.Component {
       .collection("projects")
       .doc(id)
       .update({ project_workers: workers });
-    await this.doGetProject("orgOne");
+    await this.doGetProject("org");
   };
 
   render() {
@@ -308,6 +339,7 @@ export class ContextProvider extends React.Component {
       setNewProject: this.setNewProject,
       updateProjectWorkers: this.updateProjectWorkers,
       setStateOnLogout: this.setStateOnLogout,
+      createOwner: this.createOwner,
     };
     return (
       <FirebaseContext.Provider value={value}>

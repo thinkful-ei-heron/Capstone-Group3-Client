@@ -19,7 +19,14 @@ const SignUp = ({ history }, props) => {
       })
       .then(() => {
         history.location.pathname === "/owner-signup"
-          ? console.log("owner")
+          ? fbContext.createOwner(
+              {
+                email: email.value,
+                role: role.value,
+                name: name.value,
+              },
+              orgName.value,
+            )
           : fbContext.createUserInOrg(
               {
                 email: email.value,

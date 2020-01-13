@@ -46,7 +46,8 @@ export class ContextProvider extends React.Component {
     employees: [],
     projects: [],
     project_managers: [],
-    jobs: []
+    jobs: [],
+    loaded: false
   };
 
   setStateOnLogout = () => {
@@ -60,9 +61,10 @@ export class ContextProvider extends React.Component {
       employees: [],
       projects: [],
       project_managers: [],
-      jobs: []
-    })
-  }
+      jobs: [],
+      loaded: false
+    });
+  };
 
   db = app.firestore();
 
@@ -273,7 +275,6 @@ export class ContextProvider extends React.Component {
       .update({ project_workers: workers });
     await this.doGetProject('orgOne');
   };
-
 
   render() {
     const value = {

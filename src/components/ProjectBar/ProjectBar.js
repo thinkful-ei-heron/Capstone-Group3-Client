@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import FirebaseContext from '../../services/context';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
+import Dropdown from '../Dropdown/Dropdown';
 import './ProjectBar.css';
 
-export default function ProjectBar(props) {
+const ProjectBar = props => {
+  const context = useContext(FirebaseContext);
+  const [selected, setSelected] = useState(0);
+
+  const populateEmployeeList = () => {
+    let employeeArray = [];
+    context.employees.map(employee => {
+      employeeArray.push(employee.name);
+    });
+    return employeeArray;
+  };
+
+  let employees = populateEmployeeList();
+
+  const handleSubmit = () => {
+    console.log(selected);
+  };
+
   return (
     <ul className="ProjectBar__project_container">
       <Link className="ProjectBar__link_wrapper" to={`/project/${props.proj.id}`} key={props.proj.id}>
@@ -21,6 +40,14 @@ export default function ProjectBar(props) {
           </div>
         </li>
       </Link>
+      <li>
+        <form onSubmit={handleSubmit}>
+          <Dropdown employees={employees} isMulti={true} setSelected={setSelected} />
+          <button type="submit">Add Workers</button>
+        </form>
+      </li>
     </ul>
   );
-}
+};
+
+export default ProjectBar;

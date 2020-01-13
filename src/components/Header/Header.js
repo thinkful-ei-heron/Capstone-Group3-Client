@@ -38,8 +38,8 @@ export default class Header extends Component {
     return (
       <div className="Header__sub_container">
         <div className="user__info">
-          <span>Welcome, {this.context.currentUser.displayName}!</span>
-          {/*<span>Role: {this.context.user.role}</span>*/}
+          <span>Welcome, {this.props.userName}!</span>
+          <span>Role: {this.props.role}</span>
         </div>
         <Link className="Header__btn" to="/" onClick={this.handleLogout}>
           Log Out
@@ -49,7 +49,6 @@ export default class Header extends Component {
   }
 
   render() {
-    console.log(this.context.currentUser);
     return (
       <>
         <nav className="Header">

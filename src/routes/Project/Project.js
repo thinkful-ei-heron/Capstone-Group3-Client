@@ -1,6 +1,6 @@
-import React from "react";
-import { FirebaseContext } from "../../services/index";
-import Jobs from "../../components/Jobs/Jobs";
+import React from 'react';
+import { FirebaseContext } from '../../services/index';
+import Jobs from '../../components/Jobs/Jobs';
 
 class Project extends React.Component {
   state = {
@@ -14,12 +14,12 @@ class Project extends React.Component {
     await this.context
       .getProjects()
       .then(snapshot => {
-        console.log(snapshot);
+        //console.log(snapshot);
         const array = [];
         snapshot.forEach(doc => {
-          console.log(doc);
+          //console.log(doc);
           array.push(doc.data());
-          console.log(array);
+          //console.log(array);
           this.setState({
             projects: [
               {
@@ -58,13 +58,9 @@ class Project extends React.Component {
               <div key={project.id}>
                 <div>
                   <h2 className="project_title">{project.name}</h2>
-                  <h3 className="project_manager">
-                    Manager: {project.project_manager}
-                  </h3>
+                  <h3 className="project_manager">Manager: {project.project_manager}</h3>
                   <p className="project_description">{project.description}</p>
-                  <span className="project_estPro">
-                    Estimated Progress: {this.calculateProgress()}
-                  </span>
+                  <span className="project_estPro">Estimated Progress: {this.calculateProgress()}</span>
                   <span>Deadline:</span>
                 </div>
                 <ul>

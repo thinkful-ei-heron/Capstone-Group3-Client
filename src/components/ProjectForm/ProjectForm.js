@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import { Input, Label } from '../Form/Form';
 import FirebaseContext from '../../services/context';
+import * as firebase from 'firebase/app';
 
 export default class ProjectForm extends Component {
   static contextType = FirebaseContext;
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
-    console.log(this.context.user);
+    //console.log(this.context.user);
     const { name, description, projectManager, deadline } = e.target;
     const data = {
       name: name.value,
       description: description.value,
       project_manager: projectManager.value,
-      deadline: new Date(deadline.value),
+      deadline: firebase.firestore.Timestamp.fromDate(new Date(deadline.value)),
       date_created: new Date(),
       org_id: this.context.user.org,
       progress: 0,
       project_workers: []
     };
-    this.context.addProject(data);
+    await this.context.addProject(data);
     this.props.history.push('/dashboard');
   };
 

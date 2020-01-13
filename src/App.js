@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard/Dashboard';
 import Header from './components/Header/Header';
@@ -11,6 +11,7 @@ import LandingPage from './routes/LandingPage/LandingPage';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthContext } from './services/Auth.js';
 import FirebaseContext from './services/context';
+import Loading from './components/Loading/Loading';
 // import NewJob from "./components/NewJob/NewJob";
 
 // import { auth } from "./services/firebase";
@@ -20,41 +21,51 @@ import FirebaseContext from './services/context';
 const App = props => {
   const { currentUser } = useContext(AuthContext);
   const context = useContext(FirebaseContext);
-  console.log(currentUser);
+  const [loading, setLoading] = useState(true);
+  //console.log(currentUser);
 
   useEffect(() => {
+    const initState = async (email, org) => {
+      await context.initState(email, org);
+
+      setLoading(false);
+    };
+
     if (currentUser) {
-      if (!context.loaded) context.initState(currentUser.email, currentUser.displayName);
+      if (!context.loaded) initState(currentUser.email, currentUser.displayName);
     }
-  }, currentUser);
+  }, [currentUser]);
 
-  return (
-    <Router>
-      <header>
-        <Header />
-      </header>
-      <main className="app__main">
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <PrivateRoute exact path="/dashboard" component={() => <Dashboard user={currentUser} />} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={SignUp} />
+  if (loading) return <Loading />;
+  else {
+    return (
+      <Router>
+        <header>
+          <Header userName={context.user.name} role={context.user.role} />
+        </header>
+        <main className="app__main">
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <PrivateRoute exact path="/dashboard" component={() => <Dashboard user={currentUser} />} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={SignUp} />
 
-          <PrivateRoute exact path="/new_project" component={NewProject} />
-          {/* <Route
+            <PrivateRoute exact path="/new_project" component={NewProject} />
+            {/* <Route
             exact
             path="/new_job"
             render={props => <NewJob {...props} />}
           /> */}
-          <PrivateRoute
-            exact
-            path="/project/:id"
-            component={props => <ProjectView id={props.match.params.id} />}
-          />
-        </Switch>
-      </main>
-    </Router>
-  );
+            <PrivateRoute
+              exact
+              path="/project/:id"
+              component={props => <ProjectView id={props.match.params.id} />}
+            />
+          </Switch>
+        </main>
+      </Router>
+    );
+  }
 };
 
 export default App;

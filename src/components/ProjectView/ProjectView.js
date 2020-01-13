@@ -104,8 +104,6 @@ export default class ProjectView extends Component {
   };
 
   render() {
-    console.log(this.context.jobs);
-    console.log(this.context.projects);
     const { project, showJobForm } = this.state;
     if (this.state.loading) {
       return <Loading />;

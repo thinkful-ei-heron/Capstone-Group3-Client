@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ProgressBar } from "../ProgressBar/ProgressBar";
 import FirebaseContext from "../../services/context.js";
+import "./Jobs.css";
 
 export default class Jobs extends Component {
   constructor(props) {
@@ -112,17 +113,19 @@ export default class Jobs extends Component {
 
   render() {
     let job = this.props.job;
+    const progress = Math.floor((job.hours_completed / job.total_hours) * 100);
     return (
       <>
         {/* JOB ID IS NOT ATTACHED TO JOB OBJECT, KEY WAS UNDEFINED AND NOT UNIQUE*/}
         <li key={job.id} id={job.id}>
-          <button onClick={this.toggleExpand}>
-            {this.state.expandJob ? "-" : "+"}
-          </button>
-          <h4>{job.name}</h4>
-          <span>{job.description}</span>
-          <div className="job-progress">
-            <ProgressBar percentage={job.progress} />
+          <div className="job_details">
+            <button onClick={this.toggleExpand}>
+              {this.state.expandJob ? "-" : "+"}
+            </button>
+            <h4>{job.name}</h4>
+            <span>{job.description}</span>
+            <ProgressBar percentage={progress} />
+            {this.renderProjectButtons(job.approval, job.progress)}
           </div>
           {this.renderProjectButtons(
             job.approval,

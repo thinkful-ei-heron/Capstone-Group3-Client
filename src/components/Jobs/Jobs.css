@@ -1,0 +1,9 @@
+.job_details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.job_details .ProgressBar__meter {
+  flex-basis: 20%;
+}

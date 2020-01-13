@@ -1,0 +1,18 @@
+.newjob__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1em;
+}
+
+.newjob__form .input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.newjob__form .input input, .newjob__form .input textarea {
+  flex-basis: 80%;
+}

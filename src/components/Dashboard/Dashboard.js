@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import FirebaseContext from '../../services/context';
-import Person from '../Person/Person';
 import Loading from '../Loading/Loading';
 import './Dashboard.css';
 import { Sidebar } from '../Sidebar/Sidebar';

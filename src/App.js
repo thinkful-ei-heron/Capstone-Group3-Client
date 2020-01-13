@@ -40,7 +40,7 @@ const App = props => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={SignUp} />
 
-          <PrivateRoute exact path="/new_project" render={props => <NewProject {...props} />} />
+          <PrivateRoute exact path="/new_project" component={NewProject} />
           {/* <Route
             exact
             path="/new_job"

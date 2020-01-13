@@ -49,6 +49,7 @@ export class ContextProvider extends React.Component {
     user: {
       id: '',
       name: '',
+      role: '',
       org: ''
     },
     employees: [],
@@ -68,6 +69,8 @@ export class ContextProvider extends React.Component {
       projs = [],
       jobs = [],
       pms = [];
+    let name = '';
+    let role = '';
     this.getProjects('orgOne')
       .then(snapshot => {
         snapshot.forEach(async proj => {
@@ -79,9 +82,16 @@ export class ContextProvider extends React.Component {
       .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
       .then(() => this.getProjectManagers('orgOne'))
       .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
+      .then(() => this.getUser(email, org))
+      .then(snapshot =>
+        snapshot.forEach(user => {
+          name = user.data().name;
+          role = user.data().role;
+        })
+      )
       .then(() => {
         this.setState({
-          user: { id: email, org: org },
+          user: { id: email, name: name, role: role, org: org },
           projects: projs,
           jobs: jobs,
           employees: emps,
@@ -91,7 +101,7 @@ export class ContextProvider extends React.Component {
       });
   };
 
-  getUser = (org, email) => {
+  getUser = (email, org) => {
     return this.db
       .collection('organizations')
       .doc(org)
@@ -203,7 +213,7 @@ export class ContextProvider extends React.Component {
   };
 
   addJob = (newJob, project_id) => {
-    this.db
+    return this.db
       .collection(`organizations/${this.state.user.org.id}/projects/${project_id}/jobs`)
       .add(newJob)
       .then(() => {

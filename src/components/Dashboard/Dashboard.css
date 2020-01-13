@@ -13,13 +13,14 @@
   padding-right: 15px;
 }
 
-.Dashboard__personnnel_header,
+.Dashboard__personnel_header,
 .Dashboard__project_header {
   height: 60px;
   background-color: #5c9ad1;
 }
 
-.Dashboard__projects_container {
+.Dashboard__personnel_header {
+  margin-top: 30px;
 }
 
 .Dashboard__fa_h1 {

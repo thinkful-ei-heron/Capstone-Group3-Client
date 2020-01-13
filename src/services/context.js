@@ -89,18 +89,18 @@ export class ContextProvider extends React.Component {
           role = user.data().role;
         }),
       )
-      .then(() => this.getProjects("org"))
+      .then(() => this.getProjects(org))
       .then(snapshot => {
         snapshot.forEach(async proj => {
           projs.push(proj.data());
-          await this.getJobs("org", proj.id).then(snap =>
+          await this.getJobs(org, proj.id).then(snap =>
             snap.forEach(job => jobs.push(job.data())),
           );
         });
       })
-      .then(() => this.getEmployees("org"))
+      .then(() => this.getEmployees(org))
       .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
-      .then(() => this.getProjectManagers("org"))
+      .then(() => this.getProjectManagers(org))
       .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
       .then(() => {
         this.setState({
@@ -309,7 +309,7 @@ export class ContextProvider extends React.Component {
       .collection("projects")
       .doc(id)
       .update({ project_workers: workers });
-    await this.doGetProject("org");
+    await this.doGetProject(this.state.user.org);
   };
 
   render() {

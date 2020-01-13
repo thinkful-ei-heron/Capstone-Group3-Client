@@ -11,6 +11,7 @@ import PrivateRoute from './services/PrivateRoute';
 import { AuthContext } from './services/Auth.js';
 import FirebaseContext from './services/context';
 import Loading from './components/Loading/Loading';
+import Logout from './components/Account/Logout';
 import './App.css';
 
 
@@ -29,7 +30,8 @@ const App = props => {
     };
 
     if (currentUser && currentUser.displayName) {
-      if (!context.loaded) initState(currentUser.email, currentUser.displayName);
+      if (!context.loaded)
+        initState(currentUser.email, currentUser.displayName);
     } else setLoading(false);
   }, [currentUser]);
 
@@ -43,9 +45,15 @@ const App = props => {
         <main className="app__main">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PrivateRoute exact path="/dashboard" component={() => <Dashboard user={currentUser} />} />
+            <PrivateRoute
+              exact
+              path="/dashboard"
+              component={() => <Dashboard user={currentUser} />}
+            />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={SignUp} />
+            <Route exact path="/logout" component={Logout} />
+
             <PrivateRoute exact path="/new_project" component={NewProject} />
             <PrivateRoute
               exact

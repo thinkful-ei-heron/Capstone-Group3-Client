@@ -29,7 +29,8 @@ const FirebaseContext = React.createContext({
   setProjectManagersState: () => {},
   setNewJob: () => {},
   setNewProject: () => {},
-  updateProjectWorkers: () => {}
+  updateProjectWorkers: () => {},
+  setStateOnLogout: () => {}
 });
 
 export default FirebaseContext;
@@ -47,6 +48,21 @@ export class ContextProvider extends React.Component {
     project_managers: [],
     jobs: []
   };
+
+  setStateOnLogout = () => {
+    this.setState({
+      user: {
+        id: '',
+        name: '',
+        role: '',
+        org: ''
+      },
+      employees: [],
+      projects: [],
+      project_managers: [],
+      jobs: []
+    })
+  }
 
   db = app.firestore();
 
@@ -284,7 +300,8 @@ export class ContextProvider extends React.Component {
       getProjectManagers: this.getProjectManagers,
       setProjectManagersState: this.setProjectManagersState,
       setNewProject: this.setNewProject,
-      updateProjectWorkers: this.updateProjectWorkers
+      updateProjectWorkers: this.updateProjectWorkers,
+      setStateOnLogout: this.setStateOnLogout
     };
     return <FirebaseContext.Provider value={value}>{this.props.children}</FirebaseContext.Provider>;
   }

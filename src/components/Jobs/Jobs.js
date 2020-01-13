@@ -13,6 +13,8 @@ export default class Jobs extends Component {
   static contextType = FirebaseContext;
 
   renderEmployeeList = jobWorkers => {
+    if (!jobWorkers || jobWorkers.length === 0)
+      return <h5>No Workers Assigned</h5>;
     return jobWorkers.map((employee, index) => {
       let itemKey = index + employee;
       return <li key={itemKey}>{employee}</li>;
@@ -69,7 +71,7 @@ export default class Jobs extends Component {
           </div>
           {this.renderProjectButtons(job.approval, job.progress)}
           {this.state.expandJob ? (
-            <ul>{this.renderEmployeeList(job.job_workers)}</ul>
+            <ul>{this.renderEmployeeList(job.project_workers)}</ul>
           ) : (
             ""
           )}

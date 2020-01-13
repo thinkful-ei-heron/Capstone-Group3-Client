@@ -30,7 +30,7 @@ const App = props => {
       if (!context.loaded)
         initState(currentUser.email, currentUser.displayName);
     } else setLoading(false);
-  }, [currentUser]);
+  }, [currentUser, context]);
 
   if (loading) return <Loading />;
   else {

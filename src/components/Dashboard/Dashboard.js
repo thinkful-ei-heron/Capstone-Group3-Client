@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
-import FirebaseContext from '../../services/context';
-import Loading from '../Loading/Loading';
-import './Dashboard.css';
-import { Sidebar } from '../Sidebar/Sidebar';
-import StyleIcon from '../StyleIcon/StyleIcon';
-import ProjectBar from '../ProjectBar/ProjectBar';
+import React, { Component } from "react";
+import { Redirect, Link } from "react-router-dom";
+import FirebaseContext from "../../services/context";
+import Loading from "../Loading/Loading";
+import "./Dashboard.css";
+import { Sidebar } from "../Sidebar/Sidebar";
+import StyleIcon from "../StyleIcon/StyleIcon";
+import ProjectBar from "../ProjectBar/ProjectBar";
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -16,7 +16,7 @@ export default class Dashboard extends Component {
   state = {
     loading: true,
     expandProjects: true,
-    expandPersonnel: true
+    expandPersonnel: true,
   };
 
   toggleExpandProjects = e => {
@@ -43,12 +43,19 @@ export default class Dashboard extends Component {
           <section className="Dashboard__container">
             <div className="Dashboard__header">
               {<h2>{this.context.user.org}</h2>}
-              <span className="Dashboard__date">{new Date().toLocaleString()}</span>
+              <span className="Dashboard__date">
+                {new Date().toLocaleString()}
+              </span>
             </div>
             <section className="Dashboard__projects">
-              <div className="Dashboard__project_header" onClick={this.toggleExpandProjects}>
+              <div
+                className="Dashboard__project_header"
+                onClick={this.toggleExpandProjects}
+              >
                 <div className="Dashboard__fa_h1">
-                  {StyleIcon({ style: `${this.state.expandProjects ? 'minus' : 'plus'}` })}
+                  {StyleIcon({
+                    style: `${this.state.expandProjects ? "minus" : "plus"}`,
+                  })}
                   <h1>PROJECTS</h1>
                 </div>
                 <Link to="/new_project">
@@ -61,7 +68,7 @@ export default class Dashboard extends Component {
                     {this.context.projects &&
                       this.context.projects.map((proj, i) => {
                         return (
-                          <li>
+                          <li key={i}>
                             <ProjectBar proj={proj} />
                           </li>
                         );
@@ -71,9 +78,14 @@ export default class Dashboard extends Component {
               )}
             </section>
             <section className="Dashboard__personnel">
-              <div className="Dashboard__personnel_header" onClick={this.toggleExpandPersonnel}>
+              <div
+                className="Dashboard__personnel_header"
+                onClick={this.toggleExpandPersonnel}
+              >
                 <div className="Dashboard__fa_h1">
-                  {StyleIcon({ style: `${this.state.expandPersonnel ? 'minus' : 'plus'}` })}
+                  {StyleIcon({
+                    style: `${this.state.expandPersonnel ? "minus" : "plus"}`,
+                  })}
                   <h1>PERSONNEL</h1>
                 </div>
               </div>

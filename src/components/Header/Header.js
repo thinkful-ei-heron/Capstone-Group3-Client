@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import app from '../../services/base.js';
 
-import FirebaseContext from '../../services/context';
+import { AuthContext } from '../../services/Auth';
 import './Header.css';
 
 export default class Header extends Component {
-  static contextType = FirebaseContext;
+  static contextType = AuthContext;
 
   handleLogout = () => {
     //this will be replaced with code to handle logout through firebase
-    this.context.doSignOut();
+    app.auth().signOut();
   };
 
   renderLoginLink() {
@@ -19,7 +20,7 @@ export default class Header extends Component {
           <Link className="Header__btn Header__alt" to="/login">
             Log In
           </Link>
-          {this.context.user === null ? (
+          {this.context.currentUser === null ? (
             <Link className="Header__btn" to="/register">
               Register
             </Link>
@@ -37,8 +38,8 @@ export default class Header extends Component {
     return (
       <div className="Header__sub_container">
         <div className="user__info">
-          <span>Welcome, {this.context.user.name}!</span>
-          <span>Role: {this.context.user.role}</span>
+          <span>Welcome, {this.props.userName}!</span>
+          <span>Role: {this.props.role}</span>
         </div>
         <Link className="Header__btn" to="/" onClick={this.handleLogout}>
           Log Out
@@ -57,7 +58,7 @@ export default class Header extends Component {
               <span className="Header__app_name">App Name</span>
             </Link>
           </h1>
-          {this.context.user ? this.renderLogoutLink() : this.renderLoginLink()}
+          {this.context.currentUser ? this.renderLogoutLink() : this.renderLoginLink()}
         </nav>
       </>
     );

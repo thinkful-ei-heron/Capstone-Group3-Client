@@ -13,10 +13,7 @@ import { AuthContext } from './services/Auth.js';
 import FirebaseContext from './services/context';
 import Loading from './components/Loading/Loading';
 // import NewJob from "./components/NewJob/NewJob";
-
-// import { auth } from "./services/firebase";
-// import FirebaseContext from "./services/context";
-// import db from "./services/firebase";
+import Firebase from "./services/index";
 
 const App = props => {
   const { currentUser } = useContext(AuthContext);

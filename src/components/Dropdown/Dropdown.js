@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Select from "react-select";
-import FirebaseContext from "../../services/context";
+import React, { Component } from 'react';
+import Select from 'react-select';
+import FirebaseContext from '../../services/context';
 
 export default class Dropdown extends Component {
   constructor(props) {
@@ -30,10 +30,20 @@ export default class Dropdown extends Component {
     const { selectedOption } = this.state;
     return (
       <Select
+        ref={ref => {
+          if (!ref || !ref.select) return;
+
+          const orig = ref.select.onMenuMouseDown;
+
+          ref.select.onMenuMouseDown = function(e) {
+            e.nativeEvent.stopImmediatePropagation();
+            orig.call(this, e);
+          };
+        }}
         value={selectedOption}
         onChange={this.handleChange}
-        options={this.populateOptions(this.props.employees)}
         isMulti={this.props.isMulti ? true : false}
+        options={this.populateOptions(this.props.employees)}
       />
     );
   }

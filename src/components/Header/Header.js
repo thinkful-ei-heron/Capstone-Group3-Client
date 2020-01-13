@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import app from "../../services/base.js";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import app from '../../services/base.js';
 
-import { AuthContext } from "../../services/Auth";
-import "./Header.css";
+import { AuthContext } from '../../services/Auth';
+import './Header.css';
 
 export default class Header extends Component {
   static contextType = AuthContext;
@@ -41,12 +41,14 @@ export default class Header extends Component {
           <span>Welcome, {this.props.userName}!</span>
           <span>Role: {this.props.role}</span>
         </div>
-        <Link to="/dashboard">
-          <h3>Dashboard</h3>
-        </Link>
-        <Link className="Header__btn" to="/" onClick={this.handleLogout}>
-          Log Out
-        </Link>
+        <div className="Header__db_logout">
+          <Link to="/dashboard">
+            <h3>Dashboard</h3>
+          </Link>
+          <Link className="Header__btn" to="/" onClick={this.handleLogout}>
+            Log Out
+          </Link>
+        </div>
       </div>
     );
   }
@@ -58,12 +60,10 @@ export default class Header extends Component {
           <h1>
             <Link className="Header__link" to="/">
               <div className="Header__logo"></div>
-              <span className="Header__app_name">App Name</span>
+              <span className="Header__app_name">ManageLazily</span>
             </Link>
           </h1>
-          {this.context.currentUser
-            ? this.renderLogoutLink()
-            : this.renderLoginLink()}
+          {this.context.currentUser ? this.renderLogoutLink() : this.renderLoginLink()}
         </nav>
       </>
     );

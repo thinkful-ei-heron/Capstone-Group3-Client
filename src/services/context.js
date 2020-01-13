@@ -1,5 +1,5 @@
-import React from "react";
-import app from "./base";
+import React from 'react';
+import app from './base';
 
 const FirebaseContext = React.createContext({
   user: {
@@ -44,10 +44,10 @@ export default FirebaseContext;
 export class ContextProvider extends React.Component {
   state = {
     user: {
-      id: "",
-      name: "",
-      role: "",
-      org: ""
+      id: '',
+      name: '',
+      role: '',
+      org: ''
     },
     employees: [],
     projects: [],
@@ -66,8 +66,8 @@ export class ContextProvider extends React.Component {
       projs = [],
       jobs = [],
       pms = [];
-    let name = "";
-    let role = "";
+    let name = '';
+    let role = '';
 
     this.getUser(email, org)
       .then(snapshot =>
@@ -76,18 +76,16 @@ export class ContextProvider extends React.Component {
           role = user.data().role;
         })
       )
-      .then(() => this.getProjects("orgOne"))
+      .then(() => this.getProjects('orgOne'))
       .then(snapshot => {
         snapshot.forEach(async proj => {
           projs.push(proj.data());
-          await this.getJobs("orgOne", proj.id).then(snap =>
-            snap.forEach(job => jobs.push(job.data()))
-          );
+          await this.getJobs('orgOne', proj.id).then(snap => snap.forEach(job => jobs.push(job.data())));
         });
       })
-      .then(() => this.getEmployees("orgOne"))
+      .then(() => this.getEmployees('orgOne'))
       .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
-      .then(() => this.getProjectManagers("orgOne"))
+      .then(() => this.getProjectManagers('orgOne'))
       .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
       .then(() => {
         this.setState({
@@ -103,21 +101,21 @@ export class ContextProvider extends React.Component {
 
   getUser = (email, org) => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
-      .where("email", "==", email)
+      .collection('users')
+      .where('email', '==', email)
       .get();
   };
 
   getJobs = (org, id) => {
     //console.log(org, id);
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("projects")
+      .collection('projects')
       .doc(id)
-      .collection("jobs")
+      .collection('jobs')
       .get();
   };
 
@@ -127,9 +125,9 @@ export class ContextProvider extends React.Component {
 
   getProjects = org => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("projects")
+      .collection('projects')
       .get();
   };
   setProjectState = projs => {
@@ -138,10 +136,10 @@ export class ContextProvider extends React.Component {
 
   getEmployees = org => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
-      .where("role", "==", "project worker")
+      .collection('users')
+      .where('role', '==', 'project worker')
       .get();
   };
 
@@ -151,10 +149,10 @@ export class ContextProvider extends React.Component {
 
   getProjectManagers = org => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
-      .where("role", "==", "project manager")
+      .collection('users')
+      .where('role', '==', 'project manager')
       .get();
   };
 
@@ -164,18 +162,18 @@ export class ContextProvider extends React.Component {
 
   createUserInOrg = (newUser, org) => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
+      .collection('users')
       .doc(newUser.email)
       .set(newUser);
   };
 
   newSetUser = (email, org) => {
     this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
+      .collection('users')
       .doc(email)
       .onSnapshot(snapshot => {
         this.setState({
@@ -192,7 +190,7 @@ export class ContextProvider extends React.Component {
   getOrgName = org => {
     // console.log(org);
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
       .get()
       .then(snapshot => {
@@ -236,9 +234,7 @@ export class ContextProvider extends React.Component {
     let newId = null;
     let db = this.db;
     await this.db
-      .collection(
-        `organizations/${this.state.user.org}/projects/${project_id}/jobs`
-      )
+      .collection(`organizations/${this.state.user.org}/projects/${project_id}/jobs`)
       .add(newJob)
       .then(function(docRef) {
         db.collection(`organizations/${orgId}/projects/${project_id}/jobs`)
@@ -247,29 +243,29 @@ export class ContextProvider extends React.Component {
         newId = docRef.id;
       });
     newJob.id = newId;
-    await this.setNewJob(newJob);
+    this.setNewJob(newJob);
   };
 
   addUser = newUser => {
-    this.db.collection("users").add(newUser);
+    this.db.collection('users').add(newUser);
   };
 
-  doGetProject = async (org_id = "HkeHO8n1eIaJSu6mnsd5") => {
+  doGetProject = async (org_id = 'HkeHO8n1eIaJSu6mnsd5') => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org_id)
-      .collection("projects")
+      .collection('projects')
       .get();
   };
 
   updateProjectWorkers = async (id, workers, project) => {
     await this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(this.state.user.org)
-      .collection("projects")
+      .collection('projects')
       .doc(id)
       .update({ project_workers: workers });
-    await this.doGetProject("orgOne");
+    await this.doGetProject('orgOne');
   };
 
   // DEPRECATED
@@ -465,10 +461,6 @@ export class ContextProvider extends React.Component {
       // doGetProjectJobs: this.doGetProjectJobs,
       // setUser: this.setUser,
     };
-    return (
-      <FirebaseContext.Provider value={value}>
-        {this.props.children}
-      </FirebaseContext.Provider>
-    );
+    return <FirebaseContext.Provider value={value}>{this.props.children}</FirebaseContext.Provider>;
   }
 }

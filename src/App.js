@@ -32,6 +32,8 @@ const App = props => {
     } else setLoading(false);
   }, [currentUser]);
 
+  console.log(currentUser);
+
   if (loading) return <Loading />;
   else {
     return (
@@ -48,7 +50,7 @@ const App = props => {
               component={() => <Dashboard user={currentUser} />}
             />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={SignUp} />
+            <Route exact path="/register" render={() => <SignUp />} />
             <Route exact path="/logout" component={Logout} />
 
             <PrivateRoute exact path="/new_project" component={NewProject} />
@@ -57,6 +59,8 @@ const App = props => {
               path="/project/:id"
               component={props => <ProjectView id={props.match.params.id} />}
             />
+
+            <Route exact path="/owner-signup" render={() => <SignUp />} />
           </Switch>
         </main>
       </Router>

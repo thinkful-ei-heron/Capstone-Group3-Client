@@ -99,6 +99,12 @@ export default class ProjectView extends Component {
     });
   };
 
+  renderPmList = () => {
+    let result = [];
+    this.context.project_managers.forEach(pm => result.push(pm.name));
+    return result;
+  };
+
   setProjectManager = () => {
     //code to set new PM for project
   };
@@ -109,9 +115,9 @@ export default class ProjectView extends Component {
       return <Loading />;
     } else {
       return (
-        <div>
+        <>
           <header id="company_header">
-            <h2 id="companyName">{this.context.user.org.name}</h2>
+            <h2 id="companyName">{this.context.user.org}</h2>
             <span id="currentDate">{new Date().toDateString()}</span>
           </header>
           <div>
@@ -125,19 +131,15 @@ export default class ProjectView extends Component {
               </div>
               <div id="project_progress">
                 <span>Est. Progress</span>
+                <ProgressBar percentage={project.progress} />
               </div>
-              <ProgressBar percentage={project.progress} />
               <div id="project_deadline">
                 <span>Deadline: {new Date(project.deadline.toString()).toDateString()}</span>
               </div>
               {this.context.user.role === 'owner' && project.project_manager === 'unassigned' ? (
                 <div id="select_pm">
                   <h3>SELECT Project Manager</h3>
-                  <Dropdown
-                    employees={this.context.employees.filter(emp => emp.role === 'project manager')}
-                    isMulti={false}
-                    setSelected={this.setSelected}
-                  />
+                  <Dropdown employees={this.renderPmList()} isMulti={false} setSelected={this.setSelected} />
                   {this.state.selectedProjectManager ? (
                     <div id="submit_pm">
                       <button onClick={this.setProjectManager}></button>
@@ -151,15 +153,17 @@ export default class ProjectView extends Component {
               )}
             </header>
           </div>
-          <div id="jobs_stats_container">
-            {this.context.user.role === 'project worker' ? <></> : <Statistics />}
-            <div id="jobs_container">
-              {this.context.user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
-              {this.context.user.role === 'project worker' ? (
-                ''
-              ) : (
-                <button onClick={this.showJobForm}>Add Job</button>
-              )}
+          <div id="projectView_main">
+            <div id="jobs_stats_container">
+              {this.context.user.role === 'project worker' ? <></> : <Statistics />}
+              <div id="jobs_container">
+                {this.context.user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
+                {this.context.user.role === 'project worker' ? (
+                  ''
+                ) : (
+                  <button onClick={this.showJobForm}>Add Job</button>
+                )}
+              </div>
               {showJobForm ? (
                 <NewJob
                   {...this.props}
@@ -173,9 +177,11 @@ export default class ProjectView extends Component {
               )}
               {<ul>{this.renderJobList()}</ul>}
             </div>
+            <div id="sidebar_container">
+              <Sidebar view="project" />
+            </div>
           </div>
-          <Sidebar view="project" />
-        </div>
+        </>
       );
     }
   }

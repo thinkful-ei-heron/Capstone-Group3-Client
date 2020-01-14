@@ -23,6 +23,9 @@ const ProjectBar = props => {
     console.log(selected);
   };
 
+  console.log(props.proj.progress);
+  console.log(new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10));
+
   return (
     <ul className="ProjectBar__project_container">
       <Link className="ProjectBar__link_wrapper" to={`/project/${props.proj.id}`} key={props.proj.id}>
@@ -40,12 +43,12 @@ const ProjectBar = props => {
           </div>
         </li>
       </Link>
-      <li>
+      {/*<li>
         <form onSubmit={handleSubmit}>
           <Dropdown employees={employees} isMulti={true} setSelected={setSelected} />
           <button type="submit">Add Workers</button>
-        </form>
-      </li>
+        </form> 
+      </li>*/}
     </ul>
   );
 };

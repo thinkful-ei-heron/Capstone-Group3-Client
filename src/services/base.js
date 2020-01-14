@@ -3,6 +3,14 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 const app = firebase.initializeApp({
+  // apiKey: 'AIzaSyC6MNMuRCLvGaCRCGbgLI_aybHdYyfY46s',
+  // authDomain: 'testing-23849.firebaseapp.com',
+  // databaseURL: 'https://testing-23849.firebaseio.com',
+  // projectId: 'testing-23849',
+  // storageBucket: 'testing-23849.appspot.com',
+  // messagingSenderId: '941174175052',
+  // appId: '1:941174175052:web:2fcb02525772eb4b3b8be9'
+
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_DATABASE_URL,

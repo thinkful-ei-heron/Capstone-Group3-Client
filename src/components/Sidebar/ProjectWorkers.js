@@ -19,7 +19,7 @@ const ProjectWorkers = props => {
       let newObj = { [worker.name]: [] };
       context.projects.map(project => {
         if (project.project_workers.includes(worker.name)) {
-          projectKeys.push(project.name);
+          return projectKeys.push(project.name);
         }
         let jobArray = [];
         context.jobs.map(job => {
@@ -28,16 +28,17 @@ const ProjectWorkers = props => {
             job.project_workers &&
             job.project_workers.includes(worker.name)
           )
-            jobArray.push(job.name);
+            return jobArray.push(job.name);
+          else return null;
         });
         let tempObj = { [project.name]: jobArray };
         let currObj = jobObject;
-        jobObject = Object.assign(currObj, tempObj);
+        return (jobObject = Object.assign(currObj, tempObj));
       });
       projectKeys.map(project => {
-        newObj[worker.name].push({ [project]: jobObject[project] });
+        return newObj[worker.name].push({ [project]: jobObject[project] });
       });
-      completeWorkerList.push(newObj);
+      return completeWorkerList.push(newObj);
     });
   };
 
@@ -48,7 +49,7 @@ const ProjectWorkers = props => {
   };
 
   const renderWorkerJobs = jobs => {
-    if (jobs[0].length === 0) return <h5>No Jobs Assigned</h5>;
+    if (jobs.length === 0) return <h5>No Jobs Assigned</h5>;
     return jobs.map((job, index) => {
       //console.log(jobs);
       return <li key={index}>{job}</li>;

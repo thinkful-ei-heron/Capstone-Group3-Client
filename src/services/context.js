@@ -30,7 +30,11 @@ const FirebaseContext = React.createContext({
   setNewJob: () => {},
   setNewProject: () => {},
   updateProjectWorkers: () => {},
-  setStateOnLogout: () => {}
+  setStateOnLogout: () => {},
+  updateJobStatus: () => {},
+  updateAndSetJobs: () => {},
+  updateJobApproval: () => {},
+  createOwner: () => {}
 });
 
 export default FirebaseContext;
@@ -51,19 +55,22 @@ export class ContextProvider extends React.Component {
   };
 
   setStateOnLogout = () => {
-    this.setState({
-      user: {
-        id: '',
-        name: '',
-        role: '',
-        org: ''
+    this.setState(
+      {
+        user: {
+          id: '',
+          name: '',
+          role: '',
+          org: ''
+        },
+        employees: [],
+        projects: [],
+        project_managers: [],
+        jobs: [],
+        loaded: false
       },
-      employees: [],
-      projects: [],
-      project_managers: [],
-      jobs: [],
-      loaded: false
-    });
+      () => app.auth().signOut()
+    );
   };
 
   db = app.firestore();
@@ -72,7 +79,18 @@ export class ContextProvider extends React.Component {
     this.setState({ loaded: bool });
   };
 
+  updateAndSetJobs = async (id, status, approval) => {
+    let index = this.state.jobs.findIndex(job => job.id === id);
+    let newArray = this.state.jobs;
+    newArray[index].status = status;
+    newArray[index].approval = approval;
+    this.setState({
+      jobs: newArray
+    });
+  };
+
   initState = (email, org) => {
+    console.log('in init state');
     let emps = [],
       projs = [],
       jobs = [],
@@ -87,16 +105,16 @@ export class ContextProvider extends React.Component {
           role = user.data().role;
         })
       )
-      .then(() => this.getProjects('orgOne'))
+      .then(() => this.getProjects(org))
       .then(snapshot => {
         snapshot.forEach(async proj => {
           projs.push(proj.data());
-          await this.getJobs('orgOne', proj.id).then(snap => snap.forEach(job => jobs.push(job.data())));
+          await this.getJobs(org, proj.id).then(snap => snap.forEach(job => jobs.push(job.data())));
         });
       })
-      .then(() => this.getEmployees('orgOne'))
+      .then(() => this.getEmployees(org))
       .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
-      .then(() => this.getProjectManagers('orgOne'))
+      .then(() => this.getProjectManagers(org))
       .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
       .then(() => {
         this.setState({
@@ -108,6 +126,36 @@ export class ContextProvider extends React.Component {
           loaded: true
         });
       });
+  };
+
+  createOwner = async (user, org) => {
+    const addOrg = async () =>
+      await this.db
+        .collection('organizations')
+        .doc(org)
+        .set({
+          name: org
+        });
+    const addProjectCollection = async () => {
+      await this.db
+        .collection('organizations')
+        .doc(org)
+        .collection('projects')
+        .add({});
+    };
+    const addUsersCollection = async () => {
+      await this.db
+        .collection('organizations')
+        .doc(org)
+        .collection('users')
+        .add({});
+    };
+
+    await addOrg().then(async () => {
+      await addProjectCollection();
+      await addUsersCollection();
+    });
+    this.createUserInOrg(user, org);
   };
 
   getUser = (email, org) => {
@@ -273,7 +321,32 @@ export class ContextProvider extends React.Component {
       .collection('projects')
       .doc(id)
       .update({ project_workers: workers });
-    await this.doGetProject('orgOne');
+    await this.doGetProject(this.state.user.org);
+  };
+
+  updateJobStatus = async (id, status, project_id, approval) => {
+    await this.db
+      .collection('organizations')
+      .doc(this.state.user.org)
+      .collection('projects')
+      .doc(project_id)
+      .collection('jobs')
+      .doc(id)
+      .update({
+        status: status,
+        approval: approval
+      });
+  };
+
+  updateJobApproval = async (id, project_id) => {
+    await this.db
+      .collection('organizations')
+      .doc(this.state.user.org)
+      .collection('projects')
+      .doc(project_id)
+      .collection('job')
+      .doc(id)
+      .update({ approval: true, status: 'complete' });
   };
 
   render() {
@@ -303,7 +376,11 @@ export class ContextProvider extends React.Component {
       setProjectManagersState: this.setProjectManagersState,
       setNewProject: this.setNewProject,
       updateProjectWorkers: this.updateProjectWorkers,
-      setStateOnLogout: this.setStateOnLogout
+      setStateOnLogout: this.setStateOnLogout,
+      updateJobStatus: this.updateJobStatus,
+      updateAndSetJobs: this.updateAndSetJobs,
+      updateJobApproval: this.updateJobApproval,
+      createOwner: this.createOwner
     };
     return <FirebaseContext.Provider value={value}>{this.props.children}</FirebaseContext.Provider>;
   }

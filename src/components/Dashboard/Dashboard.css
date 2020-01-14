@@ -41,6 +41,20 @@
   background-color: var(--list-odd-color);
 }
 
+.Dashboard__no_projects {
+  display: grid;
+  place-content: center;
+  width: 100%;
+  margin: 50px auto;
+}
+
+.Dashboard__welcome {
+  display: block;
+  font-family: var(--oxygen);
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
 .Dashboard__container a,
 .Dashboard__container a:hover,
 .Dashboard__container a:visited {

@@ -30,6 +30,14 @@ export default class Dashboard extends Component {
     this.setState({ expandPersonnel: !this.state.expandPersonnel });
   };
 
+  filterProjects() {
+    if (this.context.user.role === 'project worker')
+      return this.context.projects.filter(proj => proj.project_workers.includes(this.context.user.name));
+    if (this.context.user.role === 'project manager')
+      return this.context.projects.filter(proj => proj.project_manager === this.context.user.name);
+    return this.context.projects;
+  }
+
   render() {
     // console.log('this.context.user', this.context.user);
     // console.log('this.context.projects ', this.context.projects);
@@ -73,16 +81,21 @@ export default class Dashboard extends Component {
               </div>
               {this.state.expandProjects && (
                 <div className="Dashboard__projects_container">
-                  <ul className="Dashboard__list">
-                    {this.context.projects &&
-                      this.context.projects.map((proj, i) => {
-                        return (
+                  {this.context.projects.length !== 0 ? (
+                    this.filterProjects().map((proj, i) => {
+                      return (
+                        <ul className="Dashboard__list">
                           <li key={i}>
                             <ProjectBar proj={proj} />
                           </li>
-                        );
-                      })}
-                  </ul>
+                        </ul>
+                      );
+                    })
+                  ) : (
+                    <span className="Dashboard__no_projects">
+                      Welcome! You currently have no projects, click the NEW button above to add one.
+                    </span>
+                  )}
                 </div>
               )}
             </section>

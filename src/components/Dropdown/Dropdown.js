@@ -12,6 +12,14 @@ export default class Dropdown extends Component {
 
   static contextType = FirebaseContext;
 
+  componentDidMount() {
+    if (this.props.defaultValue) {
+      this.setState({
+        selectedOption: this.props.defaultValue
+      })
+    }
+  }
+
   handleChange = selectedOption => {
     this.setState({ selectedOption });
     this.props.setSelected(selectedOption);
@@ -29,13 +37,17 @@ export default class Dropdown extends Component {
   render() {
     const { selectedOption } = this.state;
     return (
-        <Select
-          value={selectedOption}
-          onChange={this.handleChange}
-          options={this.populateOptions(this.props.employees)}
-          isMulti={this.props.isMulti ? true : false}
-          placeholder={this.props.placeholder ? this.props.placeholder : "Select..."}
-        />
+      <Select
+        value={selectedOption}
+        onChange={this.handleChange}
+        options={this.populateOptions(this.props.employees)}
+        isMulti={this.props.isMulti ? true : false}
+        isSearchable={true}
+        // defaultValue={this.props.defaultValue ? this.props.defaultValue : false}
+        placeholder={
+          this.props.placeholder ? this.props.placeholder : "Select..."
+        }
+      />
     );
   }
 }

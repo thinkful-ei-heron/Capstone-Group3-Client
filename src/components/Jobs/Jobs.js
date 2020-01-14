@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { ProgressBar } from "../ProgressBar/ProgressBar";
 import FirebaseContext from "../../services/context.js";
+import JobForm from "../JobForm/JobForm";
+
 import "./Jobs.css";
 import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
 
@@ -51,7 +53,9 @@ export default class Jobs extends Component {
 
   //Maybe make a form for request edit so the worker can submit a reason for the request
   //Update revision field in db to store request details
-  renderProjectButtons(approval, progress, id, status) {
+
+  renderProjectButtons(approval, total_hours, hours_completed, id, status) {
+    const progress = Math.floor((hours_completed / total_hours) * 100);
     if (this.context.user.role === "project worker") {
       if (status === "completed") return <span>Project Completed</span>;
       if (status === "submitted" || status === "completed") return <></>;
@@ -111,8 +115,7 @@ export default class Jobs extends Component {
           ) : (
             <></>
           )}
-          {/* <button>Assign</button> //assign employees PM/admin
-          <button>Edit</button> //edit for PM (change name, description, timeline)}*/}
+          <button onClick={this.showEditForm}>Edit</button>
           {status === "submitted" ? (
             <div>
               <button
@@ -138,6 +141,12 @@ export default class Jobs extends Component {
     });
   };
 
+  showEditForm = () => {
+    this.setState({
+      showEditForm: !this.state.showEditForm
+    });
+  };
+
   componentDidMount() {
     this.setState({
       userRole: this.context.user.role
@@ -157,12 +166,18 @@ export default class Jobs extends Component {
             <h4>{job.name}</h4>
             <span>{job.description}</span>
             <ProgressBar percentage={progress} />
+            {this.renderProjectButtons(
+              job.approval,
+              job.total_hours,
+              job.hours_completed,
+              job.id,
+              job.status
+            )}
           </div>
-          {this.renderProjectButtons(
-            job.approval,
-            job.progress,
-            job.id,
-            job.status
+          {this.state.showEditForm ? (
+            <JobForm showJobForm={this.showEditForm} job={job} />
+          ) : (
+            ""
           )}
           {this.state.expandJob ? (
             <ul>{this.renderEmployeeList(job.project_workers)}</ul>

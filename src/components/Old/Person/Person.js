@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PersonDetails from '../PersonDetails/PersonDetails';
+import React, { Component } from "react";
+import PersonDetails from "../PersonDetails/PersonDetails";
 
 export default class Person extends Component {
   state = {

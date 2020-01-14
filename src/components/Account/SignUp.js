@@ -13,9 +13,11 @@ const SignUp = ({ history }) => {
       .auth()
       .createUserWithEmailAndPassword(email.value, password.value)
       .then(response => {
-        return response.user.updateProfile({
-          displayName: orgName.value
-        });
+        response.user
+          .updateProfile({
+            displayName: orgName.value
+          })
+          .then(async () => await fbContext.initState(email.value, orgName.value));
       })
       .then(() => {
         fbContext.createUserInOrg(
@@ -28,10 +30,8 @@ const SignUp = ({ history }) => {
         );
       })
       .then(async () => {
-        await app
-          .auth()
-          .signInWithEmailAndPassword(email.value, password.value);
-        history.push("/dashboard");
+        await app.auth().signInWithEmailAndPassword(email.value, password.value);
+        history.push('/dashboard');
       });
   };
 

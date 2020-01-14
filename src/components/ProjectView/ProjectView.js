@@ -7,7 +7,7 @@ import Jobs from '../Jobs/Jobs';
 import Dropdown from '../Dropdown/Dropdown';
 import Statistics from '../Statistics/Statistics';
 import { Sidebar } from '../Sidebar/Sidebar';
-import NewJob from '../NewJob/NewJob';
+import JobForm from '../JobForm/JobForm';
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -165,7 +165,7 @@ export default class ProjectView extends Component {
                 )}
               </div>
               {showJobForm ? (
-                <NewJob
+                <JobForm
                   {...this.props}
                   setJob={this.setJob}
                   project={project}

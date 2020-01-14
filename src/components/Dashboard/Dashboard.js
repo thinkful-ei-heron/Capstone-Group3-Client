@@ -39,7 +39,7 @@ export default class Dashboard extends Component {
 
   render() {
     // console.log('this.context.user', this.context.user);
-     console.log('this.context.projects ', this.context.projects);
+    // console.log('this.context.projects ', this.context.projects);
     // console.log('this.context.jobs ', this.context.jobs);
     // console.log('this.context.employees', this.context.employees);
     // console.log('this.context.project_managers', this.context.project_managers);
@@ -82,7 +82,8 @@ export default class Dashboard extends Component {
                       })
                     ) : (
                       <div className="Dashboard__no_projects">
-                        <span className="Dashboard__welcome">Welcome!</span><span>You currently have no projects, click the NEW button above to add one.</span>
+                        <span className="Dashboard__welcome">Welcome!</span>
+                        <span>You currently have no projects, click the NEW button above to add one.</span>
                       </div>
                     )}
                   </div>

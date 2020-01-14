@@ -1,28 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import FirebaseContext from '../../services/context';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
-import Dropdown from '../Dropdown/Dropdown';
 import './ProjectBar.css';
 
 const ProjectBar = props => {
-  const context = useContext(FirebaseContext);
-  const [selected, setSelected] = useState(0);
-
-  const populateEmployeeList = () => {
-    let employeeArray = [];
-    context.employees.map(employee => {
-      employeeArray.push(employee.name);
-    });
-    return employeeArray;
-  };
-
-  let employees = populateEmployeeList();
-
-  const handleSubmit = () => {
-    console.log(selected);
-  };
-
   console.log(props.proj.progress);
   console.log(new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10));
 
@@ -43,12 +24,6 @@ const ProjectBar = props => {
           </div>
         </li>
       </Link>
-      {/*<li>
-        <form onSubmit={handleSubmit}>
-          <Dropdown employees={employees} isMulti={true} setSelected={setSelected} />
-          <button type="submit">Add Workers</button>
-        </form> 
-      </li>*/}
     </ul>
   );
 };

@@ -34,6 +34,8 @@ const FirebaseContext = React.createContext({
   updateAndSetJobs: () => {},
   updateJobApproval: () => {},
   createOwner: () => {},
+  editJob: () => {},
+  editAndSetJobs: () => {}
 });
 
 export default FirebaseContext;
@@ -85,6 +87,16 @@ export class ContextProvider extends React.Component {
       jobs: newArray,
     });
   };
+
+  editAndSetJobs = async (id, jobObj) => {
+    let index = this.state.jobs.findIndex(job => job.id === id)
+    let newArray = this.state.jobs;
+    newArray[index] = jobObj;
+    this.setState({
+      jobs: newArray
+    })
+  }
+
 
   initState = (email, org) => {
     let emps = [],
@@ -331,6 +343,17 @@ export class ContextProvider extends React.Component {
       .update({ approval: true, status: "complete" });
   };
 
+  editJob = async (id, jobObj) => {
+    await this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("projects")
+      .doc(jobObj.project_id)
+      .collection("jobs")
+      .doc(id)
+      .update(jobObj);
+  }
+
   render() {
     const value = {
       user: this.state.user,
@@ -361,6 +384,8 @@ export class ContextProvider extends React.Component {
       updateAndSetJobs: this.updateAndSetJobs,
       updateJobApproval: this.updateJobApproval,
       createOwner: this.createOwner,
+      editJob: this.editJob,
+      editAndSetJobs: this.editAndSetJobs
     };
     return (
       <FirebaseContext.Provider value={value}>

@@ -283,6 +283,7 @@ export class ContextProvider extends React.Component {
       projects: this.state.projects,
       project_managers: this.state.project_managers,
       jobs: this.state.jobs,
+      loaded: this.state.loaded,
       initState: this.initState,
       getOrgName: this.getOrgName,
       addProject: this.addProject,

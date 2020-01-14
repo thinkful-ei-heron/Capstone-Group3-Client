@@ -14,13 +14,10 @@ import Loading from './components/Loading/Loading';
 import Logout from './components/Account/Logout';
 import './App.css';
 
-
-
 const App = props => {
   const { currentUser } = useContext(AuthContext);
   const context = useContext(FirebaseContext);
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     const initState = async (email, org) => {
@@ -28,10 +25,18 @@ const App = props => {
 
       setLoading(false);
     };
-
+    if (currentUser) {
+      console.log(currentUser);
+      console.log(currentUser.email);
+      console.log(currentUser.displayName);
+    }
     if (currentUser && currentUser.displayName) {
-      if (!context.loaded)
+      console.log('currentUser is ', currentUser);
+      console.log(context.loaded);
+      if (!context.loaded) {
+        console.log('setting context for ', currentUser);
         initState(currentUser.email, currentUser.displayName);
+      }
     } else setLoading(false);
   }, [currentUser]);
 
@@ -45,11 +50,7 @@ const App = props => {
         <main className="app__main">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PrivateRoute
-              exact
-              path="/dashboard"
-              component={() => <Dashboard user={currentUser} />}
-            />
+            <PrivateRoute exact path="/dashboard" component={() => <Dashboard user={currentUser} />} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={SignUp} />
             <Route exact path="/logout" component={Logout} />

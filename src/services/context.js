@@ -35,7 +35,8 @@ const FirebaseContext = React.createContext({
   updateJobApproval: () => {},
   createOwner: () => {},
   editJob: () => {},
-  editAndSetJobs: () => {}
+  editAndSetJobs: () => {},
+  promoteUser: () => {},
 });
 
 export default FirebaseContext;
@@ -52,6 +53,17 @@ export class ContextProvider extends React.Component {
     projects: [],
     project_managers: [],
     jobs: [],
+  };
+
+  promoteUser = async (name, org) => {
+    return await this.db
+      .collection("organizations")
+      .doc(org)
+      .collection("users")
+      .where("name", "==", name)
+      .set({
+        role: "project manager",
+      });
   };
 
   setStateOnLogout = () => {
@@ -89,14 +101,13 @@ export class ContextProvider extends React.Component {
   };
 
   editAndSetJobs = async (id, jobObj) => {
-    let index = this.state.jobs.findIndex(job => job.id === id)
+    let index = this.state.jobs.findIndex(job => job.id === id);
     let newArray = this.state.jobs;
     newArray[index] = jobObj;
     this.setState({
-      jobs: newArray
-    })
-  }
-
+      jobs: newArray,
+    });
+  };
 
   initState = (email, org) => {
     let emps = [],
@@ -352,7 +363,7 @@ export class ContextProvider extends React.Component {
       .collection("jobs")
       .doc(id)
       .update(jobObj);
-  }
+  };
 
   render() {
     const value = {
@@ -385,7 +396,8 @@ export class ContextProvider extends React.Component {
       updateJobApproval: this.updateJobApproval,
       createOwner: this.createOwner,
       editJob: this.editJob,
-      editAndSetJobs: this.editAndSetJobs
+      editAndSetJobs: this.editAndSetJobs,
+      promoteUser: this.promoteUser,
     };
     return (
       <FirebaseContext.Provider value={value}>

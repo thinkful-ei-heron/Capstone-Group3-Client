@@ -11,12 +11,18 @@ import ProjectBar from "../ProjectBar/ProjectBar";
 // This component is managed by Dan.  It is MIIIINE!!             //
 // Do not change it.  If something doesn't work ask me to fix it. //
 ////////////////////////////////////////////////////////////////////
+
+// need a button/dropdown for promoting user
+// FirebaseContext has a promoteUser method
+// pass it in target user's 'name' and org
+// user will be updated in the db
+
 export default class Dashboard extends Component {
   static contextType = FirebaseContext;
   state = {
     loading: true,
     expandProjects: true,
-    expandPersonnel: true
+    expandPersonnel: true,
   };
 
   toggleExpandProjects = e => {
@@ -30,11 +36,6 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    // console.log('this.context.user', this.context.user);
-    // console.log('this.context.projects ', this.context.projects);
-    // console.log('this.context.jobs ', this.context.jobs);
-    // console.log('this.context.employees', this.context.employees);
-    // console.log('this.context.project_managers', this.context.project_managers);
     if (!this.context.user) return <Loading />;
     else
       return (
@@ -54,7 +55,7 @@ export default class Dashboard extends Component {
               >
                 <div className="Dashboard__fa_h1">
                   {StyleIcon({
-                    style: `${this.state.expandProjects ? "minus" : "plus"}`
+                    style: `${this.state.expandProjects ? "minus" : "plus"}`,
                   })}
                   <h1>PROJECTS</h1>
                 </div>
@@ -76,7 +77,8 @@ export default class Dashboard extends Component {
                     })
                   ) : (
                     <span className="Dashboard__no_projects">
-                      Welcome! You currently have no projects, click the NEW button above to add one.
+                      Welcome! You currently have no projects, click the NEW
+                      button above to add one.
                     </span>
                   )}
                 </div>
@@ -89,7 +91,7 @@ export default class Dashboard extends Component {
               >
                 <div className="Dashboard__fa_h1">
                   {StyleIcon({
-                    style: `${this.state.expandPersonnel ? "minus" : "plus"}`
+                    style: `${this.state.expandPersonnel ? "minus" : "plus"}`,
                   })}
                   <h1>PERSONNEL</h1>
                 </div>

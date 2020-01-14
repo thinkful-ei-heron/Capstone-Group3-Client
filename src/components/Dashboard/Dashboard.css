@@ -1,6 +1,3 @@
-.Dashboard__container {
-}
-
 .Dashboard__header,
 .Dashboard__project_header,
 .Dashboard__personnnel_header {
@@ -16,7 +13,7 @@
 .Dashboard__personnel_header,
 .Dashboard__project_header {
   height: 60px;
-  background-color: #5c9ad1;
+  background-color: var(--header-bg-color);
 }
 
 .Dashboard__personnel_header {
@@ -37,11 +34,25 @@
 }
 
 .Dashboard__list li:nth-child(even) ul {
-  background-color: rgba(127, 204, 233, 0.8);
+  background-color: var(--list-even-color);
 }
 
 .Dashboard__list li:nth-child(odd) ul {
-  background-color: rgba(127, 204, 233, 0.5);
+  background-color: var(--list-odd-color);
+}
+
+.Dashboard__no_projects {
+  display: grid;
+  place-content: center;
+  width: 100%;
+  margin: 50px auto;
+}
+
+.Dashboard__welcome {
+  display: block;
+  font-family: var(--oxygen);
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .Dashboard__container a,
@@ -53,7 +64,28 @@
 @media only screen and (min-width: 700px) {
   .Dashboard__container {
     position: relative;
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
+  }
+
+  .Dashboard__main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+  }
+
+  .Dashboard__personnel_header {
+    margin-top: 0;
+  }
+
+  .Dashboard__projects {
+    width: 70%;
+  }
+
+  .Dashboard__personnel {
+    width: 25%;
+    max-width: 300px;
+    margin-left: 30px;
   }
 }

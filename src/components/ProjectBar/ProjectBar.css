@@ -33,10 +33,6 @@
   width: 150px;
 }
 
-.ProjectBar__Dropdown_wrapper {
-  z-index: 10;
-}
-
 @media only screen and (min-width: 700px) {
   .ProjectBar__link_wrapper {
     display: flex;

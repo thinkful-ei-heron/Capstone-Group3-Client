@@ -1,0 +1,54 @@
+#company_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  border: 1px solid grey;
+}
+
+#project_header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+  border: 1px solid grey;
+  margin-top: 10px;
+}
+
+#project_progress {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-basis: 20%;
+}
+
+#jobs_stats_container {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 80%;
+  margin: 5px;
+  border: 1px solid grey;
+}
+
+#sidebar_container {
+  flex-basis: 20%;
+  margin: 5px;
+  border: 1px solid grey;
+}
+
+#projectView_main {
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+}
+
+#jobs_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid grey;
+}

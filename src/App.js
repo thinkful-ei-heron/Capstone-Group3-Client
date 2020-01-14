@@ -25,20 +25,13 @@ const App = props => {
 
       setLoading(false);
     };
-    if (currentUser) {
-      console.log(currentUser);
-      console.log(currentUser.email);
-      console.log(currentUser.displayName);
-    }
+
     if (currentUser && currentUser.displayName) {
-      console.log('currentUser is ', currentUser);
-      console.log(context.loaded);
-      if (!context.loaded) {
-        console.log('setting context for ', currentUser);
-        initState(currentUser.email, currentUser.displayName);
-      }
+      if (!context.loaded) initState(currentUser.email, currentUser.displayName);
     } else setLoading(false);
   }, [currentUser]);
+
+  console.log(currentUser);
 
   if (loading) return <Loading />;
   else {
@@ -50,9 +43,9 @@ const App = props => {
         <main className="app__main">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PrivateRoute exact path="/dashboard" component={() => <Dashboard user={currentUser} />} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={SignUp} />
+            <Route exact path="/register" render={() => <SignUp />} />
             <Route exact path="/logout" component={Logout} />
 
             <PrivateRoute exact path="/new_project" component={NewProject} />
@@ -61,6 +54,8 @@ const App = props => {
               path="/project/:id"
               component={props => <ProjectView id={props.match.params.id} />}
             />
+
+            <Route exact path="/owner-signup" render={() => <SignUp />} />
           </Switch>
         </main>
       </Router>

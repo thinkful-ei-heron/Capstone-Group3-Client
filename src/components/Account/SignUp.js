@@ -4,7 +4,7 @@ import app from '../../services/base';
 import FirebaseContext from '../../services/context';
 import { Label, Input } from '../Form/Form';
 
-const SignUp = ({ history }) => {
+const SignUp = ({ history }, props) => {
   const fbContext = React.useContext(FirebaseContext);
   const handleSignUp = async event => {
     event.preventDefault();
@@ -20,14 +20,23 @@ const SignUp = ({ history }) => {
           .then(async () => await fbContext.initState(email.value, orgName.value));
       })
       .then(() => {
-        fbContext.createUserInOrg(
-          {
-            email: email.value,
-            role: role.value,
-            name: name.value
-          },
-          orgName.value
-        );
+        history.location.pathname === '/owner-signup'
+          ? fbContext.createOwner(
+              {
+                email: email.value,
+                role: role.value,
+                name: name.value
+              },
+              orgName.value
+            )
+          : fbContext.createUserInOrg(
+              {
+                email: email.value,
+                role: role.value,
+                name: name.value
+              },
+              orgName.value
+            );
       })
       .then(async () => {
         await app.auth().signInWithEmailAndPassword(email.value, password.value);

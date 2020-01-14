@@ -15,7 +15,7 @@ const ProjectManagers = props => {
       context.projects.map(project => {
         if (project.project_manager === manager.name)
           return projectArray.push(project.name);
-        else return;
+        else return null;
       });
       return completeManagerList.push({ [manager.name]: projectArray });
     });

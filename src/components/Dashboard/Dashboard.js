@@ -64,16 +64,21 @@ export default class Dashboard extends Component {
               </div>
               {this.state.expandProjects && (
                 <div className="Dashboard__projects_container">
-                  <ul className="Dashboard__list">
-                    {this.context.projects &&
-                      this.context.projects.map((proj, i) => {
-                        return (
+                  {this.context.projects[0] && this.context.projects[0].hasOwnProperty('date_created') ? (
+                    this.filterProjects().map((proj, i) => {
+                      return (
+                        <ul className="Dashboard__list">
                           <li key={i}>
                             <ProjectBar proj={proj} />
                           </li>
-                        );
-                      })}
-                  </ul>
+                        </ul>
+                      );
+                    })
+                  ) : (
+                    <span className="Dashboard__no_projects">
+                      Welcome! You currently have no projects, click the NEW button above to add one.
+                    </span>
+                  )}
                 </div>
               )}
             </section>

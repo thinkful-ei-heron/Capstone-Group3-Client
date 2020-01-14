@@ -34,7 +34,8 @@ const FirebaseContext = React.createContext({
   updateJobStatus: () => {},
   updateAndSetJobs: () => {},
   updateJobApproval: () => {},
-  createOwner: () => {}
+  createOwner: () => {},
+  updateEdit: () => {}
 });
 
 export default FirebaseContext;
@@ -325,7 +326,7 @@ export class ContextProvider extends React.Component {
     await this.doGetProject(this.state.user.org);
   };
 
-  updateJobStatus = async (id, status, project_id, approval) => {
+  updateJobStatus = async (id, status, project_id, approval = false) => {
     await this.db
       .collection("organizations")
       .doc(this.state.user.org)
@@ -339,15 +340,27 @@ export class ContextProvider extends React.Component {
       });
   };
 
+  //we might not be using this
   updateJobApproval = async (id, project_id) => {
     await this.db
       .collection("organizations")
       .doc(this.state.user.org)
       .collection("projects")
       .doc(project_id)
-      .collection("job")
+      .collection("jobs")
       .doc(id)
       .update({ approval: true, status: "complete" });
+  };
+
+  updateEdit = async (edit, id, project_id) => {
+    await this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("projects")
+      .doc(project_id)
+      .collection("jobs")
+      .doc(id)
+      .update({ edit: edit });
   };
 
   render() {
@@ -380,7 +393,8 @@ export class ContextProvider extends React.Component {
       updateJobStatus: this.updateJobStatus,
       updateAndSetJobs: this.updateAndSetJobs,
       updateJobApproval: this.updateJobApproval,
-      createOwner: this.createOwner
+      createOwner: this.createOwner,
+      updateEdit: this.updateEdit
     };
     return (
       <FirebaseContext.Provider value={value}>

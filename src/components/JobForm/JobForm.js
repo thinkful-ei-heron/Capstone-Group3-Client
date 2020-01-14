@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useInput } from "../../hooks/useInput";
 import FirebaseContext from "../../services/context";
 import Dropdown from "../Dropdown/Dropdown";
@@ -7,6 +7,22 @@ import "./JobForm.css";
 const NewJob = props => {
   const fbContext = useContext(FirebaseContext);
   const [selected, setSelected] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const resetFunction = () => {
+      resetName();
+      resetDescription();
+      resetDeadline();
+      resetHours();
+      props.showJobForm();
+    };
+    if (submitted)
+      return function resetAll() {
+        resetFunction();
+      };
+  });
+
 
   const getDate = () => {
     if (props.job) {
@@ -108,13 +124,8 @@ const NewJob = props => {
       projectId,
       updatedProjectWorkers,
       project
-    );
-    // props.setJob(jobObj);
-    resetName();
-    resetDescription();
-    resetDeadline();
-    resetHours();
-    props.showJobForm();
+    ).then(setSubmitted(true))
+    
   };
 
   const populateEmployeeList = () => {

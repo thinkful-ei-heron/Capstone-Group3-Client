@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useInput } from "../../hooks/useInput";
 import FirebaseContext from "../../services/context";
 import Dropdown from "../Dropdown/Dropdown";
-import './NewJob.css';
+import "./NewJob.css";
 
 const NewJob = props => {
   const fbContext = useContext(FirebaseContext);
@@ -19,11 +19,9 @@ const NewJob = props => {
     bind: bindDeadline,
     reset: resetDeadline
   } = useInput("");
-  const {
-    value: total_hours,
-    bind: bindHours,
-    reset: resetHours
-  } = useInput("");
+  const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(
+    ""
+  );
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -111,12 +109,12 @@ const NewJob = props => {
               required
             />
           </div>
-            <Dropdown
-              employees={employees}
-              isMulti={true}
-              setSelected={setSelected}
-              placeholder="Assign Employees"
-            />
+          <Dropdown
+            employees={employees}
+            isMulti={true}
+            setSelected={setSelected}
+            placeholder="Assign Employees"
+          />
           <div className="input">
             <input type="button" value="Cancel" onClick={props.showJobForm} />
             <input type="submit" value="Submit" />

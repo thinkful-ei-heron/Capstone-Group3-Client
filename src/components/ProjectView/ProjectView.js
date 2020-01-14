@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import FirebaseContext from '../../services/context.js';
-import { ProgressBar } from '../ProgressBar/ProgressBar';
-import './ProjectView.css';
-import Loading from '../Loading/Loading';
-import Jobs from '../Jobs/Jobs';
-import Dropdown from '../Dropdown/Dropdown';
-import Statistics from '../Statistics/Statistics';
-import { Sidebar } from '../Sidebar/Sidebar';
-import NewJob from '../NewJob/NewJob';
+import React, { Component } from "react";
+import FirebaseContext from "../../services/context.js";
+import { ProgressBar } from "../ProgressBar/ProgressBar";
+import "./ProjectView.css";
+import Loading from "../Loading/Loading";
+import Jobs from "../Jobs/Jobs";
+import Dropdown from "../Dropdown/Dropdown";
+import Statistics from "../Statistics/Statistics";
+import { Sidebar } from "../Sidebar/Sidebar";
+import NewJob from "../NewJob/NewJob";
 
 export default class ProjectView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       project: {
-        name: '',
-        description: '',
-        progress: '',
-        deadline: '',
-        project_manager: '',
+        name: "",
+        description: "",
+        progress: "",
+        deadline: "",
+        project_manager: "",
         jobs: [],
         project_workers: []
       },
@@ -81,7 +81,9 @@ export default class ProjectView extends Component {
   };
 
   renderJobList = () => {
-    const jobs = this.context.jobs.filter(job => job.project_id === this.props.id);
+    const jobs = this.context.jobs.filter(
+      job => job.project_id === this.props.id
+    );
     return jobs.map(job => {
       return <Jobs job={job} key={job.id} />;
     });
@@ -100,10 +102,10 @@ export default class ProjectView extends Component {
   };
 
   renderPmList = () => {
-    let result = []
+    let result = [];
     this.context.project_managers.forEach(pm => result.push(pm.name));
-    return result
-  }
+    return result;
+  };
 
   setProjectManager = () => {
     //code to set new PM for project
@@ -113,7 +115,7 @@ export default class ProjectView extends Component {
     const { project, showJobForm } = this.state;
     if (this.state.loading) {
       return <Loading />;
-    } else { 
+    } else {
       return (
         <>
           <header id="company_header">
@@ -134,9 +136,13 @@ export default class ProjectView extends Component {
                 <ProgressBar percentage={project.progress} />
               </div>
               <div id="project_deadline">
-                <span>Deadline: {new Date(project.deadline.toString()).toDateString()}</span>
+                <span>
+                  Deadline:{" "}
+                  {new Date(project.deadline.toString()).toDateString()}
+                </span>
               </div>
-              {this.context.user.role === 'owner' && project.project_manager === 'unassigned' ? (
+              {this.context.user.role === "owner" &&
+              project.project_manager === "unassigned" ? (
                 <div id="select_pm">
                   <h3>SELECT Project Manager</h3>
                   <Dropdown
@@ -149,38 +155,45 @@ export default class ProjectView extends Component {
                       <button onClick={this.setProjectManager}></button>
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                 </div>
               ) : (
-                ''
+                ""
               )}
             </header>
           </div>
           <div id="projectView_main">
             <div id="jobs_stats_container">
-              {this.context.user.role === 'project worker' ? <></> : <Statistics />}
+              {this.context.user.role === "project worker" ? (
+                <></>
+              ) : (
+                <Statistics />
+              )}
               <div id="jobs_container">
-                {this.context.user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
-                {this.context.user.role === 'project worker' ? (
-                  ''
+                {this.context.user.role === "project worker" ? (
+                  <h3>Your Jobs</h3>
+                ) : (
+                  <h3>Jobs</h3>
+                )}
+                {this.context.user.role === "project worker" ? (
+                  ""
                 ) : (
                   <button onClick={this.showJobForm}>Add Job</button>
                 )}
-                </div>
-                {showJobForm ? (
-                  <NewJob
-                    {...this.props}
-                    setJob={this.setJob}
-                    project={project}
-                    showJobForm={this.showJobForm}
-                    projectId={this.props.id}
-                  />
-                ) : (
-                  ''
-                )}
-                {<ul>{this.renderJobList()}</ul>}
-              
+              </div>
+              {showJobForm ? (
+                <NewJob
+                  {...this.props}
+                  setJob={this.setJob}
+                  project={project}
+                  showJobForm={this.showJobForm}
+                  projectId={this.props.id}
+                />
+              ) : (
+                ""
+              )}
+              {<ul>{this.renderJobList()}</ul>}
             </div>
             <div id="sidebar_container">
               <Sidebar view="project" />

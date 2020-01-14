@@ -29,6 +29,14 @@ export default class Dashboard extends Component {
     this.setState({ expandPersonnel: !this.state.expandPersonnel });
   };
 
+  filterProjects() {
+    if (this.context.user.role === 'project worker')
+      return this.context.projects.filter(proj => proj.project_workers.includes(this.context.user.name));
+    if (this.context.user.role === 'project manager')
+      return this.context.projects.filter(proj => proj.project_manager === this.context.user.name);
+    return this.context.projects;
+  }
+
   render() {
     // console.log('this.context.user', this.context.user);
     // console.log('this.context.projects ', this.context.projects);

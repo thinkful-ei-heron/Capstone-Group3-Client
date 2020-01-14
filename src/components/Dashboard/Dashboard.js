@@ -64,7 +64,7 @@ export default class Dashboard extends Component {
               </div>
               {this.state.expandProjects && (
                 <div className="Dashboard__projects_container">
-                  {this.context.projects[0] && this.context.projects[0].hasOwnProperty('date_created') ? (
+                  {this.context.projects.length !== 0 ? (
                     this.filterProjects().map((proj, i) => {
                       return (
                         <ul className="Dashboard__list">

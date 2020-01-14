@@ -104,19 +104,15 @@ export default class JobNotificationList extends Component {
     })
   }
 
-  renderEmployeeNotificationDetails = jobObj => {
-    if (jobObj.status === 'in progress')
-      return <span>You have been added to {jobObj.name}.</span>
-    if (jobObj.status === 'submitted')
-      return <span>{jobObj.name} has been submitted for review.</span>
-    if (jobObj.status === 'revisions')
-      return <span>{jobObj.name} has been returned for revisions.</span>
-    if (jobObj.status === 'completed')
-      return <span>{jobObj.name} has been completed!</span>
+  handleApprovalSubmit = async (id, status, approval = false) => {
+    console.log(id)
+    await context.updateJobStatus(id, status, props.job.project_id, approval)
+    await context.updateAndSetJobs(id, status)
   }
 
   renderJobList = () => {
-    return this.state.notificationList.map(jobObj => {
+    return props.jobsList.map((jobObj, index) => {
+      console.log(jobObj.id)
       return (
         <li key={jobObj.id} className="notification_job">
           <Link

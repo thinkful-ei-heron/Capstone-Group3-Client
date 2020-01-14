@@ -8,7 +8,7 @@ const SignUp = ({ history }, props) => {
   const fbContext = React.useContext(FirebaseContext);
   const handleSignUp = async event => {
     event.preventDefault();
-    const { email, password, role, name, orgName } = event.target.elements;
+    const { email, password, name, orgName } = event.target.elements;
     await app
       .auth()
       .createUserWithEmailAndPassword(email.value, password.value)
@@ -24,7 +24,7 @@ const SignUp = ({ history }, props) => {
           ? fbContext.createOwner(
               {
                 email: email.value,
-                role: role.value,
+                role: 'owner',
                 name: name.value
               },
               orgName.value
@@ -32,7 +32,7 @@ const SignUp = ({ history }, props) => {
           : fbContext.createUserInOrg(
               {
                 email: email.value,
-                role: role.value,
+                role: 'project worker',
                 name: name.value
               },
               orgName.value
@@ -63,10 +63,6 @@ const SignUp = ({ history }, props) => {
         <Label htmlFor="orgName">
           Orginization Name
           <Input type="orgName" name="orgName" placeholder="Organization name" required />
-        </Label>
-        <Label htmlFor="role">
-          Role
-          <Input type="role" name="role" placeholder="role" required />
         </Label>
         <button type="submit">Sign Up</button>
       </form>

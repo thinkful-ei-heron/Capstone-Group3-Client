@@ -150,33 +150,18 @@ export class ContextProvider extends React.Component {
   };
 
   createOwner = async (user, org) => {
-    const addOrg = async () =>
+    const addOrg = async () => {
       await this.db
         .collection("organizations")
         .doc(org)
         .set({
           name: org,
         });
-    const addProjectCollection = async () => {
-      await this.db
-        .collection("organizations")
-        .doc(org)
-        .collection("projects")
-        .add({});
-    };
-    const addUsersCollection = async () => {
-      await this.db
-        .collection("organizations")
-        .doc(org)
-        .collection("users")
-        .add({});
     };
 
-    await addOrg().then(async () => {
-      await addProjectCollection();
-      await addUsersCollection();
+    addOrg().then(() => {
+      this.createUserInOrg(user, org);
     });
-    this.createUserInOrg(user, org);
   };
 
   getUser = (email, org) => {

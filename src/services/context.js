@@ -6,7 +6,7 @@ const FirebaseContext = React.createContext({
     name: null,
     role: null,
     email: null,
-    org: null
+    org: null,
   },
   employees: [],
   projects: [],
@@ -23,7 +23,6 @@ const FirebaseContext = React.createContext({
   getEmployees: () => {},
   setEmployeeState: () => {},
   createUserInorg: () => {},
-  newSetUser: () => {},
   getOrgName: () => {},
   getProjectManagers: () => {},
   setProjectManagersState: () => {},
@@ -34,7 +33,7 @@ const FirebaseContext = React.createContext({
   updateJobStatus: () => {},
   updateAndSetJobs: () => {},
   updateJobApproval: () => {},
-  createOwner: () => {}
+  createOwner: () => {},
 });
 
 export default FirebaseContext;
@@ -45,12 +44,12 @@ export class ContextProvider extends React.Component {
       id: "",
       name: "",
       role: "",
-      org: ""
+      org: "",
     },
     employees: [],
     projects: [],
     project_managers: [],
-    jobs: []
+    jobs: [],
   };
 
   setStateOnLogout = () => {
@@ -60,14 +59,14 @@ export class ContextProvider extends React.Component {
           id: "",
           name: "",
           role: "",
-          org: ""
+          org: "",
         },
         employees: [],
         projects: [],
         project_managers: [],
-        jobs: []
+        jobs: [],
       },
-      () => app.auth().signOut()
+      () => app.auth().signOut(),
     );
   };
 
@@ -83,7 +82,7 @@ export class ContextProvider extends React.Component {
     newArray[index].status = status;
     newArray[index].approval = approval;
     this.setState({
-      jobs: newArray
+      jobs: newArray,
     });
   };
 
@@ -100,14 +99,14 @@ export class ContextProvider extends React.Component {
         snapshot.forEach(user => {
           name = user.data().name;
           role = user.data().role;
-        })
+        }),
       )
       .then(() => this.getProjects(org))
       .then(snapshot => {
         snapshot.forEach(async proj => {
           projs.push(proj.data());
           await this.getJobs(org, proj.id).then(snap =>
-            snap.forEach(job => jobs.push(job.data()))
+            snap.forEach(job => jobs.push(job.data())),
           );
         });
       })
@@ -122,7 +121,7 @@ export class ContextProvider extends React.Component {
           jobs: jobs,
           employees: emps,
           project_managers: pms,
-          loaded: true
+          loaded: true,
         });
       });
   };
@@ -133,7 +132,7 @@ export class ContextProvider extends React.Component {
         .collection("organizations")
         .doc(org)
         .set({
-          name: org
+          name: org,
         });
     const addProjectCollection = async () => {
       await this.db
@@ -226,24 +225,6 @@ export class ContextProvider extends React.Component {
       .set(newUser);
   };
 
-  newSetUser = (email, org) => {
-    this.db
-      .collection("organizations")
-      .doc(org)
-      .collection("users")
-      .doc(email)
-      .onSnapshot(snapshot => {
-        this.setState({
-          user: {
-            email: snapshot.data().email,
-            name: snapshot.data().name,
-            role: snapshot.data().role,
-            org: org
-          }
-        });
-      });
-  };
-
   getOrgName = org => {
     return this.db
       .collection("organizations")
@@ -274,13 +255,13 @@ export class ContextProvider extends React.Component {
 
   setNewProject = project => {
     this.setState({
-      projects: [...this.state.projects, project]
+      projects: [...this.state.projects, project],
     });
   };
 
   setNewJob = async job => {
     this.setState({
-      jobs: [...this.state.jobs, job]
+      jobs: [...this.state.jobs, job],
     });
   };
 
@@ -290,7 +271,7 @@ export class ContextProvider extends React.Component {
     let db = this.db;
     await this.db
       .collection(
-        `organizations/${this.state.user.org}/projects/${project_id}/jobs`
+        `organizations/${this.state.user.org}/projects/${project_id}/jobs`,
       )
       .add(newJob)
       .then(function(docRef) {
@@ -335,7 +316,7 @@ export class ContextProvider extends React.Component {
       .doc(id)
       .update({
         status: status,
-        approval: approval
+        approval: approval,
       });
   };
 
@@ -365,7 +346,6 @@ export class ContextProvider extends React.Component {
       setNewJob: this.setNewJob,
       setloaded: this.setloaded,
       createUserInOrg: this.createUserInOrg,
-      newSetUser: this.newSetUser,
       getProjects: this.getProjects,
       getEmployees: this.getEmployees,
       setEmployeeState: this.setEmployeeState,
@@ -380,7 +360,7 @@ export class ContextProvider extends React.Component {
       updateJobStatus: this.updateJobStatus,
       updateAndSetJobs: this.updateAndSetJobs,
       updateJobApproval: this.updateJobApproval,
-      createOwner: this.createOwner
+      createOwner: this.createOwner,
     };
     return (
       <FirebaseContext.Provider value={value}>

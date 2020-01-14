@@ -15,7 +15,8 @@
 // };
 
 // Job => {
-//   id, approval;
+//   id;
+//   approval;
 //   date_created;
 //   deadline;
 //   description;

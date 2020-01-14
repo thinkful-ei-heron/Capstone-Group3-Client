@@ -111,8 +111,8 @@ export default class Jobs extends Component {
   showEditForm = () => {
     this.setState({
       showEditForm: !this.state.showEditForm
-    })
-  }
+    });
+  };
 
   componentDidMount() {
     this.setState({
@@ -142,7 +142,11 @@ export default class Jobs extends Component {
               job.status
             )}
           </div>
-          {this.state.showEditForm ? <JobForm showJobForm={this.showEditForm} job={job} /> : ''}
+          {this.state.showEditForm ? (
+            <JobForm showJobForm={this.showEditForm} job={job} />
+          ) : (
+            ""
+          )}
           {this.state.expandJob ? (
             <ul>{this.renderEmployeeList(job.project_workers)}</ul>
           ) : (

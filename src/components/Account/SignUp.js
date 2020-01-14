@@ -14,7 +14,7 @@ const SignUp = ({ history }, props) => {
       .createUserWithEmailAndPassword(email.value, password.value)
       .then(response => {
         return response.user.updateProfile({
-          displayName: orgName.value,
+          displayName: orgName.value
         });
       })
       .then(() => {
@@ -23,17 +23,17 @@ const SignUp = ({ history }, props) => {
               {
                 email: email.value,
                 role: "owner",
-                name: name.value,
+                name: name.value
               },
-              orgName.value,
+              orgName.value
             )
           : fbContext.createUserInOrg(
               {
                 email: email.value,
                 role: "project worker",
-                name: name.value,
+                name: name.value
               },
-              orgName.value,
+              orgName.value
             );
       })
       .then(async () => {

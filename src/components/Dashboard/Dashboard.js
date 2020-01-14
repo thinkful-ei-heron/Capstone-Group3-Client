@@ -6,6 +6,7 @@ import "./Dashboard.css";
 import { Sidebar } from "../Sidebar/Sidebar";
 import StyleIcon from "../StyleIcon/StyleIcon";
 import ProjectBar from "../ProjectBar/ProjectBar";
+import JobNotification from "../JobNotification/JobNotification";
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -40,12 +41,20 @@ export default class Dashboard extends Component {
       return (
         <>
           {!this.context.user && <Redirect to="/register" />}
+
           <section className="Dashboard__container">
             <div className="Dashboard__header">
               {<h2>{this.context.user.org}</h2>}
               <span className="Dashboard__date">
                 {new Date().toLocaleString()}
               </span>
+            </div>
+            <div>
+              {this.context.user.role === "project manager" ? (
+                <JobNotification />
+              ) : (
+                <></>
+              )}
             </div>
             <section className="Dashboard__projects">
               <div

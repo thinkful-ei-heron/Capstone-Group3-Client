@@ -89,8 +89,7 @@ export class ContextProvider extends React.Component {
     });
   };
 
-  initState = (email, org) => {
-    console.log('in init state');
+  initState = async (email, org) => {
     let emps = [],
       projs = [],
       jobs = [],
@@ -98,34 +97,36 @@ export class ContextProvider extends React.Component {
     let name = '';
     let role = '';
 
-    this.getUser(email, org)
-      .then(snapshot =>
-        snapshot.forEach(user => {
-          name = user.data().name;
-          role = user.data().role;
-        })
-      )
-      .then(() => this.getProjects(org))
-      .then(snapshot => {
-        snapshot.forEach(async proj => {
-          projs.push(proj.data());
-          await this.getJobs(org, proj.id).then(snap => snap.forEach(job => jobs.push(job.data())));
-        });
-      })
-      .then(() => this.getEmployees(org))
-      .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
-      .then(() => this.getProjectManagers(org))
-      .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
-      .then(() => {
-        this.setState({
-          user: { id: email, name: name, role: role, org: org },
-          projects: projs,
-          jobs: jobs,
-          employees: emps,
-          project_managers: pms,
-          loaded: true
-        });
+    const user = await this.getUser(email, org);
+    const projects = await this.getProjects(org);
+    const employees = await this.getEmployees(org);
+    const projManagers = await this.getProjectManagers(org);
+
+    user.forEach(user => {
+      name = user.data().name;
+      role = user.data().role;
+    });
+    projects.forEach(proj => {
+      projs.push(proj.data());
+    });
+    employees.forEach(emp => emps.push(emp.data()));
+    projManagers.forEach(pm => pms.push(pm.data()));
+
+    for (const proj of projs) {
+      const jobsSnap = await this.getJobs(org, proj.id);
+      jobsSnap.forEach(job => {
+        return jobs.push(job.data());
       });
+    }
+
+    this.setState({
+      user: { id: email, name: name, role: role, org: org },
+      projects: projs,
+      jobs: jobs,
+      employees: emps,
+      project_managers: pms,
+      loaded: true
+    });
   };
 
   createOwner = async (user, org) => {
@@ -136,25 +137,7 @@ export class ContextProvider extends React.Component {
         .set({
           name: org
         });
-    const addProjectCollection = async () => {
-      await this.db
-        .collection('organizations')
-        .doc(org)
-        .collection('projects')
-        .add({});
-    };
-    const addUsersCollection = async () => {
-      await this.db
-        .collection('organizations')
-        .doc(org)
-        .collection('users')
-        .add({});
-    };
-
-    await addOrg().then(async () => {
-      await addProjectCollection();
-      await addUsersCollection();
-    });
+    addOrg();
     this.createUserInOrg(user, org);
   };
 

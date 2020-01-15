@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import FirebaseContext from "../../services/context";
 import { ProjectManagers } from "./ProjectManagers";
 import { ProjectWorkers } from "./ProjectWorkers";
+import "./Sidebar.css";
 
 const Sidebar = props => {
   const context = useContext(FirebaseContext);
@@ -45,20 +46,22 @@ const Sidebar = props => {
     context.user.role === "project worker"
   ) {
     return (
-      <>
+      <div className="Sidebar">
         <h2>Employees</h2>
-        <ul>
-          {<ProjectWorkers expanded={expanded} toggleExpand={toggleExpand} />}
+        <ul className="Sidebar__list">
+          <ProjectWorkers expanded={expanded} toggleExpand={toggleExpand} />
         </ul>
-      </>
+      </div>
     );
   } else if (context.user.role === "owner") {
     //change to admin
     return (
-      <>
+      <div className="Sidebar">
         <h2>PROJECT MANAGERS</h2>
-        <ProjectManagers expanded={expanded} toggleExpand={toggleExpand} />
-      </>
+        <ul className="Sidebar__list">
+          <ProjectManagers expanded={expanded} toggleExpand={toggleExpand} />
+        </ul>
+      </div>
     );
   } else return null;
 };

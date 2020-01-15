@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { ProgressBar } from "../ProgressBar/ProgressBar";
 import "./ProjectBar.css";
 
-export default function ProjectBar(props) {
+const ProjectBar = props => {
+  console.log(props.proj.progress);
+  console.log(
+    new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10)
+  );
+
   return (
     <ul className="ProjectBar__project_container">
       <Link
@@ -32,4 +37,6 @@ export default function ProjectBar(props) {
       </Link>
     </ul>
   );
-}
+};
+
+export default ProjectBar;

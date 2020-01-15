@@ -12,7 +12,7 @@ const ProjectWorkers = props => {
   let completeWorkerList = [];
 
   const populateCompleteWorkerList = () => {
-    console.log(context.employees);
+    // console.log(context.employees);
     completeWorkerList = [];
     context.employees.map(worker => {
       let projectKeys = [];
@@ -101,6 +101,8 @@ const ProjectWorkers = props => {
       let itemId = "worker" + index;
       return (
         <li key={index}>
+          {/* error when I click expand */}
+          {/* not sure */}
           <button id={itemId} onClick={e => props.toggleExpand(e)}>
             EXPAND
           </button>

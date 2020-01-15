@@ -57,7 +57,7 @@ export class ContextProvider extends React.Component {
   };
 
   promoteUser = async (email, org) => {
-    console.log(email);
+    // console.log(email);
     // Need to check if user is assigned to any projects/jobs
     // return alert/popup if so
     const userRef = this.db

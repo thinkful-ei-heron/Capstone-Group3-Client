@@ -15,10 +15,10 @@ const SignUp = ({ history }, props) => {
       .then(response => {
         response.user
           .updateProfile({
-            displayName: orgName.value,
+            displayName: orgName.value
           })
           .then(
-            async () => await fbContext.initState(email.value, orgName.value),
+            async () => await fbContext.initState(email.value, orgName.value)
           );
       })
       .then(() => {
@@ -27,17 +27,17 @@ const SignUp = ({ history }, props) => {
               {
                 email: email.value,
                 role: "owner",
-                name: name.value,
+                name: name.value
               },
-              orgName.value,
+              orgName.value
             )
           : fbContext.createUserInOrg(
               {
                 email: email.value,
                 role: "project worker",
-                name: name.value,
+                name: name.value
               },
-              orgName.value,
+              orgName.value
             );
       })
       .then(async () => {

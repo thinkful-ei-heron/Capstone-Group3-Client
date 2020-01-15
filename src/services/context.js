@@ -38,7 +38,9 @@ const FirebaseContext = React.createContext({
   editJob: () => {},
   editAndSetJobs: () => {},
   listenForProjects: () => {},
-  listenForJobs: () => {}
+  listenForJobs: () => {},
+  updateProjectAlert: () => {},
+  updateNewEmployee: () => {}
 });
 
 export default FirebaseContext;
@@ -223,6 +225,15 @@ export class ContextProvider extends React.Component {
       .set(newUser);
   };
 
+  updateNewEmployee = async id => {
+    return this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("users")
+      .doc(id)
+      .update({ new: false });
+  };
+
   getOrgName = org => {
     return this.db
       .collection("organizations")
@@ -302,6 +313,15 @@ export class ContextProvider extends React.Component {
       .doc(id)
       .update({ project_workers: workers });
     await this.doGetProject(this.state.user.org);
+  };
+
+  updateProjectAlert = async id => {
+    await this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("projects")
+      .doc(id)
+      .update({ alert: false });
   };
 
   updateJobStatus = async (
@@ -394,7 +414,9 @@ export class ContextProvider extends React.Component {
       editJob: this.editJob,
       editAndSetJobs: this.editAndSetJobs,
       listenForProjects: this.listenForProjects,
-      listenForJobs: this.listenForJobs
+      listenForJobs: this.listenForJobs,
+      updateProjectAlert: this.updateProjectAlertg,
+      updateNewEmployee: this.updateNewEmployee
     };
     return (
       <FirebaseContext.Provider value={value}>

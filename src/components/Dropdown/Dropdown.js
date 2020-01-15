@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Select from "react-select";
-import FirebaseContext from "../../services/context";
+import React, { Component } from 'react';
+import Select from 'react-select';
+//import FirebaseContext from "../../services/context";
 
 export default class Dropdown extends Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export default class Dropdown extends Component {
     };
   }
 
-  static contextType = FirebaseContext;
+  //static contextType = FirebaseContext;
 
   componentDidMount() {
     if (this.props.defaultValue) {
@@ -44,9 +44,7 @@ export default class Dropdown extends Component {
         isMulti={this.props.isMulti ? true : false}
         isSearchable={true}
         // defaultValue={this.props.defaultValue ? this.props.defaultValue : false}
-        placeholder={
-          this.props.placeholder ? this.props.placeholder : "Select..."
-        }
+        placeholder={this.props.placeholder ? this.props.placeholder : 'Select...'}
       />
     );
   }

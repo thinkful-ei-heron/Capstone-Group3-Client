@@ -4,7 +4,7 @@ import { withRouter, Redirect } from 'react-router';
 import app from '../../services/base.js';
 
 const Logout = props => {
-  const fbContext = React.useContext(FirebaseContext);
+  //const fbContext = React.useContext(FirebaseContext);
 
   React.useEffect(() => {
     const signOut = async () => {
@@ -13,7 +13,7 @@ const Logout = props => {
       localStorage.removeItem('path');
     };
     signOut();
-    fbContext.setStateOnLogout();
+    //fbContext.setStateOnLogout();
   });
   return <Redirect to="/" />;
 };

@@ -41,6 +41,19 @@ const FirebaseContext = React.createContext({
 export default FirebaseContext;
 
 export class ContextProvider extends React.Component {
+  // state = {
+  //   user: {
+  //     id: "",
+  //     name: "",
+  //     role: "",
+  //     org: ""
+  //   },
+  //   employees: [],
+  //   projects: [],
+  //   project_managers: [],
+  //   jobs: [],
+  //   loaded: false
+  // };
   state = {
     user: {
       id: "",
@@ -48,11 +61,139 @@ export class ContextProvider extends React.Component {
       role: "",
       org: ""
     },
-    employees: [],
-    projects: [],
-    project_managers: [],
-    jobs: [],
     loaded: false
+  };
+
+  db = app.firestore();
+
+  getUser = async (email, org) => {
+    return await this.db
+      .collection("organizations")
+      .doc(org)
+      .collection("users")
+      .where("email", "==", email)
+      .get();
+  };
+
+  setUser = async (email, org) => {
+    let user = await this.getUser(email, org)
+    this.setState({
+      user: {
+        id: email,
+        name: user.data().name,
+        role: user.data().role,
+        org: org
+      },
+      loaded: true
+    })
+  }
+  
+  getAllUserProjects = async () => {
+    if (this.state.user.role === "project worker") {
+      return await this.db
+        .collection("organizations")
+        .doc(this.state.user.org)
+        .collection("projects")
+        .where("project_workers", "array-contains", this.state.user.name)
+        .get();
+    }
+    if (this.state.user.role === "project manager") {
+      return await this.db
+        .collection("organizations")
+        .doc(this.state.user.org)
+        .collection("projects")
+        .where("project_manager", "==", this.state.user.name)
+        .get();
+    } else {
+      return await this.db
+        .collection("organizations")
+        .doc(this.state.user.org)
+        .collection("projects")
+        .get();
+    }
+  };
+
+  getOneProject = async id => {
+    return await this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("projects")
+      .where("project_id", "==", id)
+      .get();
+  };
+
+  getAllUserJobs = async id => {
+    if (this.state.user.role === "project worker") {
+      return await this.db
+        .collection("organizations")
+        .doc(this.state.user.org)
+        .collection("projects")
+        .doc(id)
+        .collection("jobs")
+        .where("project_workers", "array-contains", this.state.user.name)
+        .get();
+    }
+    if (this.state.user.role === "project manager") {
+      return await this.db
+        .collection("organizations")
+        .doc(this.state.user.org)
+        .collection("projects")
+        .doc(id)
+        .collection("jobs")
+        .where("project_manager", "==", this.state.user.name)
+        .get();
+    } else {
+      return await this.db
+        .collection("organizations")
+        .doc(this.state.user.org)
+        .collection("projects")
+        .doc(id)
+        .collection("jobs")
+        .get();
+    }
+  };
+
+  getOneJob = async (project_id, job_id) => {
+    return await this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("projects")
+      .doc(project_id)
+      .collection("jobs")
+      .doc(job_id)
+      .get();
+  };
+
+  getEmployees = async org => {
+    return await this.db
+      .collection('organizations')
+      .doc(this.state.user.org)
+      .collections('users')
+      .get()
+  };
+
+  addProject = async newProject => {
+    let orgId = this.state.user.org;
+    await this.db
+      .collection(`organizations/${orgId}/projects`)
+      .add(newProject)
+      .then(function(docRef) {
+        db.collection(`organizations/${orgId}/projects`)
+          .doc(`${docRef.id}`)
+          .update({ id: docRef.id });
+      });
+  };
+
+  addJob = async newJob => {
+    let orgId = this.state.user.org;
+    await this.db
+      .collection(`organizations/${orgId}/projects`)
+      .add(newJob)
+      .then(function(docRef) {
+        db.collection(`organizations/${orgId}/projects`)
+          .doc(`${docRef.id}`)
+          .update({ id: docRef.id });
+      });
   };
 
   setStateOnLogout = () => {
@@ -64,40 +205,54 @@ export class ContextProvider extends React.Component {
           role: "",
           org: ""
         },
-        employees: [],
-        projects: [],
-        project_managers: [],
-        jobs: [],
-        loaded: false
       },
       () => app.auth().signOut()
     );
   };
 
-  db = app.firestore();
-
-  setloaded = bool => {
-    this.setState({ loaded: bool });
+  createOwner = async (user, org) => {
+    const addOrg = async () =>
+      await this.db
+        .collection("organizations")
+        .doc(org)
+        .set({
+          name: org
+        });
+    addOrg();
+    this.createUserInOrg(user, org);
   };
 
-  updateAndSetJobs = async (id, status, approval) => {
-    let index = this.state.jobs.findIndex(job => job.id === id);
-    let newArray = this.state.jobs;
-    newArray[index].status = status;
-    newArray[index].approval = approval;
-    this.setState({
-      jobs: newArray
-    });
+  createUserInOrg = async (newUser, org) => {
+    return await this.db
+      .collection("organizations")
+      .doc(org)
+      .collection("users")
+      .doc(newUser.email)
+      .set(newUser);
   };
 
-  editAndSetJobs = async (id, jobObj) => {
-    let index = this.state.jobs.findIndex(job => job.id === id);
-    let newArray = this.state.jobs;
-    newArray[index] = jobObj;
-    this.setState({
-      jobs: newArray
-    });
-  };
+  // // setloaded = bool => {
+  // //   this.setState({ loaded: bool });
+  // // };
+
+  // updateAndSetJobs = async (id, status, approval) => {
+  //   let index = this.state.jobs.findIndex(job => job.id === id);
+  //   let newArray = this.state.jobs;
+  //   newArray[index].status = status;
+  //   newArray[index].approval = approval;
+  //   this.setState({
+  //     jobs: newArray
+  //   });
+  // };
+
+  // editAndSetJobs = async (id, jobObj) => {
+  //   let index = this.state.jobs.findIndex(job => job.id === id);
+  //   let newArray = this.state.jobs;
+  //   newArray[index] = jobObj;
+  //   this.setState({
+  //     jobs: newArray
+  //   });
+  // };
 
   initState = async (email, org) => {
     let emps = [],
@@ -108,7 +263,6 @@ export class ContextProvider extends React.Component {
     let role = "";
 
     const user = await this.getUser(email, org);
-    const projects = await this.getProjects(org);
     const employees = await this.getEmployees(org);
     const projManagers = await this.getProjectManagers(org);
 
@@ -116,6 +270,7 @@ export class ContextProvider extends React.Component {
       name = user.data().name;
       role = user.data().role;
     });
+    const projects = await this.getProjects(org, role, name);
     projects.forEach(proj => {
       projs.push(proj.data());
     });
@@ -123,7 +278,7 @@ export class ContextProvider extends React.Component {
     projManagers.forEach(pm => pms.push(pm.data()));
 
     for (const proj of projs) {
-      const jobsSnap = await this.getJobs(org, proj.id);
+      const jobsSnap = await this.getJobs(org, proj.id, role, name);
       jobsSnap.forEach(job => {
         return jobs.push(job.data());
       });
@@ -139,157 +294,140 @@ export class ContextProvider extends React.Component {
     });
   };
 
-  createOwner = async (user, org) => {
-    const addOrg = async () =>
-      await this.db
-        .collection("organizations")
-        .doc(org)
-        .set({
-          name: org
-        });
-    addOrg();
-    this.createUserInOrg(user, org);
-  };
 
-  getUser = (email, org) => {
-    return this.db
-      .collection("organizations")
-      .doc(org)
-      .collection("users")
-      .where("email", "==", email)
-      .get();
-  };
 
-  getJobs = (org, id) => {
-    return this.db
-      .collection("organizations")
-      .doc(org)
-      .collection("projects")
-      .doc(id)
-      .collection("jobs")
-      .get();
-  };
+  
 
-  setJobsState = jobs => {
-    this.setState({ jobs: jobs });
-  };
+  // getJobs = (org, id, role, name) => {
+  //   if (role === 'project worker') {
+  //     return this.db
+  //     .collection("organizations")
+  //     .doc(org)
+  //     .collection("projects")
+  //     .doc(id)
+  //     .collection("jobs")
+  //     .where('project_workers', 'array-contains', name)
+  //     .get();
+  //   } else {
+  //     return this.db
+  //     .collection("organizations")
+  //     .doc(org)
+  //     .collection("projects")
+  //     .doc(id)
+  //     .collection("jobs")
+  //     .get();
+  //   }
+  // };
 
-  getProjects = org => {
-    return this.db
-      .collection("organizations")
-      .doc(org)
-      .collection("projects")
-      .get();
-  };
-  setProjectState = projs => {
-    this.setState({ projects: projs });
-  };
+  // // setJobsState = jobs => {
+  // //   this.setState({ jobs: jobs });
+  // // };
 
-  getEmployees = org => {
-    return this.db
-      .collection("organizations")
-      .doc(org)
-      .collection("users")
-      .where("role", "==", "project worker")
-      .get();
-  };
+  // getProjects = (org, role, name) => {
+  //   if (role === "project worker") {
+  //     return this.db
+  //       .collection("organizations")
+  //       .doc(org)
+  //       .collection("projects")
+  //       .where('project_workers', 'array-contains', name)
+  //       .get();
+  //   }
+  //   if (role === 'project manager') {
+  //     return this.db
+  //       .collection("organizations")
+  //       .doc(org)
+  //       .collection("projects")
+  //       .where('project_manager', '==', name)
+  //       .get();
+  //   } else {
+  //     return this.db
+  //     .collection("organizations")
+  //     .doc(org)
+  //     .collection("projects")
+  //     .get();
+  //   }
+  // };
 
-  setEmployeeState = emps => {
-    this.setState({ employees: emps });
-  };
+  // // setProjectState = projs => {
+  // //   this.setState({ projects: projs });
+  // // };
 
-  getProjectManagers = org => {
-    return this.db
-      .collection("organizations")
-      .doc(org)
-      .collection("users")
-      .where("role", "==", "project manager")
-      .get();
-  };
+ 
 
-  setProjectManagersState = pms => {
-    this.setState({ project_managers: pms });
-  };
+  // // setEmployeeState = emps => {
+  // //   this.setState({ employees: emps });
+  // // };
 
-  createUserInOrg = (newUser, org) => {
-    return this.db
-      .collection("organizations")
-      .doc(org)
-      .collection("users")
-      .doc(newUser.email)
-      .set(newUser);
-  };
+  // getProjectManagers = org => {
+  //   return this.db
+  //     .collection("organizations")
+  //     .doc(org)
+  //     .collection("users")
+  //     .where("role", "==", "project manager")
+  //     .get();
+  // };
 
-  getOrgName = org => {
-    return this.db
-      .collection("organizations")
-      .doc(org)
-      .get()
-      .then(snapshot => {
-        return snapshot.data().name;
-      })
-      .catch(error => console.log(error));
-  };
+  // // setProjectManagersState = pms => {
+  // //   this.setState({ project_managers: pms });
+  // // };
 
-  addProject = async newProject => {
-    let orgId = this.state.user.org;
-    let newId = null;
-    let db = this.db;
-    await this.db
-      .collection(`organizations/${orgId}/projects`)
-      .add(newProject)
-      .then(function(docRef) {
-        db.collection(`organizations/${orgId}/projects`)
-          .doc(`${docRef.id}`)
-          .update({ id: docRef.id });
-        newId = docRef.id;
-      });
-    newProject.id = newId;
-    this.setNewProject(newProject);
-  };
+ 
 
-  setNewProject = project => {
-    this.setState({
-      projects: [...this.state.projects, project]
-    });
-  };
+  // // getOrgName = org => {
+  // //   return this.db
+  // //     .collection("organizations")
+  // //     .doc(org)
+  // //     .get()
+  // //     .then(snapshot => {
+  // //       return snapshot.data().name;
+  // //     })
+  // //     .catch(error => console.log(error));
+  // // };
 
-  setNewJob = async job => {
-    this.setState({
-      jobs: [...this.state.jobs, job]
-    });
-  };
+  
 
-  addJob = async (newJob, project_id) => {
-    let orgId = this.state.user.org;
-    let newId = null;
-    let db = this.db;
-    await this.db
-      .collection(
-        `organizations/${this.state.user.org}/projects/${project_id}/jobs`
-      )
-      .add(newJob)
-      .then(function(docRef) {
-        db.collection(`organizations/${orgId}/projects/${project_id}/jobs`)
-          .doc(`${docRef.id}`)
-          .update({ id: docRef.id });
-        newId = docRef.id;
-      });
-    newJob.id = newId;
-    this.setNewJob(newJob);
-  };
+  // setNewProject = project => {
+  //   this.setState({
+  //     projects: [...this.state.projects, project]
+  //   });
+  // };
 
-  addUser = newUser => {
-    this.db.collection("users").add(newUser);
-  };
+  // setNewJob = async job => {
+  //   this.setState({
+  //     jobs: [...this.state.jobs, job]
+  //   });
+  // };
 
-  doGetProject = async (org_id = "HkeHO8n1eIaJSu6mnsd5") => {
-    return this.db
-      .collection("organizations")
-      .doc(org_id)
-      .collection("projects")
-      .get();
-  };
+  // addJob = async (newJob, project_id) => {
+  //   let orgId = this.state.user.org;
+  //   let newId = null;
+  //   let db = this.db;
+  //   await this.db
+  //     .collection(
+  //       `organizations/${this.state.user.org}/projects/${project_id}/jobs`
+  //     )
+  //     .add(newJob)
+  //     .then(function(docRef) {
+  //       db.collection(`organizations/${orgId}/projects/${project_id}/jobs`)
+  //         .doc(`${docRef.id}`)
+  //         .update({ id: docRef.id });
+  //       newId = docRef.id;
+  //     });
+  //   newJob.id = newId;
+  //   this.setNewJob(newJob);
+  // };
+
+  // addUser = newUser => {
+  //   this.db.collection("users").add(newUser);
+  // };
+
+  // doGetProject = async (org_id = "HkeHO8n1eIaJSu6mnsd5") => {
+  //   return this.db
+  //     .collection("organizations")
+  //     .doc(org_id)
+  //     .collection("projects")
+  //     .get();
+  // };
 
   updateProjectWorkers = async (id, workers, project) => {
     await this.db

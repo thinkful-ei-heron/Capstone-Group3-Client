@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { AuthContext } from "../../services/Auth";
 import "./Header.css";
+import JobNotification from "../JobNotification/JobNotification";
 
 export default class Header extends Component {
   static contextType = AuthContext;

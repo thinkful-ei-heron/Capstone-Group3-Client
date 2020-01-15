@@ -21,17 +21,22 @@ const App = props => {
   const history = useHistory();
 
   const initialPath = () => {
+    console.log('on initPath val is ' + localStorage.getItem('path'));
     if (localStorage.getItem('path')) return localStorage.getItem('path');
     return null;
   };
   const [path, _setPath] = useState(initialPath);
   const setPath = p => _setPath(p);
 
-  useEffect(() => localStorage.setItem('path', path), [path]);
+  useEffect(() => {
+    if (!localStorage.getItem('path') && !path) return;
+    localStorage.setItem('path', path);
+  }, [path]);
 
   useEffect(() => {
     const initState = async (email, org) => {
       setLoading(true);
+      console.log('loading context');
       await context.initState(email, org);
 
       if (path) {
@@ -41,12 +46,17 @@ const App = props => {
 
       setLoading(false);
     };
+    if (path) console.log('thinks path exists');
     if (currentUser && currentUser.displayName) {
       if (!context.loaded) initState(currentUser.email, currentUser.displayName);
     } else if (!path) {
       //console.log('set loading to false');
       setLoading(false);
     }
+    // else if (!currentUser && path) {
+    //   console.log(path);
+    //   setLoading(false);
+    // }
   }, [currentUser]);
 
   if (loading) return <Loading />;

@@ -23,23 +23,26 @@ const NewJob = props => {
       };
   });
 
-
   const getDate = () => {
     if (props.job) {
       let newDeadline = new Date(props.job.deadline.seconds * 1000);
-      return newDeadline.toLocaleDateString('en-CA');
+      return newDeadline.toLocaleDateString("en-CA");
     }
-  }
+  };
 
   const getEmployees = () => {
     if (props.job) {
-      let workers = []
-      props.job.project_workers.forEach(worker => workers.push({ value: worker, label: worker }));
-      return workers
+      let workers = [];
+      props.job.project_workers.forEach(worker =>
+        workers.push({ value: worker, label: worker })
+      );
+      return workers;
     }
-  }
+  };
 
-  const { value: name, bind: bindName, reset: resetName } = useInput(props.job ? props.job.name : "");
+  const { value: name, bind: bindName, reset: resetName } = useInput(
+    props.job ? props.job.name : ""
+  );
   const {
     value: description,
     bind: bindDescription,
@@ -50,7 +53,9 @@ const NewJob = props => {
     bind: bindDeadline,
     reset: resetDeadline
   } = useInput(props.job ? getDate() : "");
-  const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(props.job ? props.job.total_hours : "");
+  const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(
+    props.job ? props.job.total_hours : ""
+  );
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -67,26 +72,28 @@ const NewJob = props => {
     let status;
 
     if (props.job) {
-      projectId = props.job.project_id
-      projectManager = props.job.project_manager
-      project = fbContext.projects.find(project => project.id === props.job.project_id)
-      id = props.job.id
-      approval = props.job.approval
-      date_created = props.job.date_created
-      hours_completed = props.job.hours_completed
-      revision = props.job.revision
-      status = props.job.status
+      projectId = props.job.project_id;
+      projectManager = props.job.project_manager;
+      project = fbContext.projects.find(
+        project => project.id === props.job.project_id
+      );
+      id = props.job.id;
+      approval = props.job.approval;
+      date_created = props.job.date_created;
+      hours_completed = props.job.hours_completed;
+      revision = props.job.revision;
+      status = props.job.status;
     }
     if (props.project) {
-      projectId = props.projectId
-      projectManager = props.project.project_manager
-      project = props.project
-      id = null
-      approval = false
-      date_created = new Date()
-      hours_completed = 0
-      revision = null
-      status = "in progress"
+      projectId = props.projectId;
+      projectManager = props.project.project_manager;
+      project = props.project;
+      id = null;
+      approval = false;
+      date_created = new Date();
+      hours_completed = 0;
+      revision = null;
+      status = "in progress";
     }
     const jobObj = {
       approval,
@@ -106,26 +113,25 @@ const NewJob = props => {
     };
     if (props.project) await fbContext.addJob(jobObj, projectId);
     if (props.job) {
-      await fbContext.editJob(id, jobObj)
-      await fbContext.editAndSetJobs(id, jobObj)
+      await fbContext.editJob(id, jobObj);
+      await fbContext.editAndSetJobs(id, jobObj);
     }
     let updatedProjectWorkers;
     if (props.project) updatedProjectWorkers = props.project.project_workers;
     if (props.job) {
-      let project = fbContext.projects.find(project => project.id === props.job.project_id)
-      updatedProjectWorkers = project.project_workers
+      let project = fbContext.projects.find(
+        project => project.id === props.job.project_id
+      );
+      updatedProjectWorkers = project.project_workers;
     }
     jobObj.project_workers.map(worker => {
       if (!updatedProjectWorkers.includes(worker)) {
         return updatedProjectWorkers.push(worker);
       } else return null;
     });
-    await fbContext.updateProjectWorkers(
-      projectId,
-      updatedProjectWorkers,
-      project
-    ).then(setSubmitted(true))
-    
+    await fbContext
+      .updateProjectWorkers(projectId, updatedProjectWorkers, project)
+      .then(setSubmitted(true));
   };
 
   const populateEmployeeList = () => {

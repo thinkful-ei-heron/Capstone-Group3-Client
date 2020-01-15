@@ -30,7 +30,6 @@ const App = props => {
   useEffect(() => localStorage.setItem('path', path), [path]);
 
   useEffect(() => {
-    console.log(path);
     const initState = async (email, org) => {
       setLoading(true);
       await context.initState(email, org);
@@ -42,16 +41,12 @@ const App = props => {
 
       setLoading(false);
     };
-    console.log(currentUser);
     if (currentUser && currentUser.displayName) {
       if (!context.loaded) initState(currentUser.email, currentUser.displayName);
     } else if (!path) {
       //console.log('set loading to false');
       setLoading(false);
     }
-
-    console.log(path);
-    console.log(loading);
   }, [currentUser]);
 
   if (loading) return <Loading />;

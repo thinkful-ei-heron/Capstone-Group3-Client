@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import skyscraper from "../../images/skyscraper.svg";
 import "./LandingPage.css";
 
@@ -12,7 +13,9 @@ export default function LandingPage() {
           <span>Build Faster</span>
         </div>
       </h2>
-      <button className="LandingPage__btn">Register Now!</button>
+      <Link className="LandingPage__btn" to="/register">
+        Register Now!
+      </Link>
     </div>
   );
 }

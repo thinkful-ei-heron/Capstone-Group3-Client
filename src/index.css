@@ -3,6 +3,10 @@
 html,
 body {
   height: 100vh;
+  --list-even-color: rgba(127, 204, 233, 0.8);
+  --list-odd-color: rgba(127, 204, 233, 0.5);
+  --header-bg-color: #5c9ad1;
+  --oxygen: 'Oxygen', sans-serif;
 }
 
 body {

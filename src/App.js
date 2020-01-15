@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Header from "./components/Header/Header";
 import Login from "./components/Account/Login";
@@ -18,10 +18,17 @@ const App = props => {
   const { currentUser } = useContext(AuthContext);
   const context = useContext(FirebaseContext);
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
+    const path = localStorage.getItem("path");
     const initState = async (email, org) => {
       await context.initState(email, org);
+
+      if (path) {
+        //console.log('pushing to path ' + path);
+        history.push(path);
+      }
 
       setLoading(false);
     };
@@ -29,15 +36,19 @@ const App = props => {
     if (currentUser && currentUser.displayName) {
       if (!context.loaded)
         initState(currentUser.email, currentUser.displayName);
-    } else setLoading(false);
-  }, [currentUser]);
+    } else if (!currentUser) {
+      //console.log('set loading to false');
+      setLoading(false);
+    }
 
-  console.log(currentUser);
+    //console.log(path);
+    //console.log(loading);
+  }, [currentUser]);
 
   if (loading) return <Loading />;
   else {
     return (
-      <Router>
+      <>
         <header>
           <Header userName={context.user.name} role={context.user.role} />
         </header>
@@ -47,7 +58,8 @@ const App = props => {
             <PrivateRoute
               exact
               path="/dashboard"
-              component={() => <Dashboard user={currentUser} />}
+              location={props.location}
+              component={Dashboard}
             />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" render={() => <SignUp />} />
@@ -63,7 +75,7 @@ const App = props => {
             <Route exact path="/owner-signup" render={() => <SignUp />} />
           </Switch>
         </main>
-      </Router>
+      </>
     );
   }
 };

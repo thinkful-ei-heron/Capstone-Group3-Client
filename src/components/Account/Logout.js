@@ -1,10 +1,17 @@
 import React from "react";
 import FirebaseContext from "../../services/context";
 import { withRouter, Redirect } from "react-router";
+import app from "../../services/base.js";
 
 const Logout = props => {
   const fbContext = React.useContext(FirebaseContext);
+
   React.useEffect(() => {
+    const signOut = async () => {
+      await app.auth().signOut();
+      localStorage.setItem("path", "/dashboard");
+    };
+    signOut();
     fbContext.setStateOnLogout();
   });
   return <Redirect to="/" />;

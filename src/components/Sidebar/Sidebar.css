@@ -1,0 +1,20 @@
+.Sidebar {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.Sidebar__list li {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.Sidebar__list li:nth-child(even) {
+  background-color: var(--list-even-color);
+}
+
+.Sidebar__list li:nth-child(odd) {
+  background-color: var(--list-odd-color);
+}

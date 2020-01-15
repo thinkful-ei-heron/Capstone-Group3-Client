@@ -22,11 +22,13 @@
 //   description;
 //   name;
 //   organization;
-//   progress;
+//   progress;  <== DEPRECATED
 //   project_id;
 //   project_manager;
 //   revision;
 //   status;
+//   total_hours;
+//   hours_completed;
 // };
 
 // Org => {

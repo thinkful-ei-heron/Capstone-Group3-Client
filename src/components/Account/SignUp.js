@@ -13,9 +13,13 @@ const SignUp = ({ history }, props) => {
       .auth()
       .createUserWithEmailAndPassword(email.value, password.value)
       .then(response => {
-        return response.user.updateProfile({
-          displayName: orgName.value
-        });
+        response.user
+          .updateProfile({
+            displayName: orgName.value,
+          })
+          .then(
+            async () => await fbContext.initState(email.value, orgName.value),
+          );
       })
       .then(() => {
         history.location.pathname === "/owner-signup"
@@ -23,17 +27,17 @@ const SignUp = ({ history }, props) => {
               {
                 email: email.value,
                 role: "owner",
-                name: name.value
+                name: name.value,
               },
-              orgName.value
+              orgName.value,
             )
           : fbContext.createUserInOrg(
               {
                 email: email.value,
                 role: "project worker",
-                name: name.value
+                name: name.value,
               },
-              orgName.value
+              orgName.value,
             );
       })
       .then(async () => {

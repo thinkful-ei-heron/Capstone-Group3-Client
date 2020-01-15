@@ -11,7 +11,8 @@ export default class Jobs extends Component {
     super(props);
     this.state = {
       expandJob: false,
-      showEditForm: false
+      showEditForm: false,
+      showWorkerEditForm: false
     };
   }
 
@@ -65,18 +66,9 @@ export default class Jobs extends Component {
             <button disabled>Submit for Approval</button>
             {(status !== "completed" || status !== "submitted") &&
             status !== "edit request" ? (
-              <button onClick={e => this.renderEditForm(id)}>
+              <button onClick={e => this.showWorkerEditForm()}>
                 Request Edit
               </button>
-            ) : (
-              <></>
-            )}
-            {this.state.showEditForm ? (
-              <WorkerEditForm
-                job={this.props.job}
-                renderEditForm={this.renderEditForm}
-                handleStatus={this.handleApprovalSubmit}
-              />
             ) : (
               <></>
             )}
@@ -147,6 +139,12 @@ export default class Jobs extends Component {
     });
   };
 
+  showWorkerEditForm = () => {
+    this.setState({
+      showWorkerEditForm: !this.state.showWorkerEditForm
+    });
+  };
+
   componentDidMount() {
     this.setState({
       userRole: this.context.user.role
@@ -178,6 +176,16 @@ export default class Jobs extends Component {
             <JobForm showJobForm={this.showEditForm} job={job} />
           ) : (
             ""
+          )}
+          {this.state.showWorkerEditForm &&
+          this.context.user.role === "project worker" ? (
+            <WorkerEditForm
+              job={this.props.job}
+              renderEditForm={this.showWorkerEditForm}
+              handleStatus={this.handleApprovalSubmit}
+            />
+          ) : (
+            <></>
           )}
           {this.state.expandJob ? (
             <ul>{this.renderEmployeeList(job.project_workers)}</ul>

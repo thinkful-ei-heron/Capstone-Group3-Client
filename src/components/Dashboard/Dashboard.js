@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
-import FirebaseContext from '../../services/context';
-import Loading from '../Loading/Loading';
-import './Dashboard.css';
-import { Sidebar } from '../Sidebar/Sidebar';
-import StyleIcon from '../StyleIcon/StyleIcon';
-import ProjectBar from '../ProjectBar/ProjectBar';
+import React, { Component } from "react";
+import { Redirect, Link } from "react-router-dom";
+import FirebaseContext from "../../services/context";
+import Loading from "../Loading/Loading";
+import "./Dashboard.css";
+import { Sidebar } from "../Sidebar/Sidebar";
+import StyleIcon from "../StyleIcon/StyleIcon";
+import ProjectBar from "../ProjectBar/ProjectBar";
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -30,10 +30,14 @@ export default class Dashboard extends Component {
   };
 
   filterProjects() {
-    if (this.context.user.role === 'project worker')
-      return this.context.projects.filter(proj => proj.project_workers.includes(this.context.user.name));
-    if (this.context.user.role === 'project manager')
-      return this.context.projects.filter(proj => proj.project_manager === this.context.user.name);
+    if (this.context.user.role === "project worker")
+      return this.context.projects.filter(proj =>
+        proj.project_workers.includes(this.context.user.name)
+      );
+    if (this.context.user.role === "project manager")
+      return this.context.projects.filter(
+        proj => proj.project_manager === this.context.user.name
+      );
     return this.context.projects;
   }
 
@@ -51,18 +55,23 @@ export default class Dashboard extends Component {
           <section className="Dashboard__container">
             <div className="Dashboard__header">
               {<h2>{this.context.user.org}</h2>}
-              <span className="Dashboard__date">{new Date().toLocaleString()}</span>
+              <span className="Dashboard__date">
+                {new Date().toLocaleString()}
+              </span>
             </div>
             <div className="Dashboard__main">
               <section className="Dashboard__projects">
-                <div className="Dashboard__project_header" onClick={this.toggleExpandProjects}>
+                <div
+                  className="Dashboard__project_header"
+                  onClick={this.toggleExpandProjects}
+                >
                   <div className="Dashboard__fa_h1">
                     {StyleIcon({
-                      style: `${this.state.expandProjects ? 'minus' : 'plus'}`
+                      style: `${this.state.expandProjects ? "minus" : "plus"}`
                     })}
                     <h1>PROJECTS</h1>
                   </div>
-                  {this.context.user.role !== 'project worker' && (
+                  {this.context.user.role !== "project worker" && (
                     <Link to="/new_project">
                       <button>NEW</button>
                     </Link>
@@ -83,17 +92,23 @@ export default class Dashboard extends Component {
                     ) : (
                       <div className="Dashboard__no_projects">
                         <span className="Dashboard__welcome">Welcome!</span>
-                        <span>You currently have no projects, click the NEW button above to add one.</span>
+                        <span>
+                          You currently have no projects, click the NEW button
+                          above to add one.
+                        </span>
                       </div>
                     )}
                   </div>
                 )}
               </section>
               <section className="Dashboard__personnel">
-                <div className="Dashboard__personnel_header" onClick={this.toggleExpandPersonnel}>
+                <div
+                  className="Dashboard__personnel_header"
+                  onClick={this.toggleExpandPersonnel}
+                >
                   <div className="Dashboard__fa_h1">
                     {StyleIcon({
-                      style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`
+                      style: `${this.state.expandPersonnel ? "minus" : "plus"}`
                     })}
                     <h1>PERSONNEL</h1>
                   </div>

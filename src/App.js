@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
-import Dashboard from './components/Dashboard/Dashboard';
-import Header from './components/Header/Header';
-import Login from './components/Account/Login';
-import SignUp from './components/Account/SignUp';
-import NewProject from './components/NewProject/NewProject';
-import ProjectView from './components/ProjectView/ProjectView';
-import LandingPage from './components/LandingPage/LandingPage';
-import PrivateRoute from './services/PrivateRoute';
-import { AuthContext } from './services/Auth.js';
-import FirebaseContext from './services/context';
-import Loading from './components/Loading/Loading';
-import Logout from './components/Account/Logout';
-import './App.css';
+import React, { useContext, useEffect, useState } from "react";
+import { Switch, Route, useHistory } from "react-router-dom";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Header from "./components/Header/Header";
+import Login from "./components/Account/Login";
+import SignUp from "./components/Account/SignUp";
+import NewProject from "./components/NewProject/NewProject";
+import ProjectView from "./components/ProjectView/ProjectView";
+import LandingPage from "./components/LandingPage/LandingPage";
+import PrivateRoute from "./services/PrivateRoute";
+import { AuthContext } from "./services/Auth.js";
+import FirebaseContext from "./services/context";
+import Loading from "./components/Loading/Loading";
+import Logout from "./components/Account/Logout";
+import "./App.css";
 
 const App = props => {
   const { currentUser } = useContext(AuthContext);
@@ -21,7 +21,7 @@ const App = props => {
   const history = useHistory();
 
   useEffect(() => {
-    const path = localStorage.getItem('path');
+    const path = localStorage.getItem("path");
     const initState = async (email, org) => {
       await context.initState(email, org);
 
@@ -34,7 +34,8 @@ const App = props => {
     };
 
     if (currentUser && currentUser.displayName) {
-      if (!context.loaded) initState(currentUser.email, currentUser.displayName);
+      if (!context.loaded)
+        initState(currentUser.email, currentUser.displayName);
     } else if (!currentUser) {
       //console.log('set loading to false');
       setLoading(false);
@@ -54,7 +55,12 @@ const App = props => {
         <main className="app__main">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PrivateRoute exact path="/dashboard" location={props.location} component={Dashboard} />
+            <PrivateRoute
+              exact
+              path="/dashboard"
+              location={props.location}
+              component={Dashboard}
+            />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" render={() => <SignUp />} />
             <Route exact path="/logout" component={Logout} />

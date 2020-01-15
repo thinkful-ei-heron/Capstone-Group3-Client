@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
-import FirebaseContext from '../../services/context';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect } from "react";
+import FirebaseContext from "../../services/context";
+import { Link } from "react-router-dom";
 
 const ProjectWorkers = props => {
   const context = useContext(FirebaseContext);
@@ -64,7 +64,7 @@ const ProjectWorkers = props => {
         let name = Object.keys(project)[0];
         let jobs = Object.values(project);
         //console.log(name);
-        let itemId = 'workerProject' + index;
+        let itemId = "workerProject" + index;
         return (
           <li key={index}>
             <button id={itemId} onClick={e => props.toggleExpand(e)}>
@@ -79,7 +79,11 @@ const ProjectWorkers = props => {
             >
               {name}
             </Link>
-            {expanded.includes(itemId) ? <ul>{renderWorkerJobs(jobs)}</ul> : <></>}
+            {expanded.includes(itemId) ? (
+              <ul>{renderWorkerJobs(jobs)}</ul>
+            ) : (
+              <></>
+            )}
           </li>
         );
       });
@@ -88,14 +92,18 @@ const ProjectWorkers = props => {
 
   const renderProjectWorkers = () => {
     return completeWorkerList.map((worker, index) => {
-      let itemId = 'worker' + index;
+      let itemId = "worker" + index;
       return (
         <li key={index}>
           <button id={itemId} onClick={e => props.toggleExpand(e)}>
             EXPAND
           </button>
           <h4>{Object.keys(worker)[0]}</h4>
-          {expanded.includes(itemId) ? <ul>{renderWorkerProjects(worker)}</ul> : <></>}
+          {expanded.includes(itemId) ? (
+            <ul>{renderWorkerProjects(worker)}</ul>
+          ) : (
+            <></>
+          )}
         </li>
       );
     });

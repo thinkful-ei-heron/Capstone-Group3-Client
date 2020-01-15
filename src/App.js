@@ -20,9 +20,19 @@ const App = props => {
   const [loading, setLoading] = useState(true);
   const history = useHistory();
 
+  const initialPath = () => {
+    if (localStorage.getItem('path')) return localStorage.getItem('path');
+    return null;
+  };
+  const [path, _setPath] = useState(initialPath);
+  const setPath = p => _setPath(p);
+
+  useEffect(() => localStorage.setItem('path', path), [path]);
+
   useEffect(() => {
-    const path = localStorage.getItem('path');
+    console.log(path);
     const initState = async (email, org) => {
+      setLoading(true);
       await context.initState(email, org);
 
       if (path) {
@@ -32,16 +42,16 @@ const App = props => {
 
       setLoading(false);
     };
-
+    console.log(currentUser);
     if (currentUser && currentUser.displayName) {
       if (!context.loaded) initState(currentUser.email, currentUser.displayName);
-    } else if (!currentUser) {
+    } else if (!path) {
       //console.log('set loading to false');
       setLoading(false);
     }
 
-    //console.log(path);
-    //console.log(loading);
+    console.log(path);
+    console.log(loading);
   }, [currentUser]);
 
   if (loading) return <Loading />;
@@ -54,15 +64,28 @@ const App = props => {
         <main className="app__main">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PrivateRoute exact path="/dashboard" location={props.location} component={Dashboard} />
+            <PrivateRoute
+              exact
+              path="/dashboard"
+              location={props.location}
+              setPath={setPath}
+              component={Dashboard}
+            />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" render={() => <SignUp />} />
-            <Route exact path="/logout" component={Logout} />
-
-            <PrivateRoute exact path="/new_project" component={NewProject} />
+            <Route exact path="/logout" component={() => <Logout setPath={setPath} />} />
+            <PrivateRoute
+              exact
+              path="/new_project"
+              location={props.location}
+              setPath={setPath}
+              component={NewProject}
+            />
             <PrivateRoute
               exact
               path="/project/:id"
+              location={props.location}
+              setPath={setPath}
               component={props => <ProjectView id={props.match.params.id} />}
             />
 

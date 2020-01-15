@@ -9,7 +9,7 @@ const Logout = props => {
   React.useEffect(() => {
     const signOut = async () => {
       await app.auth().signOut();
-      localStorage.setItem('path', '/dashboard');
+      props.setPath(null);
     };
     signOut();
     fbContext.setStateOnLogout();

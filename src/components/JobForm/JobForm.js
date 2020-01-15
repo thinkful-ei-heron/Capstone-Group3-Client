@@ -8,9 +8,6 @@ const JobForm = props => {
   const fbContext = useContext(FirebaseContext);
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  const [initialEmployees, setInitialEmployees] = useState(
-    props.job.project_workers
-  );
 
   useEffect(() => {
     const resetFunction = () => {
@@ -18,7 +15,6 @@ const JobForm = props => {
       resetDescription();
       resetDeadline();
       resetHours();
-      setInitialEmployees([]);
       props.showJobForm();
     };
     if (submitted)
@@ -90,7 +86,8 @@ const JobForm = props => {
       else status = props.job.status;
       edit = null;
       employees.map(employee => {
-        if (!initialEmployees.includes(employee)) return alert.push(employee);
+        if (!props.job.project_workers.includes(employee))
+          return alert.push(employee);
         else return null;
       });
     }

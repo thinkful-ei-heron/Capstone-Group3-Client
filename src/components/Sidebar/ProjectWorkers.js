@@ -74,7 +74,7 @@ const ProjectWorkers = props => {
               to={{
                 pathname: `/project/${onLinkClick(name)}`,
                 id: onLinkClick(name),
-                toggleExpand: { toggleExpand }
+                toggleExpand: { toggleExpand },
               }}
             >
               {name}
@@ -97,6 +97,16 @@ const ProjectWorkers = props => {
         <li key={index}>
           <button id={itemId} onClick={e => props.toggleExpand(e)}>
             EXPAND
+          </button>
+          <button
+            onClick={
+              console.log("need email")
+              // I need the worker's email address
+              // didn't want to break your code lol
+              // context.promoteUser(Object.keys(worker)[0], context.user.org)
+            }
+          >
+            Promote
           </button>
           <h4>{Object.keys(worker)[0]}</h4>
           {expanded.includes(itemId) ? (

@@ -58,8 +58,15 @@ const Sidebar = props => {
     return (
       <div className="Sidebar">
         <h2>PROJECT MANAGERS</h2>
-        <ul className="Sidebar__list">
+        <ul className="managers__list">
           <ProjectManagers expanded={expanded} toggleExpand={toggleExpand} />
+        </ul>
+        <ul className="workers__list">
+          <ProjectWorkers
+            expanded={expanded}
+            toggleExpand={toggleExpand}
+            promoteButton={true}
+          />
         </ul>
       </div>
     );

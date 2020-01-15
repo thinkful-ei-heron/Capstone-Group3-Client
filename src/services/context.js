@@ -56,15 +56,20 @@ export class ContextProvider extends React.Component {
     loaded: false,
   };
 
-  promoteUser = async (name, org) => {
-    return await this.db
+  promoteUser = async (email, org) => {
+    // Need to check if user is assigned to any projects/jobs
+    // return alert/popup if so
+    const userRef = this.db
       .collection("organizations")
       .doc(org)
       .collection("users")
-      .where("name", "==", name)
-      .set({
+      .doc(email);
+    return userRef
+      .update({
         role: "project manager",
-      });
+      })
+      .then(() => console.log("Document successfully updated!"))
+      .catch(error => console.error("Error updating document: ", error));
   };
 
   setStateOnLogout = () => {

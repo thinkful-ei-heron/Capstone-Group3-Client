@@ -43,6 +43,7 @@ const App = props => {
 
     //console.log(path);
     //console.log(loading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   if (loading) return <Loading />;

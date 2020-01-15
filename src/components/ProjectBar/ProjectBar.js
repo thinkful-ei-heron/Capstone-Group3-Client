@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { ProgressBar } from "../ProgressBar/ProgressBar";
 import "./ProjectBar.css";
@@ -6,7 +6,7 @@ import "./ProjectBar.css";
 const ProjectBar = props => {
   console.log(props.proj.progress);
   console.log(
-    new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10)
+    new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10),
   );
 
   return (

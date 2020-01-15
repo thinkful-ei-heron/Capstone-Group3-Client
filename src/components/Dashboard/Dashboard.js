@@ -6,6 +6,7 @@ import "./Dashboard.css";
 import { Sidebar } from "../Sidebar/Sidebar";
 import StyleIcon from "../StyleIcon/StyleIcon";
 import ProjectBar from "../ProjectBar/ProjectBar";
+import JobNotification from "../JobNotification/JobNotification";
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -52,6 +53,7 @@ export default class Dashboard extends Component {
       return (
         <>
           {!this.context.user && <Redirect to="/register" />}
+
           <section className="Dashboard__container">
             <div className="Dashboard__header">
               {<h2>{this.context.user.org}</h2>}
@@ -60,6 +62,7 @@ export default class Dashboard extends Component {
               </span>
             </div>
             <div className="Dashboard__main">
+              <JobNotification />
               <section className="Dashboard__projects">
                 <div
                   className="Dashboard__project_header"
@@ -83,7 +86,7 @@ export default class Dashboard extends Component {
                       this.filterProjects().map((proj, i) => {
                         return (
                           <ul className="Dashboard__list">
-                            <li key={i}>
+                            <li key={proj.id}>
                               <ProjectBar proj={proj} />
                             </li>
                           </ul>

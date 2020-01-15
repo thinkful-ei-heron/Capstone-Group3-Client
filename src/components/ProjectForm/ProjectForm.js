@@ -19,7 +19,9 @@ export default class ProjectForm extends Component {
       org_id: this.context.user.org,
       progress: 0,
       project_workers: [],
-      id: null
+      id: null,
+      completed: false,
+      alert: true
     };
     await this.context.addProject(data);
     this.props.history.push("/dashboard");

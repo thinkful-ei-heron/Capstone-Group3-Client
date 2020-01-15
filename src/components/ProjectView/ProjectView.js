@@ -8,6 +8,7 @@ import Dropdown from "../Dropdown/Dropdown";
 import Statistics from "../Statistics/Statistics";
 import { Sidebar } from "../Sidebar/Sidebar";
 import JobForm from "../JobForm/JobForm";
+import LogHours from "../LogHours/LogHours";
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -163,6 +164,10 @@ export default class ProjectView extends Component {
               )}
             </header>
           </div>
+          <div>
+            <h2>LOG HOURS</h2>
+            <LogHours jobs={this.state.project.jobs} />
+          </div>
           <div id="projectView_main">
             <div id="jobs_stats_container">
               {this.context.user.role === "project worker" ? (
@@ -182,7 +187,7 @@ export default class ProjectView extends Component {
                   <button onClick={this.showJobForm}>Add Job</button>
                 )}
               </div>
-              {showJobForm ? (
+              {showJobForm && this.context.user.role === "project manager" ? (
                 <JobForm
                   {...this.props}
                   setJob={this.setJob}

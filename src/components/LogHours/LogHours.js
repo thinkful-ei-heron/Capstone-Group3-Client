@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import FirebaseContext from "../../services/context";
 import { useInput } from "../../hooks/useInput";
-import { Label, Input, Required } from "../Form/Form";
+import { Label, Input } from "../Form/Form";
 
 const LogHours = props => {
   const context = useContext(FirebaseContext);
 
-  const { value: hours, bind: bindHours, reset: resetHours } = useInput(0);
-  const { value: job, bind: bindJob, reset: resetJob } = useInput("...");
+  const { value: hours, bind: bindHours, reset: resetHours } = useInput("");
+  const { value: job, bind: bindJob, reset: resetJob } = useInput("");
   const [submitted, setSubmitted] = useState(false);
 
   const populateSelect = () => {
@@ -32,23 +32,19 @@ const LogHours = props => {
         </span>
       );
     }
-
-    // return (
-    // <span>This job has had {context}</span>
-    //   <span></span>
-    // )
   };
 
-  const handleJobHoursSubmit = async e => {
+  const handleJobHoursSubmit = e => {
     e.preventDefault();
     let jobObj = props.jobs.find(item => item.name === job);
     let oldHours = parseInt(jobObj.hours_completed);
     let newHours = oldHours + parseInt(hours);
-    console.log(typeof newHours);
     jobObj.hours_completed = newHours;
 
-    await context.editJob(jobObj.id, jobObj);
-    await context.editAndSetJobs(jobObj.id, jobObj).then(setSubmitted(true));
+    context
+      .editJob(jobObj.id, jobObj)
+      .then(context.editAndSetJobs(jobObj.id, jobObj))
+      .then(setSubmitted(true));
   };
 
   useEffect(() => {
@@ -76,7 +72,11 @@ const LogHours = props => {
         <Input name="job_hours" type="number" placeholder={0} {...bindHours} />
       </Label>
       <div>{renderJobHours()}</div>
-      {job === "..." ? <></> : <button type="submit">Submit Hours</button>}
+      {job === "..." || job === "" ? (
+        <></>
+      ) : (
+        <button type="submit">Submit Hours</button>
+      )}
     </form>
   );
 };

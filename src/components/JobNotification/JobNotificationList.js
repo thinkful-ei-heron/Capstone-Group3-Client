@@ -1,9 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import FirebaseContext from "../../services/context";
+import JobForm from "../JobForm/JobForm";
 
 const JobNotificationList = props => {
   const context = useContext(FirebaseContext);
+
+  const [editing, setEditing] = useState(false);
+  const [editJob, setEditJob] = useState({});
 
   const renderJobEdit = job => {
     let jobKeys = Object.keys(job.edit);
@@ -24,6 +28,11 @@ const JobNotificationList = props => {
     await context.updateAndSetJobs(id, status);
   };
 
+  const openEdit = (e, jobObj) => {
+    setEditing(!editing);
+    setEditJob(jobObj);
+  };
+
   const renderJobList = () => {
     return props.jobsList.map((jobObj, index) => {
       console.log(jobObj.id);
@@ -39,7 +48,13 @@ const JobNotificationList = props => {
           {jobObj.status === "submitted" ? (
             <div>
               <h5>Job Submitted For Approval</h5>
-              <button>Approve</button>
+              <button
+                onClick={e =>
+                  handleApprovalSubmit(jobObj.id, "completed", true)
+                }
+              >
+                Approve
+              </button>
               <button>Request Revision</button>
             </div>
           ) : (
@@ -48,13 +63,7 @@ const JobNotificationList = props => {
           {jobObj.status === "edit request" ? (
             <div>
               <ul>{renderJobEdit(jobObj)}</ul>
-              <button
-                onClick={e =>
-                  handleApprovalSubmit(jobObj.id, "completed", true)
-                }
-              >
-                Submit Edit
-              </button>
+              <button onClick={e => openEdit(e, jobObj)}>Submit Edit</button>
             </div>
           ) : (
             <></>
@@ -67,6 +76,7 @@ const JobNotificationList = props => {
   return (
     <div>
       <ul>{renderJobList()}</ul>
+      {editing ? <JobForm showJobForm={openEdit} job={editJob} /> : <></>}
     </div>
   );
 };

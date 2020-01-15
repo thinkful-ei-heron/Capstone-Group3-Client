@@ -25,7 +25,8 @@ export default class ProjectView extends Component {
       },
       showJobForm: false,
       loading: true,
-      toggleState: false
+      toggleState: false,
+      showLogHours: false
     };
   }
 
@@ -112,6 +113,13 @@ export default class ProjectView extends Component {
     //code to set new PM for project
   };
 
+  renderLogHoursForm = e => {
+    e.preventDefault();
+    this.setState({
+      showLogHours: !this.state.showLogHours
+    });
+  };
+
   render() {
     const { project, showJobForm } = this.state;
     if (this.state.loading) {
@@ -165,8 +173,16 @@ export default class ProjectView extends Component {
             </header>
           </div>
           <div>
-            <h2>LOG HOURS</h2>
-            <LogHours jobs={this.state.project.jobs} />
+            <h2>
+              <button onClick={e => this.renderLogHoursForm(e)}>
+                LOG HOURS
+              </button>
+            </h2>
+            {this.state.showLogHours ? (
+              <LogHours jobs={this.state.project.jobs} />
+            ) : (
+              <></>
+            )}
           </div>
           <div id="projectView_main">
             <div id="jobs_stats_container">

@@ -49,7 +49,7 @@ const ProjectWorkers = props => {
   };
 
   const renderWorkerJobs = jobs => {
-    if (jobs[0].length === 0) return <h5>No Jobs Assigned</h5>;
+    if (jobs.length === 0) return <h5>No Jobs Assigned</h5>;
     return jobs.map((job, index) => {
       //console.log(jobs);
       return <li key={index}>{job}</li>;

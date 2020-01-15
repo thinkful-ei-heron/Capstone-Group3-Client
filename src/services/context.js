@@ -54,7 +54,8 @@ export class ContextProvider extends React.Component {
     employees: [],
     projects: [],
     project_managers: [],
-    jobs: []
+    jobs: [],
+    loaded: false
   };
 
   setStateOnLogout = () => {
@@ -69,7 +70,8 @@ export class ContextProvider extends React.Component {
         employees: [],
         projects: [],
         project_managers: [],
-        jobs: []
+        jobs: [],
+        loaded: false
       },
       () => app.auth().signOut()
     );
@@ -100,7 +102,7 @@ export class ContextProvider extends React.Component {
     });
   };
 
-  initState = (email, org) => {
+  initState = async (email, org) => {
     let emps = [],
       projs = [],
       jobs = [],
@@ -108,36 +110,36 @@ export class ContextProvider extends React.Component {
     let name = "";
     let role = "";
 
-    this.getUser(email, org)
-      .then(snapshot =>
-        snapshot.forEach(user => {
-          name = user.data().name;
-          role = user.data().role;
-        })
-      )
-      .then(() => this.getProjects(org))
-      .then(snapshot => {
-        snapshot.forEach(async proj => {
-          projs.push(proj.data());
-          await this.getJobs(org, proj.id).then(snap =>
-            snap.forEach(job => jobs.push(job.data()))
-          );
-        });
-      })
-      .then(() => this.getEmployees(org))
-      .then(snapshot => snapshot.forEach(emp => emps.push(emp.data())))
-      .then(() => this.getProjectManagers(org))
-      .then(snapshot => snapshot.forEach(pm => pms.push(pm.data())))
-      .then(() => {
-        this.setState({
-          user: { id: email, name: name, role: role, org: org },
-          projects: projs,
-          jobs: jobs,
-          employees: emps,
-          project_managers: pms,
-          loaded: true
-        });
+    const user = await this.getUser(email, org);
+    const projects = await this.getProjects(org);
+    const employees = await this.getEmployees(org);
+    const projManagers = await this.getProjectManagers(org);
+
+    user.forEach(user => {
+      name = user.data().name;
+      role = user.data().role;
+    });
+    projects.forEach(proj => {
+      projs.push(proj.data());
+    });
+    employees.forEach(emp => emps.push(emp.data()));
+    projManagers.forEach(pm => pms.push(pm.data()));
+
+    for (const proj of projs) {
+      const jobsSnap = await this.getJobs(org, proj.id);
+      jobsSnap.forEach(job => {
+        return jobs.push(job.data());
       });
+    }
+
+    this.setState({
+      user: { id: email, name: name, role: role, org: org },
+      projects: projs,
+      jobs: jobs,
+      employees: emps,
+      project_managers: pms,
+      loaded: true
+    });
   };
 
   createOwner = async (user, org) => {
@@ -148,25 +150,7 @@ export class ContextProvider extends React.Component {
         .set({
           name: org
         });
-    const addProjectCollection = async () => {
-      await this.db
-        .collection("organizations")
-        .doc(org)
-        .collection("projects")
-        .add({});
-    };
-    const addUsersCollection = async () => {
-      await this.db
-        .collection("organizations")
-        .doc(org)
-        .collection("users")
-        .add({});
-    };
-
-    await addOrg().then(async () => {
-      await addProjectCollection();
-      await addUsersCollection();
-    });
+    addOrg();
     this.createUserInOrg(user, org);
   };
 
@@ -368,54 +352,6 @@ export class ContextProvider extends React.Component {
       .update(jobObj);
   };
 
-  listenForProjects = async () => {
-    let db = this.db;
-    let name = this.state.user.name;
-    let org = this.state.user.org;
-    let jobs = [];
-    db.collection("organizations")
-      .doc(org)
-      .collection("projects")
-      .where("project_workers", "array-contains", name)
-      .get()
-      .then(function(snapshot) {
-        snapshot.forEach(function(doc) {
-          db.collection("organizations")
-            .doc(org)
-            .collection("projects")
-            .doc(doc.data().id)
-            .collection("jobs")
-            .where("project_workers", "array-contains", name)
-            .onSnapshot(function(snapshot) {
-              snapshot.forEach(function(doc) {
-                jobs.push(doc.data());
-              });
-            });
-        });
-      });
-    return jobs;
-  };
-
-  listenForJobs = projectId => {
-    this.db
-      .collection("organizations")
-      .doc(this.state.user.org)
-      .collection("projects")
-      .doc(projectId)
-      .collection("jobs")
-      .where("project_workers", "array-contains", this.state.user.name)
-      .onSnapshot(function(snapshot) {
-        snapshot.docChanges().forEach(function(change) {
-          if (change.type === "added") {
-            console.log("Worker added to job: ", change.doc.data());
-          }
-          if (change.type === "modified") {
-            console.log("Job changed: ", change.doc.data());
-          }
-        });
-      });
-  };
-
   render() {
     const value = {
       user: this.state.user,
@@ -423,6 +359,7 @@ export class ContextProvider extends React.Component {
       projects: this.state.projects,
       project_managers: this.state.project_managers,
       jobs: this.state.jobs,
+      loaded: this.state.loaded,
       initState: this.initState,
       getOrgName: this.getOrgName,
       addProject: this.addProject,

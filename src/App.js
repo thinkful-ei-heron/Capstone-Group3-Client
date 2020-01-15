@@ -9,15 +9,15 @@ import ProjectView from './components/ProjectView/ProjectView';
 import LandingPage from './components/LandingPage/LandingPage';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthContext } from './services/Auth.js';
-import FirebaseContext from './services/context';
+//import FirebaseContext from './services/context';
 import Loading from './components/Loading/Loading';
 import Logout from './components/Account/Logout';
 import './App.css';
 
 const App = props => {
   const { currentUser } = useContext(AuthContext);
-  const context = useContext(FirebaseContext);
-  const [loading, setLoading] = useState(true);
+  //const context = useContext(FirebaseContext);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const initialPath = () => {
@@ -33,33 +33,33 @@ const App = props => {
     localStorage.setItem('path', path);
   }, [path]);
 
-  useEffect(() => {
-    const initState = async (email, org) => {
-      setLoading(true);
-      await context.initState(email, org);
+  // useEffect(() => {
+  //   const initState = async (email, org) => {
+  //     setLoading(true);
+  //     await context.initState(email, org);
 
-      if (path) {
-        //console.log('pushing to path ' + path);
-        history.push(path);
-      }
+  //     if (path) {
+  //       //console.log('pushing to path ' + path);
+  //       history.push(path);
+  //     }
 
-      setLoading(false);
-    };
+  //     setLoading(false);
+  //   };
 
-    if (currentUser && currentUser.displayName) {
-      if (!context.loaded) initState(currentUser.email, currentUser.displayName);
-    } else if (!path) {
-      //console.log('set loading to false');
-      setLoading(false);
-    }
-  }, [currentUser]);
+  //   if (currentUser && currentUser.displayName) {
+  //     if (!context.loaded) initState(currentUser.email, currentUser.displayName);
+  //   } else if (!path) {
+  //     //console.log('set loading to false');
+  //     setLoading(false);
+  //   }
+  // }, [currentUser]);
 
   if (loading) return <Loading />;
   else {
     return (
       <>
         <header>
-          <Header userName={context.user.name} role={context.user.role} />
+          <Header userName={'Refactoring'} role={'Refactoring'} />
         </header>
         <main className="app__main">
           <Switch>
@@ -74,6 +74,7 @@ const App = props => {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" render={() => <SignUp />} />
             <Route exact path="/logout" component={() => <Logout setPath={setPath} />} />
+            {/* 
             <PrivateRoute
               exact
               path="/new_project"
@@ -88,6 +89,7 @@ const App = props => {
               setPath={setPath}
               component={props => <ProjectView id={props.match.params.id} />}
             />
+            */}
 
             <Route exact path="/owner-signup" render={() => <SignUp />} />
           </Switch>

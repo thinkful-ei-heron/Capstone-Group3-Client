@@ -1,14 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useInput } from "../../hooks/useInput";
-import FirebaseContext from "../../services/context";
-import Dropdown from "../Dropdown/Dropdown";
-import "./JobForm.css";
+import React, { useContext, useState, useEffect } from 'react';
+import { useInput } from '../../hooks/useInput';
+//import FirebaseContext from "../../services/context";
+import Dropdown from '../Dropdown/Dropdown';
+import './JobForm.css';
 
 const NewJob = props => {
-  const fbContext = useContext(FirebaseContext);
+  //const fbContext = useContext(FirebaseContext);
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-
+  /*
   useEffect(() => {
     const resetFunction = () => {
       resetName();
@@ -26,35 +26,25 @@ const NewJob = props => {
   const getDate = () => {
     if (props.job) {
       let newDeadline = new Date(props.job.deadline.seconds * 1000);
-      return newDeadline.toLocaleDateString("en-CA");
+      return newDeadline.toLocaleDateString('en-CA');
     }
   };
 
   const getEmployees = () => {
     if (props.job) {
       let workers = [];
-      props.job.project_workers.forEach(worker =>
-        workers.push({ value: worker, label: worker })
-      );
+      props.job.project_workers.forEach(worker => workers.push({ value: worker, label: worker }));
       return workers;
     }
   };
 
-  const { value: name, bind: bindName, reset: resetName } = useInput(
-    props.job ? props.job.name : ""
+  const { value: name, bind: bindName, reset: resetName } = useInput(props.job ? props.job.name : '');
+  const { value: description, bind: bindDescription, reset: resetDescription } = useInput(
+    props.job ? props.job.description : ''
   );
-  const {
-    value: description,
-    bind: bindDescription,
-    reset: resetDescription
-  } = useInput(props.job ? props.job.description : "");
-  const {
-    value: deadline,
-    bind: bindDeadline,
-    reset: resetDeadline
-  } = useInput(props.job ? getDate() : "");
+  const { value: deadline, bind: bindDeadline, reset: resetDeadline } = useInput(props.job ? getDate() : '');
   const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(
-    props.job ? props.job.total_hours : ""
+    props.job ? props.job.total_hours : ''
   );
 
   const handleSubmit = async e => {
@@ -74,9 +64,7 @@ const NewJob = props => {
     if (props.job) {
       projectId = props.job.project_id;
       projectManager = props.job.project_manager;
-      project = fbContext.projects.find(
-        project => project.id === props.job.project_id
-      );
+      project = fbContext.projects.find(project => project.id === props.job.project_id);
       id = props.job.id;
       approval = props.job.approval;
       date_created = props.job.date_created;
@@ -93,7 +81,7 @@ const NewJob = props => {
       date_created = new Date();
       hours_completed = 0;
       revision = null;
-      status = "in progress";
+      status = 'in progress';
     }
     const jobObj = {
       approval,
@@ -119,9 +107,7 @@ const NewJob = props => {
     let updatedProjectWorkers;
     if (props.project) updatedProjectWorkers = props.project.project_workers;
     if (props.job) {
-      let project = fbContext.projects.find(
-        project => project.id === props.job.project_id
-      );
+      let project = fbContext.projects.find(project => project.id === props.job.project_id);
       updatedProjectWorkers = project.project_workers;
     }
     jobObj.project_workers.map(worker => {
@@ -129,9 +115,7 @@ const NewJob = props => {
         return updatedProjectWorkers.push(worker);
       } else return null;
     });
-    await fbContext
-      .updateProjectWorkers(projectId, updatedProjectWorkers, project)
-      .then(setSubmitted(true));
+    await fbContext.updateProjectWorkers(projectId, updatedProjectWorkers, project).then(setSubmitted(true));
   };
 
   const populateEmployeeList = () => {
@@ -146,39 +130,22 @@ const NewJob = props => {
     <>
       <form onSubmit={handleSubmit} className="newjob__form">
         <fieldset>
-          <legend>{props.projectId ? "Add New Job" : "Edit Job"}</legend>
+          <legend>{props.projectId ? 'Add New Job' : 'Edit Job'}</legend>
           <div className="input">
             <label htmlFor="name">Job Name: </label>
             <input type="text" name="name" id="name" {...bindName} required />
           </div>
           <div className="input">
             <label htmlFor="description">Details: </label>
-            <textarea
-              name="description"
-              id="description"
-              {...bindDescription}
-              required
-            />
+            <textarea name="description" id="description" {...bindDescription} required />
           </div>
           <div className="input">
             <label htmlFor="total_hours">Total Hours: </label>
-            <input
-              type="number"
-              name="total_hours"
-              id="total_hours"
-              {...bindHours}
-              required
-            />
+            <input type="number" name="total_hours" id="total_hours" {...bindHours} required />
           </div>
           <div className="input">
             <label htmlFor="deadline">Deadline: </label>
-            <input
-              type="date"
-              name="deadline"
-              id="deadline"
-              {...bindDeadline}
-              required
-            />
+            <input type="date" name="deadline" id="deadline" {...bindDeadline} required />
           </div>
           <Dropdown
             employees={employees}
@@ -195,6 +162,7 @@ const NewJob = props => {
       </form>
     </>
   );
+  */
 };
 
 export default NewJob;

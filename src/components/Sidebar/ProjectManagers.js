@@ -1,29 +1,30 @@
-import React, { useContext, useEffect } from "react";
-import FirebaseContext from "../../services/context";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from 'react';
+//import FirebaseContext from "../../services/context";
+import { Link } from 'react-router-dom';
 
 const ProjectManagers = props => {
-  const context = useContext(FirebaseContext);
+  //const context = useContext(FirebaseContext);
 
   const expanded = props.expanded;
 
   let completeManagerList = [];
 
   const populateCompleteManagerList = () => {
+    /*
     context.project_managers.map(manager => {
       let projectArray = [];
       context.projects.map(project => {
-        if (project.project_manager === manager.name)
-          return projectArray.push(project.name);
+        if (project.project_manager === manager.name) return projectArray.push(project.name);
         else return null;
       });
       return completeManagerList.push({ [manager.name]: projectArray });
     });
+    */
   };
 
   const onLinkClick = name => {
-    let project = context.projects.filter(proj => proj.name === name);
-    return project[0].id;
+    //let project = context.projects.filter(proj => proj.name === name);
+    //return project[0].id;
   };
 
   const renderPMProjects = name => {
@@ -43,18 +44,14 @@ const ProjectManagers = props => {
   const renderProjectManagers = () => {
     if (completeManagerList.length === 0) return <></>;
     return completeManagerList.map((manager, index) => {
-      let itemId = "manager" + index;
+      let itemId = 'manager' + index;
       return (
         <li key={index}>
           <button id={itemId} onClick={e => props.toggleExpand(e)}>
             EXPAND
           </button>
           <h4>{Object.keys(manager)[0]}</h4>
-          {expanded.includes(itemId) ? (
-            <ul>{renderPMProjects(manager)}</ul>
-          ) : (
-            <></>
-          )}
+          {expanded.includes(itemId) ? <ul>{renderPMProjects(manager)}</ul> : <></>}
         </li>
       );
     });

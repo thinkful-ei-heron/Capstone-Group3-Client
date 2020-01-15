@@ -1,11 +1,11 @@
-import React from "react";
-import { withRouter } from "react-router";
-import app from "../../services/base";
-import FirebaseContext from "../../services/context";
-import { Label, Input } from "../Form/Form";
+import React from 'react';
+import { withRouter } from 'react-router';
+import app from '../../services/base';
+import dbServices from '../../services/dbServices';
+import { Label, Input } from '../Form/Form';
 
 const SignUp = ({ history }, props) => {
-  const fbContext = React.useContext(FirebaseContext);
+  //const fbContext = React.useContext(FirebaseContext);
   const handleSignUp = async event => {
     event.preventDefault();
     const { email, password, name, orgName } = event.target.elements;
@@ -13,38 +13,33 @@ const SignUp = ({ history }, props) => {
       .auth()
       .createUserWithEmailAndPassword(email.value, password.value)
       .then(response => {
-        response.user
-          .updateProfile({
-            displayName: orgName.value
-          })
-          .then(
-            async () => await fbContext.initState(email.value, orgName.value)
-          );
+        response.user.updateProfile({
+          displayName: orgName.value
+        });
+        // .then(async () => await fbContext.initState(email.value, orgName.value));
       })
       .then(() => {
-        history.location.pathname === "/owner-signup"
-          ? fbContext.createOwner(
+        history.location.pathname === '/owner-signup'
+          ? dbServices.createOwner(
               {
                 email: email.value,
-                role: "owner",
+                role: 'owner',
                 name: name.value
               },
               orgName.value
             )
-          : fbContext.createUserInOrg(
+          : dbServices.createUserInOrg(
               {
                 email: email.value,
-                role: "project worker",
+                role: 'project worker',
                 name: name.value
               },
               orgName.value
             );
       })
       .then(async () => {
-        await app
-          .auth()
-          .signInWithEmailAndPassword(email.value, password.value);
-        history.push("/dashboard");
+        await app.auth().signInWithEmailAndPassword(email.value, password.value);
+        history.push('/dashboard');
       });
   };
 
@@ -58,12 +53,7 @@ const SignUp = ({ history }, props) => {
         </Label>
         <Label>
           Password
-          <Input
-            name="password"
-            type="password"
-            placeholder="Password"
-            required
-          />
+          <Input name="password" type="password" placeholder="Password" required />
         </Label>
         <Label htmlFor="username">
           Username
@@ -71,12 +61,7 @@ const SignUp = ({ history }, props) => {
         </Label>
         <Label htmlFor="orgName">
           Orginization Name
-          <Input
-            type="orgName"
-            name="orgName"
-            placeholder="Organization name"
-            required
-          />
+          <Input type="orgName" name="orgName" placeholder="Organization name" required />
         </Label>
         <button type="submit">Sign Up</button>
       </form>

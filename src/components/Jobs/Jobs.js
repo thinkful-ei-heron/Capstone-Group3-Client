@@ -21,14 +21,27 @@ export default class Jobs extends Component {
   //change function name to be clearer handleStatusChange
   handleApprovalSubmit = async (id, status, approval = false) => {
     let jobs = [];
+    // let alert;
+    let newJobObj = this.props.job;
     console.log(id);
-    await this.context.updateJobStatus(
-      id,
-      status,
-      this.props.job.project_id,
-      approval
-    );
-    await this.context.updateAndSetJobs(id, status);
+    if (
+      status === "submitted" ||
+      status === "complete" ||
+      status === "revisions"
+    ) {
+      newJobObj.status = status;
+      newJobObj.alert = newJobObj.project_workers;
+      newJobObj.approval = approval;
+    } else {
+      newJobObj.status = status;
+      newJobObj.approval = approval;
+    }
+    console.log(newJobObj);
+    // alert = this.props.job.project_workers;
+
+    await this.context
+      .editJob(id, newJobObj)
+      .then(this.context.editAndSetJobs(id, newJobObj));
     console.log(jobs);
   };
 

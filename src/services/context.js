@@ -83,7 +83,7 @@ export class ContextProvider extends React.Component {
     this.setState({ loaded: bool });
   };
 
-  updateAndSetJobs = async (id, status, approval) => {
+  updateAndSetJobs = async (id, status, approval, alert = []) => {
     let index = this.state.jobs.findIndex(job => job.id === id);
     let newArray = this.state.jobs;
     newArray[index].status = status;
@@ -304,7 +304,13 @@ export class ContextProvider extends React.Component {
     await this.doGetProject(this.state.user.org);
   };
 
-  updateJobStatus = async (id, status, project_id, approval = false) => {
+  updateJobStatus = async (
+    id,
+    status,
+    project_id,
+    approval = false,
+    alert = []
+  ) => {
     await this.db
       .collection("organizations")
       .doc(this.state.user.org)
@@ -314,7 +320,8 @@ export class ContextProvider extends React.Component {
       .doc(id)
       .update({
         status: status,
-        approval: approval
+        approval: approval,
+        alert: alert
       });
   };
 

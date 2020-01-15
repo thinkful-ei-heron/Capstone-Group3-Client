@@ -35,7 +35,8 @@ const SignUp = ({ history }, props) => {
               {
                 email: email.value,
                 role: "project worker",
-                name: name.value
+                name: name.value,
+                new: true
               },
               orgName.value
             );

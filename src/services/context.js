@@ -36,7 +36,9 @@ const FirebaseContext = React.createContext({
   createOwner: () => {},
   updateEdit: () => {},
   editJob: () => {},
-  editAndSetJobs: () => {}
+  editAndSetJobs: () => {},
+  listenForProjects: () => {},
+  listenForJobs: () => {}
 });
 
 export default FirebaseContext;
@@ -366,6 +368,54 @@ export class ContextProvider extends React.Component {
       .update(jobObj);
   };
 
+  listenForProjects = async () => {
+    let db = this.db;
+    let name = this.state.user.name;
+    let org = this.state.user.org;
+    let jobs = [];
+    db.collection("organizations")
+      .doc(org)
+      .collection("projects")
+      .where("project_workers", "array-contains", name)
+      .get()
+      .then(function(snapshot) {
+        snapshot.forEach(function(doc) {
+          db.collection("organizations")
+            .doc(org)
+            .collection("projects")
+            .doc(doc.data().id)
+            .collection("jobs")
+            .where("project_workers", "array-contains", name)
+            .onSnapshot(function(snapshot) {
+              snapshot.forEach(function(doc) {
+                jobs.push(doc.data());
+              });
+            });
+        });
+      });
+    return jobs;
+  };
+
+  listenForJobs = projectId => {
+    this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("projects")
+      .doc(projectId)
+      .collection("jobs")
+      .where("project_workers", "array-contains", this.state.user.name)
+      .onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+          if (change.type === "added") {
+            console.log("Worker added to job: ", change.doc.data());
+          }
+          if (change.type === "modified") {
+            console.log("Job changed: ", change.doc.data());
+          }
+        });
+      });
+  };
+
   render() {
     const value = {
       user: this.state.user,
@@ -398,7 +448,9 @@ export class ContextProvider extends React.Component {
       createOwner: this.createOwner,
       updateEdit: this.updateEdit,
       editJob: this.editJob,
-      editAndSetJobs: this.editAndSetJobs
+      editAndSetJobs: this.editAndSetJobs,
+      listenForProjects: this.listenForProjects,
+      listenForJobs: this.listenForJobs
     };
     return (
       <FirebaseContext.Provider value={value}>

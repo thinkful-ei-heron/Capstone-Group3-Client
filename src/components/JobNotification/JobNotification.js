@@ -1,21 +1,29 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import FirebaseContext from "../../services/context";
 import JobNotificationList from "./JobNotificationList";
 
 const JobNotification = props => {
   const context = useContext(FirebaseContext);
   const [notificationDropDown, setNotificationDropDown] = useState(false);
-  const jobsList = [];
+  let jobsList = [];
 
   const grabJobs = () => {
-    context.jobs.map(job => {
-      if (
-        (job.status === "submitted" || job.status === "edit request") &&
-        job.project_manager === context.user.name
-      ) {
-        jobsList.push(job);
-      }
-    });
+    if (context.user.role === "project manager") {
+      context.jobs.map(job => {
+        if (
+          (job.status === "submitted" || job.status === "edit request") &&
+          job.project_manager === context.user.name
+        ) {
+          return jobsList.push(job);
+        } else return null;
+      });
+    }
+    if (context.user.role === "project worker") {
+      context.jobs.map(job => {
+        if (job.alert.includes(context.user.name)) return jobsList.push(job);
+        else return null;
+      });
+    }
   };
 
   const renderList = e => {

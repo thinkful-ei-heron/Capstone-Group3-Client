@@ -31,10 +31,14 @@ export default class Dashboard extends Component {
   };
 
   filterProjects() {
-    if (this.context.user.role === 'project worker')
-      return this.context.projects.filter(proj => proj.project_workers.includes(this.context.user.name));
-    if (this.context.user.role === 'project manager')
-      return this.context.projects.filter(proj => proj.project_manager === this.context.user.name);
+    if (this.context.user.role === "project worker")
+      return this.context.projects.filter(proj =>
+        proj.project_workers.includes(this.context.user.name)
+      );
+    if (this.context.user.role === "project manager")
+      return this.context.projects.filter(
+        proj => proj.project_manager === this.context.user.name
+      );
     return this.context.projects;
   }
 
@@ -58,11 +62,7 @@ export default class Dashboard extends Component {
               </span>
             </div>
             <div>
-              {this.context.user.role === "project manager" ? (
-                <JobNotification />
-              ) : (
-                <></>
-              )}
+              <JobNotification />
             </div>
             <section className="Dashboard__projects">
               <div
@@ -93,7 +93,8 @@ export default class Dashboard extends Component {
                     })
                   ) : (
                     <span className="Dashboard__no_projects">
-                      Welcome! You currently have no projects, click the NEW button above to add one.
+                      Welcome! You currently have no projects, click the NEW
+                      button above to add one.
                     </span>
                   )}
                 </div>

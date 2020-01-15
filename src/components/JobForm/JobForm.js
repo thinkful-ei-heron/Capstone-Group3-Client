@@ -8,6 +8,9 @@ const JobForm = props => {
   const fbContext = useContext(FirebaseContext);
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [initialEmployees, setInitialEmployees] = useState(
+    props.job.project_workers
+  );
 
   useEffect(() => {
     const resetFunction = () => {
@@ -15,6 +18,7 @@ const JobForm = props => {
       resetDescription();
       resetDeadline();
       resetHours();
+      setInitialEmployees([]);
       props.showJobForm();
     };
     if (submitted)
@@ -70,6 +74,8 @@ const JobForm = props => {
     let hours_completed;
     let status;
     let edit;
+    let alert = [];
+
     if (props.job) {
       projectId = props.job.project_id;
       projectManager = props.job.project_manager;
@@ -83,6 +89,10 @@ const JobForm = props => {
       if (props.job.status === "edit request") status = "in progress";
       else status = props.job.status;
       edit = null;
+      employees.map(employee => {
+        if (!initialEmployees.includes(employee)) return alert.push(employee);
+        else return null;
+      });
     }
     if (props.project) {
       projectId = props.projectId;
@@ -94,6 +104,9 @@ const JobForm = props => {
       hours_completed = 0;
       status = "in progress";
       edit = null;
+      employees.map(employee => {
+        return alert.push(employee);
+      });
     }
     const jobObj = {
       approval,
@@ -109,7 +122,8 @@ const JobForm = props => {
       project_workers: employees,
       status,
       id,
-      edit
+      edit,
+      alert
     };
     if (props.project) await fbContext.addJob(jobObj, projectId);
     if (props.job) {
@@ -129,9 +143,11 @@ const JobForm = props => {
         return updatedProjectWorkers.push(worker);
       } else return null;
     });
-    await fbContext
-      .updateProjectWorkers(projectId, updatedProjectWorkers, project)
-      .then(setSubmitted(true));
+    await fbContext.updateProjectWorkers(
+      projectId,
+      updatedProjectWorkers,
+      project
+    );
   };
 
   const populateEmployeeList = () => {
@@ -144,7 +160,10 @@ const JobForm = props => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="newjob__form">
+      <form
+        onSubmit={e => handleSubmit(e).then(setSubmitted(true))}
+        className="newjob__form"
+      >
         <fieldset>
           <legend>{props.projectId ? "Add New Job" : "Edit Job"}</legend>
           <div className="input">

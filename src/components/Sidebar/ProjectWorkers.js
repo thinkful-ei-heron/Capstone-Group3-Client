@@ -75,7 +75,7 @@ const ProjectWorkers = props => {
               to={{
                 pathname: `/project/${onLinkClick(name)}`,
                 id: onLinkClick(name),
-                toggleExpand: { toggleExpand }
+                toggleExpand: { toggleExpand },
               }}
             >
               {name}
@@ -99,19 +99,24 @@ const ProjectWorkers = props => {
   const renderProjectWorkers = () => {
     return completeWorkerList.map((worker, index) => {
       let itemId = "worker" + index;
+      console.log(completeWorkerList[index]);
       return (
         <li key={index}>
           {/* error when I click expand */}
           {/* not sure */}
-          <button id={itemId} onClick={e => props.toggleExpand(e)}>
-            EXPAND
-          </button>
+          {completeWorkerList[index].projects ? (
+            <button id={itemId} onClick={e => props.toggleExpand(e)}>
+              EXPAND
+            </button>
+          ) : (
+            <p>no jobs assigned</p>
+          )}
           {props.promoteButton ? (
             <button
               onClick={() =>
                 handlePromoteUser(
                   completeWorkerList[index].email.toLowerCase(),
-                  context.user.org
+                  context.user.org,
                 )
               }
             >
@@ -120,7 +125,7 @@ const ProjectWorkers = props => {
           ) : (
             <></>
           )}
-          ><h4>{Object.keys(worker)[0]}</h4>
+          <h4>{Object.keys(worker)[0]}</h4>
           {expanded.includes(itemId) ? (
             <ul>{renderWorkerProjects(worker)}</ul>
           ) : (

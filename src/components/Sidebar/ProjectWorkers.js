@@ -12,6 +12,7 @@ const ProjectWorkers = props => {
   let completeWorkerList = [];
 
   const populateCompleteWorkerList = () => {
+    console.log(context.employees);
     completeWorkerList = [];
     context.employees.map(worker => {
       let projectKeys = [];
@@ -74,7 +75,7 @@ const ProjectWorkers = props => {
               to={{
                 pathname: `/project/${onLinkClick(name)}`,
                 id: onLinkClick(name),
-                toggleExpand: { toggleExpand },
+                toggleExpand: { toggleExpand }
               }}
             >
               {name}
@@ -90,6 +91,11 @@ const ProjectWorkers = props => {
     });
   };
 
+  const handlePromoteUser = async (email, org) => {
+    await context.promoteUser(email, org).then(populateCompleteWorkerList());
+    // .then(res => populateCompleteWorkerList);
+  };
+
   const renderProjectWorkers = () => {
     return completeWorkerList.map((worker, index) => {
       let itemId = "worker" + index;
@@ -101,9 +107,9 @@ const ProjectWorkers = props => {
           {props.promoteButton ? (
             <button
               onClick={() =>
-                context.promoteUser(
+                handlePromoteUser(
                   completeWorkerList[index].email.toLowerCase(),
-                  context.user.org,
+                  context.user.org
                 )
               }
             >
@@ -126,7 +132,6 @@ const ProjectWorkers = props => {
   useEffect(() => {
     renderProjectWorkers();
   });
-
   populateCompleteWorkerList();
 
   return <ul>{renderProjectWorkers()}</ul>;

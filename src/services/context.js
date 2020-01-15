@@ -6,7 +6,7 @@ const FirebaseContext = React.createContext({
     name: null,
     role: null,
     email: null,
-    org: null,
+    org: null
   },
   employees: [],
   projects: [],
@@ -36,7 +36,7 @@ const FirebaseContext = React.createContext({
   createOwner: () => {},
   editJob: () => {},
   editAndSetJobs: () => {},
-  promoteUser: () => {},
+  promoteUser: () => {}
 });
 
 export default FirebaseContext;
@@ -47,13 +47,13 @@ export class ContextProvider extends React.Component {
       id: "",
       name: "",
       role: "",
-      org: "",
+      org: ""
     },
     employees: [],
     projects: [],
     project_managers: [],
     jobs: [],
-    loaded: false,
+    loaded: false
   };
 
   promoteUser = async (email, org) => {
@@ -67,15 +67,32 @@ export class ContextProvider extends React.Component {
       .doc(email);
     userRef
       .update({
-        role: "project manager",
+        role: "project manager"
       })
       .then(() => {
-        this.getEmployees(org).then(emps => this.setEmployeeState(emps));
-        this.getProjectManagers(org).then(pms =>
-          this.setProjectManagersState(pms),
+        let newEmployees = this.state.employees;
+        let newProjectManagers = this.state.project_managers;
+        let empIndex = this.state.employees.findIndex(
+          employee => employee.email === email
         );
-      })
-      .catch(error => console.error("Error updating document: ", error));
+        let updatedEmployee = this.state.employees[empIndex];
+
+        newEmployees = newEmployees.filter(
+          employee => employee !== updatedEmployee
+        );
+        updatedEmployee.role = "project manager";
+        newProjectManagers.push(updatedEmployee);
+        this.setState({
+          employees: newEmployees,
+          project_managers: newProjectManagers
+        });
+        //   this.getEmployees(org).then(emps => this.setEmployeeState(emps));
+        //   this.getProjectManagers(org).then(pms =>
+        //     this.setProjectManagersState(pms),
+        //   );
+        // })
+        // .catch(error => console.error("Error updating document: ", error));
+      });
   };
 
   setStateOnLogout = () => {
@@ -85,15 +102,15 @@ export class ContextProvider extends React.Component {
           id: "",
           name: "",
           role: "",
-          org: "",
+          org: ""
         },
         employees: [],
         projects: [],
         project_managers: [],
         jobs: [],
-        loaded: false,
+        loaded: false
       },
-      () => app.auth().signOut(),
+      () => app.auth().signOut()
     );
   };
 
@@ -109,7 +126,7 @@ export class ContextProvider extends React.Component {
     newArray[index].status = status;
     newArray[index].approval = approval;
     this.setState({
-      jobs: newArray,
+      jobs: newArray
     });
   };
 
@@ -118,7 +135,7 @@ export class ContextProvider extends React.Component {
     let newArray = this.state.jobs;
     newArray[index] = jobObj;
     this.setState({
-      jobs: newArray,
+      jobs: newArray
     });
   };
 
@@ -158,7 +175,7 @@ export class ContextProvider extends React.Component {
       jobs: jobs,
       employees: emps,
       project_managers: pms,
-      loaded: true,
+      loaded: true
     });
   };
 
@@ -168,7 +185,7 @@ export class ContextProvider extends React.Component {
         .collection("organizations")
         .doc(org)
         .set({
-          name: org,
+          name: org
         });
     };
 
@@ -278,13 +295,13 @@ export class ContextProvider extends React.Component {
 
   setNewProject = project => {
     this.setState({
-      projects: [...this.state.projects, project],
+      projects: [...this.state.projects, project]
     });
   };
 
   setNewJob = async job => {
     this.setState({
-      jobs: [...this.state.jobs, job],
+      jobs: [...this.state.jobs, job]
     });
   };
 
@@ -294,7 +311,7 @@ export class ContextProvider extends React.Component {
     let db = this.db;
     await this.db
       .collection(
-        `organizations/${this.state.user.org}/projects/${project_id}/jobs`,
+        `organizations/${this.state.user.org}/projects/${project_id}/jobs`
       )
       .add(newJob)
       .then(function(docRef) {
@@ -339,7 +356,7 @@ export class ContextProvider extends React.Component {
       .doc(id)
       .update({
         status: status,
-        approval: approval,
+        approval: approval
       });
   };
 
@@ -398,7 +415,7 @@ export class ContextProvider extends React.Component {
       createOwner: this.createOwner,
       editJob: this.editJob,
       editAndSetJobs: this.editAndSetJobs,
-      promoteUser: this.promoteUser,
+      promoteUser: this.promoteUser
     };
     return (
       <FirebaseContext.Provider value={value}>

@@ -34,8 +34,13 @@ const FirebaseContext = React.createContext({
   updateAndSetJobs: () => {},
   updateJobApproval: () => {},
   createOwner: () => {},
+  updateEdit: () => {},
   editJob: () => {},
-  editAndSetJobs: () => {}
+  editAndSetJobs: () => {},
+  listenForProjects: () => {},
+  listenForJobs: () => {},
+  updateProjectAlert: () => {},
+  updateNewEmployee: () => {}
 });
 
 export default FirebaseContext;
@@ -80,7 +85,7 @@ export class ContextProvider extends React.Component {
     this.setState({ loaded: bool });
   };
 
-  updateAndSetJobs = async (id, status, approval) => {
+  updateAndSetJobs = async (id, status, approval, alert = []) => {
     let index = this.state.jobs.findIndex(job => job.id === id);
     let newArray = this.state.jobs;
     newArray[index].status = status;
@@ -220,6 +225,15 @@ export class ContextProvider extends React.Component {
       .set(newUser);
   };
 
+  updateNewEmployee = async id => {
+    return this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("users")
+      .doc(id)
+      .update({ new: false });
+  };
+
   getOrgName = org => {
     return this.db
       .collection("organizations")
@@ -301,7 +315,22 @@ export class ContextProvider extends React.Component {
     await this.doGetProject(this.state.user.org);
   };
 
-  updateJobStatus = async (id, status, project_id, approval) => {
+  updateProjectAlert = async id => {
+    await this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("projects")
+      .doc(id)
+      .update({ alert: false });
+  };
+
+  updateJobStatus = async (
+    id,
+    status,
+    project_id,
+    approval = false,
+    alert = []
+  ) => {
     await this.db
       .collection("organizations")
       .doc(this.state.user.org)
@@ -311,19 +340,32 @@ export class ContextProvider extends React.Component {
       .doc(id)
       .update({
         status: status,
-        approval: approval
+        approval: approval,
+        alert: alert
       });
   };
 
+  //we might not be using this
   updateJobApproval = async (id, project_id) => {
     await this.db
       .collection("organizations")
       .doc(this.state.user.org)
       .collection("projects")
       .doc(project_id)
-      .collection("job")
+      .collection("jobs")
       .doc(id)
       .update({ approval: true, status: "complete" });
+  };
+
+  updateEdit = async (edit, id, project_id) => {
+    await this.db
+      .collection("organizations")
+      .doc(this.state.user.org)
+      .collection("projects")
+      .doc(project_id)
+      .collection("jobs")
+      .doc(id)
+      .update({ edit: edit });
   };
 
   editJob = async (id, jobObj) => {
@@ -368,8 +410,13 @@ export class ContextProvider extends React.Component {
       updateAndSetJobs: this.updateAndSetJobs,
       updateJobApproval: this.updateJobApproval,
       createOwner: this.createOwner,
+      updateEdit: this.updateEdit,
       editJob: this.editJob,
-      editAndSetJobs: this.editAndSetJobs
+      editAndSetJobs: this.editAndSetJobs,
+      listenForProjects: this.listenForProjects,
+      listenForJobs: this.listenForJobs,
+      updateProjectAlert: this.updateProjectAlertg,
+      updateNewEmployee: this.updateNewEmployee
     };
     return (
       <FirebaseContext.Provider value={value}>

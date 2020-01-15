@@ -1,7 +1,7 @@
-import React from "react";
-import FirebaseContext from "../../services/context";
-import { withRouter, Redirect } from "react-router";
-import app from "../../services/base.js";
+import React from 'react';
+import FirebaseContext from '../../services/context';
+import { withRouter, Redirect } from 'react-router';
+import app from '../../services/base.js';
 
 const Logout = props => {
   const fbContext = React.useContext(FirebaseContext);
@@ -9,7 +9,7 @@ const Logout = props => {
   React.useEffect(() => {
     const signOut = async () => {
       await app.auth().signOut();
-      localStorage.setItem("path", "/dashboard");
+      props.setPath(null);
     };
     signOut();
     fbContext.setStateOnLogout();

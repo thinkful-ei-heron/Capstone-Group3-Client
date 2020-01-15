@@ -1,9 +1,9 @@
-import React, { useCallback, useContext } from "react";
-import { withRouter, Redirect } from "react-router";
-import app from "../../services/base.js";
-import { AuthContext } from "../../services/Auth.js";
-import { Label, Input } from "../Form/Form";
-import "./Login.css";
+import React, { useCallback, useContext } from 'react';
+import { withRouter, Redirect } from 'react-router';
+import app from '../../services/base.js';
+import { AuthContext } from '../../services/Auth.js';
+import { Label, Input } from '../Form/Form';
+import './Login.css';
 
 const Login = ({ history }) => {
   const handleLogin = useCallback(
@@ -11,10 +11,8 @@ const Login = ({ history }) => {
       event.preventDefault();
       const { email, password } = event.target.elements;
       try {
-        await app
-          .auth()
-          .signInWithEmailAndPassword(email.value, password.value);
-        history.push("/dashboard");
+        await app.auth().signInWithEmailAndPassword(email.value, password.value);
+        history.push('/dashboard');
       } catch (error) {
         alert(error);
       }

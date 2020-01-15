@@ -78,11 +78,9 @@ export default class Dashboard extends Component {
                     {this.context.projects.length !== 0 ? (
                       this.filterProjects().map((proj, i) => {
                         return (
-                          <ul className="Dashboard__list">
-                            <li key={i}>
-                              <ProjectBar proj={proj} />
-                            </li>
-                          </ul>
+                          <li key={i}>
+                            <ProjectBar proj={proj} />
+                          </li>
                         );
                       })
                     ) : (

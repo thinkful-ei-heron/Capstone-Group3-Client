@@ -10,7 +10,7 @@ export default class Jobs extends Component {
     super(props);
     this.state = {
       expandJob: false,
-      showEditForm: false
+      showEditForm: false,
     };
   }
 
@@ -23,7 +23,7 @@ export default class Jobs extends Component {
       id,
       status,
       this.props.job.project_id,
-      approval
+      approval,
     );
     await this.context.updateAndSetJobs(id, status);
     console.log(jobs);
@@ -67,7 +67,7 @@ export default class Jobs extends Component {
 
     if (
       this.context.user.role === "project manager" ||
-      this.context.user.role === "admin"
+      this.context.user.role === "owner"
     ) {
       if (status === "completed") return <span>Job Completed</span>;
       return (
@@ -104,19 +104,19 @@ export default class Jobs extends Component {
 
   toggleExpand = () => {
     this.setState({
-      expandJob: !this.state.expandJob
+      expandJob: !this.state.expandJob,
     });
   };
 
   showEditForm = () => {
     this.setState({
-      showEditForm: !this.state.showEditForm
+      showEditForm: !this.state.showEditForm,
     });
   };
 
   componentDidMount() {
     this.setState({
-      userRole: this.context.user.role
+      userRole: this.context.user.role,
     });
   }
 
@@ -139,7 +139,7 @@ export default class Jobs extends Component {
               job.total_hours,
               job.hours_completed,
               job.id,
-              job.status
+              job.status,
             )}
           </div>
           {this.state.showEditForm ? (

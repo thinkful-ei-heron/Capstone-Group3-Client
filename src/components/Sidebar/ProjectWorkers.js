@@ -16,7 +16,7 @@ const ProjectWorkers = props => {
     context.employees.map(worker => {
       let projectKeys = [];
       let jobObject = {};
-      let newObj = { [worker.name]: [] };
+      let newObj = { [worker.name]: [], email: worker.email };
       context.projects.map(project => {
         if (project.project_workers.includes(worker.name)) {
           return projectKeys.push(project.name);
@@ -98,17 +98,21 @@ const ProjectWorkers = props => {
           <button id={itemId} onClick={e => props.toggleExpand(e)}>
             EXPAND
           </button>
-          <button
-            onClick={
-              console.log("need email")
-              // I need the worker's email address
-              // didn't want to break your code lol
-              // context.promoteUser(Object.keys(worker)[0], context.user.org)
-            }
-          >
-            Promote
-          </button>
-          <h4>{Object.keys(worker)[0]}</h4>
+          {props.promoteButton ? (
+            <button
+              onClick={() =>
+                context.promoteUser(
+                  completeWorkerList[index].email.toLowerCase(),
+                  context.user.org,
+                )
+              }
+            >
+              Promote
+            </button>
+          ) : (
+            <></>
+          )}
+          ><h4>{Object.keys(worker)[0]}</h4>
           {expanded.includes(itemId) ? (
             <ul>{renderWorkerProjects(worker)}</ul>
           ) : (

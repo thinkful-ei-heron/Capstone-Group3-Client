@@ -53,7 +53,7 @@ const Sidebar = props => {
         </ul>
       </div>
     );
-  } else if (context.user.role === "admin") {
+  } else if (context.user.role === "owner") {
     //change to admin
     return (
       <div className="Sidebar">

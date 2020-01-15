@@ -57,6 +57,7 @@ export class ContextProvider extends React.Component {
   };
 
   promoteUser = async (email, org) => {
+    console.log(email);
     // Need to check if user is assigned to any projects/jobs
     // return alert/popup if so
     const userRef = this.db
@@ -64,11 +65,16 @@ export class ContextProvider extends React.Component {
       .doc(org)
       .collection("users")
       .doc(email);
-    return userRef
+    userRef
       .update({
         role: "project manager",
       })
-      .then(() => console.log("Document successfully updated!"))
+      .then(() => {
+        this.getEmployees(org).then(emps => this.setEmployeeState(emps));
+        this.getProjectManagers(org).then(pms =>
+          this.setProjectManagersState(pms),
+        );
+      })
       .catch(error => console.error("Error updating document: ", error));
   };
 
@@ -206,13 +212,14 @@ export class ContextProvider extends React.Component {
     this.setState({ projects: projs });
   };
 
-  getEmployees = org => {
-    return this.db
+  getEmployees = async org => {
+    const emps = await this.db
       .collection("organizations")
       .doc(org)
       .collection("users")
       .where("role", "==", "project worker")
       .get();
+    return emps;
   };
 
   setEmployeeState = emps => {

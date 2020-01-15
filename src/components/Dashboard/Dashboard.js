@@ -86,7 +86,7 @@ export default class Dashboard extends Component {
                       this.filterProjects().map((proj, i) => {
                         return (
                           <ul className="Dashboard__list">
-                            <li key={i}>
+                            <li key={proj.id}>
                               <ProjectBar proj={proj} />
                             </li>
                           </ul>

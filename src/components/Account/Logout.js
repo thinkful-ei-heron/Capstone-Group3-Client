@@ -10,6 +10,7 @@ const Logout = props => {
     const signOut = async () => {
       await app.auth().signOut();
       props.setPath(null);
+      localStorage.removeItem('path');
     };
     signOut();
     fbContext.setStateOnLogout();

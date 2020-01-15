@@ -174,9 +174,13 @@ export default class ProjectView extends Component {
           </div>
           <div>
             <h2>
-              <button onClick={e => this.renderLogHoursForm(e)}>
-                LOG HOURS
-              </button>
+              {this.context.user.role === "project worker" ? (
+                <button onClick={e => this.renderLogHoursForm(e)}>
+                  LOG HOURS
+                </button>
+              ) : (
+                <></>
+              )}
             </h2>
             {this.state.showLogHours ? (
               <LogHours jobs={this.state.project.jobs} />

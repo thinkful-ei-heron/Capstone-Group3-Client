@@ -44,6 +44,7 @@ const dbServices = {
 
   addProject(newProject) {
     console.log(newProject.org_id);
+    if (!newProject.project_manager) newProject.project_manager = 'unassigned';
     return db.collection(`organizations/${newProject.org_id}/projects`).add(newProject);
   },
 
@@ -53,6 +54,15 @@ const dbServices = {
       .collection(`organizations/${orgId}/projects`)
       .doc(`${id}`)
       .update({ id: id });
+  },
+
+  setProjectsManager(projId, org, pm) {
+    return db
+      .collection('organizations')
+      .doc(org)
+      .collection('projects')
+      .doc(projId)
+      .update({ project_manager: pm });
   },
 
   getUser(email, org) {

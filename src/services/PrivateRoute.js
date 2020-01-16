@@ -7,7 +7,7 @@ const PrivateRoute = ({ component: RouteComponent, location, setPath, ...rest })
 
   console.log(currentUser);
   if (currentUser) setPath(location.pathname);
-  else setPath(null);
+  // else setPath(null);
   //console.log('in privateRoute');
 
   return (

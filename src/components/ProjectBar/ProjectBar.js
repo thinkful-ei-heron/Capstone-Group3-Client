@@ -9,6 +9,7 @@ const ProjectBar = props => {
   console.log(props.proj.progress);
   console.log(new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10));
   const [selectedProjectManager, setSelectedProjectManager] = useState(null);
+  const [assign, setAssign] = useState(false);
 
   const db = dbServices;
 
@@ -19,20 +20,18 @@ const ProjectBar = props => {
   const setProjectManager = async () => {
     await db.setProjectsManager(props.proj.id, props.proj.org_id, selectedProjectManager.value);
     props.updatePM(props.proj.id, selectedProjectManager.value);
+    toggleAssign();
+  };
+
+  const toggleAssign = () => {
+    setAssign(!assign);
   };
 
   const renderPmList = () => {
     let result = [];
-    console.log(props.projectManagers);
     props.projectManagers.forEach(pm => result.push(pm.name));
-    console.log(result);
     return result;
   };
-
-  if (props.proj.name === 'test project ') {
-    console.log('role ', props.role);
-    console.log(props.proj);
-  }
 
   return (
     <ul className="ProjectBar__project_container">
@@ -51,15 +50,24 @@ const ProjectBar = props => {
           </div>
         </li>
       </Link>
-      {props.role === 'owner' && props.proj.project_manager === 'unassigned' && (
-        <li className="ProjectBar__selectPM">
-          <span>SELECT Project Manager</span>
-          <Dropdown employees={renderPmList()} isMulti={false} setSelected={setSelected} />
-          {selectedProjectManager && (
-            <div id="submit_pm">
-              <button onClick={setProjectManager}></button>
-            </div>
+      {props.role === 'owner' && (
+        <li>
+          {!assign && (
+            <button onClick={toggleAssign}>
+              {props.proj.project_manager === 'unassigned' ? 'Assign' : 'Reassign'}
+            </button>
           )}
+        </li>
+      )}
+      {assign && (
+        <li className="ProjectBar__selectPM">
+          <Dropdown employees={renderPmList()} isMulti={false} setSelected={setSelected} />
+          <div id="submit_pm">
+            <button onClick={setProjectManager} disabled={!selectedProjectManager && true}>
+              Submit
+            </button>
+            <button onClick={toggleAssign}>Cancel</button>
+          </div>
         </li>
       )}
     </ul>

@@ -31,8 +31,8 @@ export default class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    const projs = [];
-    const managers = [];
+    // const projs = [];
+    // const managers = [];
     const email = this.context.currentUser.email;
     const org = this.context.currentUser.displayName;
     let name = '';
@@ -48,14 +48,17 @@ export default class Dashboard extends Component {
       role = user.data().role;
     });
 
-    //get projects
-    const projects = await dbServices.getProjectsByRole({ name: name, org: org, role: role });
+    const data = await dbServices.initDashboard(name, org, role);
+    console.log(data);
 
-    projects.forEach(proj => projs.push(proj.data()));
+    // //get projects
+    // const projects = await dbServices.getProjectsByRole({ name: name, org: org, role: role });
 
-    //get projectManagers
-    const PMs = await dbServices.getProjectManagers(org);
-    PMs.forEach(pm => managers.push(pm.data()));
+    // projects.forEach(proj => projs.push(proj.data()));
+
+    // //get projectManagers
+    // const PMs = await dbServices.getProjectManagers(org);
+    // PMs.forEach(pm => managers.push(pm.data()));
 
     this.setState({
       user: {
@@ -64,8 +67,8 @@ export default class Dashboard extends Component {
         org: org,
         role: role
       },
-      projects: projs,
-      projectManagers: managers,
+      projects: data.projects,
+      projectManagers: data.project_managers,
       loading: false
     });
   }

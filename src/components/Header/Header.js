@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-
-import { AuthContext } from "../../services/Auth";
-import "./Header.css";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../services/Auth';
+import lazy from '../../images/lazy.svg';
+import './Header.css';
 
 export default class Header extends Component {
   static contextType = AuthContext;
@@ -53,13 +53,11 @@ export default class Header extends Component {
         <nav className="Header">
           <h1>
             <Link className="Header__link" to="/">
-              <div className="Header__logo"></div>
-              <span className="Header__app_name">ManageLazily</span>
+              <img className="Header__logo" src={lazy} alt="man reclining in chair" />
+              <span className="Header__app_name">manageLazily</span>
             </Link>
           </h1>
-          {this.context.currentUser
-            ? this.renderLogoutLink()
-            : this.renderLoginLink()}
+          {this.context.currentUser ? this.renderLogoutLink() : this.renderLoginLink()}
         </nav>
       </>
     );

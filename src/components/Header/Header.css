@@ -14,15 +14,17 @@
 }
 
 .Header__logo {
-  width: 60px;
-  height: 60px;
-  background-color: #638ab7;
-  border-radius: 50%;
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 170px;
+  height: auto;
 }
 
 .Header__app_name {
   margin-left: 20px;
-  font-family: 'Oxygen', sans-serif;
+  font-family: var(--oxygen);
   font-size: 2.5rem;
   color: #021143;
 }
@@ -80,12 +82,43 @@
     justify-content: space-between;
   }
 
+  .Header h1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
   .Header__link {
     margin-left: 45px;
   }
 
+  .Header__logo {
+    display: inline-block;
+    position: fixed;
+    top: 4pt;
+    left: 10pt;
+    width: 170px;
+    height: auto;
+  }
+
   .Header__app_name {
+    position: fixed;
+    top: 26pt;
+    left: 95pt;
     font-size: 3rem;
+  }
+
+  .Header__login {
+    position: absolute;
+    right: 30px;
+    top: 0;
+    width: 150px;
+    height: 120px;
+    flex-direction: column;
+    align-items: space-between;
+  }
+
+  .Header__app_name {
   }
 
   .Header__sub_container {

@@ -78,10 +78,12 @@ export default class Dashboard extends Component {
 
   toggleNewProj = e => {
     e.stopPropagation();
-    this.setState({ newProj: !this.state.newProj });
+    if (this.state.newProj) this.setState({ newProj: false, expandProjects: true });
+    else this.setState({ newProj: true, expandProjects: false });
   };
 
-  addToProjState = newProj => this.setState({ projects: [...this.state.projects, newProj], newProj: false });
+  addToProjState = newProj =>
+    this.setState({ projects: [...this.state.projects, newProj], newProj: false, expandProjects: true });
 
   render() {
     // console.log('this.state.user', this.state.user);

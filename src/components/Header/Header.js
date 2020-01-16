@@ -31,7 +31,7 @@ export default class Header extends Component {
   renderLogoutLink() {
     return (
       <div className="Header__sub_container">
-        <div className="user__info">
+        <div className="Header__user_info">
           <span>Welcome, {this.props.userName}!</span>
           <span>Role: {this.props.role}</span>
         </div>

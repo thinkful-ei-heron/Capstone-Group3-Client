@@ -15,7 +15,7 @@ input {
   border: 1px solid #b1b1b1;
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 750px) {
   .form label {
     width: 400px;
   }

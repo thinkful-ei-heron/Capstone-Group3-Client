@@ -122,7 +122,7 @@ export default class Dashboard extends Component {
                         return (
                           <ul className="Dashboard__list">
                             <li key={i}>
-                              <ProjectBar proj={proj} />
+                              <ProjectBar proj={proj} role={this.state.user.role} />
                             </li>
                           </ul>
                         );

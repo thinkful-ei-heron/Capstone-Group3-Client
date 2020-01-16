@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { AuthContext } from '../../services/Auth.js';
 import Loading from '../Loading/Loading';
+import NewProject from '../NewProject/NewProject';
 import './Dashboard.css';
 import dbServices from '../../services/dbServices';
 import { Sidebar } from '../Sidebar/Sidebar';
@@ -24,11 +25,11 @@ export default class Dashboard extends Component {
     projects: [],
     loading: true,
     expandProjects: true,
-    expandPersonnel: true
+    expandPersonnel: true,
+    newProj: false
   };
 
   async componentDidMount() {
-    console.log(this.context.currentUser);
     const projs = [];
     const email = this.context.currentUser.email;
     const org = this.context.currentUser.displayName;
@@ -49,7 +50,6 @@ export default class Dashboard extends Component {
       projs.push(proj.data());
     });
     this.setState({
-      loading: false,
       user: {
         id: email,
         name: name,
@@ -76,17 +76,16 @@ export default class Dashboard extends Component {
     this.setState({ expandPersonnel: !this.state.expandPersonnel });
   };
 
-  filterProjects() {
-    if (this.state.user.role === 'project worker')
-      return this.state.projects.filter(proj => proj.project_workers.includes(this.state.user.name));
-    if (this.state.user.role === 'project manager')
-      return this.state.projects.filter(proj => proj.project_manager === this.state.user.name);
-    return this.state.projects;
-  }
+  toggleNewProj = e => {
+    e.stopPropagation();
+    this.setState({ newProj: !this.state.newProj });
+  };
+
+  addToProjState = newProj => this.setState({ projects: [...this.state.projects, newProj], newProj: false });
 
   render() {
     // console.log('this.state.user', this.state.user);
-    // console.log('this.state.projects ', this.state.projects);
+    //console.log('this.state.projects ', this.state.projects);
     // console.log('this.context.jobs ', this.context.jobs);
     // console.log('this.context.employees', this.context.employees);
     // console.log('this.context.project_managers', this.context.project_managers);
@@ -109,15 +108,20 @@ export default class Dashboard extends Component {
                     <h1>PROJECTS</h1>
                   </div>
                   {this.state.user.role !== 'project worker' && (
-                    <Link to="/new_project">
-                      <button>NEW</button>
-                    </Link>
+                    <button onClick={this.toggleNewProj}>NEW</button>
                   )}
                 </div>
+                {this.state.newProj && (
+                  <NewProject
+                    org={this.state.user.org}
+                    addToProjState={this.addToProjState}
+                    toggleNewProj={this.toggleNewProj}
+                  />
+                )}
                 {this.state.expandProjects && (
                   <div className="Dashboard__projects_container">
                     {this.state.projects.length !== 0 ? (
-                      this.filterProjects().map((proj, i) => {
+                      this.state.projects.map((proj, i) => {
                         return (
                           <ul className="Dashboard__list">
                             <li key={i}>

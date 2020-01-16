@@ -42,6 +42,19 @@ const dbServices = {
       .get();
   },
 
+  addProject(newProject) {
+    console.log(newProject.org_id);
+    return db.collection(`organizations/${newProject.org_id}/projects`).add(newProject);
+  },
+
+  setProjId(id, orgId) {
+    console.log(id, orgId);
+    return db
+      .collection(`organizations/${orgId}/projects`)
+      .doc(`${id}`)
+      .update({ id: id });
+  },
+
   getUser(email, org) {
     return db
       .collection('organizations')
@@ -58,14 +71,6 @@ const dbServices = {
       .collection('projects')
       .doc(id)
       .collection('jobs')
-      .get();
-  },
-
-  getProjects(org) {
-    return db
-      .collection('organizations')
-      .doc(org)
-      .collection('projects')
       .get();
   },
 
@@ -105,23 +110,6 @@ const dbServices = {
         return snapshot.data().name;
       })
       .catch(error => console.log(error));
-  },
-
-  async addProject(newProject) {
-    let orgId = this.state.user.org;
-    let newId = null;
-    let db = db;
-    await db
-      .collection(`organizations/${orgId}/projects`)
-      .add(newProject)
-      .then(function(docRef) {
-        db.collection(`organizations/${orgId}/projects`)
-          .doc(`${docRef.id}`)
-          .update({ id: docRef.id });
-        newId = docRef.id;
-      });
-    newProject.id = newId;
-    this.setNewProject(newProject);
   },
 
   async addJob(newJob, project_id) {

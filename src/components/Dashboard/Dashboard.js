@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../services/Auth.js';
+import dbServices from '../../services/dbServices';
 import Loading from '../Loading/Loading';
 import NewProject from '../NewProject/NewProject';
-import './Dashboard.css';
-import dbServices from '../../services/dbServices';
 import { Sidebar } from '../Sidebar/Sidebar';
 import StyleIcon from '../StyleIcon/StyleIcon';
 import ProjectBar from '../ProjectBar/ProjectBar';
+import './Dashboard.css';
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -59,11 +59,6 @@ export default class Dashboard extends Component {
       projects: projs,
       loading: false
     });
-
-    //   const user = await this.getUser(email, org);
-    //   const projects = await this.getProjects(org);
-    //   const employees = await this.getEmployees(org);
-    //   const projManagers = await this.getProjectManagers(org);
   }
 
   toggleExpandProjects = e => {

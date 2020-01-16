@@ -9,7 +9,7 @@
   align-items: center;
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 750px) {
   .Login {
     width: 60%;
     margin: 0 auto;

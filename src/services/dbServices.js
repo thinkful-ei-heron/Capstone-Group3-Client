@@ -18,6 +18,30 @@ const dbServices = {
     this.createUserInOrg(user, org);
   },
 
+  getProjectsByRole(user) {
+    if (user.role === 'project worker') {
+      return db
+        .collection('organizations')
+        .doc(user.org)
+        .collection('projects')
+        .where('project_workers', 'array-contains', user.name)
+        .get();
+    }
+    if (user.role === 'project manager') {
+      return db
+        .collection('organizations')
+        .doc(user.org)
+        .collection('projects')
+        .where('project_manager', '==', user.name)
+        .get();
+    }
+    return db
+      .collection('organizations')
+      .doc(user.org)
+      .collection('projects')
+      .get();
+  },
+
   getUser(email, org) {
     return db
       .collection('organizations')

@@ -6,11 +6,13 @@ import { Label, Input } from '../Form/Form';
 import './Login.css';
 
 const Login = ({ history }) => {
+  const { currentUser } = useContext(AuthContext);
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
       const { email, password } = event.target.elements;
       try {
+        console.log(email.value, password.value);
         await app.auth().signInWithEmailAndPassword(email.value, password.value);
         history.push('/dashboard');
       } catch (error) {
@@ -19,8 +21,6 @@ const Login = ({ history }) => {
     },
     [history]
   );
-
-  const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
     return <Redirect to="/dashboard" />;

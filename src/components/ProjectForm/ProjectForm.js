@@ -19,7 +19,6 @@ const ProjectForm = props => {
       id: null
     };
     const docRef = await dbServices.addProject(data);
-    console.log(docRef.id);
     await dbServices.setProjId(docRef.id, data.org_id);
     props.addToProjState({ ...data, id: docRef.id });
     //props.history.push('/dashboard');

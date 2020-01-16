@@ -25,41 +25,19 @@ const App = props => {
     if (localStorage.getItem('path')) return localStorage.getItem('path');
     return null;
   };
-  const [path, _setPath] = useState(initialPath);
-  const setPath = p => _setPath(p);
+  const [path, setPath] = useState(initialPath);
 
   useEffect(() => {
     if (!localStorage.getItem('path') && !path) return;
     localStorage.setItem('path', path);
   }, [path]);
 
-  // useEffect(() => {
-  //   const initState = async (email, org) => {
-  //     setLoading(true);
-  //     await context.initState(email, org);
-
-  //     if (path) {
-  //       //console.log('pushing to path ' + path);
-  //       history.push(path);
-  //     }
-
-  //     setLoading(false);
-  //   };
-
-  //   if (currentUser && currentUser.displayName) {
-  //     if (!context.loaded) initState(currentUser.email, currentUser.displayName);
-  //   } else if (!path) {
-  //     //console.log('set loading to false');
-  //     setLoading(false);
-  //   }
-  // }, [currentUser]);
-
   if (loading) return <Loading />;
   else {
     return (
       <>
         <header>
-          <Header userName={'Refactoring'} role={'Refactoring'} />
+          <Header userName={'refactoring'} role={'Refactoring'} />
         </header>
         <main className="app__main">
           <Switch>

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-//import FirebaseContext from "../../services/context";
+import { AuthContext } from '../../services/Auth.js';
 import Loading from '../Loading/Loading';
 import './Dashboard.css';
+import dbServices from '../../services/dbServices';
 import { Sidebar } from '../Sidebar/Sidebar';
 import StyleIcon from '../StyleIcon/StyleIcon';
 import ProjectBar from '../ProjectBar/ProjectBar';
@@ -12,12 +13,58 @@ import ProjectBar from '../ProjectBar/ProjectBar';
 // Do not change it.  If something doesn't work ask me to fix it. //
 ////////////////////////////////////////////////////////////////////
 export default class Dashboard extends Component {
-  //static contextType = FirebaseContext;
+  static contextType = AuthContext;
   state = {
+    user: {
+      id: null,
+      name: null,
+      org: null,
+      role: null
+    },
+    projects: [],
     loading: true,
     expandProjects: true,
     expandPersonnel: true
   };
+
+  async componentDidMount() {
+    console.log(this.context.currentUser);
+    const projs = [];
+    const email = this.context.currentUser.email;
+    const org = this.context.currentUser.displayName;
+    let name = '';
+    let role = '';
+    const userSnap = await dbServices.getUser(
+      this.context.currentUser.email,
+      this.context.currentUser.displayName
+    );
+    userSnap.forEach(user => {
+      name = user.data().name;
+      role = user.data().role;
+    });
+
+    const projects = await dbServices.getProjectsByRole({ name: name, org: org, role: role });
+
+    projects.forEach(proj => {
+      projs.push(proj.data());
+    });
+    this.setState({
+      loading: false,
+      user: {
+        id: email,
+        name: name,
+        org: org,
+        role: role
+      },
+      projects: projs,
+      loading: false
+    });
+
+    //   const user = await this.getUser(email, org);
+    //   const projects = await this.getProjects(org);
+    //   const employees = await this.getEmployees(org);
+    //   const projManagers = await this.getProjectManagers(org);
+  }
 
   toggleExpandProjects = e => {
     e.stopPropagation();
@@ -30,27 +77,26 @@ export default class Dashboard extends Component {
   };
 
   filterProjects() {
-    if (this.context.user.role === 'project worker')
-      return this.context.projects.filter(proj => proj.project_workers.includes(this.context.user.name));
-    if (this.context.user.role === 'project manager')
-      return this.context.projects.filter(proj => proj.project_manager === this.context.user.name);
-    return this.context.projects;
+    if (this.state.user.role === 'project worker')
+      return this.state.projects.filter(proj => proj.project_workers.includes(this.state.user.name));
+    if (this.state.user.role === 'project manager')
+      return this.state.projects.filter(proj => proj.project_manager === this.state.user.name);
+    return this.state.projects;
   }
 
   render() {
-    // console.log('this.context.user', this.context.user);
-    // console.log('this.context.projects ', this.context.projects);
+    // console.log('this.state.user', this.state.user);
+    // console.log('this.state.projects ', this.state.projects);
     // console.log('this.context.jobs ', this.context.jobs);
     // console.log('this.context.employees', this.context.employees);
     // console.log('this.context.project_managers', this.context.project_managers);
-    if (!this.context.user) return <Loading />;
+    if (this.state.loading) return <Loading />;
     else
       return (
         <>
-          {!this.context.user && <Redirect to="/register" />}
           <section className="Dashboard__container">
             <div className="Dashboard__header">
-              {<h2>{this.context.user.org}</h2>}
+              {<h2>{this.state.user.org}</h2>}
               <span className="Dashboard__date">{new Date().toLocaleString()}</span>
             </div>
             <div className="Dashboard__main">
@@ -62,7 +108,7 @@ export default class Dashboard extends Component {
                     })}
                     <h1>PROJECTS</h1>
                   </div>
-                  {this.context.user.role !== 'project worker' && (
+                  {this.state.user.role !== 'project worker' && (
                     <Link to="/new_project">
                       <button>NEW</button>
                     </Link>
@@ -70,7 +116,7 @@ export default class Dashboard extends Component {
                 </div>
                 {this.state.expandProjects && (
                   <div className="Dashboard__projects_container">
-                    {this.context.projects.length !== 0 ? (
+                    {this.state.projects.length !== 0 ? (
                       this.filterProjects().map((proj, i) => {
                         return (
                           <ul className="Dashboard__list">

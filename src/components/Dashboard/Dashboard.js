@@ -31,41 +31,17 @@ export default class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    // const projs = [];
-    // const managers = [];
     const email = this.context.currentUser.email;
     const org = this.context.currentUser.displayName;
-    let name = '';
-    let role = '';
 
-    //get user
-    const userSnap = await dbServices.getUser(
-      this.context.currentUser.email,
-      this.context.currentUser.displayName
-    );
-    userSnap.forEach(user => {
-      name = user.data().name;
-      role = user.data().role;
-    });
-
-    const data = await dbServices.initDashboard(name, org, role);
-    console.log(data);
-
-    // //get projects
-    // const projects = await dbServices.getProjectsByRole({ name: name, org: org, role: role });
-
-    // projects.forEach(proj => projs.push(proj.data()));
-
-    // //get projectManagers
-    // const PMs = await dbServices.getProjectManagers(org);
-    // PMs.forEach(pm => managers.push(pm.data()));
+    const data = await dbServices.initDashboard(email, org);
 
     this.setState({
       user: {
         id: email,
-        name: name,
+        name: data.name,
         org: org,
-        role: role
+        role: data.role
       },
       projects: data.projects,
       projectManagers: data.project_managers,

@@ -18,6 +18,25 @@ const dbServices = {
     this.createUserInOrg(user, org);
   },
 
+  async initDashboard(name, org, role) {
+    const projs = [];
+    const managers = [];
+
+    //get projects
+    const projects = await dbServices.getProjectsByRole({ name: name, org: org, role: role });
+
+    projects.forEach(proj => projs.push(proj.data()));
+
+    //get projectManagers
+    const PMs = await dbServices.getProjectManagers(org);
+    PMs.forEach(pm => managers.push(pm.data()));
+
+    return {
+      projects: projs,
+      project_managers: managers
+    };
+  },
+
   getProjectsByRole(user) {
     if (user.role === 'project worker') {
       return db

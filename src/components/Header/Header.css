@@ -19,7 +19,7 @@
 
 .Header__logo {
   display: none;
-  position: fixed;
+  position: absolute;
   top: 15px;
   left: 15px;
   width: 170px;
@@ -99,7 +99,7 @@
   }
 
   .Header h1 {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
   }
@@ -110,7 +110,7 @@
 
   .Header__logo {
     display: inline-block;
-    position: fixed;
+    position: absolute;
     top: 4pt;
     left: 10pt;
     width: 170px;
@@ -118,7 +118,7 @@
   }
 
   .Header__app_name {
-    position: fixed;
+    position: absolute;
     top: 26pt;
     left: 95pt;
     font-size: 3rem;

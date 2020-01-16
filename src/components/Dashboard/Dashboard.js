@@ -23,6 +23,7 @@ export default class Dashboard extends Component {
       role: null
     },
     projects: [],
+    projectManagers: [],
     loading: true,
     expandProjects: true,
     expandPersonnel: true,
@@ -31,10 +32,13 @@ export default class Dashboard extends Component {
 
   async componentDidMount() {
     const projs = [];
+    const managers = [];
     const email = this.context.currentUser.email;
     const org = this.context.currentUser.displayName;
     let name = '';
     let role = '';
+
+    //get user
     const userSnap = await dbServices.getUser(
       this.context.currentUser.email,
       this.context.currentUser.displayName
@@ -44,11 +48,15 @@ export default class Dashboard extends Component {
       role = user.data().role;
     });
 
+    //get projects
     const projects = await dbServices.getProjectsByRole({ name: name, org: org, role: role });
 
-    projects.forEach(proj => {
-      projs.push(proj.data());
-    });
+    projects.forEach(proj => projs.push(proj.data()));
+
+    //get projectManagers
+    const PMs = await dbServices.getProjectManagers(org);
+    PMs.forEach(pm => managers.push(pm.data()));
+
     this.setState({
       user: {
         id: email,
@@ -57,6 +65,7 @@ export default class Dashboard extends Component {
         role: role
       },
       projects: projs,
+      projectManagers: managers,
       loading: false
     });
   }
@@ -79,6 +88,15 @@ export default class Dashboard extends Component {
 
   addToProjState = newProj =>
     this.setState({ projects: [...this.state.projects, newProj], newProj: false, expandProjects: true });
+
+  updatePM = (projId, pm) => {
+    const projs = this.state.projects;
+    projs.map(proj => {
+      if (proj.id === projId) proj.project_manager = pm;
+      return proj;
+    });
+    this.setState({ projects: projs });
+  };
 
   render() {
     // console.log('this.state.user', this.state.user);
@@ -122,7 +140,12 @@ export default class Dashboard extends Component {
                         return (
                           <ul className="Dashboard__list">
                             <li key={i}>
-                              <ProjectBar proj={proj} role={this.state.user.role} />
+                              <ProjectBar
+                                proj={proj}
+                                role={this.state.user.role}
+                                projectManagers={this.state.projectManagers}
+                                updatePM={this.updatePM}
+                              />
                             </li>
                           </ul>
                         );

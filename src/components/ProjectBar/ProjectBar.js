@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import dbServices from '../../services/dbServices';
 import Dropdown from '../Dropdown/Dropdown';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import './ProjectBar.css';
@@ -7,16 +8,31 @@ import './ProjectBar.css';
 const ProjectBar = props => {
   console.log(props.proj.progress);
   console.log(new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10));
+  const [selectedProjectManager, setSelectedProjectManager] = useState(null);
+
+  const db = dbServices;
 
   const setSelected = employee => {
-    this.setState({
-      selectedProjectManager: employee
-    });
+    setSelectedProjectManager(employee);
   };
 
-  setProjectManager = () => {
-    //code to set new PM for project
+  const setProjectManager = async () => {
+    await db.setProjectsManager(props.proj.id, props.proj.org_id, selectedProjectManager.value);
+    props.updatePM(props.proj.id, selectedProjectManager.value);
   };
+
+  const renderPmList = () => {
+    let result = [];
+    console.log(props.projectManagers);
+    props.projectManagers.forEach(pm => result.push(pm.name));
+    console.log(result);
+    return result;
+  };
+
+  if (props.proj.name === 'test project ') {
+    console.log('role ', props.role);
+    console.log(props.proj);
+  }
 
   return (
     <ul className="ProjectBar__project_container">
@@ -34,18 +50,18 @@ const ProjectBar = props => {
             Deadline: {new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10)}
           </div>
         </li>
-        {props.role === 'owner' && props.proj.project_manager === 'unassigned' && (
-          <li className="ProjectBar__selectPM">
-            <span>SELECT Project Manager</span>
-            <Dropdown employees={this.renderPmList()} isMulti={false} setSelected={this.setSelected} />
-            {this.state.selectedProjectManager && (
-              <div id="submit_pm">
-                <button onClick={this.setProjectManager}></button>
-              </div>
-            )}
-          </li>
-        )}
       </Link>
+      {props.role === 'owner' && props.proj.project_manager === 'unassigned' && (
+        <li className="ProjectBar__selectPM">
+          <span>SELECT Project Manager</span>
+          <Dropdown employees={renderPmList()} isMulti={false} setSelected={setSelected} />
+          {selectedProjectManager && (
+            <div id="submit_pm">
+              <button onClick={setProjectManager}></button>
+            </div>
+          )}
+        </li>
+      )}
     </ul>
   );
 };

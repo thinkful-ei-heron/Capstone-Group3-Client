@@ -32,6 +32,10 @@ const App = props => {
     localStorage.setItem('path', path);
   }, [path]);
 
+  // useEffect(() => {
+  //   if (path) history.push(path);
+  // }, [currentUser]);
+
   if (loading) return <Loading />;
   else {
     return (

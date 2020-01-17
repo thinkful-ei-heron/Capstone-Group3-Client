@@ -1,16 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useInput } from '../../hooks/useInput';
-import Dropdown from '../Dropdown/Dropdown';
-import { Input, Label, Textarea } from '../Form/Form';
-import dbServices from '../../services/dbServices';
-import { AuthContext } from '../../services/Auth';
-import './JobForm.css';
+import React, { useContext, useState, useEffect } from "react";
+import { useInput } from "../../hooks/useInput";
+import Dropdown from "../Dropdown/Dropdown";
+import { Input, Label, Textarea } from "../Form/Form";
+import dbServices from "../../services/dbServices";
+import { AuthContext } from "../../services/Auth";
+import "./JobForm.css";
 
 const NewJob = props => {
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
   const context = useContext(AuthContext);
+  console.log(context);
 
   useEffect(() => {
     const resetFunction = () => {
@@ -28,7 +29,7 @@ const NewJob = props => {
   const getDate = () => {
     if (props.job) {
       let newDeadline = new Date(props.job.deadline.seconds * 1000);
-      return newDeadline.toLocaleDateString('en-CA');
+      return newDeadline.toLocaleDateString("en-CA");
     }
   };
 
@@ -43,20 +44,20 @@ const NewJob = props => {
   };
 
   const { value: name, bind: bindName, reset: resetName } = useInput(
-    props.job ? props.job.name : ''
+    props.job ? props.job.name : ""
   );
   const {
     value: description,
     bind: bindDescription,
     reset: resetDescription
-  } = useInput(props.job ? props.job.description : '');
+  } = useInput(props.job ? props.job.description : "");
   const {
     value: deadline,
     bind: bindDeadline,
     reset: resetDeadline
-  } = useInput(props.job ? getDate() : '');
+  } = useInput(props.job ? getDate() : "");
   const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(
-    props.job ? props.job.total_hours : ''
+    props.job ? props.job.total_hours : ""
   );
 
   const handleSubmit = async e => {
@@ -72,12 +73,12 @@ const NewJob = props => {
     let approval = props.job ? props.job.approval : false;
     let date_created = props.job ? props.job.date_created : new Date();
     let hours_completed = props.job ? props.job.hours_completed : 0;
-    let status = 'in progress';
+    let status = "in progress";
     let edit = null;
     let alert = [];
 
     if (props.job) {
-      if (props.job.status === 'edit request') status = 'in progress';
+      if (props.job.status === "edit request") status = "in progress";
       else status = props.job.status;
 
       employees.map(employee => {
@@ -147,39 +148,39 @@ const NewJob = props => {
     <>
       <form
         onSubmit={e => handleSubmit(e).then(setSubmitted(true))}
-        className='newjob__form'
+        className="newjob__form"
       >
         <fieldset>
-          <legend>{props.projectId ? 'Add New Job' : 'Edit Job'}</legend>
-          <div className='input'>
-            <Label htmlFor='name'>Job Name: </Label>
-            <Input type='text' name='name' id='name' {...bindName} required />
+          <legend>{props.projectId ? "Add New Job" : "Edit Job"}</legend>
+          <div className="input">
+            <Label htmlFor="name">Job Name: </Label>
+            <Input type="text" name="name" id="name" {...bindName} required />
           </div>
-          <div className='input'>
-            <Label htmlFor='description'>Details: </Label>
+          <div className="input">
+            <Label htmlFor="description">Details: </Label>
             <Textarea
-              name='description'
-              id='description'
+              name="description"
+              id="description"
               {...bindDescription}
               required
             />
           </div>
-          <div className='input'>
-            <Label htmlFor='total_hours'>Total Hours: </Label>
+          <div className="input">
+            <Label htmlFor="total_hours">Total Hours: </Label>
             <input
-              type='number'
-              name='total_hours'
-              id='total_hours'
+              type="number"
+              name="total_hours"
+              id="total_hours"
               {...bindHours}
               required
             />
           </div>
-          <div className='input'>
-            <Label htmlFor='deadline'>Deadline: </Label>
+          <div className="input">
+            <Label htmlFor="deadline">Deadline: </Label>
             <input
-              type='date'
-              name='deadline'
-              id='deadline'
+              type="date"
+              name="deadline"
+              id="deadline"
               {...bindDeadline}
               required
             />
@@ -188,11 +189,11 @@ const NewJob = props => {
             isMulti={true}
             setSelected={setSelected}
             defaultValue={getEmployees()}
-            placeholder='Assign Employees'
+            placeholder="Assign Employees"
           />
-          <div className='input'>
-            <input type='button' value='Cancel' onClick={props.showJobForm} />
-            <input type='submit' value='Submit' />
+          <div className="input">
+            <input type="button" value="Cancel" onClick={props.showJobForm} />
+            <input type="submit" value="Submit" />
           </div>
         </fieldset>
       </form>

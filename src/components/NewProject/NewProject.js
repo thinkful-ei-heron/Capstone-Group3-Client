@@ -1,5 +1,5 @@
-import React from 'react';
-import ProjectForm from '../ProjectForm/ProjectForm';
+import React from "react";
+import ProjectForm from "../ProjectForm/ProjectForm";
 
 export default function NewProject(props) {
   return (

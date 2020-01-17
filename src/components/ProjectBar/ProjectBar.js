@@ -4,12 +4,14 @@ import dbServices from '../../services/dbServices';
 import Dropdown from '../Dropdown/Dropdown';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import './ProjectBar.css';
+import NewProject from '../NewProject/NewProject';
 
 const ProjectBar = props => {
   console.log(props.proj.progress);
   console.log(new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10));
   const [selectedProjectManager, setSelectedProjectManager] = useState(null);
   const [assign, setAssign] = useState(false);
+  const [edit, setEdit] = useState(false);
 
   const db = dbServices;
 
@@ -25,6 +27,10 @@ const ProjectBar = props => {
 
   const toggleAssign = () => {
     setAssign(!assign);
+  };
+
+  const toggleEdit = () => {
+    setEdit(!edit);
   };
 
   const renderPmList = () => {
@@ -57,6 +63,9 @@ const ProjectBar = props => {
               {props.proj.project_manager === 'unassigned' ? 'Assign' : 'Reassign'}
             </button>
           )}
+          <button className="ProjectBar__edit" onClick={toggleEdit}>
+            Edit
+          </button>
         </li>
       )}
       {assign && (
@@ -69,6 +78,14 @@ const ProjectBar = props => {
             <button onClick={toggleAssign}>Cancel</button>
           </div>
         </li>
+      )}
+      {edit && (
+        <NewProject
+          org={props.proj.org_id}
+          updateProjInState={props.updateProjInState}
+          toggleForm={toggleEdit}
+          proj={props.proj}
+        />
       )}
     </ul>
   );

@@ -68,6 +68,12 @@ export default class Dashboard extends Component {
   addToProjState = newProj =>
     this.setState({ projects: [...this.state.projects, newProj], newProj: false, expandProjects: true });
 
+  updateProjInState = proj => {
+    let projects = this.state.projects;
+    projects = projects.map(p => (p.id === proj.id ? proj : p));
+    this.setState({ projects: projects });
+  };
+
   updatePM = (projId, pm) => {
     const projs = this.state.projects;
     projs.map(proj => {
@@ -109,7 +115,7 @@ export default class Dashboard extends Component {
                   <NewProject
                     org={this.state.user.org}
                     addToProjState={this.addToProjState}
-                    toggleNewProj={this.toggleNewProj}
+                    toggleForm={this.toggleNewProj}
                   />
                 )}
                 {this.state.expandProjects && (
@@ -124,6 +130,7 @@ export default class Dashboard extends Component {
                                 role={this.state.user.role}
                                 projectManagers={this.state.projectManagers}
                                 updatePM={this.updatePM}
+                                updateProjInState={this.updateProjInState}
                               />
                             </li>
                           </ul>

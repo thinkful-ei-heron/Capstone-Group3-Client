@@ -9,6 +9,7 @@ import Statistics from '../Statistics/Statistics';
 import { Sidebar } from '../Sidebar/Sidebar';
 import JobForm from '../JobForm/JobForm';
 import app from '../../services/base';
+import dateConversions from '../../services/dateConversions';
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -83,7 +84,7 @@ export default class ProjectView extends Component {
                 <ProgressBar percentage={project.progress} />
               </div>
               <div id="project_deadline">
-                <span>Deadline: {new Date(project.deadline.toString()).toDateString()}</span>
+                <span>Deadline: {dateConversions.TStoDisplayDate(project.deadline)}</span>
               </div>
               {user.role === 'owner' && project.project_manager === 'unassigned' ? (
                 <div id="select_pm">

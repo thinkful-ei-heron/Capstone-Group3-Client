@@ -10,12 +10,11 @@ import { Sidebar } from '../Sidebar/Sidebar';
 import JobForm from '../JobForm/JobForm';
 import app from '../../services/base';
 
-
 export default class ProjectView extends Component {
   constructor(props) {
     super(props);
     this.unsubscribe = null;
-    this.ref = app.firestore().collection('organizations')
+    this.ref = app.firestore().collection('organizations');
     this.state = {
       project: null,
       showJobForm: false,
@@ -27,22 +26,26 @@ export default class ProjectView extends Component {
     };
   }
 
-  static contextType = AuthContext
+  static contextType = AuthContext;
 
-  updateProject = (data) => {
+  updateProject = data => {
     this.setState({
       project: data,
       loading: false
-    })
-  }
+    });
+  };
 
   async componentDidMount() {
-    this.unsubscribe = this.ref.doc('orgOne')
+    this.unsubscribe = this.ref
+      .doc(this.context.currentUser.displayName)
       .collection('projects')
       .doc(this.props.id)
-      .onSnapshot(doc => {
-        this.updateProject(doc.data())
-      }, error => console.error(error))
+      .onSnapshot(
+        doc => {
+          this.updateProject(doc.data());
+        },
+        error => console.error(error)
+      );
   }
 
   componentWillUnmount() {
@@ -52,16 +55,16 @@ export default class ProjectView extends Component {
   showJobForm = () => {
     this.setState({
       showJobForm: !this.state.showJobForm
-    })
-  }
-  
+    });
+  };
+
   render() {
     const { project, user, showJobForm } = this.state;
     if (this.state.loading) {
       return <Loading />;
     } else {
       return (
-          <>
+        <>
           <div>
             <header id="company_header">
               <h2 id="companyName">{this.context.currentUser.displayName}</h2>
@@ -104,11 +107,7 @@ export default class ProjectView extends Component {
               {user.role === 'project worker' ? <></> : <Statistics />}
               <div id="jobs_container">
                 {user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
-                {user.role === 'project worker' ? (
-                  ''
-                ) : (
-                  <button onClick={this.showJobForm}>Add Job</button>
-                )}
+                {user.role === 'project worker' ? '' : <button onClick={this.showJobForm}>Add Job</button>}
               </div>
               {showJobForm ? (
                 <JobForm

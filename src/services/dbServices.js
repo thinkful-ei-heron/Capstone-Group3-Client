@@ -18,19 +18,17 @@ const dbServices = {
     this.createUserInOrg(user, org);
   },
 
-  async initDashboard(email, org) {
-    let name = '';
-    let role = '';
+  async initDashboard(name, role, org) {
     const projs = [];
     const managers = [];
 
-    //get user
-    const userSnap = await dbServices.getUser(email, org);
+    // //get user
+    // const userSnap = await dbServices.getUser(email, org);
 
-    userSnap.forEach(user => {
-      name = user.data().name;
-      role = user.data().role;
-    });
+    // userSnap.forEach(user => {
+    //   name = user.data().name;
+    //   role = user.data().role;
+    // });
 
     //get projects
     const projects = await dbServices.getProjectsByRole({ name: name, org: org, role: role });

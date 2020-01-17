@@ -15,7 +15,7 @@ export default class Jobs extends Component {
       jobs: [],
       loading: true,
       showLogHours: false,
-      user: 'project worker'
+      user: 'project manager'
     };
   }
 
@@ -51,7 +51,7 @@ export default class Jobs extends Component {
   }
 
   render() {
-    const { jobs, user} = this.state;
+    const { jobs, user } = this.state;
     if (this.state.loading) {
       return <Loading />
     } else {

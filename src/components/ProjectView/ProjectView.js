@@ -37,7 +37,7 @@ export default class ProjectView extends Component {
   }
 
   async componentDidMount() {
-    this.unsubscribe = this.ref.doc(this.context.currentUser.displayName)
+    this.unsubscribe = this.ref.doc('orgOne')
       .collection('projects')
       .doc(this.props.id)
       .onSnapshot(doc => {

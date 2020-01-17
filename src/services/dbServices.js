@@ -61,6 +61,15 @@ const dbServices = {
       .get();
   },
 
+  getProjectById(id, org) {
+    return db
+      .collection('organizations')
+      .doc(org)
+      .collection('projects')
+      .doc(id)
+      .get();
+  },
+
   addProject(newProject) {
     console.log(newProject.org_id);
     if (!newProject.project_manager) newProject.project_manager = 'unassigned';
@@ -142,20 +151,14 @@ const dbServices = {
   },
 
   async addJob(newJob, project_id) {
-    let orgId = this.state.user.org;
-    let newId = null;
-    let db = db;
     await db
-      .collection(`organizations/${this.state.user.org}/projects/${project_id}/jobs`)
+      .collection(`organizations/${newJob.organization}/projects/${project_id}/jobs`)
       .add(newJob)
       .then(function(docRef) {
-        db.collection(`organizations/${orgId}/projects/${project_id}/jobs`)
+        db.collection(`organizations/${newJob.organization}/projects/${project_id}/jobs`)
           .doc(`${docRef.id}`)
           .update({ id: docRef.id });
-        newId = docRef.id;
       });
-    newJob.id = newId;
-    this.setNewJob(newJob);
   },
 
   async addUser(newUser) {
@@ -170,14 +173,13 @@ const dbServices = {
       .get();
   },
 
-  async updateProjectWorkers(id, workers, project) {
+  async updateProjectWorkers(id, workers, org) {
     await db
       .collection('organizations')
-      .doc(this.state.user.org)
+      .doc(org)
       .collection('projects')
       .doc(id)
       .update({ project_workers: workers });
-    await this.doGetProject(this.state.user.org);
   },
 
   async updateJobStatus(id, status, project_id, approval) {
@@ -208,7 +210,7 @@ const dbServices = {
   async editJob(id, jobObj) {
     await db
       .collection('organizations')
-      .doc(this.state.user.org)
+      .doc(jobObj.organization)
       .collection('projects')
       .doc(jobObj.project_id)
       .collection('jobs')

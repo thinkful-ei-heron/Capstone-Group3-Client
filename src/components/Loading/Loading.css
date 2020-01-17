@@ -1,0 +1,6 @@
+.Loading {
+  display: grid;
+  place-content: center;
+  height: 90%;
+  width: 100%;
+}

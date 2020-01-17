@@ -56,14 +56,14 @@ const App = props => {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" render={() => <SignUp />} />
             <Route exact path="/logout" component={() => <Logout setPath={setPath} />} />
-            {/* 
-            <PrivateRoute
+            
+            {/* <PrivateRoute
               exact
               path="/new_project"
               location={props.location}
               setPath={setPath}
               component={NewProject}
-            />
+            /> */}
             <PrivateRoute
               exact
               path="/project/:id"
@@ -71,7 +71,7 @@ const App = props => {
               setPath={setPath}
               component={props => <ProjectView id={props.match.params.id} />}
             />
-            */}
+           
 
             <Route exact path="/owner-signup" render={() => <SignUp />} />
           </Switch>

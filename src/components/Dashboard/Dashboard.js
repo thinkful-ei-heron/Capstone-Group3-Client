@@ -31,8 +31,6 @@ export default class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    // const email = this.context.currentUser.email;
-    // const org = this.context.currentUser.org;
     const user = this.context.currentUser
 
     const data = await dbServices.initDashboard(user.name, user.role, user.org); 

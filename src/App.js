@@ -56,8 +56,8 @@ const App = props => {
               exact
               // will use this once I setup a
               // drop down for selecting owner/worker
-              // path='/(owner|worker)-signup/'
-              path='/register'
+              path='/(owner|worker)-signup/'
+              // path="/register"
               render={() => <SignUp />}
             />
             <Route

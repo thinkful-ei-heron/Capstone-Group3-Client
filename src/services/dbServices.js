@@ -6,7 +6,7 @@ const db = app.firestore();
 //   this.setState({ loaded: bool });
 // };
 const dbServices = {
-  createOwner(user, org) {
+  createOwner(org) {
     const addOrg = async () =>
       await db
         .collection('organizations')
@@ -15,7 +15,7 @@ const dbServices = {
           name: org
         });
     addOrg();
-    this.createUserInOrg(user, org);
+    return 'success';
   },
 
   async initDashboard(name, role, org) {
@@ -31,7 +31,11 @@ const dbServices = {
     // });
 
     //get projects
-    const projects = await dbServices.getProjectsByRole({ name: name, org: org, role: role });
+    const projects = await dbServices.getProjectsByRole({
+      name: name,
+      org: org,
+      role: role
+    });
 
     projects.forEach(proj => projs.push(proj.data()));
 
@@ -85,7 +89,9 @@ const dbServices = {
   addProject(newProject) {
     console.log(newProject.org_id);
     if (!newProject.project_manager) newProject.project_manager = 'unassigned';
-    return db.collection(`organizations/${newProject.org_id}/projects`).add(newProject);
+    return db
+      .collection(`organizations/${newProject.org_id}/projects`)
+      .add(newProject);
   },
 
   setProjId(id, orgId) {
@@ -174,10 +180,14 @@ const dbServices = {
 
   async addJob(newJob, project_id) {
     await db
-      .collection(`organizations/${newJob.organization}/projects/${project_id}/jobs`)
+      .collection(
+        `organizations/${newJob.organization}/projects/${project_id}/jobs`
+      )
       .add(newJob)
       .then(function(docRef) {
-        db.collection(`organizations/${newJob.organization}/projects/${project_id}/jobs`)
+        db.collection(
+          `organizations/${newJob.organization}/projects/${project_id}/jobs`
+        )
           .doc(`${docRef.id}`)
           .update({ id: docRef.id });
       });
@@ -185,11 +195,11 @@ const dbServices = {
 
   async updateEdit(edit, id, project_id, org) {
     await db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("projects")
+      .collection('projects')
       .doc(project_id)
-      .collection("jobs")
+      .collection('jobs')
       .doc(id)
       .update({ edit: edit });
   },

@@ -3,14 +3,20 @@ import { Label, Input, Textarea } from "../Form/Form";
 import { useInput } from "../../hooks/useInput";
 import dbServices from "../../services/dbServices";
 
-
 const WorkerEditForm = props => {
-
   const [submitted, setSubmitted] = useState(false);
 
   const { value: name, bind: bindName, reset: resetName } = useInput("");
-  const { value: description, bind: bindDescription, reset: resetDescription } = useInput("");
-  const { value: totalHours, bind: bindTotalHours, reset: resetTotalHours } = useInput("");
+  const {
+    value: description,
+    bind: bindDescription,
+    reset: resetDescription
+  } = useInput("");
+  const {
+    value: totalHours,
+    bind: bindTotalHours,
+    reset: resetTotalHours
+  } = useInput("");
   const { value: note, bind: bindNote, reset: resetNote } = useInput("");
 
 
@@ -21,7 +27,7 @@ const WorkerEditForm = props => {
       description: description,
       total_hours: parseInt(totalHours),
       note: note,
-      employee: 'Test PM'
+      employee: "Test PM"
     };
     if (
       props.job.name === name &&
@@ -31,11 +37,16 @@ const WorkerEditForm = props => {
     ) {
       console.log("nothing to update");
     } else {
-      await dbServices.updateEdit(editObj, props.job.id, props.job.project_id, props.job.organization);
+      await dbServices.updateEdit(
+        editObj,
+        props.job.id,
+        props.job.project_id,
+        props.job.organization
+      );
       await props
         .handleStatus(props.job.id, "edit request")
         .then(setSubmitted(true))
-        .then(props.renderEditForm())
+        .then(props.renderEditForm());
     }
   };
 

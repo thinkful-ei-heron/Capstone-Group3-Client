@@ -1,15 +1,16 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import dbServices from '../../services/dbServices';
+import dateConversions from '../../services/dateConversions';
 import Dropdown from '../Dropdown/Dropdown';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
+import ProjectForm from '../ProjectForm/ProjectForm';
 import './ProjectBar.css';
 
 const ProjectBar = props => {
-  // console.log(props.proj.progress);
-  // console.log(new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10));
   const [selectedProjectManager, setSelectedProjectManager] = useState(null);
   const [assign, setAssign] = useState(false);
+  const [edit, setEdit] = useState(false);
 
   const db = dbServices;
 
@@ -25,6 +26,10 @@ const ProjectBar = props => {
 
   const toggleAssign = () => {
     setAssign(!assign);
+  };
+
+  const toggleEdit = () => {
+    setEdit(!edit);
   };
 
   const renderPmList = () => {
@@ -46,7 +51,7 @@ const ProjectBar = props => {
             <div className="ProjectBar__proj_prog">
               Est. Progress <ProgressBar percentage={props.proj.progress} />
             </div>
-            Deadline: {new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10)}
+            Deadline: {dateConversions.timestampToDate(props.proj.deadline)}
           </div>
         </li>
       </Link>
@@ -57,6 +62,9 @@ const ProjectBar = props => {
               {props.proj.project_manager === 'unassigned' ? 'Assign' : 'Reassign'}
             </button>
           )}
+          <button className="ProjectBar__edit" onClick={toggleEdit}>
+            Edit
+          </button>
         </li>
       )}
       {assign && (
@@ -69,6 +77,14 @@ const ProjectBar = props => {
             <button onClick={toggleAssign}>Cancel</button>
           </div>
         </li>
+      )}
+      {edit && (
+        <ProjectForm
+          org={props.proj.org_id}
+          updateProjInState={props.updateProjInState}
+          toggleForm={toggleEdit}
+          proj={props.proj}
+        />
       )}
     </ul>
   );

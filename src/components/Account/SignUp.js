@@ -5,65 +5,64 @@ import dbServices from '../../services/dbServices';
 import { Label, Input } from '../Form/Form';
 
 const SignUp = ({ history }, props) => {
-  //const fbContext = React.useContext(FirebaseContext);
+  const functions = app.functions();
   const handleSignUp = async event => {
     event.preventDefault();
-    const { email, password, name, orgName } = event.target.elements;
-    await app
-      .auth()
-      .createUserWithEmailAndPassword(email.value, password.value)
-      .then(response => {
-        response.user.updateProfile({
-          displayName: orgName.value
-        });
-        // .then(async () => await fbContext.initState(email.value, orgName.value));
-      })
-      .then(() => {
-        history.location.pathname === '/owner-signup'
-          ? dbServices.createOwner(
-              {
-                email: email.value,
-                role: 'owner',
-                name: name.value
-              },
-              orgName.value
-            )
-          : dbServices.createUserInOrg(
-              {
-                email: email.value,
-                role: 'project worker',
-                name: name.value
-              },
-              orgName.value
-            );
-      })
-      .then(async () => {
-        await app.auth().signInWithEmailAndPassword(email.value, password.value);
-        history.push('/dashboard');
-      });
+    console.log(event.target.elements);
+    let { email, password, name, orgName } = event.target.elements;
+    const registerOwner = await functions.httpsCallable('registerOwner');
+    const registerWorker = await functions.httpsCallable('registerWorker');
+    let values = {
+      email: email.value,
+      password: password.value,
+      name: name.value,
+      org: orgName.value,
+      displayName: name.value
+    };
+    switch (history.location.pathname) {
+      case '/owner-signup':
+        registerOwner(values).then(() => history.push('/login'));
+        break;
+      case '/worker-signup':
+        registerWorker(values).then(() => history.push('/login'));
+        break;
+      default:
+        registerWorker(values).then(() => history.push('/login'));
+    }
+    return values.email, 'signed up';
   };
 
   return (
-    <div className="Login">
+    <div className='Login'>
       <h1>Sign up</h1>
-      <form className="Login__form" onSubmit={handleSignUp}>
+      <form className='Login__form' onSubmit={handleSignUp}>
         <Label>
           email
-          <Input name="email" type="email" placeholder="Email" required />
+          <Input name='email' type='email' placeholder='Email' required />
         </Label>
         <Label>
           Password
-          <Input name="password" type="password" placeholder="Password" required />
+          <Input
+            name='password'
+            type='password'
+            placeholder='Password'
+            required
+          />
         </Label>
-        <Label htmlFor="username">
+        <Label htmlFor='username'>
           Username
-          <Input type="username" name="name" placeholder="Username" required />
+          <Input type='username' name='name' placeholder='Username' required />
         </Label>
-        <Label htmlFor="orgName">
+        <Label htmlFor='orgName'>
           Orginization Name
-          <Input type="orgName" name="orgName" placeholder="Organization name" required />
+          <Input
+            type='orgName'
+            name='orgName'
+            placeholder='Organization name'
+            required
+          />
         </Label>
-        <button type="submit">Sign Up</button>
+        <button type='submit'>Sign Up</button>
       </form>
     </div>
   );

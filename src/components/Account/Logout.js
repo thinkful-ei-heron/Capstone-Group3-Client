@@ -1,21 +1,23 @@
 import React from 'react';
-import FirebaseContext from '../../services/context';
-import { withRouter, Redirect } from 'react-router';
+import { withRouter, Redirect, useHistory } from 'react-router';
 import app from '../../services/base.js';
 
 const Logout = props => {
-  //const fbContext = React.useContext(FirebaseContext);
-
+  const history = useHistory();
   React.useEffect(() => {
     const signOut = async () => {
-      await app.auth().signOut();
-      props.setPath(null);
-      localStorage.removeItem('path');
+      await app
+        .auth()
+        .signOut()
+        .then(() => {
+          props.setPath(null);
+          localStorage.removeItem('path');
+        });
+      history.push('/');
     };
     signOut();
-    //fbContext.setStateOnLogout();
   });
-  return <Redirect to="/" />;
+  return <></>;
 };
 
 export default withRouter(Logout);

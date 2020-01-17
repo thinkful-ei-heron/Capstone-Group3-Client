@@ -32,7 +32,7 @@ export default class Dashboard extends Component {
 
   async componentDidMount() {
     const email = this.context.currentUser.email;
-    const org = this.context.currentUser.displayName;
+    const org = this.context.currentUser.org;
 
     const data = await dbServices.initDashboard(email, org);
 
@@ -61,12 +61,17 @@ export default class Dashboard extends Component {
 
   toggleNewProj = e => {
     e.stopPropagation();
-    if (this.state.newProj) this.setState({ newProj: false, expandProjects: true });
+    if (this.state.newProj)
+      this.setState({ newProj: false, expandProjects: true });
     else this.setState({ newProj: true, expandProjects: false });
   };
 
   addToProjState = newProj =>
-    this.setState({ projects: [...this.state.projects, newProj], newProj: false, expandProjects: true });
+    this.setState({
+      projects: [...this.state.projects, newProj],
+      newProj: false,
+      expandProjects: true
+    });
 
   updateProjInState = proj => {
     let projects = this.state.projects;
@@ -93,15 +98,20 @@ export default class Dashboard extends Component {
     else
       return (
         <>
-          <section className="Dashboard__container">
-            <div className="Dashboard__header">
+          <section className='Dashboard__container'>
+            <div className='Dashboard__header'>
               {<h2>{this.state.user.org}</h2>}
-              <span className="Dashboard__date">{new Date().toLocaleString()}</span>
+              <span className='Dashboard__date'>
+                {new Date().toLocaleString()}
+              </span>
             </div>
-            <div className="Dashboard__main">
-              <section className="Dashboard__projects">
-                <div className="Dashboard__project_header" onClick={this.toggleExpandProjects}>
-                  <div className="Dashboard__fa_h1">
+            <div className='Dashboard__main'>
+              <section className='Dashboard__projects'>
+                <div
+                  className='Dashboard__project_header'
+                  onClick={this.toggleExpandProjects}
+                >
+                  <div className='Dashboard__fa_h1'>
                     {StyleIcon({
                       style: `${this.state.expandProjects ? 'minus' : 'plus'}`
                     })}
@@ -119,9 +129,9 @@ export default class Dashboard extends Component {
                   />
                 )}
                 {this.state.expandProjects && (
-                  <div className="Dashboard__projects_container">
+                  <div className='Dashboard__projects_container'>
                     {this.state.projects.length !== 0 ? (
-                      <ul className="Dashboard__list">
+                      <ul className='Dashboard__list'>
                         {this.state.projects.map(proj => {
                           return (
                             <li key={proj.id}>
@@ -137,17 +147,23 @@ export default class Dashboard extends Component {
                         })}{' '}
                       </ul>
                     ) : (
-                      <div className="Dashboard__no_projects">
-                        <span className="Dashboard__welcome">Welcome!</span>
-                        <span>You currently have no projects, click the NEW button above to add one.</span>
+                      <div className='Dashboard__no_projects'>
+                        <span className='Dashboard__welcome'>Welcome!</span>
+                        <span>
+                          You currently have no projects, click the NEW button
+                          above to add one.
+                        </span>
                       </div>
                     )}
                   </div>
                 )}
               </section>
-              <section className="Dashboard__personnel">
-                <div className="Dashboard__personnel_header" onClick={this.toggleExpandPersonnel}>
-                  <div className="Dashboard__fa_h1">
+              <section className='Dashboard__personnel'>
+                <div
+                  className='Dashboard__personnel_header'
+                  onClick={this.toggleExpandPersonnel}
+                >
+                  <div className='Dashboard__fa_h1'>
                     {StyleIcon({
                       style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`
                     })}

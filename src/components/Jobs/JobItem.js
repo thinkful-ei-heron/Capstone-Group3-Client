@@ -9,7 +9,7 @@ class JobItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expandJob: false, 
+      expandJob: false,
       showEditForm: false,
       showWorkerEditForm: false
     }
@@ -18,11 +18,18 @@ class JobItem extends Component {
   static contextType = AuthContext;
 
   handleApprovalSubmit = async (id, status, approval = false) => {
-    await dbServices.updateJobStatus(id, status, this.props.job.project_id, approval, this.props.job.organization);
+    await dbServices.updateJobStatus(
+      id,
+      status,
+      this.props.job.project_id,
+      approval,
+      this.props.job.organization
+    );
   };
 
   renderEmployeeList = jobWorkers => {
-    if (!jobWorkers || jobWorkers.length === 0) return <h5>No Workers Assigned</h5>;
+    if (!jobWorkers || jobWorkers.length === 0)
+      return <h5>No Workers Assigned</h5>;
     return jobWorkers.map((employee, index) => {
       let itemKey = index + employee;
       return <li key={itemKey}>{employee}</li>;
@@ -60,7 +67,7 @@ class JobItem extends Component {
           </>
         );
       }
-  }
+    }
 
   if (
     this.context.currentUser.role === "project manager" ||
@@ -104,7 +111,7 @@ class JobItem extends Component {
       expandJob: !this.state.expandJob
     });
   };
-  
+
   showEditForm = () => {
     this.setState({
       showEditForm: !this.state.showEditForm
@@ -114,12 +121,12 @@ class JobItem extends Component {
   showWorkerEditForm = () => {
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm
-    })
-  }
+    });
+  };
 
   render() {
-    const job = this.props.job
-    const progress = Math.floor((job.hours_completed / job.total_hours) * 100)
+    const job = this.props.job;
+    const progress = Math.floor((job.hours_completed / job.total_hours) * 100);
     return (
           <li key={job.id} id={job.id}>
             <div className="job_details">
@@ -149,7 +156,7 @@ class JobItem extends Component {
             {this.state.expandJob ? <ul>{this.renderEmployeeList(job.project_workers)}</ul> : ''}
          </li>
         )
-  }
+    }
 }
 
 export default JobItem;

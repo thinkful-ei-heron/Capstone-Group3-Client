@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import app from './base';
+import React, { useEffect, useState } from "react";
+import app from "./base";
 
 export const AuthContext = React.createContext();
 
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
             if (!!idTokenResult.claims) {
               setCurrentUser(idTokenResult.claims);
             } else {
-              alert('ruh roh');
+              alert("ruh roh");
             }
           })
           .catch(error => {

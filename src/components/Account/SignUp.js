@@ -21,14 +21,17 @@ const SignUp = ({ history }, props) => {
     };
     switch (history.location.pathname) {
       case '/owner-signup':
-        registerOwner(values).then(() => history.push('/login'));
+        registerOwner(values)
+          .then(() => dbServices.createOwner(values.org))
+          .catch(error => alert(error));
         break;
       case '/worker-signup':
-        registerWorker(values).then(() => history.push('/login'));
+        registerWorker(values);
         break;
       default:
-        registerWorker(values).then(() => history.push('/login'));
+        registerWorker(values);
     }
+    history.push('/login');
     return values.email, 'signed up';
   };
 

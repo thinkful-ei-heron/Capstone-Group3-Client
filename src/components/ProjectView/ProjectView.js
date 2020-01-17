@@ -10,6 +10,7 @@ import { Sidebar } from '../Sidebar/Sidebar';
 import JobForm from '../JobForm/JobForm';
 import app from '../../services/base';
 
+
 export default class ProjectView extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +22,7 @@ export default class ProjectView extends Component {
       loading: true,
       toggleState: false,
       user: {
-        role: 'project manager'
+        role: 'project worker'
       }
     };
   }
@@ -36,7 +37,7 @@ export default class ProjectView extends Component {
   }
 
   async componentDidMount() {
-    this.unsubscribe = this.ref.doc(this.context.currentUser.displayName)
+    this.unsubscribe = this.ref.doc('orgOne')
       .collection('projects')
       .doc(this.props.id)
       .onSnapshot(doc => {

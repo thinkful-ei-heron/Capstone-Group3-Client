@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import JobForm from '../JobForm/JobForm';
 import dbServices from '../../services/dbServices';
+import WorkerEditForm from '../WorkerEditForm/WorkerEditForm';
 
 class JobItem extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class JobItem extends Component {
   }
 
   handleApprovalSubmit = async (id, status, approval = false) => {
-    await dbServices.updateJobStatus(id, status, this.props.projectId, approval);
+    await dbServices.updateJobStatus(id, status, this.props.job.project_id, approval, this.props.job.organization);
   };
 
   renderEmployeeList = jobWorkers => {
@@ -133,16 +134,16 @@ class JobItem extends Component {
               )}
             </div>
             {this.state.showEditForm ? <JobForm showJobForm={this.showEditForm} job={job} /> : ''}
-            {/* {this.state.showWorkerEditForm &&
-              this.context.user.role === "project worker" ? (
+            {this.state.showWorkerEditForm &&
+              this.state.role === "project worker" ? (
                 <WorkerEditForm
-                  job={this.props.job}
+                  job={job}
                   renderEditForm={this.showWorkerEditForm}
                   handleStatus={this.handleApprovalSubmit}
                 />
               ) : (
                 <></>
-            )} */}
+            )}
             {this.state.expandJob ? <ul>{this.renderEmployeeList(job.project_workers)}</ul> : ''}
          </li>
         )

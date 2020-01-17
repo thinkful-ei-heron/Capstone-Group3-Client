@@ -173,6 +173,17 @@ const dbServices = {
       });
   },
 
+  async updateEdit(edit, id, project_id, org) {
+    await db
+      .collection("organizations")
+      .doc(org)
+      .collection("projects")
+      .doc(project_id)
+      .collection("jobs")
+      .doc(id)
+      .update({ edit: edit });
+  },
+
   async addUser(newUser) {
     await db.collection('users').add(newUser);
   },
@@ -194,10 +205,10 @@ const dbServices = {
       .update({ project_workers: workers });
   },
 
-  async updateJobStatus(id, status, project_id, approval) {
+  async updateJobStatus(id, status, project_id, approval, org) {
     await db
       .collection('organizations')
-      .doc(this.state.user.org)
+      .doc(org)
       .collection('projects')
       .doc(project_id)
       .collection('jobs')

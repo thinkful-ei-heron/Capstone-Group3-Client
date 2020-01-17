@@ -38,8 +38,10 @@ const dbServices = {
     projects.forEach(proj => projs.push(proj.data()));
 
     //get projectManagers
-    const PMs = await dbServices.getProjectManagers(org);
-    PMs.forEach(pm => managers.push(pm.data()));
+    if (role === 'owner') {
+      const PMs = await dbServices.getProjectManagers(org);
+      PMs.forEach(pm => managers.push(pm.data()));
+    }
 
     return {
       name: name,
@@ -85,6 +87,15 @@ const dbServices = {
       .collection(`organizations/${orgId}/projects`)
       .doc(`${id}`)
       .update({ id: id });
+  },
+
+  updateProject(proj) {
+    return db
+      .collection('organizations')
+      .doc(proj.org_id)
+      .collection('projects')
+      .doc(proj.id)
+      .update(proj);
   },
 
   setProjectsManager(projId, org, pm) {

@@ -100,7 +100,7 @@
 
   .Header h1 {
     position: absolute;
-    top: 0;
+    top: 0pt;
     left: 0;
   }
 
@@ -111,7 +111,7 @@
   .Header__logo {
     display: inline-block;
     position: absolute;
-    top: 4pt;
+    top: -6pt;
     left: 10pt;
     width: 170px;
     height: auto;
@@ -119,7 +119,7 @@
 
   .Header__app_name {
     position: absolute;
-    top: 26pt;
+    top: 16pt;
     left: 95pt;
     font-size: 3rem;
   }
@@ -136,7 +136,7 @@
 
   .Header__sub_container {
     position: absolute;
-    top: 10px;
+    top: 0;
     right: 0;
     width: auto;
     margin-right: 15px;

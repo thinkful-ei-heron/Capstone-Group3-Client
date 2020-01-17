@@ -4,6 +4,7 @@ import Loading from '../Loading/Loading';
 import app from '../../services/base';
 import './Jobs.css';
 import JobItem from './JobItem'
+import LogHours from '../LogHours/LogHours';
 
 export default class Jobs extends Component {
   constructor(props) {
@@ -13,6 +14,8 @@ export default class Jobs extends Component {
     this.state = {
       jobs: [],
       loading: true,
+      showLogHours: false,
+      user: 'project worker'
     };
   }
 
@@ -41,15 +44,39 @@ export default class Jobs extends Component {
     this.unsubscribe();
   }
 
+  renderLogHoursForm = () => {
+    this.setState({
+      showLogHours: !this.state.showLogHours
+    })
+  }
+
   render() {
-    const { jobs } = this.state;
+    const { jobs, user} = this.state;
     if (this.state.loading) {
       return <Loading />
     } else {
     return (
+      <>
+      <div>
+          <h2>
+              {user === "project worker" ? (
+                <button onClick={this.renderLogHoursForm}>
+                  LOG HOURS
+                </button>
+              ) : (
+                <></>
+              )}
+            </h2>
+            {this.state.showLogHours ? (
+              <LogHours jobs={jobs} renderLogHoursForm={this.renderLogHoursForm}/>
+            ) : (
+              <></>
+            )}
+      </div>
       <ul>
         {jobs.map(job => <JobItem job={job} key={job.id}/>)}
       </ul>
+      </>
     );
   }
   }

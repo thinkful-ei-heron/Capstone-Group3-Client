@@ -11,7 +11,7 @@ class JobItem extends Component {
       expandJob: false, 
       showEditForm: false,
       showWorkerEditForm: false,
-      role: 'project worker'
+      role: 'project manager'
     }
   }
 

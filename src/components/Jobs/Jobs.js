@@ -14,8 +14,7 @@ export default class Jobs extends Component {
     this.state = {
       jobs: [],
       loading: true,
-      showLogHours: false,
-      user: 'project manager'
+      showLogHours: false
     };
   }
 
@@ -23,9 +22,25 @@ export default class Jobs extends Component {
 
   onJobsUpdate = querySnapshot => {
     const jobs = [];
-    querySnapshot.forEach(doc => {
-      jobs.push(doc.data());
-    });
+
+    if (this.context.currentUser.role === 'project worker') {
+      querySnapshot.forEach(doc => {
+        if (doc.data().project_workers.includes(this.context.currentUser.name)) {
+          jobs.push(doc.data());
+        }
+      });
+    } else if (this.context.currentUser.role === 'project manager') {
+      querySnapshot.forEach(doc => {
+        if (doc.data().project_manager === this.context.currentUser.name) {
+          jobs.push(doc.data());
+        }
+      });
+    } else {
+      querySnapshot.forEach(doc => {
+        jobs.push(doc.data());
+      });
+    }
+
     this.setState({
       jobs,
       loading: false
@@ -52,7 +67,9 @@ export default class Jobs extends Component {
   };
 
   render() {
-    const { jobs, user } = this.state;
+    const { jobs } = this.state;
+    const user = this.context.currentUser;
+
     if (this.state.loading) {
       return <Loading />;
     } else {
@@ -60,7 +77,7 @@ export default class Jobs extends Component {
         <>
           <div>
             <h2>
-              {user === 'project worker' ? (
+              {user.role === 'project worker' ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>
@@ -76,9 +93,9 @@ export default class Jobs extends Component {
             )}
           </div>
           <ul>
-            {jobs.map(job => (
+            {jobs.length > 0 ? jobs.map(job => (
               <JobItem job={job} key={job.id} />
-            ))}
+            )) : <h4>There are currently no jobs to display for this project.</h4>}
           </ul>
         </>
       );

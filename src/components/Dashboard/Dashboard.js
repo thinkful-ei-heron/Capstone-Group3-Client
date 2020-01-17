@@ -31,16 +31,17 @@ export default class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    const email = this.context.currentUser.email;
-    const org = this.context.currentUser.org;
+    // const email = this.context.currentUser.email;
+    // const org = this.context.currentUser.org;
+    const user = this.context.currentUser
 
-    const data = await dbServices.initDashboard(email, org);
+    const data = await dbServices.initDashboard(user.name, user.role, user.org); 
 
     this.setState({
       user: {
-        id: email,
+        id: user.email,
         name: data.name,
-        org: org,
+        org: user.org,
         role: data.role
       },
       projects: data.projects,

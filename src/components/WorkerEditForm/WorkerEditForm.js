@@ -5,10 +5,6 @@ import dbServices from "../../services/dbServices";
 
 
 const WorkerEditForm = props => {
-  // const [name, setName] = useState(props.job.name);
-  // const [description, setDescription] = useState(prop.job.description);
-  // const [totalHours, setTotalHours] = useState(prop.job.total_hours);
-  // const [note, setNote] = useState("");
 
   const [submitted, setSubmitted] = useState(false);
 
@@ -17,7 +13,6 @@ const WorkerEditForm = props => {
   const { value: totalHours, bind: bindTotalHours, reset: resetTotalHours } = useInput("");
   const { value: note, bind: bindNote, reset: resetNote } = useInput("");
 
-  //request edit on name, description, total_hours, note
 
   const submitRequest = async e => {
     e.preventDefault();

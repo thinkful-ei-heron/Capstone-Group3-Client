@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useInput } from "../../hooks/useInput";
 import { Label, Input } from "../Form/Form";
 import dbServices from '../../services/dbServices';
+import { AuthContext } from '../../services/Auth';
 
 const LogHours = props => {
+
+  const { currentUser } = useContext(AuthContext)
 
   const { value: hours, bind: bindHours, reset: resetHours } = useInput("");
   const { value: job, bind: bindJob, reset: resetJob } = useInput("");
@@ -11,7 +14,7 @@ const LogHours = props => {
 
   const populateSelect = () => {
     return props.jobs.map(job => {
-      if (job.project_workers.includes('admin5'))
+      if (job.project_workers.includes(currentUser.name))
         return <option key={job.id}>{job.name}</option>;
       else return null;
     });

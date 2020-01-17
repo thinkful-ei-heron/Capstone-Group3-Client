@@ -3,6 +3,7 @@ import { ProgressBar } from '../ProgressBar/ProgressBar';
 import JobForm from '../JobForm/JobForm';
 import dbServices from '../../services/dbServices';
 import WorkerEditForm from '../WorkerEditForm/WorkerEditForm';
+import { AuthContext } from '../../services/Auth';
 
 class JobItem extends Component {
   constructor(props) {
@@ -10,10 +11,11 @@ class JobItem extends Component {
     this.state = {
       expandJob: false, 
       showEditForm: false,
-      showWorkerEditForm: false,
-      role: 'project manager'
+      showWorkerEditForm: false
     }
   }
+
+  static contextType = AuthContext;
 
   handleApprovalSubmit = async (id, status, approval = false) => {
     await dbServices.updateJobStatus(id, status, this.props.job.project_id, approval, this.props.job.organization);
@@ -29,7 +31,7 @@ class JobItem extends Component {
 
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
     const progress = Math.floor((hours_completed / total_hours) * 100);
-    if (this.state.role === "project worker") {
+    if (this.context.currentUser.role === "project worker") {
       if (status === "completed") return <span>Project Completed</span>;
       if (status === "submitted" || status === "completed") return <></>;
       if (approval || progress !== 100) {
@@ -61,8 +63,8 @@ class JobItem extends Component {
   }
 
   if (
-    this.state.role === "project manager" ||
-    this.state.role === "admin"
+    this.context.currentUser.role === "project manager" ||
+    this.context.currentUser.role === "admin"
   ) {
     if (status === "completed") return <span>Job Completed</span>;
     return (
@@ -135,7 +137,7 @@ class JobItem extends Component {
             </div>
             {this.state.showEditForm ? <JobForm showJobForm={this.showEditForm} job={job} /> : ''}
             {this.state.showWorkerEditForm &&
-              this.state.role === "project worker" ? (
+              this.context.currentUser.role === "project worker" ? (
                 <WorkerEditForm
                   job={job}
                   renderEditForm={this.showWorkerEditForm}

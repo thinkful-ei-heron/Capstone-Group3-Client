@@ -20,10 +20,7 @@ export default class ProjectView extends Component {
       project: null,
       showJobForm: false,
       loading: true,
-      toggleState: false,
-      user: {
-        role: 'project worker'
-      }
+      toggleState: false
     };
   }
 
@@ -60,7 +57,9 @@ export default class ProjectView extends Component {
   };
 
   render() {
-    const { project, user, showJobForm } = this.state;
+    const { project, showJobForm } = this.state;
+    const user = this.context.currentUser;
+    
     if (this.state.loading) {
       return <Loading />;
     } else {

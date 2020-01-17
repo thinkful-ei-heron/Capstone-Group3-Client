@@ -1,14 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import dbServices from '../../services/dbServices';
+import dateConversions from '../../services/dateConversions';
 import Dropdown from '../Dropdown/Dropdown';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
+import ProjectForm from '../ProjectForm/ProjectForm';
 import './ProjectBar.css';
-import NewProject from '../NewProject/NewProject';
 
 const ProjectBar = props => {
-  console.log(props.proj.progress);
-  console.log(new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10));
   const [selectedProjectManager, setSelectedProjectManager] = useState(null);
   const [assign, setAssign] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -52,7 +51,7 @@ const ProjectBar = props => {
             <div className="ProjectBar__proj_prog">
               Est. Progress <ProgressBar percentage={props.proj.progress} />
             </div>
-            Deadline: {new Date(props.proj.deadline.seconds * 1000).toISOString().slice(0, 10)}
+            Deadline: {dateConversions.timestampToDate(props.proj.deadline)}
           </div>
         </li>
       </Link>
@@ -80,7 +79,7 @@ const ProjectBar = props => {
         </li>
       )}
       {edit && (
-        <NewProject
+        <ProjectForm
           org={props.proj.org_id}
           updateProjInState={props.updateProjInState}
           toggleForm={toggleEdit}

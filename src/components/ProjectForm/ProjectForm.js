@@ -20,12 +20,14 @@ const ProjectForm = props => {
       project_workers: [],
       id: id
     };
-    const docRef = await dbServices.addProject(data);
+
     if (!props.proj) {
+      const docRef = await dbServices.addProject(data);
+      console.log(!props.proj);
       await dbServices.setProjId(docRef.id, data.org_id);
       props.addToProjState({ ...data, id: docRef.id });
     } else {
-      await dbServices.updateProject;
+      await dbServices.updateProject(data);
       props.updateProjInState({ ...data });
       props.toggleForm();
     }

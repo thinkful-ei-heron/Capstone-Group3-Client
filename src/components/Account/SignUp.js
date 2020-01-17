@@ -1,8 +1,8 @@
-import React from 'react';
-import { withRouter } from 'react-router';
-import app from '../../services/base';
-import dbServices from '../../services/dbServices';
-import { Label, Input } from '../Form/Form';
+import React from "react";
+import { withRouter } from "react-router";
+import app from "../../services/base";
+import dbServices from "../../services/dbServices";
+import { Label, Input } from "../Form/Form";
 
 const SignUp = ({ history }, props) => {
   const functions = app.functions();
@@ -10,8 +10,8 @@ const SignUp = ({ history }, props) => {
     event.preventDefault();
     console.log(event.target.elements);
     let { email, password, name, orgName } = event.target.elements;
-    const registerOwner = await functions.httpsCallable('registerOwner');
-    const registerWorker = await functions.httpsCallable('registerWorker');
+    const registerOwner = await functions.httpsCallable("registerOwner");
+    const registerWorker = await functions.httpsCallable("registerWorker");
     let values = {
       email: email.value,
       password: password.value,
@@ -20,52 +20,61 @@ const SignUp = ({ history }, props) => {
       displayName: name.value
     };
     switch (history.location.pathname) {
-      case '/owner-signup':
+      case "/owner-signup":
         registerOwner(values)
           .then(() => dbServices.createOwner(values.org))
           .catch(error => alert(error));
         break;
-      case '/worker-signup':
-        registerWorker(values);
+      case "/worker-signup":
+        registerWorker(values).then(() =>
+          dbServices.createUserInOrg(
+            {
+              email: email.value,
+              role: "project worker",
+              name: name.value
+            },
+            orgName.value
+          )
+        );
         break;
       default:
         registerWorker(values);
     }
-    history.push('/login');
-    return values.email, 'signed up';
+    history.push("/login");
+    return values.email, "signed up";
   };
 
   return (
-    <div className='Login'>
+    <div className="Login">
       <h1>Sign up</h1>
-      <form className='Login__form' onSubmit={handleSignUp}>
+      <form className="Login__form" onSubmit={handleSignUp}>
         <Label>
           email
-          <Input name='email' type='email' placeholder='Email' required />
+          <Input name="email" type="email" placeholder="Email" required />
         </Label>
         <Label>
           Password
           <Input
-            name='password'
-            type='password'
-            placeholder='Password'
+            name="password"
+            type="password"
+            placeholder="Password"
             required
           />
         </Label>
-        <Label htmlFor='username'>
+        <Label htmlFor="username">
           Username
-          <Input type='username' name='name' placeholder='Username' required />
+          <Input type="username" name="name" placeholder="Username" required />
         </Label>
-        <Label htmlFor='orgName'>
+        <Label htmlFor="orgName">
           Orginization Name
           <Input
-            type='orgName'
-            name='orgName'
-            placeholder='Organization name'
+            type="orgName"
+            name="orgName"
+            placeholder="Organization name"
             required
           />
         </Label>
-        <button type='submit'>Sign Up</button>
+        <button type="submit">Sign Up</button>
       </form>
     </div>
   );

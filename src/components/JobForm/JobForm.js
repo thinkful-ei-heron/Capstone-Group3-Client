@@ -10,8 +10,7 @@ const NewJob = props => {
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
-  const context = useContext(AuthContext);
-  console.log(context);
+  const { currentUser } = useContext(AuthContext)
 
   useEffect(() => {
     const resetFunction = () => {
@@ -98,7 +97,7 @@ const NewJob = props => {
       deadline: new Date(deadline),
       description,
       name,
-      organization: context.currentUser.org,
+      organization: currentUser.org,
       total_hours,
       hours_completed,
       project_id: projectId,
@@ -121,7 +120,7 @@ const NewJob = props => {
     if (props.job) {
       let projects = [];
       await dbServices
-        .getProjectById(props.job.project_id, context.currentUser.org)
+        .getProjectById(props.job.project_id, currentUser.org)
         .then(project => projects.push(project.data()));
       let project = projects[0];
       updatedProjectWorkers = project.project_workers;
@@ -139,7 +138,7 @@ const NewJob = props => {
       .updateProjectWorkers(
         projectId,
         updatedProjectWorkers,
-        context.currentUser.org
+        currentUser.org
       )
       .then(props.showJobForm());
   };

@@ -19,7 +19,6 @@ const WorkerEditForm = props => {
   } = useInput("");
   const { value: note, bind: bindNote, reset: resetNote } = useInput("");
 
-  //request edit on name, description, total_hours, note
 
   const submitRequest = async e => {
     e.preventDefault();

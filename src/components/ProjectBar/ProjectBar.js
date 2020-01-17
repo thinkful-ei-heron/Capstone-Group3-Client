@@ -45,7 +45,10 @@ const ProjectBar = props => {
           <span className="ProjectBar__proj_name">{props.proj.name}</span>
           <span className="ProjectBar__proj_mgr">Manager: {props.proj.project_manager}</span>
         </li>
-        <li className="ProjectBar__description">{props.proj.description}</li>
+        <li className="ProjectBar__description">
+          <span>Description:</span>
+          <div className="ProjectBar__description_text">{props.proj.description}</div>
+        </li>
         <li>
           <div className="ProjectBar__proj_prog_date">
             <div className="ProjectBar__proj_prog">

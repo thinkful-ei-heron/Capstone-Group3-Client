@@ -11,34 +11,32 @@ const Login = ({ history }) => {
     async event => {
       event.preventDefault();
       const { email, password } = event.target.elements;
-      try {
-        console.log(email.value, password.value);
-        await app.auth().signInWithEmailAndPassword(email.value, password.value);
-        history.push('/dashboard');
-      } catch (error) {
-        alert(error);
-      }
+      await app
+        .auth()
+        .signInWithEmailAndPassword(email.value, password.value)
+        .then(() => history.push('/dashboard'))
+        .catch(error => console.warn(error));
     },
     [history]
   );
 
   if (currentUser) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to='/dashboard' />;
   }
 
   return (
-    <div className="Login">
+    <div className='Login'>
       <h1>Log in</h1>
-      <form className="Login__form" onSubmit={handleLogin}>
+      <form className='Login__form' onSubmit={handleLogin}>
         <Label>
           Email
-          <Input name="email" type="email" placeholder="Email" />
+          <Input name='email' type='email' placeholder='Email' />
         </Label>
         <Label>
           Password
-          <Input name="password" type="password" placeholder="Password" />
+          <Input name='password' type='password' placeholder='Password' />
         </Label>
-        <button type="submit">Log in</button>
+        <button type='submit'>Log in</button>
       </form>
     </div>
   );

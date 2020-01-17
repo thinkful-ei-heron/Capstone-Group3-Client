@@ -11,7 +11,7 @@ const NewJob = props => {
   const [submitted, setSubmitted] = useState(false);
 
   const context = useContext(AuthContext);
-  
+
   useEffect(() => {
     const resetFunction = () => {
       resetName();
@@ -35,7 +35,9 @@ const NewJob = props => {
   const getEmployees = () => {
     if (props.job) {
       let workers = [];
-      props.job.project_workers.forEach(worker => workers.push({ value: worker, label: worker }));
+      props.job.project_workers.forEach(worker =>
+        workers.push({ value: worker, label: worker })
+      );
       return workers;
     }
   };
@@ -43,12 +45,16 @@ const NewJob = props => {
   const { value: name, bind: bindName, reset: resetName } = useInput(
     props.job ? props.job.name : ''
   );
-  const { value: description, bind: bindDescription, reset: resetDescription } = useInput(
-    props.job ? props.job.description : ''
-  );
-  const { value: deadline, bind: bindDeadline, reset: resetDeadline } = useInput(
-    props.job ? getDate() : ''
-  );
+  const {
+    value: description,
+    bind: bindDescription,
+    reset: resetDescription
+  } = useInput(props.job ? props.job.description : '');
+  const {
+    value: deadline,
+    bind: bindDeadline,
+    reset: resetDeadline
+  } = useInput(props.job ? getDate() : '');
   const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(
     props.job ? props.job.total_hours : ''
   );
@@ -59,7 +65,9 @@ const NewJob = props => {
     if (selected) selected.map(itm => employees.push(itm.value));
 
     let projectId = props.job ? props.job.project_id : props.projectId;
-    let projectManager = props.job ? props.job.project_manager : props.project.project_manager;
+    let projectManager = props.job
+      ? props.job.project_manager
+      : props.project.project_manager;
     let id = props.job ? props.job.id : null;
     let approval = props.job ? props.job.approval : false;
     let date_created = props.job ? props.job.date_created : new Date();
@@ -69,7 +77,7 @@ const NewJob = props => {
     let alert = [];
 
     if (props.job) {
-      if (props.job.status === "edit request") status = "in progress";
+      if (props.job.status === 'edit request') status = 'in progress';
       else status = props.job.status;
 
       employees.map(employee => {
@@ -77,7 +85,6 @@ const NewJob = props => {
           return alert.push(employee);
         else return null;
       });
-
     } else {
       employees.map(employee => {
         return alert.push(employee);
@@ -90,7 +97,7 @@ const NewJob = props => {
       deadline: new Date(deadline),
       description,
       name,
-      organization: context.currentUser.displayName,
+      organization: context.currentUser.org,
       total_hours,
       hours_completed,
       project_id: projectId,
@@ -112,8 +119,9 @@ const NewJob = props => {
 
     if (props.job) {
       let projects = [];
-      await dbServices.getProjectById(props.job.project_id, context.currentUser.displayName)
-        .then(project => projects.push(project.data()))
+      await dbServices
+        .getProjectById(props.job.project_id, context.currentUser.org)
+        .then(project => projects.push(project.data()));
       let project = projects[0];
       updatedProjectWorkers = project.project_workers;
     } else {
@@ -126,47 +134,65 @@ const NewJob = props => {
       } else return null;
     });
 
-    await dbServices.updateProjectWorkers(
-      projectId,
-      updatedProjectWorkers,
-      context.currentUser.displayName
-    ).then(props.showJobForm());
+    await dbServices
+      .updateProjectWorkers(
+        projectId,
+        updatedProjectWorkers,
+        context.currentUser.org
+      )
+      .then(props.showJobForm());
   };
-
 
   return (
     <>
       <form
         onSubmit={e => handleSubmit(e).then(setSubmitted(true))}
-        className="newjob__form"
+        className='newjob__form'
       >
         <fieldset>
           <legend>{props.projectId ? 'Add New Job' : 'Edit Job'}</legend>
-          <div className="input">
-            <Label htmlFor="name">Job Name: </Label>
-            <Input type="text" name="name" id="name" {...bindName} required /> 
+          <div className='input'>
+            <Label htmlFor='name'>Job Name: </Label>
+            <Input type='text' name='name' id='name' {...bindName} required />
           </div>
-          <div className="input">
-            <Label htmlFor="description">Details: </Label>
-            <Textarea name="description" id="description" {...bindDescription} required />
+          <div className='input'>
+            <Label htmlFor='description'>Details: </Label>
+            <Textarea
+              name='description'
+              id='description'
+              {...bindDescription}
+              required
+            />
           </div>
-          <div className="input">
-            <Label htmlFor="total_hours">Total Hours: </Label>
-            <input type="number" name="total_hours" id="total_hours" {...bindHours} required />
+          <div className='input'>
+            <Label htmlFor='total_hours'>Total Hours: </Label>
+            <input
+              type='number'
+              name='total_hours'
+              id='total_hours'
+              {...bindHours}
+              required
+            />
           </div>
-          <div className="input">
-            <Label htmlFor="deadline">Deadline: </Label>
-            <input type="date" name="deadline" id="deadline" {...bindDeadline} required />
+          <div className='input'>
+            <Label htmlFor='deadline'>Deadline: </Label>
+            <input
+              type='date'
+              name='deadline'
+              id='deadline'
+              {...bindDeadline}
+              required
+            />
           </div>
           <Dropdown
             isMulti={true}
             setSelected={setSelected}
             defaultValue={getEmployees()}
-            placeholder="Assign Employees"
+            placeholder='Assign Employees'
           />
-          <div className="input">
-            <input type="button" value="Cancel" onClick={props.showJobForm} />
-            <input type="submit" value="Submit" />
+          <div className='input'>
+            <input type='button' value='Cancel' onClick={props.showJobForm} />
+            <input type='submit' value='Submit' />
           </div>
         </fieldset>
       </form>

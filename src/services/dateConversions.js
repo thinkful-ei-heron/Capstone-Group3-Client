@@ -1,16 +1,26 @@
 import * as firebase from 'firebase/app';
 
 const dateConversions = {
+  //Convert <input type='date'> format to firestore timestamp
   dateToTimestamp(date) {
     return firebase.firestore.Timestamp.fromDate(new Date(date));
   },
 
-  timestampToDate(ts) {
-    const local = ts.toDate();
-    local.setMinutes(local.getMinutes() - local.getTimezoneOffset());
-    //console.log(local);
-    //console.log(local.toJSON());
-    return local.toJSON().slice(0, 10);
+  //Convert firestore timestamp to <input type='date'> format
+  TStoFormDate(ts) {
+    const date = ts.toDate();
+
+    return date.toJSON().slice(0, 10);
+  },
+
+  //Convert firestore timestamp to display format
+  TStoDisplayDate(ts) {
+    const date = ts.toDate();
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = date.toJSON().slice(8, 10);
+
+    return `${month}/${day}/${year}`;
   }
 };
 

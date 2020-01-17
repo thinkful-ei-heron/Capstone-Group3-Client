@@ -65,7 +65,7 @@ const ProjectForm = props => {
         name="deadline"
         id="project_deadline"
         type="date"
-        defaultValue={props.proj ? dateConversions.timestampToDate(props.proj.deadline) : ''}
+        defaultValue={props.proj ? dateConversions.TStoFormDate(props.proj.deadline) : ''}
       />
       <button type="submit">SUBMIT</button>
       <button onClick={props.toggleForm}>CANCEL</button>

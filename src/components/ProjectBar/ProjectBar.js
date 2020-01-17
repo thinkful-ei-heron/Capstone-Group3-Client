@@ -51,7 +51,7 @@ const ProjectBar = props => {
             <div className="ProjectBar__proj_prog">
               Est. Progress <ProgressBar percentage={props.proj.progress} />
             </div>
-            Deadline: {dateConversions.timestampToDate(props.proj.deadline)}
+            Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
           </div>
         </li>
       </Link>

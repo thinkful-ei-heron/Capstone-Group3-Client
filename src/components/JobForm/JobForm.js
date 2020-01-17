@@ -1,21 +1,23 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useInput } from '../../hooks/useInput';
-//import FirebaseContext from "../../services/context";
 import Dropdown from '../Dropdown/Dropdown';
+import { Input, Label, Textarea } from '../Form/Form';
+import dbServices from '../../services/dbServices';
+import { AuthContext } from '../../services/Auth';
 import './JobForm.css';
 
 const NewJob = props => {
-  //const fbContext = useContext(FirebaseContext);
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  /*
+
+  const context = useContext(AuthContext);
+  
   useEffect(() => {
     const resetFunction = () => {
       resetName();
       resetDescription();
       resetDeadline();
       resetHours();
-      props.showJobForm();
     };
     if (submitted)
       return function resetAll() {
@@ -38,11 +40,15 @@ const NewJob = props => {
     }
   };
 
-  const { value: name, bind: bindName, reset: resetName } = useInput(props.job ? props.job.name : '');
+  const { value: name, bind: bindName, reset: resetName } = useInput(
+    props.job ? props.job.name : ''
+  );
   const { value: description, bind: bindDescription, reset: resetDescription } = useInput(
     props.job ? props.job.description : ''
   );
-  const { value: deadline, bind: bindDeadline, reset: resetDeadline } = useInput(props.job ? getDate() : '');
+  const { value: deadline, bind: bindDeadline, reset: resetDeadline } = useInput(
+    props.job ? getDate() : ''
+  );
   const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(
     props.job ? props.job.total_hours : ''
   );
@@ -51,104 +57,108 @@ const NewJob = props => {
     e.preventDefault();
     let employees = [];
     if (selected) selected.map(itm => employees.push(itm.value));
-    let projectId;
-    let projectManager;
-    let project;
-    let id;
-    let approval;
-    let date_created;
-    let hours_completed;
-    let revision;
-    let status;
+
+    let projectId = props.job ? props.job.project_id : props.projectId;
+    let projectManager = props.job ? props.job.project_manager : props.project.project_manager;
+    let id = props.job ? props.job.id : null;
+    let approval = props.job ? props.job.approval : false;
+    let date_created = props.job ? props.job.date_created : new Date();
+    let hours_completed = props.job ? props.job.hours_completed : 0;
+    let status = 'in progress';
+    let edit = null;
+    let alert = [];
 
     if (props.job) {
-      projectId = props.job.project_id;
-      projectManager = props.job.project_manager;
-      project = fbContext.projects.find(project => project.id === props.job.project_id);
-      id = props.job.id;
-      approval = props.job.approval;
-      date_created = props.job.date_created;
-      hours_completed = props.job.hours_completed;
-      revision = props.job.revision;
-      status = props.job.status;
+      if (props.job.status === "edit request") status = "in progress";
+      else status = props.job.status;
+
+      employees.map(employee => {
+        if (!props.job.project_workers.includes(employee))
+          return alert.push(employee);
+        else return null;
+      });
+
+    } else {
+      employees.map(employee => {
+        return alert.push(employee);
+      });
     }
-    if (props.project) {
-      projectId = props.projectId;
-      projectManager = props.project.project_manager;
-      project = props.project;
-      id = null;
-      approval = false;
-      date_created = new Date();
-      hours_completed = 0;
-      revision = null;
-      status = 'in progress';
-    }
+
     const jobObj = {
       approval,
       date_created,
       deadline: new Date(deadline),
-      description: description,
-      name: name,
-      organization: fbContext.user.org,
-      total_hours: total_hours,
+      description,
+      name,
+      organization: context.currentUser.displayName,
+      total_hours,
       hours_completed,
       project_id: projectId,
       project_manager: projectManager,
       project_workers: employees,
-      revision,
       status,
-      id
+      id,
+      edit,
+      alert
     };
-    if (props.project) await fbContext.addJob(jobObj, projectId);
+
     if (props.job) {
-      await fbContext.editJob(id, jobObj);
-      await fbContext.editAndSetJobs(id, jobObj);
+      await dbServices.editJob(id, jobObj);
+    } else {
+      await dbServices.addJob(jobObj, projectId);
     }
-    let updatedProjectWorkers;
-    if (props.project) updatedProjectWorkers = props.project.project_workers;
+
+    let updatedProjectWorkers = null;
+
     if (props.job) {
-      let project = fbContext.projects.find(project => project.id === props.job.project_id);
+      let projects = [];
+      await dbServices.getProjectById(props.job.project_id, context.currentUser.displayName)
+        .then(project => projects.push(project.data()))
+      let project = projects[0];
       updatedProjectWorkers = project.project_workers;
+    } else {
+      updatedProjectWorkers = props.project.project_workers;
     }
+
     jobObj.project_workers.map(worker => {
       if (!updatedProjectWorkers.includes(worker)) {
         return updatedProjectWorkers.push(worker);
       } else return null;
     });
-    await fbContext.updateProjectWorkers(projectId, updatedProjectWorkers, project).then(setSubmitted(true));
+
+    await dbServices.updateProjectWorkers(
+      projectId,
+      updatedProjectWorkers,
+      context.currentUser.displayName
+    ).then(props.showJobForm());
   };
 
-  const populateEmployeeList = () => {
-    let employeeArray = [];
-    fbContext.employees.map(employee => employeeArray.push(employee.name));
-    return employeeArray;
-  };
-
-  let employees = populateEmployeeList();
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="newjob__form">
+      <form
+        onSubmit={e => handleSubmit(e).then(setSubmitted(true))}
+        className="newjob__form"
+      >
         <fieldset>
           <legend>{props.projectId ? 'Add New Job' : 'Edit Job'}</legend>
           <div className="input">
-            <label htmlFor="name">Job Name: </label>
-            <input type="text" name="name" id="name" {...bindName} required />
+            <Label htmlFor="name">Job Name: </Label>
+            <Input type="text" name="name" id="name" {...bindName} required /> 
           </div>
           <div className="input">
-            <label htmlFor="description">Details: </label>
-            <textarea name="description" id="description" {...bindDescription} required />
+            <Label htmlFor="description">Details: </Label>
+            <Textarea name="description" id="description" {...bindDescription} required />
           </div>
           <div className="input">
-            <label htmlFor="total_hours">Total Hours: </label>
+            <Label htmlFor="total_hours">Total Hours: </Label>
             <input type="number" name="total_hours" id="total_hours" {...bindHours} required />
           </div>
           <div className="input">
-            <label htmlFor="deadline">Deadline: </label>
+            <Label htmlFor="deadline">Deadline: </Label>
             <input type="date" name="deadline" id="deadline" {...bindDeadline} required />
           </div>
           <Dropdown
-            employees={employees}
             isMulti={true}
             setSelected={setSelected}
             defaultValue={getEmployees()}
@@ -162,7 +172,6 @@ const NewJob = props => {
       </form>
     </>
   );
-  */
 };
 
 export default NewJob;

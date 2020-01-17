@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import { ProgressBar } from "../ProgressBar/ProgressBar";
-import JobForm from "../JobForm/JobForm";
-import dbServices from "../../services/dbServices";
-import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
+import React, { Component } from 'react';
+import { ProgressBar } from '../ProgressBar/ProgressBar';
+import JobForm from '../JobForm/JobForm';
+import dbServices from '../../services/dbServices';
+import WorkerEditForm from '../WorkerEditForm/WorkerEditForm';
+import { AuthContext } from '../../services/Auth';
 
 class JobItem extends Component {
   constructor(props) {
@@ -10,10 +11,11 @@ class JobItem extends Component {
     this.state = {
       expandJob: false,
       showEditForm: false,
-      showWorkerEditForm: false,
-      role: "project manager"
-    };
+      showWorkerEditForm: false
+    }
   }
+
+  static contextType = AuthContext;
 
   handleApprovalSubmit = async (id, status, approval = false) => {
     await dbServices.updateJobStatus(
@@ -36,7 +38,7 @@ class JobItem extends Component {
 
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
     const progress = Math.floor((hours_completed / total_hours) * 100);
-    if (this.state.role === "project worker") {
+    if (this.context.currentUser.role === "project worker") {
       if (status === "completed") return <span>Project Completed</span>;
       if (status === "submitted" || status === "completed") return <></>;
       if (approval || progress !== 100) {
@@ -67,39 +69,42 @@ class JobItem extends Component {
       }
     }
 
-    if (this.state.role === "project manager" || this.state.role === "admin") {
-      if (status === "completed") return <span>Job Completed</span>;
-      return (
-        <>
-          {!approval && progress === 100 && status !== "revisions" ? (
-            <span>AWAITING APPROVAL</span>
-          ) : (
-            <></>
-          )}
-          {!approval && progress === 100 && status === "revisions" ? (
-            <span>Revision Requested</span>
-          ) : (
-            <></>
-          )}
-          <button onClick={this.showEditForm}>Edit</button>
-          {status === "submitted" ? (
-            <div>
-              <button
-                onClick={e => this.handleApprovalSubmit(id, "completed", true)}
-              >
-                Approve
-              </button>{" "}
-              <button onClick={e => this.handleApprovalSubmit(id, "revisions")}>
-                Request Revision
-              </button>
-            </div>
-          ) : (
-            <></>
-          )}
-        </>
-      );
-    }
+  if (
+    this.context.currentUser.role === "project manager" ||
+    this.context.currentUser.role === "admin"
+  ) {
+    if (status === "completed") return <span>Job Completed</span>;
+    return (
+      <>
+        {!approval && progress === 100 && status !== "revisions" ? (
+          <span>AWAITING APPROVAL</span>
+        ) : (
+          <></>
+        )}
+        {!approval && progress === 100 && status === "revisions" ? (
+          <span>Revision Requested</span>
+        ) : (
+          <></>
+        )}
+        <button onClick={this.showEditForm}>Edit</button>
+        {status === "submitted" ? (
+          <div>
+            <button
+              onClick={e => this.handleApprovalSubmit(id, "completed", true)}
+            >
+              Approve
+            </button>{" "}
+            <button onClick={e => this.handleApprovalSubmit(id, "revisions")}>
+              Request Revision
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
+      </>
+    );
   }
+}
 
   toggleExpand = () => {
     this.setState({
@@ -123,45 +128,35 @@ class JobItem extends Component {
     const job = this.props.job;
     const progress = Math.floor((job.hours_completed / job.total_hours) * 100);
     return (
-      <li key={job.id} id={job.id}>
-        <div className="job_details">
-          <button onClick={this.toggleExpand}>
-            {this.state.expandJob ? "-" : "+"}
-          </button>
-          <h4>{job.name}</h4>
-          <span>{job.description}</span>
-          <ProgressBar percentage={progress} />
-          {this.renderProjectButtons(
-            job.approval,
-            job.total_hours,
-            job.hours_completed,
-            job.id,
-            job.status
-          )}
-        </div>
-        {this.state.showEditForm ? (
-          <JobForm showJobForm={this.showEditForm} job={job} />
-        ) : (
-          ""
-        )}
-        {this.state.showWorkerEditForm &&
-        this.state.role === "project worker" ? (
-          <WorkerEditForm
-            job={job}
-            renderEditForm={this.showWorkerEditForm}
-            handleStatus={this.handleApprovalSubmit}
-          />
-        ) : (
-          <></>
-        )}
-        {this.state.expandJob ? (
-          <ul>{this.renderEmployeeList(job.project_workers)}</ul>
-        ) : (
-          ""
-        )}
-      </li>
-    );
-  }
+          <li key={job.id} id={job.id}>
+            <div className="job_details">
+              <button onClick={this.toggleExpand}>{this.state.expandJob ? '-' : '+'}</button>
+              <h4>{job.name}</h4>
+              <span>{job.description}</span>
+              <ProgressBar percentage={progress} />
+              {this.renderProjectButtons(
+                job.approval,
+                job.total_hours,
+                job.hours_completed,
+                job.id,
+                job.status
+              )}
+            </div>
+            {this.state.showEditForm ? <JobForm showJobForm={this.showEditForm} job={job} /> : ''}
+            {this.state.showWorkerEditForm &&
+              this.context.currentUser.role === "project worker" ? (
+                <WorkerEditForm
+                  job={job}
+                  renderEditForm={this.showWorkerEditForm}
+                  handleStatus={this.handleApprovalSubmit}
+                />
+              ) : (
+                <></>
+            )}
+            {this.state.expandJob ? <ul>{this.renderEmployeeList(job.project_workers)}</ul> : ''}
+         </li>
+        )
+    }
 }
 
 export default JobItem;

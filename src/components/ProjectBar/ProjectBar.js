@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import dbServices from '../../services/dbServices';
-import dateConversions from '../../services/dateConversions';
-import Dropdown from '../Dropdown/Dropdown';
-import { ProgressBar } from '../ProgressBar/ProgressBar';
-import ProjectForm from '../ProjectForm/ProjectForm';
-import './ProjectBar.css';
+import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
+import dbServices from "../../services/dbServices";
+import dateConversions from "../../services/dateConversions";
+import Dropdown from "../Dropdown/Dropdown";
+import { ProgressBar } from "../ProgressBar/ProgressBar";
+import ProjectForm from "../ProjectForm/ProjectForm";
+import "./ProjectBar.css";
 
 const ProjectBar = props => {
   const [selectedProjectManager, setSelectedProjectManager] = useState(null);
@@ -19,7 +19,11 @@ const ProjectBar = props => {
   };
 
   const setProjectManager = async () => {
-    await db.setProjectsManager(props.proj.id, props.proj.org_id, selectedProjectManager.value);
+    await db.setProjectsManager(
+      props.proj.id,
+      props.proj.org_id,
+      selectedProjectManager.value
+    );
     props.updatePM(props.proj.id, selectedProjectManager.value);
     toggleAssign();
   };
@@ -40,10 +44,16 @@ const ProjectBar = props => {
 
   return (
     <ul className="ProjectBar__project_container">
-      <Link className="ProjectBar__link_wrapper" to={`/project/${props.proj.id}`} key={props.proj.id}>
+      <Link
+        className="ProjectBar__link_wrapper"
+        to={`/project/${props.proj.id}`}
+        key={props.proj.id}
+      >
         <li className="ProjectBar__header">
           <span className="ProjectBar__proj_name">{props.proj.name}</span>
-          <span className="ProjectBar__proj_mgr">Manager: {props.proj.project_manager}</span>
+          <span className="ProjectBar__proj_mgr">
+            Manager: {props.proj.project_manager}
+          </span>
         </li>
         <li className="ProjectBar__description">{props.proj.description}</li>
         <li>
@@ -55,11 +65,13 @@ const ProjectBar = props => {
           </div>
         </li>
       </Link>
-      {props.role === 'owner' && (
+      {props.role === "owner" && (
         <li>
           {!assign && (
             <button onClick={toggleAssign}>
-              {props.proj.project_manager === 'unassigned' ? 'Assign' : 'Reassign'}
+              {props.proj.project_manager === "unassigned"
+                ? "Assign"
+                : "Reassign"}
             </button>
           )}
           <button className="ProjectBar__edit" onClick={toggleEdit}>
@@ -69,9 +81,16 @@ const ProjectBar = props => {
       )}
       {assign && (
         <li className="ProjectBar__selectPM">
-          <Dropdown employees={renderPmList()} isMulti={false} setSelected={setSelected} />
+          <Dropdown
+            employees={renderPmList()}
+            isMulti={false}
+            setSelected={setSelected}
+          />
           <div id="submit_pm">
-            <button onClick={setProjectManager} disabled={!selectedProjectManager && true}>
+            <button
+              onClick={setProjectManager}
+              disabled={!selectedProjectManager && true}
+            >
               Submit
             </button>
             <button onClick={toggleAssign}>Cancel</button>

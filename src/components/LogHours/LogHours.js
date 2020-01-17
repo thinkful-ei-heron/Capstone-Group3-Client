@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useInput } from "../../hooks/useInput";
 import { Label, Input } from "../Form/Form";
-import dbServices from '../../services/dbServices';
+import dbServices from "../../services/dbServices";
 
 const LogHours = props => {
-
   const { value: hours, bind: bindHours, reset: resetHours } = useInput("");
   const { value: job, bind: bindJob, reset: resetJob } = useInput("");
   const [submitted, setSubmitted] = useState(false);
 
   const populateSelect = () => {
     return props.jobs.map(job => {
-      if (job.project_workers.includes('admin5'))
+      if (job.project_workers.includes("admin5"))
         return <option key={job.id}>{job.name}</option>;
       else return null;
     });

@@ -121,10 +121,10 @@ export default class Dashboard extends Component {
                 {this.state.expandProjects && (
                   <div className="Dashboard__projects_container">
                     {this.state.projects.length !== 0 ? (
-                      this.state.projects.map((proj, i) => {
-                        return (
-                          <ul className="Dashboard__list">
-                            <li key={i}>
+                      <ul className="Dashboard__list">
+                        {this.state.projects.map(proj => {
+                          return (
+                            <li key={proj.id}>
                               <ProjectBar
                                 proj={proj}
                                 role={this.state.user.role}
@@ -133,9 +133,9 @@ export default class Dashboard extends Component {
                                 updateProjInState={this.updateProjInState}
                               />
                             </li>
-                          </ul>
-                        );
-                      })
+                          );
+                        })}{' '}
+                      </ul>
                     ) : (
                       <div className="Dashboard__no_projects">
                         <span className="Dashboard__welcome">Welcome!</span>

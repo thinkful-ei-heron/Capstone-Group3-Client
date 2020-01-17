@@ -99,6 +99,7 @@ const dbServices = {
   },
 
   updateProject(proj) {
+    console.log(proj.id);
     return db
       .collection('organizations')
       .doc(proj.org_id)

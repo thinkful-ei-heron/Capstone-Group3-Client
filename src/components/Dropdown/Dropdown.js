@@ -1,18 +1,33 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-//import FirebaseContext from "../../services/context";
+import { AuthContext } from '../../services/Auth';
+import dbServices from '../../services/dbServices';
+
 
 export default class Dropdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedOption: null
+      selectedOption: null,
+      employees: []
     };
   }
 
-  //static contextType = FirebaseContext;
+  static contextType = AuthContext;
 
-  componentDidMount() {
+
+  async componentDidMount() {
+    let employees = [];
+
+    await dbServices.getEmployees(this.context.currentUser.displayName)
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          employees.push(doc.data().name)
+        })
+      })
+    
+    this.setState({ employees })
+
     if (this.props.defaultValue) {
       this.setState({
         selectedOption: this.props.defaultValue
@@ -35,12 +50,12 @@ export default class Dropdown extends Component {
   };
 
   render() {
-    const { selectedOption } = this.state;
+    const { selectedOption, employees } = this.state;
     return (
       <Select
         value={selectedOption}
         onChange={this.handleChange}
-        options={this.populateOptions(this.props.employees)}
+        options={this.populateOptions(employees)}
         isMulti={this.props.isMulti ? true : false}
         isSearchable={true}
         // defaultValue={this.props.defaultValue ? this.props.defaultValue : false}

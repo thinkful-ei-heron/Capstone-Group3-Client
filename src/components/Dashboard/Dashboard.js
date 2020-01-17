@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import { Redirect, Link } from "react-router-dom";
-import FirebaseContext from "../../services/context";
-import Loading from "../Loading/Loading";
-import "./Dashboard.css";
-import { Sidebar } from "../Sidebar/Sidebar";
-import StyleIcon from "../StyleIcon/StyleIcon";
-import ProjectBar from "../ProjectBar/ProjectBar";
+import React, { Component } from 'react';
+import { Redirect, Link } from 'react-router-dom';
+import FirebaseContext from '../../services/context';
+import Loading from '../Loading/Loading';
+import './Dashboard.css';
+import { Sidebar } from '../Sidebar/Sidebar';
+import StyleIcon from '../StyleIcon/StyleIcon';
+import ProjectBar from '../ProjectBar/ProjectBar';
+import JobNotification from '../JobNotification/JobNotification';
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -31,11 +32,11 @@ export default class Dashboard extends Component {
   };
 
   filterProjects() {
-    if (this.context.user.role === "project worker")
+    if (this.context.user.role === 'project worker')
       return this.context.projects.filter(proj =>
         proj.project_workers.includes(this.context.user.name)
       );
-    if (this.context.user.role === "project manager")
+    if (this.context.user.role === 'project manager')
       return this.context.projects.filter(
         proj => proj.project_manager === this.context.user.name
       );
@@ -47,45 +48,49 @@ export default class Dashboard extends Component {
     else
       return (
         <>
-          {!this.context.user && <Redirect to="/register" />}
-          <section className="Dashboard__container">
-            <div className="Dashboard__header">
+          {!this.context.user && <Redirect to='/register' />}
+
+          <section className='Dashboard__container'>
+            <div className='Dashboard__header'>
               {<h2>{this.context.user.org}</h2>}
-              <span className="Dashboard__date">
+              <span className='Dashboard__date'>
                 {new Date().toLocaleString()}
               </span>
             </div>
-            <div className="Dashboard__main">
-              <section className="Dashboard__projects">
+            <div className='Dashboard__main'>
+              <JobNotification />
+              <section className='Dashboard__projects'>
                 <div
-                  className="Dashboard__project_header"
+                  className='Dashboard__project_header'
                   onClick={this.toggleExpandProjects}
                 >
-                  <div className="Dashboard__fa_h1">
+                  <div className='Dashboard__fa_h1'>
                     {StyleIcon({
-                      style: `${this.state.expandProjects ? "minus" : "plus"}`
+                      style: `${this.state.expandProjects ? 'minus' : 'plus'}`
                     })}
                     <h1>PROJECTS</h1>
                   </div>
-                  {this.context.user.role !== "project worker" && (
-                    <Link to="/new_project">
+                  {this.context.user.role !== 'project worker' && (
+                    <Link to='/new_project'>
                       <button>NEW</button>
                     </Link>
                   )}
                 </div>
                 {this.state.expandProjects && (
-                  <div className="Dashboard__projects_container">
+                  <div className='Dashboard__projects_container'>
                     {this.context.projects.length !== 0 ? (
                       this.filterProjects().map((proj, i) => {
                         return (
-                          <li key={i}>
-                            <ProjectBar proj={proj} />
-                          </li>
+                          <ul className='Dashboard__list'>
+                            <li key={proj.id}>
+                              <ProjectBar proj={proj} />
+                            </li>
+                          </ul>
                         );
                       })
                     ) : (
-                      <div className="Dashboard__no_projects">
-                        <span className="Dashboard__welcome">Welcome!</span>
+                      <div className='Dashboard__no_projects'>
+                        <span className='Dashboard__welcome'>Welcome!</span>
                         <span>
                           You currently have no projects, click the NEW button
                           above to add one.
@@ -95,14 +100,14 @@ export default class Dashboard extends Component {
                   </div>
                 )}
               </section>
-              <section className="Dashboard__personnel">
+              <section className='Dashboard__personnel'>
                 <div
-                  className="Dashboard__personnel_header"
+                  className='Dashboard__personnel_header'
                   onClick={this.toggleExpandPersonnel}
                 >
-                  <div className="Dashboard__fa_h1">
+                  <div className='Dashboard__fa_h1'>
                     {StyleIcon({
-                      style: `${this.state.expandPersonnel ? "minus" : "plus"}`
+                      style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`
                     })}
                     <h1>PERSONNEL</h1>
                   </div>

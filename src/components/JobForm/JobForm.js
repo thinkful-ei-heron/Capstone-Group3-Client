@@ -4,7 +4,7 @@ import FirebaseContext from "../../services/context";
 import Dropdown from "../Dropdown/Dropdown";
 import "./JobForm.css";
 
-const NewJob = props => {
+const JobForm = props => {
   const fbContext = useContext(FirebaseContext);
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -68,8 +68,9 @@ const NewJob = props => {
     let approval;
     let date_created;
     let hours_completed;
-    let revision;
     let status;
+    let edit;
+    let alert = [];
 
     if (props.job) {
       projectId = props.job.project_id;
@@ -81,8 +82,14 @@ const NewJob = props => {
       approval = props.job.approval;
       date_created = props.job.date_created;
       hours_completed = props.job.hours_completed;
-      revision = props.job.revision;
-      status = props.job.status;
+      if (props.job.status === "edit request") status = "in progress";
+      else status = props.job.status;
+      edit = null;
+      employees.map(employee => {
+        if (!props.job.project_workers.includes(employee))
+          return alert.push(employee);
+        else return null;
+      });
     }
     if (props.project) {
       projectId = props.projectId;
@@ -92,8 +99,11 @@ const NewJob = props => {
       approval = false;
       date_created = new Date();
       hours_completed = 0;
-      revision = null;
       status = "in progress";
+      edit = null;
+      employees.map(employee => {
+        return alert.push(employee);
+      });
     }
     const jobObj = {
       approval,
@@ -107,9 +117,10 @@ const NewJob = props => {
       project_id: projectId,
       project_manager: projectManager,
       project_workers: employees,
-      revision,
       status,
-      id
+      id,
+      edit,
+      alert
     };
     if (props.project) await fbContext.addJob(jobObj, projectId);
     if (props.job) {
@@ -129,9 +140,11 @@ const NewJob = props => {
         return updatedProjectWorkers.push(worker);
       } else return null;
     });
-    await fbContext
-      .updateProjectWorkers(projectId, updatedProjectWorkers, project)
-      .then(setSubmitted(true));
+    await fbContext.updateProjectWorkers(
+      projectId,
+      updatedProjectWorkers,
+      project
+    );
   };
 
   const populateEmployeeList = () => {
@@ -144,7 +157,10 @@ const NewJob = props => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="newjob__form">
+      <form
+        onSubmit={e => handleSubmit(e).then(setSubmitted(true))}
+        className="newjob__form"
+      >
         <fieldset>
           <legend>{props.projectId ? "Add New Job" : "Edit Job"}</legend>
           <div className="input">
@@ -197,4 +213,4 @@ const NewJob = props => {
   );
 };
 
-export default NewJob;
+export default JobForm;

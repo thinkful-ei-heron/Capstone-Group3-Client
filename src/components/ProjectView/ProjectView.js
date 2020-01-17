@@ -8,6 +8,7 @@ import Dropdown from "../Dropdown/Dropdown";
 import Statistics from "../Statistics/Statistics";
 import { Sidebar } from "../Sidebar/Sidebar";
 import JobForm from "../JobForm/JobForm";
+import LogHours from "../LogHours/LogHours";
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export default class ProjectView extends Component {
       },
       showJobForm: false,
       loading: true,
-      toggleState: false
+      toggleState: false,
+      showLogHours: false
     };
   }
 
@@ -111,6 +113,13 @@ export default class ProjectView extends Component {
     //code to set new PM for project
   };
 
+  renderLogHoursForm = e => {
+    e.preventDefault();
+    this.setState({
+      showLogHours: !this.state.showLogHours
+    });
+  };
+
   render() {
     const { project, showJobForm } = this.state;
     if (this.state.loading) {
@@ -163,6 +172,22 @@ export default class ProjectView extends Component {
               )}
             </header>
           </div>
+          <div>
+            <h2>
+              {this.context.user.role === "project worker" ? (
+                <button onClick={e => this.renderLogHoursForm(e)}>
+                  LOG HOURS
+                </button>
+              ) : (
+                <></>
+              )}
+            </h2>
+            {this.state.showLogHours ? (
+              <LogHours jobs={this.state.project.jobs} />
+            ) : (
+              <></>
+            )}
+          </div>
           <div id="projectView_main">
             <div id="jobs_stats_container">
               {this.context.user.role === "project worker" ? (
@@ -182,7 +207,7 @@ export default class ProjectView extends Component {
                   <button onClick={this.showJobForm}>Add Job</button>
                 )}
               </div>
-              {showJobForm ? (
+              {showJobForm && this.context.user.role === "project manager" ? (
                 <JobForm
                   {...this.props}
                   setJob={this.setJob}

@@ -1,5 +1,5 @@
-import React from "react";
-import app from "./base";
+import React from 'react';
+import app from './base';
 
 const FirebaseContext = React.createContext({
   user: {
@@ -34,9 +34,13 @@ const FirebaseContext = React.createContext({
   updateAndSetJobs: () => {},
   updateJobApproval: () => {},
   createOwner: () => {},
+  updateEdit: () => {},
   editJob: () => {},
   editAndSetJobs: () => {},
-  promoteUser: () => {}
+  listenForProjects: () => {},
+  listenForJobs: () => {},
+  updateProjectAlert: () => {},
+  updateNewEmployee: () => {}
 });
 
 export default FirebaseContext;
@@ -44,10 +48,10 @@ export default FirebaseContext;
 export class ContextProvider extends React.Component {
   state = {
     user: {
-      id: "",
-      name: "",
-      role: "",
-      org: ""
+      id: '',
+      name: '',
+      role: '',
+      org: ''
     },
     employees: [],
     projects: [],
@@ -61,13 +65,13 @@ export class ContextProvider extends React.Component {
     // Need to check if user is assigned to any projects/jobs
     // return alert/popup if so
     const userRef = this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
+      .collection('users')
       .doc(email);
     userRef
       .update({
-        role: "project manager"
+        role: 'project manager'
       })
       .then(() => {
         let newEmployees = this.state.employees;
@@ -80,7 +84,7 @@ export class ContextProvider extends React.Component {
         newEmployees = newEmployees.filter(
           employee => employee !== updatedEmployee
         );
-        updatedEmployee.role = "project manager";
+        updatedEmployee.role = 'project manager';
         newProjectManagers.push(updatedEmployee);
         this.setState({
           employees: newEmployees,
@@ -99,10 +103,10 @@ export class ContextProvider extends React.Component {
     this.setState(
       {
         user: {
-          id: "",
-          name: "",
-          role: "",
-          org: ""
+          id: '',
+          name: '',
+          role: '',
+          org: ''
         },
         employees: [],
         projects: [],
@@ -120,7 +124,7 @@ export class ContextProvider extends React.Component {
     this.setState({ loaded: bool });
   };
 
-  updateAndSetJobs = async (id, status, approval) => {
+  updateAndSetJobs = async (id, status, approval, alert = []) => {
     let index = this.state.jobs.findIndex(job => job.id === id);
     let newArray = this.state.jobs;
     newArray[index].status = status;
@@ -144,8 +148,8 @@ export class ContextProvider extends React.Component {
       projs = [],
       jobs = [],
       pms = [];
-    let name = "";
-    let role = "";
+    let name = '';
+    let role = '';
 
     const user = await this.getUser(email, org);
     const projects = await this.getProjects(org);
@@ -182,7 +186,7 @@ export class ContextProvider extends React.Component {
   createOwner = async (user, org) => {
     const addOrg = async () => {
       await this.db
-        .collection("organizations")
+        .collection('organizations')
         .doc(org)
         .set({
           name: org
@@ -196,20 +200,20 @@ export class ContextProvider extends React.Component {
 
   getUser = (email, org) => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
-      .where("email", "==", email)
+      .collection('users')
+      .where('email', '==', email)
       .get();
   };
 
   getJobs = (org, id) => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("projects")
+      .collection('projects')
       .doc(id)
-      .collection("jobs")
+      .collection('jobs')
       .get();
   };
 
@@ -219,9 +223,9 @@ export class ContextProvider extends React.Component {
 
   getProjects = org => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("projects")
+      .collection('projects')
       .get();
   };
 
@@ -231,10 +235,10 @@ export class ContextProvider extends React.Component {
 
   getEmployees = async org => {
     const emps = await this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
-      .where("role", "==", "project worker")
+      .collection('users')
+      .where('role', '==', 'project worker')
       .get();
     return emps;
   };
@@ -245,10 +249,10 @@ export class ContextProvider extends React.Component {
 
   getProjectManagers = org => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
-      .where("role", "==", "project manager")
+      .collection('users')
+      .where('role', '==', 'project manager')
       .get();
   };
 
@@ -258,16 +262,25 @@ export class ContextProvider extends React.Component {
 
   createUserInOrg = (newUser, org) => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
-      .collection("users")
+      .collection('users')
       .doc(newUser.email)
       .set(newUser);
   };
 
+  updateNewEmployee = async id => {
+    return this.db
+      .collection('organizations')
+      .doc(this.state.user.org)
+      .collection('users')
+      .doc(id)
+      .update({ new: false });
+  };
+
   getOrgName = org => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org)
       .get()
       .then(snapshot => {
@@ -325,59 +338,87 @@ export class ContextProvider extends React.Component {
   };
 
   addUser = newUser => {
-    this.db.collection("users").add(newUser);
+    this.db.collection('users').add(newUser);
   };
 
-  doGetProject = async (org_id = "HkeHO8n1eIaJSu6mnsd5") => {
+  doGetProject = async (org_id = 'HkeHO8n1eIaJSu6mnsd5') => {
     return this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(org_id)
-      .collection("projects")
+      .collection('projects')
       .get();
   };
 
   updateProjectWorkers = async (id, workers, project) => {
     await this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(this.state.user.org)
-      .collection("projects")
+      .collection('projects')
       .doc(id)
       .update({ project_workers: workers });
     await this.doGetProject(this.state.user.org);
   };
 
-  updateJobStatus = async (id, status, project_id, approval) => {
+  updateProjectAlert = async id => {
     await this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(this.state.user.org)
-      .collection("projects")
+      .collection('projects')
+      .doc(id)
+      .update({ alert: false });
+  };
+
+  updateJobStatus = async (
+    id,
+    status,
+    project_id,
+    approval = false,
+    alert = []
+  ) => {
+    await this.db
+      .collection('organizations')
+      .doc(this.state.user.org)
+      .collection('projects')
       .doc(project_id)
-      .collection("jobs")
+      .collection('jobs')
       .doc(id)
       .update({
         status: status,
-        approval: approval
+        approval: approval,
+        alert: alert
       });
   };
 
+  //we might not be using this
   updateJobApproval = async (id, project_id) => {
     await this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(this.state.user.org)
-      .collection("projects")
+      .collection('projects')
       .doc(project_id)
-      .collection("job")
+      .collection('jobs')
       .doc(id)
-      .update({ approval: true, status: "complete" });
+      .update({ approval: true, status: 'complete' });
+  };
+
+  updateEdit = async (edit, id, project_id) => {
+    await this.db
+      .collection('organizations')
+      .doc(this.state.user.org)
+      .collection('projects')
+      .doc(project_id)
+      .collection('jobs')
+      .doc(id)
+      .update({ edit: edit });
   };
 
   editJob = async (id, jobObj) => {
     await this.db
-      .collection("organizations")
+      .collection('organizations')
       .doc(this.state.user.org)
-      .collection("projects")
+      .collection('projects')
       .doc(jobObj.project_id)
-      .collection("jobs")
+      .collection('jobs')
       .doc(id)
       .update(jobObj);
   };
@@ -413,9 +454,13 @@ export class ContextProvider extends React.Component {
       updateAndSetJobs: this.updateAndSetJobs,
       updateJobApproval: this.updateJobApproval,
       createOwner: this.createOwner,
+      updateEdit: this.updateEdit,
       editJob: this.editJob,
       editAndSetJobs: this.editAndSetJobs,
-      promoteUser: this.promoteUser
+      listenForProjects: this.listenForProjects,
+      listenForJobs: this.listenForJobs,
+      updateProjectAlert: this.updateProjectAlertg,
+      updateNewEmployee: this.updateNewEmployee
     };
     return (
       <FirebaseContext.Provider value={value}>

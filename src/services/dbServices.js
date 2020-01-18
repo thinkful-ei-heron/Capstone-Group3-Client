@@ -6,7 +6,7 @@ const db = app.firestore();
 //   this.setState({ loaded: bool });
 // };
 const dbServices = {
-  createOwner(org) {
+  createOwner(user, org) {
     const addOrg = async () =>
       await db
         .collection('organizations')
@@ -14,8 +14,17 @@ const dbServices = {
         .set({
           name: org
         });
-    addOrg();
+    addOrg().then(() => this.createUserInOrg(user, org));
     return 'success';
+  },
+
+  createUserInOrg(newUser, org) {
+    return db
+      .collection('organizations')
+      .doc(org)
+      .collection('users')
+      .doc(newUser.email)
+      .set(newUser);
   },
 
   async initDashboard(name, role, org) {
@@ -156,15 +165,6 @@ const dbServices = {
       .collection('users')
       .where('role', '==', 'project manager')
       .get();
-  },
-
-  createUserInOrg(newUser, org) {
-    return db
-      .collection('organizations')
-      .doc(org)
-      .collection('users')
-      .doc(newUser.email)
-      .set(newUser);
   },
 
   getOrgName(org) {

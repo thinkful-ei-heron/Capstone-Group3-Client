@@ -59,7 +59,7 @@ export default class ProjectView extends Component {
   render() {
     const { project, showJobForm } = this.state;
     const user = this.context.currentUser;
-    
+
     if (this.state.loading) {
       return <Loading />;
     } else {

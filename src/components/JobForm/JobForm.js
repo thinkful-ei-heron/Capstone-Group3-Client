@@ -10,7 +10,7 @@ const NewJob = props => {
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const resetFunction = () => {
@@ -135,11 +135,7 @@ const NewJob = props => {
     });
 
     await dbServices
-      .updateProjectWorkers(
-        projectId,
-        updatedProjectWorkers,
-        currentUser.org
-      )
+      .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
       .then(props.showJobForm());
   };
 

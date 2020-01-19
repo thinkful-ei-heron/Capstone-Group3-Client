@@ -1,7 +1,7 @@
 .ProjectBar__project_container {
   box-sizing: border-box;
   width: 100%;
-  padding: 15px;
+  padding: 10px;
 }
 
 .ProjectBar__header {
@@ -21,6 +21,18 @@
 
 .ProjectBar__description {
   margin-bottom: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.ProjectBar__description span {
+  margin-right: 7px;
+}
+
+.ProjectBar__description_text {
+  margin-top: 3px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .ProjectBar__proj_prog_date {
@@ -33,16 +45,57 @@
   width: 150px;
 }
 
-@media only screen and (min-width: 750px) {
+@media only screen and (min-width: 1024px) {
   .ProjectBar__link_wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-right: 15px;
-    margin-left: 15px;
+    margin-right: 10px;
+    margin-left: 5px;
+  }
+
+  .ProjectBar__header {
+    align-self: start;
+  }
+
+  .ProjectBar__proj_name {
+    font-size: 1.3rem;
+  }
+
+  .ProjectBar__proj_mgr {
+    font-size: 1rem;
   }
 
   .ProjectBar__proj_prog {
     margin-right: 15px;
+  }
+
+  .ProjectBar__proj_prog_date {
+    flex-direction: column;
+    align-items: start;
+    width: 150px;
+  }
+
+  .ProjectBar__proj_prog {
+    margin-bottom: 5px;
+  }
+
+  .ProjectBar__description {
+    width: 40%;
+    min-width: 250px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .ProjectBar__description span {
+    margin-right: 7px;
+  }
+
+  .ProjectBar__description_text {
+    height: 50px;
+    margin-top: 3px;
+    line-height: 1.2rem;
+    background-color: rgba(255, 255, 255, 0.5);
   }
 }

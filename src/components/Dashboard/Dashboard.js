@@ -4,10 +4,10 @@ import { AuthContext } from '../../services/Auth.js';
 import dbServices from '../../services/dbServices';
 import Loading from '../Loading/Loading';
 import NewProject from '../NewProject/NewProject';
-// import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from '../Sidebar/Sidebar';
 import StyleIcon from '../StyleIcon/StyleIcon';
 import ProjectBar from '../ProjectBar/ProjectBar';
-// import JobNotification from '../JobNotification/JobNotification';
+import JobNotification from '../JobNotification/JobNotification';
 import './Dashboard.css';
 
 ////////////////////////////////////////////////////////////////////
@@ -42,9 +42,9 @@ export default class Dashboard extends Component {
     this.setState({
       user: {
         id: email,
-        name: data.name,
+        name: name,
         org: org,
-        role: data.role
+        role: role
       },
       projects: data.projects,
       projectManagers: data.project_managers,
@@ -107,7 +107,7 @@ export default class Dashboard extends Component {
               <span className="Dashboard__date">
                 {new Date().toLocaleString()}
               </span>
-              {/* <JobNotification user={this.state.user} /> */}
+              <JobNotification user={this.state.user} />
             </div>
 
             <div className="Dashboard__main">
@@ -123,9 +123,7 @@ export default class Dashboard extends Component {
                     <h1>Projects</h1>
                   </div>
                   {this.state.user.role !== 'project worker' && (
-                    <button className="Dashboard__new" onClick={this.toggleNewProj}>
-                      New
-                    </button>
+                    <button onClick={this.toggleNewProj}>NEW</button>
                   )}
                 </div>
                 {this.state.newProj && (
@@ -177,7 +175,7 @@ export default class Dashboard extends Component {
                     <h1>Personnel</h1>
                   </div>
                 </div>
-                {/* <Sidebar user={this.state.user} /> */}
+                <Sidebar user={this.state.user} />
               </section>
             </div>
           </section>

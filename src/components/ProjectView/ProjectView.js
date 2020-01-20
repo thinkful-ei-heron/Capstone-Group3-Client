@@ -20,7 +20,10 @@ export default class ProjectView extends Component {
       project: null,
       showJobForm: false,
       loading: true,
-      toggleState: false
+      toggleState: false,
+      user: {
+        role: 'project worker'
+      }
     };
   }
 

@@ -166,7 +166,7 @@ class JobItem extends Component {
         {this.state.expandJob ? (
           <ul>{this.renderEmployeeList(job.project_workers)}</ul>
         ) : (
-          ''
+          <></>
         )}
       </li>
     );

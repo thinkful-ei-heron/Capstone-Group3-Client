@@ -18,16 +18,29 @@ const dbServices = {
     return 'success';
   },
 
-  createUserInOrg(newUser, org) {
+  async getEmployeeProjects(name, org) {
     return db
       .collection('organizations')
       .doc(org)
-      .collection('users')
-      .doc(newUser.email)
-      .set(newUser);
+      .collection('projects')
+      .where('project_workers', 'array-contains', name)
+      .get();
+  },
+
+  async getProjectJobsForEmployee(name, org, id) {
+    return db
+      .collection('organizations')
+      .doc(org)
+      .collection('projects')
+      .doc(id)
+      .collection('jobs')
+      .where('project_workers', 'array-contains', name)
+      .get();
   },
 
   async initDashboard(name, role, org) {
+    // let name = '';
+    // let role = '';
     const projs = [];
     const managers = [];
 
@@ -139,7 +152,7 @@ const dbServices = {
       .get();
   },
 
-  getJobs(org, id) {
+  async getJobs(org, id) {
     return db
       .collection('organizations')
       .doc(org)
@@ -149,7 +162,7 @@ const dbServices = {
       .get();
   },
 
-  getEmployees(org) {
+  async getEmployees(org) {
     return db
       .collection('organizations')
       .doc(org)
@@ -202,6 +215,26 @@ const dbServices = {
       .update({ project_workers: workers });
   },
 
+  async updateJob(jobObj) {
+    await db
+      .collection('organizations')
+      .doc(jobObj.organization)
+      .collection('projects')
+      .doc(jobObj.project_id)
+      .collection('jobs')
+      .doc(jobObj.id)
+      .update({ ...jobObj });
+  },
+
+  async updateProject(projObj) {
+    await db
+      .collection('organizations')
+      .doc(projObj.org_id)
+      .collection('projects')
+      .doc(projObj.id)
+      .update({ ...projObj });
+  },
+
   async updateJobStatus(id, status, project_id, approval, org) {
     await db
       .collection('organizations')
@@ -216,6 +249,17 @@ const dbServices = {
       });
   },
 
+  async updateJobApproval(id, project_id) {
+    await db
+      .collection('organizations')
+      .doc(this.state.user.org)
+      .collection('projects')
+      .doc(project_id)
+      .collection('job')
+      .doc(id)
+      .update({ approval: true, status: 'complete' });
+  },
+
   async editJob(id, jobObj) {
     await db
       .collection('organizations')
@@ -225,6 +269,34 @@ const dbServices = {
       .collection('jobs')
       .doc(id)
       .update(jobObj);
+  },
+
+  async updateAndSetJobs(id, status, approval) {
+    let index = this.state.jobs.findIndex(job => job.id === id);
+    let newArray = this.state.jobs;
+    newArray[index].status = status;
+    newArray[index].approval = approval;
+    this.setState({
+      jobs: newArray
+    });
+  },
+
+  async editAndSetJobs(id, jobObj) {
+    let index = this.state.jobs.findIndex(job => job.id === id);
+    let newArray = this.state.jobs;
+    newArray[index] = jobObj;
+    this.setState({
+      jobs: newArray
+    });
+  },
+
+  async updateWorker(worker, org) {
+    await db
+      .collection('organizations')
+      .doc(org)
+      .collection('users')
+      .doc(worker.email)
+      .update({ ...worker });
   }
 };
 

@@ -79,6 +79,8 @@ const App = props => {
             <PrivateRoute
               exact
               path="/logout"
+              location={props.location}
+              setPath={setPath}
               component={() => <Logout setPath={setPath} />}
             />
             <Route>

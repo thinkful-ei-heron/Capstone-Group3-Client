@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import Select from 'react-select';
-import { AuthContext } from '../../services/Auth';
-import dbServices from '../../services/dbServices';
+import React, { Component } from "react";
+import Select from "react-select";
+import { AuthContext } from "../../services/Auth";
+import dbServices from "../../services/dbServices";
 
 export default class Dropdown extends Component {
   constructor(props) {
@@ -71,7 +71,7 @@ export default class Dropdown extends Component {
         isSearchable={true}
         defaultValue={this.props.defaultValue ? this.props.defaultValue : false}
         placeholder={
-          this.props.placeholder ? this.props.placeholder : 'Select...'
+          this.props.placeholder ? this.props.placeholder : "Select..."
         }
       />
     );

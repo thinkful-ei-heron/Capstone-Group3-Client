@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../../services/Auth';
-import dbServices from '../../services/dbServices';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../services/Auth";
+import dbServices from "../../services/dbServices";
+import { Link } from "react-router-dom";
 
 const Sidebar = props => {
   let [employeeList, setEmployeeList] = useState([]);
@@ -91,13 +91,13 @@ const Sidebar = props => {
   return (
     <div>
       <h3>
-        <button onClick={() => toggleExpand('pm')}>Project Managers</button>
+        <button onClick={() => toggleExpand("pm")}>Project Managers</button>
       </h3>
-      {!expanded.includes('pm') ? <ul>{renderProjectManagers()}</ul> : <></>}
+      {!expanded.includes("pm") ? <ul>{renderProjectManagers()}</ul> : <></>}
       <h3>
-        <button onClick={() => toggleExpand('employees')}>Employees</button>
+        <button onClick={() => toggleExpand("employees")}>Employees</button>
       </h3>
-      {!expanded.includes('employees') ? <ul>{renderEmployees()}</ul> : <></>}
+      {!expanded.includes("employees") ? <ul>{renderEmployees()}</ul> : <></>}
     </div>
   );
 };

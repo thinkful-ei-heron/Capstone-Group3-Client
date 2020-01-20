@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import dbServices from '../../services/dbServices';
-import JobNotificationList from './JobNotificationList';
-import OwnerNotification from './OwnerNotification';
-import { AuthContext } from '../../services/Auth';
+import React, { Component } from "react";
+import dbServices from "../../services/dbServices";
+import JobNotificationList from "./JobNotificationList";
+import OwnerNotification from "./OwnerNotification";
+import { AuthContext } from "../../services/Auth";
 
 export default class JobNotification extends Component {
   state = {
@@ -18,7 +18,7 @@ export default class JobNotification extends Component {
 
   static getProjects = async () => {
     let projectList = [];
-    if (this.context.currentUser.role !== 'owner')
+    if (this.context.currentUser.role !== "owner")
       await dbServices
         .getProjectsByRole(this.context.currentUser)
         .then(snapshot => {
@@ -31,14 +31,14 @@ export default class JobNotification extends Component {
   };
 
   populateNotificationList = async (projectList = null) => {
-    if (this.context.currentUser.role === 'project manager') {
+    if (this.context.currentUser.role === "project manager") {
       let jobsList = [];
       projectList.map(async project => {
         const snapshot = await dbServices.getJobs(project.org_id, project.id);
         snapshot.forEach(doc => {
           if (
-            doc.data().status === 'submitted' ||
-            doc.data().status === 'edit request'
+            doc.data().status === "submitted" ||
+            doc.data().status === "edit request"
           )
             jobsList.push(doc.data());
         });
@@ -49,7 +49,7 @@ export default class JobNotification extends Component {
         return jobsList;
       });
     }
-    if (this.context.currentUser.role === 'project worker') {
+    if (this.context.currentUser.role === "project worker") {
       let jobsList = [];
       projectList.map(async project => {
         const snapshot = await dbServices.getJobs(project.org_id, project.id);
@@ -64,11 +64,11 @@ export default class JobNotification extends Component {
         return jobsList;
       });
     }
-    if (this.context.currentUser.role === 'owner') {
+    if (this.context.currentUser.role === "owner") {
       let employees = [];
       let completed = [];
       let newProj = [];
-      console.log('employees');
+      console.log("employees");
       await dbServices
         .getEmployees(this.context.currentUser.org)
         .then(snapshot => {
@@ -80,7 +80,7 @@ export default class JobNotification extends Component {
             notificationCount: this.state.notificationCount + employees.length
           });
         });
-      console.log('projects');
+      console.log("projects");
       await dbServices
         .getProjectsByRole(this.context.currentUser)
         .then(snapshot => {
@@ -102,8 +102,8 @@ export default class JobNotification extends Component {
 
   async componentDidMount() {
     if (
-      this.context.currentUser.role === 'project worker' ||
-      this.context.currentUser.role === 'project manager'
+      this.context.currentUser.role === "project worker" ||
+      this.context.currentUser.role === "project manager"
     )
       await this.getProjects().then(projects =>
         this.populateNotificationList(projects)
@@ -141,7 +141,7 @@ export default class JobNotification extends Component {
   };
 
   render() {
-    if (this.context.currentUser.role === 'owner')
+    if (this.context.currentUser.role === "owner")
       return (
         <>
           <button onClick={e => this.renderList(e)}>

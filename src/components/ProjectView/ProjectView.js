@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { ProgressBar } from '../ProgressBar/ProgressBar';
-import './ProjectView.css';
-import Loading from '../Loading/Loading';
-import { AuthContext } from '../../services/Auth.js';
-import Jobs from '../Jobs/Jobs';
-import Statistics from '../Statistics/Statistics';
-import Sidebar from '../Sidebar/Sidebar';
-import JobForm from '../JobForm/JobForm';
-import dbServices from '../../services/dbServices';
-import dateConversions from '../../services/dateConversions';
+import React, { Component } from "react";
+import { ProgressBar } from "../ProgressBar/ProgressBar";
+import "./ProjectView.css";
+import Loading from "../Loading/Loading";
+import { AuthContext } from "../../services/Auth.js";
+import Jobs from "../Jobs/Jobs";
+import Statistics from "../Statistics/Statistics";
+import Sidebar from "../Sidebar/Sidebar";
+import JobForm from "../JobForm/JobForm";
+import dbServices from "../../services/dbServices";
+import dateConversions from "../../services/dateConversions";
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -87,15 +87,15 @@ export default class ProjectView extends Component {
           </div>
           <div id="projectView_main">
             <div id="jobs_stats_container">
-              {user.role === 'project worker' ? <></> : <Statistics />}
+              {user.role === "project worker" ? <></> : <Statistics />}
               <div id="jobs_container">
-                {user.role === 'project worker' ? (
+                {user.role === "project worker" ? (
                   <h3>Your Jobs</h3>
                 ) : (
                   <h3>Jobs</h3>
                 )}
-                {user.role === 'project worker' ? (
-                  ''
+                {user.role === "project worker" ? (
+                  ""
                 ) : (
                   <button onClick={this.showJobForm}>Add Job</button>
                 )}
@@ -109,7 +109,7 @@ export default class ProjectView extends Component {
                   projectId={this.props.id}
                 />
               ) : (
-                ''
+                ""
               )}
               <Jobs projectId={this.props.id} />
             </div>

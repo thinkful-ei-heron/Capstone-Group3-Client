@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import dbServices from "../../services/dbServices";
+import { AuthContext } from "../../services/Auth";
 
 export default class OwnerNotification extends Component {
   state = {
@@ -9,10 +10,12 @@ export default class OwnerNotification extends Component {
     completedProjects: null
   };
 
+  static contextType = AuthContext;
+
   handleNewEmployee = async (e, employee) => {
     e.preventDefault();
     employee.new = false;
-    await dbServices.updateWorker(employee, this.props.user.org);
+    await dbServices.updateWorker(employee, this.context.currentUser.org);
     this.props.updateList(employee);
     this.setState({
       newEmployees: this.props.newEmployees

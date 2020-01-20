@@ -11,32 +11,48 @@ const SignUp = ({ history }, props) => {
     let { email, password, name, orgName } = event.target.elements;
     const registerOwner = await functions.httpsCallable("registerOwner");
     const registerWorker = await functions.httpsCallable("registerWorker");
+    const registerProjectManager = await functions.httpsCallable(
+      "registerProjectManager"
+    );
     let values = {
       email: email.value,
       password: password.value,
       name: name.value,
       org: orgName.value,
-      displayName: name.value,
-      role: "owner"
+      displayName: name.value
     };
     let valuesNoPass = {
       email: email.value,
       name: name.value,
       org: orgName.value,
-      displayName: name.value,
-      role: "project worker"
+      displayName: name.value
     };
     switch (history.location.pathname) {
       case "/owner-signup":
         registerOwner(values)
-          .then(() => dbServices.createOwner(valuesNoPass, values.org))
+          .then(() =>
+            dbServices.createOwner(
+              { ...valuesNoPass, role: "owner" },
+              values.org
+            )
+          )
           .catch(error => alert(error));
         break;
       case "/worker-signup":
         registerWorker(values).then(() =>
-          dbServices.createUserInOrg(valuesNoPass, orgName.value)
+          dbServices.createUserInOrg(
+            { ...valuesNoPass, role: "project worker" },
+            orgName.value
+          )
         );
         break;
+      case "/manager-signup":
+        registerProjectManager(values).then(() =>
+          dbServices.createUserInOrg(
+            { ...valuesNoPass, role: "project manager" },
+            orgName.value
+          )
+        );
       default:
         registerWorker(values);
     }

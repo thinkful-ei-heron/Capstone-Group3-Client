@@ -1,68 +1,92 @@
-import React, { useContext, useState } from 'react';
-//import FirebaseContext from "../../services/context";
-import { ProjectManagers } from './ProjectManagers';
-import { ProjectWorkers } from './ProjectWorkers';
-import './Sidebar.css';
+import React, { useState, useEffect } from "react";
+import dbServices from "../../services/dbServices";
+import { Link } from "react-router-dom";
 
 const Sidebar = props => {
-  //const context = useContext(FirebaseContext);
-
+  let [employeeList, setEmployeeList] = useState([]);
+  let [pmList, setPMList] = useState([]);
   let [expanded, setExpanded] = useState([]);
   let [clicked, setClick] = useState(false);
-  let [location, setLocation] = useState('');
-  let [locationUpdated, setUpdate] = useState(false);
 
-  //console.log(window.location.href.includes("project"));
+  if (clicked === true) setClick(false);
 
-  const toggleExpand = e => {
+  const toggleExpand = section => {
     setClick(true);
     let newExpanded = [];
-    if (!expanded.includes(e.target.id)) {
+    if (!expanded.includes(section)) {
       newExpanded = expanded;
-      newExpanded.push(e.target.id);
+      newExpanded.push(section);
       setExpanded(newExpanded);
     } else {
-      newExpanded = expanded.filter(id => id !== e.target.id);
+      newExpanded = expanded.filter(item => item !== section);
       setExpanded(newExpanded);
     }
     return expanded;
   };
 
-  if (clicked === true) setClick(false);
+  useEffect(() => {
+    const getEmployees = async () => {
+      let employees = [];
+      return await dbServices.getEmployees(props.user.org).then(snapshot => {
+        snapshot.forEach(doc => {
+          employees.push(doc.data());
+        });
+        return employees;
+      });
+    };
 
-  if (!window.location.href.includes('project') && locationUpdated === true) {
-    setUpdate(false);
-  }
+    const getPMs = async () => {
+      let pms = [];
+      return await dbServices
+        .getProjectManagers(props.user.org)
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            pms.push(doc.data());
+          });
+          return pms;
+        });
+    };
 
-  if (window.location.href.includes('project') && locationUpdated === false) {
-    setLocation('project');
-    setUpdate(true);
-  }
+    getEmployees().then(employees => {
+      setEmployeeList(employees);
+    });
+    getPMs().then(pms => {
+      setPMList(pms);
+    });
+  }, []);
 
-  /*
-  if (context.user.role === 'project worker' && location !== 'project') {
-    return <></>;
-  } else if (context.user.role === 'project manager' || context.user.role === 'project worker') {
-    return (
-      <div className="Sidebar">
-        <h2>Employees</h2>
-        <ul className="Sidebar__list">
-          <ProjectWorkers expanded={expanded} toggleExpand={toggleExpand} />
-        </ul>
-      </div>
-    );
-  } else if (context.user.role === 'admin') {
-    //change to admin
-    return (
-      <div className="Sidebar">
-        <h2>PROJECT MANAGERS</h2>
-        <ul className="Sidebar__list">
-          <ProjectManagers expanded={expanded} toggleExpand={toggleExpand} />
-        </ul>
-      </div>
-    );
-  } else return null;
-*/
+  const renderProjectManagers = () => {
+    return pmList.map((pm, index) => {
+      return (
+        <li key={pm.name + index}>
+          <Link to={{ pathname: `/profile/${pm.email}` }}>{pm.name}</Link>
+        </li>
+      );
+    });
+  };
+
+  const renderEmployees = () => {
+    return employeeList.map((emp, index) => {
+      return (
+        <li key={emp.name + index}>
+          <Link to={{ pathname: `/profile/${emp.email}` }}>{emp.name}</Link>
+        </li>
+      );
+    });
+  };
+
+  return (
+    <div>
+      <h3>
+        <button onClick={() => toggleExpand("pm")}>Project Managers</button>
+      </h3>
+      {!expanded.includes("pm") ? <ul>{renderProjectManagers()}</ul> : <></>}
+      <h3>
+        <button onClick={() => toggleExpand("employees")}>Employees</button>
+      </h3>
+      {!expanded.includes("employees") ? <ul>{renderEmployees()}</ul> : <></>}
+    </div>
+  );
 };
 
-export { Sidebar };
+export default Sidebar;

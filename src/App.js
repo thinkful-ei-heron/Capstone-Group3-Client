@@ -79,9 +79,7 @@ const App = props => {
             <PrivateRoute
               exact
               path="/logout"
-              location={props.location}
-              setPath={setPath}
-              component={Logout}
+              component={() => <Logout setPath={setPath} />}
             />
             <Route>
               <h3>Need to implement a catchall route/component here</h3>

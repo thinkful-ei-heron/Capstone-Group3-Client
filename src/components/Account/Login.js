@@ -1,9 +1,9 @@
-import React, { useCallback, useContext } from "react";
-import { withRouter, Redirect } from "react-router";
-import app from "../../services/base.js";
-import { AuthContext } from "../../services/Auth.js";
-import { Label, Input } from "../Form/Form";
-import "./Login.css";
+import React, { useCallback, useContext } from 'react';
+import { withRouter, Redirect } from 'react-router';
+import app from '../../services/base.js';
+import { AuthContext } from '../../services/Auth.js';
+import { Label, Input } from '../Form/Form';
+import './Login.css';
 
 const Login = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
@@ -14,7 +14,7 @@ const Login = ({ history }) => {
       await app
         .auth()
         .signInWithEmailAndPassword(email.value, password.value)
-        .then(() => history.push("/dashboard"))
+        .then(() => history.push('/dashboard'))
         .catch(error => console.warn(error));
     },
     [history]

@@ -14,7 +14,8 @@ export default class Jobs extends Component {
     this.state = {
       jobs: [],
       loading: true,
-      showLogHours: false
+      showLogHours: false,
+      user: 'project manager'
     };
   }
 

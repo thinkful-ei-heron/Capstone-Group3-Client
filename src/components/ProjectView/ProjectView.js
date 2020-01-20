@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { ProgressBar } from "../ProgressBar/ProgressBar";
-import "./ProjectView.css";
-import Loading from "../Loading/Loading";
-import { AuthContext } from "../../services/Auth.js";
-import Jobs from "../Jobs/Jobs";
-import Dropdown from "../Dropdown/Dropdown";
-import Statistics from "../Statistics/Statistics";
-import { Sidebar } from "../Sidebar/Sidebar";
-import JobForm from "../JobForm/JobForm";
-import app from "../../services/base";
-import dateConversions from "../../services/dateConversions";
+import React, { Component } from 'react';
+import { ProgressBar } from '../ProgressBar/ProgressBar';
+import './ProjectView.css';
+import Loading from '../Loading/Loading';
+import { AuthContext } from '../../services/Auth.js';
+import Jobs from '../Jobs/Jobs';
+import Dropdown from '../Dropdown/Dropdown';
+import Statistics from '../Statistics/Statistics';
+// import { Sidebar } from "../Sidebar/Sidebar";
+import JobForm from '../JobForm/JobForm';
+import app from '../../services/base';
+import dateConversions from '../../services/dateConversions';
 
 export default class ProjectView extends Component {
   constructor(props) {
     super(props);
     this.unsubscribe = null;
-    this.ref = app.firestore().collection("organizations");
+    this.ref = app.firestore().collection('organizations');
     this.state = {
       project: null,
       showJobForm: false,
@@ -36,7 +36,7 @@ export default class ProjectView extends Component {
   async componentDidMount() {
     this.unsubscribe = this.ref
       .doc(this.context.currentUser.org)
-      .collection("projects")
+      .collection('projects')
       .doc(this.props.id)
       .onSnapshot(
         doc => {
@@ -87,8 +87,8 @@ export default class ProjectView extends Component {
                   Deadline: {dateConversions.TStoDisplayDate(project.deadline)}
                 </span>
               </div>
-              {user.role === "owner" &&
-              project.project_manager === "unassigned" ? (
+              {user.role === 'owner' &&
+              project.project_manager === 'unassigned' ? (
                 <div id="select_pm">
                   <h3>SELECT Project Manager</h3>
                   <Dropdown
@@ -101,25 +101,25 @@ export default class ProjectView extends Component {
                       <button onClick={this.setProjectManager}></button>
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                 </div>
               ) : (
-                ""
+                ''
               )}
             </header>
           </div>
           <div id="projectView_main">
             <div id="jobs_stats_container">
-              {user.role === "project worker" ? <></> : <Statistics />}
+              {user.role === 'project worker' ? <></> : <Statistics />}
               <div id="jobs_container">
-                {user.role === "project worker" ? (
+                {user.role === 'project worker' ? (
                   <h3>Your Jobs</h3>
                 ) : (
                   <h3>Jobs</h3>
                 )}
-                {user.role === "project worker" ? (
-                  ""
+                {user.role === 'project worker' ? (
+                  ''
                 ) : (
                   <button onClick={this.showJobForm}>Add Job</button>
                 )}
@@ -133,7 +133,7 @@ export default class ProjectView extends Component {
                   projectId={this.props.id}
                 />
               ) : (
-                ""
+                ''
               )}
               <Jobs projectId={this.props.id} />
             </div>

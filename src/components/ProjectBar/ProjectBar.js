@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
-import dbServices from "../../services/dbServices";
-import dateConversions from "../../services/dateConversions";
-import Dropdown from "../Dropdown/Dropdown";
-import { ProgressBar } from "../ProgressBar/ProgressBar";
-import ProjectForm from "../ProjectForm/ProjectForm";
-import "./ProjectBar.css";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import dbServices from '../../services/dbServices';
+import dateConversions from '../../services/dateConversions';
+import Dropdown from '../Dropdown/Dropdown';
+import { ProgressBar } from '../ProgressBar/ProgressBar';
+import ProjectForm from '../ProjectForm/ProjectForm';
+import './ProjectBar.css';
 
 const ProjectBar = props => {
   const [selectedProjectManager, setSelectedProjectManager] = useState(null);
@@ -70,13 +70,13 @@ const ProjectBar = props => {
           </div>
         </li>
       </Link>
-      {props.role === "owner" && (
+      {props.role === 'owner' && (
         <li>
           {!assign && (
             <button onClick={toggleAssign}>
-              {props.proj.project_manager === "unassigned"
-                ? "Assign"
-                : "Reassign"}
+              {props.proj.project_manager === 'unassigned'
+                ? 'Assign'
+                : 'Reassign'}
             </button>
           )}
           <button className="ProjectBar__edit" onClick={toggleEdit}>

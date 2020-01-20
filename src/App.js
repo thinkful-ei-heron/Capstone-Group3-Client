@@ -45,9 +45,9 @@ const App = props => {
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" setPath={setPath} component={Login} />
           <Route
-            exact
+            // exact
             // drop down instead for selecting owner/worker?
-            path="/(owner|worker)-signup/"
+            path="/(owner|worker|manager)-signup/"
             // path="/register"
             render={() => <SignUp />}
           />

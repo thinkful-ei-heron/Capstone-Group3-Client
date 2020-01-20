@@ -2,9 +2,6 @@ import app from './base';
 
 const db = app.firestore();
 
-// setloaded = bool => {
-//   this.setState({ loaded: bool });
-// };
 const dbServices = {
   createOwner(user, org) {
     const addOrg = async () =>
@@ -56,18 +53,8 @@ const dbServices = {
   },
 
   async initDashboard(name, role, org) {
-    // let name = '';
-    // let role = '';
     const projs = [];
     const managers = [];
-
-    // //get user
-    // const userSnap = await dbServices.getUser(email, org);
-
-    // userSnap.forEach(user => {
-    //   name = user.data().name;
-    //   role = user.data().role;
-    // });
 
     //get projects
     const projects = await dbServices.getProjectsByRole({
@@ -327,131 +314,3 @@ const dbServices = {
 };
 
 export default dbServices;
-
-/*
-
-Old set state functions
-
-setProjectState = projs => {
-  this.setState({ projects: projs });
-};
-
-setJobsState = jobs => {
-  this.setState({ jobs: jobs });
-};
-
-setEmployeeState = emps => {
-  this.setState({ employees: emps });
-};
-
-setProjectManagersState = pms => {
-  this.setState({ project_managers: pms });
-};
-
-setNewProject = project => {
-  this.setState({
-    projects: [...this.state.projects, project]
-  });
-};
-
-setNewJob = async job => {
-  this.setState({
-    jobs: [...this.state.jobs, job]
-  });
-};
-
-*/
-
-// initState = async (email, org) => {
-//   let emps = [],
-//     projs = [],
-//     jobs = [],
-//     pms = [];
-//   let name = "";
-//   let role = "";
-
-//   const user = await this.getUser(email, org);
-//   const projects = await this.getProjects(org);
-//   const employees = await this.getEmployees(org);
-//   const projManagers = await this.getProjectManagers(org);
-
-//   user.forEach(user => {
-//     name = user.data().name;
-//     role = user.data().role;
-//   });
-//   projects.forEach(proj => {
-//     projs.push(proj.data());
-//   });
-//   employees.forEach(emp => emps.push(emp.data()));
-//   projManagers.forEach(pm => pms.push(pm.data()));
-
-//   for (const proj of projs) {
-//     const jobsSnap = await this.getJobs(org, proj.id);
-//     jobsSnap.forEach(job => {
-//       return jobs.push(job.data());
-//     });
-//   }
-
-//   this.setState({
-//     user: { id: email, name: name, role: role, org: org },
-//     projects: projs,
-//     jobs: jobs,
-//     employees: emps,
-//     project_managers: pms,
-//     loaded: true
-//   });
-// };
-
-// CURRENTLY UNUSED - 1/20/2020
-// getOrgName(org) {
-//   return db
-//     .collection('organizations')
-//     .doc(org)
-//     .get()
-//     .then(snapshot => {
-//       return snapshot.data().name;
-//     })
-//     .catch(error => console.log(error));
-// },
-
-// async addUser(newUser) {
-//   await db.collection('users').add(newUser);
-// },
-
-// async doGetProject(org_id = 'HkeHO8n1eIaJSu6mnsd5') {
-//   return db
-//     .collection('organizations')
-//     .doc(org_id)
-//     .collection('projects')
-//     .get();
-// },
-
-// async updateJobApproval(id, project_id) {
-//   await db
-//     .collection('organizations')
-//     .doc(this.state.user.org)
-//     .collection('projects')
-//     .doc(project_id)
-//     .collection('job')
-//     .doc(id)
-//     .update({ approval: true, status: 'complete' });
-// },
-
-// async updateAndSetJobs(id, status, approval) {
-//   let index = this.state.jobs.findIndex(job => job.id === id);
-//   let newArray = this.state.jobs;
-//   newArray[index].status = status;
-//   newArray[index].approval = approval;
-//   this.setState({
-//     jobs: newArray
-//   });
-// },
-
-// async editAndSetJobs(id, jobObj) {
-//   let index = this.state.jobs.findIndex(job => job.id === id);
-//   let newArray = this.state.jobs;
-//   newArray[index] = jobObj;
-//   this.setState({
-//     jobs: newArray
-//   });
-// }

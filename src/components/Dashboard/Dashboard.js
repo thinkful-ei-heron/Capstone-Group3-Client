@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../services/Auth.js';
 import dbServices from '../../services/dbServices';
 import Loading from '../Loading/Loading';
 import NewProject from '../NewProject/NewProject';
-// import { Sidebar } from '../Sidebar/Sidebar';
+import Sidebar from '../Sidebar/Sidebar';
 import StyleIcon from '../StyleIcon/StyleIcon';
 import ProjectBar from '../ProjectBar/ProjectBar';
+import JobNotification from '../JobNotification/JobNotification';
 import './Dashboard.css';
 
 ////////////////////////////////////////////////////////////////////
@@ -30,15 +32,16 @@ export default class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    const user = this.context.currentUser;
+    const email = this.context.currentUser.email;
+    const org = this.context.currentUser.displayName;
 
-    const data = await dbServices.initDashboard(user.name, user.role, user.org);
+    const data = await dbServices.initDashboard(email, org);
 
     this.setState({
       user: {
-        id: user.email,
+        id: email,
         name: data.name,
-        org: user.org,
+        org: org,
         role: data.role
       },
       projects: data.projects,
@@ -102,7 +105,9 @@ export default class Dashboard extends Component {
               <span className="Dashboard__date">
                 {new Date().toLocaleString()}
               </span>
+              <JobNotification user={this.state.user} />
             </div>
+
             <div className="Dashboard__main">
               <section className="Dashboard__projects">
                 <div
@@ -142,7 +147,7 @@ export default class Dashboard extends Component {
                               />
                             </li>
                           );
-                        })}{' '}
+                        })}
                       </ul>
                     ) : (
                       <div className="Dashboard__no_projects">
@@ -168,7 +173,7 @@ export default class Dashboard extends Component {
                     <h1>PERSONNEL</h1>
                   </div>
                 </div>
-                {/*this.state.expandPersonnel && <Sidebar />*/}
+                <Sidebar user={this.state.user} />
               </section>
             </div>
           </section>

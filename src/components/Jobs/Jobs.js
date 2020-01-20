@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { AuthContext } from "../../services/Auth";
-import Loading from "../Loading/Loading";
-import app from "../../services/base";
-import "./Jobs.css";
-import JobItem from "./JobItem";
-import LogHours from "../LogHours/LogHours";
+import React, { Component } from 'react';
+import { AuthContext } from '../../services/Auth';
+import Loading from '../Loading/Loading';
+import app from '../../services/base';
+import './Jobs.css';
+import JobItem from './JobItem';
+import LogHours from '../LogHours/LogHours';
 
 export default class Jobs extends Component {
   constructor(props) {
     super(props);
     this.unsubscribe = null;
-    this.ref = app.firestore().collection("organizations");
+    this.ref = app.firestore().collection('organizations');
     this.state = {
       jobs: [],
       loading: true,
@@ -23,7 +23,7 @@ export default class Jobs extends Component {
   onJobsUpdate = querySnapshot => {
     const jobs = [];
 
-    if (this.context.currentUser.role === "project worker") {
+    if (this.context.currentUser.role === 'project worker') {
       querySnapshot.forEach(doc => {
         if (
           doc.data().project_workers.includes(this.context.currentUser.name)
@@ -31,7 +31,7 @@ export default class Jobs extends Component {
           jobs.push(doc.data());
         }
       });
-    } else if (this.context.currentUser.role === "project manager") {
+    } else if (this.context.currentUser.role === 'project manager') {
       querySnapshot.forEach(doc => {
         if (doc.data().project_manager === this.context.currentUser.name) {
           jobs.push(doc.data());
@@ -52,9 +52,9 @@ export default class Jobs extends Component {
   componentDidMount() {
     this.unsubscribe = this.ref
       .doc(this.context.currentUser.org)
-      .collection("projects")
+      .collection('projects')
       .doc(this.props.projectId)
-      .collection("jobs")
+      .collection('jobs')
       .onSnapshot(this.onJobsUpdate);
   }
 
@@ -79,7 +79,7 @@ export default class Jobs extends Component {
         <>
           <div>
             <h2>
-              {user.role === "project worker" ? (
+              {user.role === 'project worker' ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>

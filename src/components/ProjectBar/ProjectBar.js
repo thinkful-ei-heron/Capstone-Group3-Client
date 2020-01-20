@@ -85,11 +85,7 @@ const ProjectBar = props => {
       )}
       {assign && (
         <div className="ProjectBar__selectPM">
-          <Dropdown
-            PMs={props.projectManagers}
-            isMulti={false}
-            setSelected={setSelected}
-          />
+          <Dropdown pm={true} isMulti={false} setSelected={setSelected} />
           <div id="submit_pm">
             <button
               onClick={setProjectManager}

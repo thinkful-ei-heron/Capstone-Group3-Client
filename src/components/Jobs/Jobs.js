@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import { AuthContext } from '../../services/Auth';
-import Loading from '../Loading/Loading';
-import app from '../../services/base';
 import './Jobs.css';
 import JobItem from './JobItem';
 import LogHours from '../LogHours/LogHours';
+import dbServices from '../../services/dbServices';
 
 export default class Jobs extends Component {
   constructor(props) {
     super(props);
     this.unsubscribe = null;
-    this.ref = app.firestore().collection('organizations');
     this.state = {
       jobs: [],
       loading: true,
-      showLogHours: false,
-      user: 'project manager'
+      showLogHours: false
     };
   }
 
@@ -51,11 +48,8 @@ export default class Jobs extends Component {
   };
 
   componentDidMount() {
-    this.unsubscribe = this.ref
-      .doc(this.context.currentUser.org)
-      .collection('projects')
-      .doc(this.props.projectId)
-      .collection('jobs')
+    this.unsubscribe = dbServices
+      .jobsListener(this.context.currentUser.org, this.props.projectId)
       .onSnapshot(this.onJobsUpdate);
   }
 
@@ -74,7 +68,7 @@ export default class Jobs extends Component {
     const user = this.context.currentUser;
 
     if (this.state.loading) {
-      return <Loading />;
+      return <div></div>;
     } else {
       return (
         <>

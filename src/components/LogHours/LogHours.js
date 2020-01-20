@@ -28,7 +28,7 @@ const LogHours = props => {
 
       return (
         <span>
-          This job has {hoursWorked} hours worked out of an estimated
+          This job has {hoursWorked} hours worked out of an estimated{' '}
           {hoursNeeded} hours needed.
         </span>
       );

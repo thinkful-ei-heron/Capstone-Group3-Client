@@ -12,6 +12,7 @@ import { AuthContext } from './services/Auth.js';
 import Loading from './components/Loading/Loading';
 import Logout from './components/Account/Logout';
 import './App.css';
+import Sidebar from './components/Sidebar/Sidebar';
 
 const App = props => {
   const { currentUser } = useContext(AuthContext);
@@ -59,14 +60,14 @@ const App = props => {
               path="/dashboard"
               location={props.location}
               setPath={setPath}
-              component={Dashboard}
+              component={props => <Dashboard />}
             />
             <PrivateRoute
-              exact
+              // exact
               path="/project/:id"
               location={props.location}
               setPath={setPath}
-              render={props => <ProjectView id={props.match.params.id} />}
+              component={props => <ProjectView id={props.match.params.id} />}
             />
             {/* <PrivateRoute
               exact
@@ -81,13 +82,11 @@ const App = props => {
               path="/logout"
               component={() => <Logout setPath={setPath} />}
             />
-            <Route>
+            {/* <Route>
               <h3>Need to implement a catchall route/component here</h3>
-            </Route>
+            </Route> */}
           </Switch>
-          {/* <PrivateRoute>
-            This will be the sidebar, we don't need to render it in dashboard/project view directly.
-          </PrivateRoute> */}
+          {/* <PrivateRoute path="/" component={() => <Sidebar />} /> */}
         </main>
       </>
     );

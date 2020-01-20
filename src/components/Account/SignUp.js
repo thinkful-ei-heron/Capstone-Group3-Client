@@ -8,7 +8,6 @@ const SignUp = ({ history }, props) => {
   const functions = app.functions();
   const handleSignUp = async event => {
     event.preventDefault();
-    console.log(event.target.elements);
     let { email, password, name, orgName } = event.target.elements;
     const registerOwner = await functions.httpsCallable("registerOwner");
     const registerWorker = await functions.httpsCallable("registerWorker");

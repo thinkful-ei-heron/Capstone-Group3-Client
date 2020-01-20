@@ -129,7 +129,7 @@ const dbServices = {
   },
 
   updateProject(proj) {
-    // console.log(proj.id);
+    console.log(proj);
     return db
       .collection("organizations")
       .doc(proj.org_id)
@@ -239,14 +239,14 @@ const dbServices = {
       .update({ ...jobObj });
   },
 
-  async updateProject(projObj) {
-    await db
-      .collection("organizations")
-      .doc(projObj.org_id)
-      .collection("projects")
-      .doc(projObj.id)
-      .update({ ...projObj });
-  },
+  // async updateProject(projObj) {
+  //   await db
+  //     .collection("organizations")
+  //     .doc(projObj.org_id)
+  //     .collection("projects")
+  //     .doc(projObj.id)
+  //     .update({ ...projObj });
+  // },
 
   async updateJobStatus(id, status, project_id, approval, org) {
     await db

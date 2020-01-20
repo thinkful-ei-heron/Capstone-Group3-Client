@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../../services/Auth.js";
 import dbServices from "../../services/dbServices";
 import Loading from "../Loading/Loading";

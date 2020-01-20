@@ -16,7 +16,7 @@ export default class JobNotification extends Component {
 
   static contextType = AuthContext;
 
-  static getProjects = async () => {
+  getProjects = async () => {
     let projectList = [];
     if (this.context.currentUser.role !== "owner")
       await dbServices

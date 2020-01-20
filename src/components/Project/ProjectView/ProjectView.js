@@ -3,7 +3,7 @@ import { ProgressBar } from "../../ProgressBar/ProgressBar";
 import "./ProjectView.css";
 import Loading from "../../Loading/Loading";
 import { AuthContext } from "../../../services/Auth.js";
-import Jobs from "../Project/Jobs/Jobs/Jobs";
+import Jobs from "../Jobs/Jobs";
 import Statistics from "../../Statistics/Statistics";
 import Sidebar from "../../Sidebar/Sidebar";
 import JobForm from "../JobForm/JobForm";

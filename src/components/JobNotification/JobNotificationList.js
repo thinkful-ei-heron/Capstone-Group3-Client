@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import dbServices from "../../services/dbServices";
-import JobForm from "../JobForm/JobForm";
+import JobForm from "../Project/JobForm/JobForm";
 import { AuthContext } from "../../services/Auth";
 
 export default class JobNotificationList extends Component {

@@ -10,7 +10,7 @@ const Logout = props => {
         .auth()
         .signOut()
         .then(() => {
-          props.setPath(null);
+          // props.setPath(null);
           localStorage.removeItem("path");
         });
       history.push("/");

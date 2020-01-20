@@ -14,9 +14,6 @@ const Login = (setPath, { history }) => {
       await app
         .auth()
         .signInWithEmailAndPassword(email.value, password.value)
-        .then(() => {
-          history.push("/dashboard");
-        })
         .catch(error => console.warn(error));
     },
     [history]

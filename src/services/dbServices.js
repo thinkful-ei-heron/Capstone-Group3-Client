@@ -15,6 +15,16 @@ const dbServices = {
     return "success";
   },
 
+  createUserInOrg(newUser, org) {
+    newUser.new = true;
+    return db
+      .collection("organizations")
+      .doc(org)
+      .collection("users")
+      .doc(newUser.email)
+      .set(newUser);
+  },
+
   jobsListener(org, id) {
     return db
       .collection("organizations")

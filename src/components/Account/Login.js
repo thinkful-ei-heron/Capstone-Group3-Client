@@ -5,7 +5,7 @@ import { AuthContext } from "../../services/Auth.js";
 import { Label, Input } from "../Form/Form";
 import "./Login.css";
 
-const Login = ({ history }) => {
+const Login = (setPath, { history }) => {
   const { currentUser } = useContext(AuthContext);
   const handleLogin = useCallback(
     async event => {
@@ -14,7 +14,9 @@ const Login = ({ history }) => {
       await app
         .auth()
         .signInWithEmailAndPassword(email.value, password.value)
-        .then(() => history.push("/dashboard"))
+        .then(() => {
+          history.push("/dashboard");
+        })
         .catch(error => console.warn(error));
     },
     [history]

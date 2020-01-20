@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useInput } from "../../hooks/useInput";
-import Dropdown from "../Dropdown/Dropdown";
-import { Input, Label, Textarea } from "../Form/Form";
-import dbServices from "../../services/dbServices";
-import { AuthContext } from "../../services/Auth";
+import { useInput } from "../../../hooks/useInput";
+import Dropdown from "../../Dropdown/Dropdown";
+import { Input, Label, Textarea } from "../../Form/Form";
+import dbServices from "../../../services/dbServices";
+import { AuthContext } from "../../../services/Auth";
 import "./JobForm.css";
 
 const NewJob = props => {

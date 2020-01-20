@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { AuthContext } from "../../services/Auth";
 import lazy from "../../images/lazy.svg";
 import "./Header.css";
@@ -8,14 +8,6 @@ import app from "../../services/base";
 export default class Header extends Component {
   static contextType = AuthContext;
 
-  doStuff = () => {
-    console.log("in doStuff");
-    app
-      .auth()
-      .signOut()
-      .then(() => console.log("after signOut"));
-  };
-
   renderLoginLink() {
     return (
       <div className="Header__sub_container">
@@ -23,15 +15,9 @@ export default class Header extends Component {
           <Link className="Header__btn Header__alt" to="/login">
             Log In
           </Link>
-          {this.context.currentUser === null ? (
-            <Link className="Header__btn Header__primary" to="/register">
-              Register
-            </Link>
-          ) : (
-            <Link className="Header__btn Header__alt" to="/logout">
-              Log Out
-            </Link>
-          )}
+          <Link className="Header__btn Header__primary" to="/register">
+            Register
+          </Link>
         </div>
       </div>
     );
@@ -48,13 +34,13 @@ export default class Header extends Component {
           <Link to="/dashboard">
             <h3 className="Header__dashboard">Dashboard</h3>
           </Link>
-          <button
-            onClick={() => this.doStuff()}
+          <Link
+            onClick={() => app.auth().signOut()}
             className="Header__btn  Header__alt"
-            to="/logout"
+            to="/"
           >
             Log Out
-          </button>
+          </Link>
         </div>
       </div>
     );

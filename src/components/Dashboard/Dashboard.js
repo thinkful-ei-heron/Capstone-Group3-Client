@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { AuthContext } from "../../services/Auth.js";
 import dbServices from "../../services/dbServices";
 import Loading from "../Loading/Loading";
-import NewProject from "../NewProject/NewProject";
+import NewProject from "../Project/NewProject/NewProject";
 import Sidebar from "../Sidebar/Sidebar";
 import StyleIcon from "../StyleIcon/StyleIcon";
-import ProjectBar from "../ProjectBar/ProjectBar";
+import ProjectBar from "../Project/ProjectBar/ProjectBar";
 import JobNotification from "../JobNotification/JobNotification";
 import "./Dashboard.css";
 

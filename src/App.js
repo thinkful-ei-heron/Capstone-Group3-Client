@@ -5,7 +5,7 @@ import Header from "./components/Header/Header";
 import Login from "./components/Account/Login";
 import SignUp from "./components/Account/SignUp";
 // import NewProject from "./components/NewProject/NewProject";
-import ProjectView from "./components/ProjectView/ProjectView";
+import ProjectView from "./components/Project/ProjectView/ProjectView";
 import LandingPage from "./components/LandingPage/LandingPage";
 import PrivateRoute from "./services/PrivateRoute";
 import { AuthContext } from "./services/Auth.js";
@@ -35,6 +35,7 @@ const App = props => {
     <>
       <header>
         <Header
+          history={history}
           userName={currentUser && currentUser.name}
           role={currentUser && currentUser.role}
         />
@@ -42,7 +43,7 @@ const App = props => {
       <main className="app__main">
         <Switch>
           <Route exact path="/" component={LandingPage} />
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/login" setPath={setPath} component={Login} />
           <Route
             exact
             // drop down instead for selecting owner/worker?

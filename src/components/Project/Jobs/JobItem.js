@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { ProgressBar } from "../ProgressBar/ProgressBar";
+import { ProgressBar } from "../../ProgressBar/ProgressBar";
 import JobForm from "../JobForm/JobForm";
-import dbServices from "../../services/dbServices";
+import dbServices from "../../../services/dbServices";
 import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
-import { AuthContext } from "../../services/Auth";
+import { AuthContext } from "../../../services/Auth";
 
 class JobItem extends Component {
   constructor(props) {

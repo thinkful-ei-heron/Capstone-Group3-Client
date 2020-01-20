@@ -1,0 +1,18 @@
+.App__org_header {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 750px) {
+  .App__org_header {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+}

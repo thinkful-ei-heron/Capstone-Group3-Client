@@ -88,13 +88,13 @@ export default class Dashboard extends Component {
     //console.log('this.state.projects ', this.state.projects);
     // console.log('this.context.jobs ', this.context.jobs);
     // console.log('this.context.employees', this.context.employees);
-    // console.log('this.context.project_managers', this.context.project_managers);
+    console.log('this.context.project_managers', this.state.projectManagers);
     if (this.state.loading) return <Loading />;
     else
       return (
         <>
           <section className="Dashboard__container">
-            <div className="Dashboard__header">
+            <div className="App__org_header">
               {<h2>{this.state.user.org}</h2>}
               <span className="Dashboard__date">{new Date().toLocaleString()}</span>
             </div>
@@ -105,10 +105,12 @@ export default class Dashboard extends Component {
                     {StyleIcon({
                       style: `${this.state.expandProjects ? 'minus' : 'plus'}`
                     })}
-                    <h1>PROJECTS</h1>
+                    <h1>Projects</h1>
                   </div>
                   {this.state.user.role !== 'project worker' && (
-                    <button onClick={this.toggleNewProj}>NEW</button>
+                    <button className="Dashboard__new" onClick={this.toggleNewProj}>
+                      New
+                    </button>
                   )}
                 </div>
                 {this.state.newProj && (
@@ -134,7 +136,7 @@ export default class Dashboard extends Component {
                               />
                             </li>
                           );
-                        })}{' '}
+                        })}
                       </ul>
                     ) : (
                       <div className="Dashboard__no_projects">
@@ -151,7 +153,7 @@ export default class Dashboard extends Component {
                     {StyleIcon({
                       style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`
                     })}
-                    <h1>PERSONNEL</h1>
+                    <h1>Personnel</h1>
                   </div>
                 </div>
                 {/*this.state.expandPersonnel && <Sidebar />*/}

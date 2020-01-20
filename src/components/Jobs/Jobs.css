@@ -1,10 +1,115 @@
-.job_details {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+.Jobs__list .JobItem:nth-child(even) {
+  background-color: var(--list-even-color);
 }
 
-.job_details .ProgressBar__meter {
-  flex-basis: 20%;
+.Jobs__list .JobItem:nth-child(odd) {
+  background-color: var(--list-odd-color);
+}
+
+.JobItem {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 5% 85% 10%;
+  grid-template-rows: 20% 50% 30%;
+  align-items: start;
+  padding: 10px;
+}
+
+.JobItem__icon {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.JobItem__name {
+  grid-column: 2/3;
+  grid-row: 1/2;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.JobItem__details {
+  grid-column: 1/4;
+  grid-row: 2/3;
+  align-self: center;
+}
+
+.JobItem__details_text {
+  padding: 5px;
+}
+
+.JobItem__progress {
+  grid-column: 1/4;
+  grid-row: 3/4;
+  justify-self: center;
+  max-width: 150px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.ProgressBar__meter {
+  height: 20px;
+  min-width: 150px;
+  margin-top: 3px;
+}
+
+.JobItem__buttons {
+  grid-column: 3/4;
+  grid-row: 1/2;
+  align-self: center;
+}
+
+.JobItem__edit {
+  display: grid;
+  place-content: center;
+  width: 30px;
+  height: 30px;
+  color: var(--title-color);
+  font-size: 1.2rem;
+}
+
+.JobItem__edit:hover {
+  cursor: pointer;
+}
+
+.JobItem__form {
+  grid-column: 1/4;
+  background-color: white;
+}
+
+@media only screen and (min-width: 750px) {
+  .JobItem {
+    grid-template-columns: 3% 22% 45% 25% 5%;
+  }
+
+  .JobItem__icon {
+    grid-column: 1/2;
+  }
+
+  .JobItem__name {
+    grid-column: 2/3;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .JobItem__details {
+    grid-column: 3/4;
+    grid-row: 1/2;
+    align-self: start;
+  }
+
+  .JobItem__progress {
+    grid-column: 4/5;
+    grid-row: 1/2;
+  }
+
+  .JobItem__buttons {
+    grid-column: 5/6;
+    grid-row: 1/2;
+    align-self: start;
+    margin-top: 10px;
+  }
+
+  .JobItem__form {
+    grid-column: 3/4;
+  }
 }

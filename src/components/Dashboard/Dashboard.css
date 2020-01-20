@@ -1,23 +1,16 @@
-.Dashboard__header,
 .Dashboard__project_header,
-.Dashboard__personnnel_header {
+.Dashboard__personnel_header {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: 60px;
   padding-left: 15px;
   padding-right: 15px;
-}
-
-.Dashboard__personnel_header,
-.Dashboard__project_header {
-  height: 60px;
+  font-family: var(--oxygen);
+  font-size: 1.3rem;
   background-color: var(--header-bg-color);
-}
-
-.Dashboard__personnel_header {
-  margin-top: 30px;
 }
 
 .Dashboard__fa_h1 {
@@ -29,15 +22,26 @@
   margin-left: 15px;
 }
 
+.Dashboard__new {
+  height: 35px;
+  width: 70px;
+  font-family: var(--oxygen);
+  font-size: 1.2rem;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--highlight-color);
+}
+
 .Dashboard__list {
   list-style: none;
 }
 
-.Dashboard__list li:nth-child(even) ul {
+.Dashboard__list li:nth-child(even) .ProjectBar__project_container {
   background-color: var(--list-even-color);
 }
 
-.Dashboard__list li:nth-child(odd) ul {
+.Dashboard__list li:nth-child(odd) .ProjectBar__project_container {
   background-color: var(--list-odd-color);
 }
 
@@ -58,7 +62,7 @@
 .Dashboard__container a,
 .Dashboard__container a:hover,
 .Dashboard__container a:visited {
-  color: black;
+  color: var(--text-color);
 }
 
 @media only screen and (min-width: 750px) {

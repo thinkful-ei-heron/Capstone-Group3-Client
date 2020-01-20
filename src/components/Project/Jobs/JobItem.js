@@ -4,6 +4,7 @@ import JobForm from "../JobForm/JobForm";
 import dbServices from "../../../services/dbServices";
 import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
 import { AuthContext } from "../../../services/Auth";
+import dateConversions from "../../../services/dateConversions";
 
 class JobItem extends Component {
   constructor(props) {
@@ -71,9 +72,9 @@ class JobItem extends Component {
 
     if (
       this.context.currentUser.role === "project manager" ||
-      this.context.currentUser.role === "admin"
+      this.context.currentUser.role === "owner"
     ) {
-      if (status === "completed") return <span>Job Completed</span>;
+      if (status === "completed") return <span>Task Completed</span>;
       return (
         <>
           {!approval && progress === 100 && status !== "revisions" ? (
@@ -136,6 +137,10 @@ class JobItem extends Component {
           <h4>{job.name}</h4>
           <span>{job.description}</span>
           <ProgressBar percentage={progress} />
+          <span>{dateConversions.TStoDisplayDate(job.deadline)}</span>
+          {dateConversions.dateDiff(job.deadline) ? 
+            `Overdue by ${dateConversions.dateDiff(job.deadline)} days`
+            : ''}
           {this.renderProjectButtons(
             job.approval,
             job.total_hours,

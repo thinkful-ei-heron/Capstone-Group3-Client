@@ -1,14 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useInput } from '../../hooks/useInput';
-import { Label, Input } from '../Form/Form';
-import dbServices from '../../services/dbServices';
-import { AuthContext } from '../../services/Auth';
+import React, { useContext, useState, useEffect } from "react";
+import { useInput } from "../../hooks/useInput";
+import { Label, Input } from "../Form/Form";
+import dbServices from "../../services/dbServices";
+import { AuthContext } from "../../services/Auth";
 
 const LogHours = props => {
   const { currentUser } = useContext(AuthContext);
 
-  const { value: hours, bind: bindHours, reset: resetHours } = useInput('');
-  const { value: job, bind: bindJob, reset: resetJob } = useInput('');
+  const { value: hours, bind: bindHours, reset: resetHours } = useInput("");
+  const { value: job, bind: bindJob, reset: resetJob } = useInput("");
   const [submitted, setSubmitted] = useState(false);
 
   const populateSelect = () => {
@@ -20,7 +20,7 @@ const LogHours = props => {
   };
 
   const renderJobHours = () => {
-    if (job === '...' || !job) return <></>;
+    if (job === "..." || !job) return <></>;
     else {
       let selectedJob = props.jobs.find(item => item.name === job);
       let hoursWorked = selectedJob.hours_completed;
@@ -28,7 +28,7 @@ const LogHours = props => {
 
       return (
         <span>
-          This job has {hoursWorked} hours worked out of an estimated{' '}
+          This job has {hoursWorked} hours worked out of an estimated{" "}
           {hoursNeeded} hours needed.
         </span>
       );
@@ -73,7 +73,7 @@ const LogHours = props => {
         <Input name="job_hours" type="number" placeholder={0} {...bindHours} />
       </Label>
       <div>{renderJobHours()}</div>
-      {job === '...' || job === '' ? (
+      {job === "..." || job === "" ? (
         <></>
       ) : (
         <button type="submit">Submit Hours</button>

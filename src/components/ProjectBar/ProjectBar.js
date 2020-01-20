@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import dbServices from '../../services/dbServices';
-import dateConversions from '../../services/dateConversions';
-import Dropdown from '../Dropdown/Dropdown';
-import { ProgressBar } from '../ProgressBar/ProgressBar';
-import ProjectForm from '../ProjectForm/ProjectForm';
-import StyleIcon from '../StyleIcon/StyleIcon';
-import './ProjectBar.css';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import dbServices from "../../services/dbServices";
+import dateConversions from "../../services/dateConversions";
+import Dropdown from "../Dropdown/Dropdown";
+import { ProgressBar } from "../ProgressBar/ProgressBar";
+import ProjectForm from "../ProjectForm/ProjectForm";
+import StyleIcon from "../StyleIcon/StyleIcon";
+import "./ProjectBar.css";
 
 const ProjectBar = props => {
   const [selectedProjectManager, setSelectedProjectManager] = useState(null);
@@ -69,17 +69,17 @@ const ProjectBar = props => {
           Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
         </div>
       </Link>
-      {props.role === 'owner' && (
+      {props.role === "owner" && (
         <div className="ProjectBar__buttons">
           {!assign && (
             <button onClick={toggleAssign}>
-              {props.proj.project_manager === 'unassigned'
-                ? 'Assign'
-                : 'Reassign'}
+              {props.proj.project_manager === "unassigned"
+                ? "Assign"
+                : "Reassign"}
             </button>
           )}
           <div className="ProjectBar__edit" onClick={toggleEdit}>
-            {StyleIcon({ style: 'edit' })}
+            {StyleIcon({ style: "edit" })}
           </div>
         </div>
       )}

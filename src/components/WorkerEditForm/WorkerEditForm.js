@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Label, Input, Textarea } from '../Form/Form';
-import { useInput } from '../../hooks/useInput';
-import dbServices from '../../services/dbServices';
+import React, { useEffect, useState } from "react";
+import { Label, Input, Textarea } from "../Form/Form";
+import { useInput } from "../../hooks/useInput";
+import dbServices from "../../services/dbServices";
 
 const WorkerEditForm = props => {
   const [submitted, setSubmitted] = useState(false);
 
-  const { value: name, bind: bindName, reset: resetName } = useInput('');
+  const { value: name, bind: bindName, reset: resetName } = useInput("");
   const {
     value: description,
     bind: bindDescription,
     reset: resetDescription
-  } = useInput('');
+  } = useInput("");
   const {
     value: totalHours,
     bind: bindTotalHours,
     reset: resetTotalHours
-  } = useInput('');
-  const { value: note, bind: bindNote, reset: resetNote } = useInput('');
+  } = useInput("");
+  const { value: note, bind: bindNote, reset: resetNote } = useInput("");
 
   const submitRequest = async e => {
     e.preventDefault();
@@ -26,15 +26,15 @@ const WorkerEditForm = props => {
       description: description,
       total_hours: parseInt(totalHours),
       note: note,
-      employee: 'Test PM'
+      employee: "Test PM"
     };
     if (
       props.job.name === name &&
       props.job.description === description &&
       props.job.total_hours === totalHours &&
-      note === ''
+      note === ""
     ) {
-      console.log('nothing to update');
+      console.log("nothing to update");
     } else {
       await dbServices.updateEdit(
         editObj,
@@ -43,7 +43,7 @@ const WorkerEditForm = props => {
         props.job.organization
       );
       await props
-        .handleStatus(props.job.id, 'edit request')
+        .handleStatus(props.job.id, "edit request")
         .then(setSubmitted(true))
         .then(props.renderEditForm());
     }

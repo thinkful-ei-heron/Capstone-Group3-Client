@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import './index.css';
-import App from './App';
-import { AuthProvider } from './services/Auth';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import "./index.css";
+import App from "./App";
+import { AuthProvider } from "./services/Auth";
+import { library } from "@fortawesome/fontawesome-svg-core";
 
 import {
   faAngleRight,
@@ -14,7 +14,7 @@ import {
   faChevronUp,
   faChevronDown,
   faEdit
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 
 library.add(
   faAngleRight,
@@ -32,5 +32,5 @@ ReactDOM.render(
       <App />
     </AuthProvider>
   </Router>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

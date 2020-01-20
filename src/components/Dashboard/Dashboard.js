@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../../services/Auth.js';
-import dbServices from '../../services/dbServices';
-import Loading from '../Loading/Loading';
-import NewProject from '../NewProject/NewProject';
-import Sidebar from '../Sidebar/Sidebar';
-import StyleIcon from '../StyleIcon/StyleIcon';
-import ProjectBar from '../ProjectBar/ProjectBar';
-import JobNotification from '../JobNotification/JobNotification';
-import './Dashboard.css';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../services/Auth.js";
+import dbServices from "../../services/dbServices";
+import Loading from "../Loading/Loading";
+import NewProject from "../NewProject/NewProject";
+import Sidebar from "../Sidebar/Sidebar";
+import StyleIcon from "../StyleIcon/StyleIcon";
+import ProjectBar from "../ProjectBar/ProjectBar";
+import JobNotification from "../JobNotification/JobNotification";
+import "./Dashboard.css";
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -96,7 +96,7 @@ export default class Dashboard extends Component {
     //console.log('this.state.projects ', this.state.projects);
     // console.log('this.context.jobs ', this.context.jobs);
     // console.log('this.context.employees', this.context.employees);
-    console.log('this.context.project_managers', this.state.projectManagers);
+    console.log("this.context.project_managers", this.state.projectManagers);
     if (this.state.loading) return <Loading />;
     else
       return (
@@ -118,11 +118,11 @@ export default class Dashboard extends Component {
                 >
                   <div className="Dashboard__fa_h1">
                     {StyleIcon({
-                      style: `${this.state.expandProjects ? 'minus' : 'plus'}`
+                      style: `${this.state.expandProjects ? "minus" : "plus"}`
                     })}
                     <h1>Projects</h1>
                   </div>
-                  {this.state.user.role !== 'project worker' && (
+                  {this.state.user.role !== "project worker" && (
                     <button onClick={this.toggleNewProj}>NEW</button>
                   )}
                 </div>
@@ -170,7 +170,7 @@ export default class Dashboard extends Component {
                 >
                   <div className="Dashboard__fa_h1">
                     {StyleIcon({
-                      style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`
+                      style: `${this.state.expandPersonnel ? "minus" : "plus"}`
                     })}
                     <h1>Personnel</h1>
                   </div>

@@ -1,6 +1,6 @@
-import React from 'react';
-import { withRouter, useHistory } from 'react-router';
-import app from '../../services/base.js';
+import React from "react";
+import { withRouter, useHistory } from "react-router";
+import app from "../../services/base.js";
 
 const Logout = props => {
   const history = useHistory();
@@ -11,9 +11,9 @@ const Logout = props => {
         .signOut()
         .then(() => {
           // props.setPath(null);
-          localStorage.removeItem('path');
+          localStorage.removeItem("path");
         });
-      history.push('/');
+      history.push("/");
     };
     signOut();
   });

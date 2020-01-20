@@ -1,7 +1,7 @@
-import React from 'react';
-import { Input, Label } from '../Form/Form';
-import dbServices from '../../services/dbServices';
-import dateConversions from '../../services/dateConversions';
+import React from "react";
+import { Input, Label } from "../Form/Form";
+import dbServices from "../../services/dbServices";
+import dateConversions from "../../services/dateConversions";
 
 const ProjectForm = props => {
   const handleSubmit = async e => {
@@ -45,7 +45,7 @@ const ProjectForm = props => {
         id="project_name"
         type="text"
         placeholder="Project Name"
-        defaultValue={props.proj ? props.proj.name : ''}
+        defaultValue={props.proj ? props.proj.name : ""}
         required
       />
       <Label htmlFor="project_description">Description</Label>
@@ -54,7 +54,7 @@ const ProjectForm = props => {
         id="project_description"
         type="text"
         placeholder="Project Description"
-        defaultValue={props.proj ? props.proj.description : ''}
+        defaultValue={props.proj ? props.proj.description : ""}
       />
       <Label htmlFor="project_description">Project Manager</Label>
       <Input
@@ -62,7 +62,7 @@ const ProjectForm = props => {
         id="project_manager"
         type="text"
         placeholder="Project Manager"
-        defaultValue={props.proj ? props.proj.project_manager : ''}
+        defaultValue={props.proj ? props.proj.project_manager : ""}
       />
       <Label htmlFor="project_deadline">Deadline</Label>
       <input
@@ -70,7 +70,7 @@ const ProjectForm = props => {
         id="project_deadline"
         type="date"
         defaultValue={
-          props.proj ? dateConversions.TStoFormDate(props.proj.deadline) : ''
+          props.proj ? dateConversions.TStoFormDate(props.proj.deadline) : ""
         }
       />
       <button type="submit">SUBMIT</button>

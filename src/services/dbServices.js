@@ -1,4 +1,4 @@
-import app from './base';
+import app from "./base";
 
 const db = app.firestore();
 
@@ -6,49 +6,49 @@ const dbServices = {
   createOwner(user, org) {
     const addOrg = async () =>
       await db
-        .collection('organizations')
+        .collection("organizations")
         .doc(org)
         .set({
           name: org
         });
     addOrg().then(() => this.createUserInOrg(user, org));
-    return 'success';
+    return "success";
   },
 
   jobsListener(org, id) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(id)
-      .collection('jobs');
+      .collection("jobs");
   },
 
   projectsListener(org, id) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(id);
   },
 
   async getEmployeeProjects(name, org) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
-      .where('project_workers', 'array-contains', name)
+      .collection("projects")
+      .where("project_workers", "array-contains", name)
       .get();
   },
 
   async getProjectJobsForEmployee(name, org, id) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(id)
-      .collection('jobs')
-      .where('project_workers', 'array-contains', name)
+      .collection("jobs")
+      .where("project_workers", "array-contains", name)
       .get();
   },
 
@@ -66,7 +66,7 @@ const dbServices = {
     projects.forEach(proj => projs.push(proj.data()));
 
     //get projectManagers
-    if (role === 'owner') {
+    if (role === "owner") {
       const PMs = await dbServices.getProjectManagers(org);
       PMs.forEach(pm => managers.push(pm.data()));
     }
@@ -80,41 +80,41 @@ const dbServices = {
   },
 
   getProjectsByRole(user) {
-    if (user.role === 'project worker') {
+    if (user.role === "project worker") {
       return db
-        .collection('organizations')
+        .collection("organizations")
         .doc(user.org)
-        .collection('projects')
-        .where('project_workers', 'array-contains', user.name)
+        .collection("projects")
+        .where("project_workers", "array-contains", user.name)
         .get();
     }
-    if (user.role === 'project manager') {
+    if (user.role === "project manager") {
       return db
-        .collection('organizations')
+        .collection("organizations")
         .doc(user.org)
-        .collection('projects')
-        .where('project_manager', '==', user.name)
+        .collection("projects")
+        .where("project_manager", "==", user.name)
         .get();
     }
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(user.org)
-      .collection('projects')
+      .collection("projects")
       .get();
   },
 
   getProjectById(id, org) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(id)
       .get();
   },
 
   addProject(newProject) {
     // console.log(newProject.org_id);
-    if (!newProject.project_manager) newProject.project_manager = 'unassigned';
+    if (!newProject.project_manager) newProject.project_manager = "unassigned";
     return db
       .collection(`organizations/${newProject.org_id}/projects`)
       .add(newProject);
@@ -131,28 +131,28 @@ const dbServices = {
   updateProject(proj) {
     // console.log(proj.id);
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(proj.org_id)
-      .collection('projects')
+      .collection("projects")
       .doc(proj.id)
       .update(proj);
   },
 
   setProjectsManager(projId, org, pm) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(projId)
       .update({ project_manager: pm });
   },
 
   getUser(email, org) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('users')
-      .where('email', '==', email)
+      .collection("users")
+      .where("email", "==", email)
       .get();
   },
 
@@ -167,29 +167,29 @@ const dbServices = {
 
   async getJobs(org, id) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(id)
-      .collection('jobs')
+      .collection("jobs")
       .get();
   },
 
   async getEmployees(org) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('users')
-      .where('role', '==', 'project worker')
+      .collection("users")
+      .where("role", "==", "project worker")
       .get();
   },
 
   getProjectManagers(org) {
     return db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('users')
-      .where('role', '==', 'project manager')
+      .collection("users")
+      .where("role", "==", "project manager")
       .get();
   },
 
@@ -210,51 +210,51 @@ const dbServices = {
 
   async updateEdit(edit, id, project_id, org) {
     await db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(project_id)
-      .collection('jobs')
+      .collection("jobs")
       .doc(id)
       .update({ edit: edit });
   },
 
   async updateProjectWorkers(id, workers, org) {
     await db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(id)
       .update({ project_workers: workers });
   },
 
   async updateJob(jobObj) {
     await db
-      .collection('organizations')
+      .collection("organizations")
       .doc(jobObj.organization)
-      .collection('projects')
+      .collection("projects")
       .doc(jobObj.project_id)
-      .collection('jobs')
+      .collection("jobs")
       .doc(jobObj.id)
       .update({ ...jobObj });
   },
 
   async updateProject(projObj) {
     await db
-      .collection('organizations')
+      .collection("organizations")
       .doc(projObj.org_id)
-      .collection('projects')
+      .collection("projects")
       .doc(projObj.id)
       .update({ ...projObj });
   },
 
   async updateJobStatus(id, status, project_id, approval, org) {
     await db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('projects')
+      .collection("projects")
       .doc(project_id)
-      .collection('jobs')
+      .collection("jobs")
       .doc(id)
       .update({
         status: status,
@@ -264,22 +264,22 @@ const dbServices = {
 
   async updateJobApproval(id, project_id) {
     await db
-      .collection('organizations')
+      .collection("organizations")
       .doc(this.state.user.org)
-      .collection('projects')
+      .collection("projects")
       .doc(project_id)
-      .collection('job')
+      .collection("job")
       .doc(id)
-      .update({ approval: true, status: 'complete' });
+      .update({ approval: true, status: "complete" });
   },
 
   async editJob(id, jobObj) {
     await db
-      .collection('organizations')
+      .collection("organizations")
       .doc(jobObj.organization)
-      .collection('projects')
+      .collection("projects")
       .doc(jobObj.project_id)
-      .collection('jobs')
+      .collection("jobs")
       .doc(id)
       .update(jobObj);
   },
@@ -305,9 +305,9 @@ const dbServices = {
 
   async updateWorker(worker, org) {
     await db
-      .collection('organizations')
+      .collection("organizations")
       .doc(org)
-      .collection('users')
+      .collection("users")
       .doc(worker.email)
       .update({ ...worker });
   }

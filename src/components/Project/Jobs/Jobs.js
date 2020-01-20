@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { AuthContext } from "../../services/Auth";
+import { AuthContext } from "../../../../services/Auth";
 import "./Jobs.css";
 import JobItem from "./JobItem";
-import LogHours from "../LogHours/LogHours";
-import dbServices from "../../services/dbServices";
+import LogHours from "../../../LogHours/LogHours";
+import dbServices from "../../../../services/dbServices";
 
 export default class Jobs extends Component {
   constructor(props) {

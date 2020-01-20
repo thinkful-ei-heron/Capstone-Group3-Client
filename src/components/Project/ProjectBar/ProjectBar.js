@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import dbServices from "../../services/dbServices";
-import dateConversions from "../../services/dateConversions";
-import Dropdown from "../Dropdown/Dropdown";
-import { ProgressBar } from "../ProgressBar/ProgressBar";
+import dbServices from "../../../services/dbServices";
+import dateConversions from "../../../services/dateConversions";
+import Dropdown from "../../Dropdown/Dropdown";
+import { ProgressBar } from "../../ProgressBar/ProgressBar";
 import ProjectForm from "../ProjectForm/ProjectForm";
-import StyleIcon from "../StyleIcon/StyleIcon";
+import StyleIcon from "../../StyleIcon/StyleIcon";
 import "./ProjectBar.css";
 
 const ProjectBar = props => {

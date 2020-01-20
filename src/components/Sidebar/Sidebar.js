@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-import dbServices from "../../services/dbServices";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../services/Auth';
+import dbServices from '../../services/dbServices';
+import { Link } from 'react-router-dom';
 
 const Sidebar = props => {
   let [employeeList, setEmployeeList] = useState([]);
   let [pmList, setPMList] = useState([]);
   let [expanded, setExpanded] = useState([]);
   let [clicked, setClick] = useState(false);
+  const { currentUser } = useContext(AuthContext);
 
   if (clicked === true) setClick(false);
 
@@ -25,9 +27,10 @@ const Sidebar = props => {
   };
 
   useEffect(() => {
+    console.log(props.view);
     const getEmployees = async () => {
       let employees = [];
-      return await dbServices.getEmployees(props.user.org).then(snapshot => {
+      return await dbServices.getEmployees(currentUser.org).then(snapshot => {
         snapshot.forEach(doc => {
           employees.push(doc.data());
         });
@@ -38,7 +41,7 @@ const Sidebar = props => {
     const getPMs = async () => {
       let pms = [];
       return await dbServices
-        .getProjectManagers(props.user.org)
+        .getProjectManagers(currentUser.org)
         .then(snapshot => {
           snapshot.forEach(doc => {
             pms.push(doc.data());
@@ -47,29 +50,39 @@ const Sidebar = props => {
         });
     };
 
+    // };
+    // if (props.view === 'project') {
+    //   setEmployeeList(props.project.project_workers);
+    //   let pmList = [];
+    //   pmList.push(props.project.project_manager);
+    //   setPMList(pmList);
+    // } else {
     getEmployees().then(employees => {
       setEmployeeList(employees);
     });
     getPMs().then(pms => {
       setPMList(pms);
     });
+    // }
   }, []);
 
   const renderProjectManagers = () => {
     return pmList.map((pm, index) => {
       return (
         <li key={pm.name + index}>
-          <Link to={{ pathname: `/profile/${pm.email}` }}>{pm.name}</Link>
+          <Link to={`/profile/${pm.email}`}>{pm.name}</Link>
         </li>
       );
     });
   };
 
   const renderEmployees = () => {
+    console.log(employeeList);
     return employeeList.map((emp, index) => {
+      console.log(emp);
       return (
         <li key={emp.name + index}>
-          <Link to={{ pathname: `/profile/${emp.email}` }}>{emp.name}</Link>
+          <Link to={`/profile/${emp.email}`}>{emp.name}</Link>
         </li>
       );
     });
@@ -78,13 +91,13 @@ const Sidebar = props => {
   return (
     <div>
       <h3>
-        <button onClick={() => toggleExpand("pm")}>Project Managers</button>
+        <button onClick={() => toggleExpand('pm')}>Project Managers</button>
       </h3>
-      {!expanded.includes("pm") ? <ul>{renderProjectManagers()}</ul> : <></>}
+      {!expanded.includes('pm') ? <ul>{renderProjectManagers()}</ul> : <></>}
       <h3>
-        <button onClick={() => toggleExpand("employees")}>Employees</button>
+        <button onClick={() => toggleExpand('employees')}>Employees</button>
       </h3>
-      {!expanded.includes("employees") ? <ul>{renderEmployees()}</ul> : <></>}
+      {!expanded.includes('employees') ? <ul>{renderEmployees()}</ul> : <></>}
     </div>
   );
 };

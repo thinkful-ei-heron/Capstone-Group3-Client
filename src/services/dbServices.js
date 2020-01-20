@@ -18,6 +18,23 @@ const dbServices = {
     return 'success';
   },
 
+  jobsListener(org, id) {
+    return db
+      .collection('organizations')
+      .doc(org)
+      .collection('projects')
+      .doc(id)
+      .collection('jobs');
+  },
+
+  projectsListener(org, id) {
+    return db
+      .collection('organizations')
+      .doc(org)
+      .collection('projects')
+      .doc(id);
+  },
+
   async getEmployeeProjects(name, org) {
     return db
       .collection('organizations')
@@ -151,6 +168,15 @@ const dbServices = {
       .where('email', '==', email)
       .get();
   },
+
+  // getPeople(org, type) {
+  //   return db
+  //     .collection('organizations')
+  //     .doc(org)
+  //     .collection('users')
+  //     .where('role', '==', type)
+  //     .getString('name');
+  // },
 
   async getJobs(org, id) {
     return db

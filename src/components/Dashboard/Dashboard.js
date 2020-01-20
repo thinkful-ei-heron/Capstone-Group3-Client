@@ -175,7 +175,7 @@ export default class Dashboard extends Component {
                     <h1>Personnel</h1>
                   </div>
                 </div>
-                <Sidebar user={this.state.user} />
+                <Sidebar />
               </section>
             </div>
           </section>

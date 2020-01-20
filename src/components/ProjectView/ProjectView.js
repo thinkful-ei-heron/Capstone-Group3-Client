@@ -4,26 +4,21 @@ import './ProjectView.css';
 import Loading from '../Loading/Loading';
 import { AuthContext } from '../../services/Auth.js';
 import Jobs from '../Jobs/Jobs';
-import Dropdown from '../Dropdown/Dropdown';
 import Statistics from '../Statistics/Statistics';
-// import { Sidebar } from "../Sidebar/Sidebar";
+import Sidebar from '../Sidebar/Sidebar';
 import JobForm from '../JobForm/JobForm';
-import app from '../../services/base';
+import dbServices from '../../services/dbServices';
 import dateConversions from '../../services/dateConversions';
 
 export default class ProjectView extends Component {
   constructor(props) {
     super(props);
     this.unsubscribe = null;
-    this.ref = app.firestore().collection('organizations');
     this.state = {
       project: null,
       showJobForm: false,
       loading: true,
-      toggleState: false,
-      user: {
-        role: 'project worker'
-      }
+      toggleState: false
     };
   }
 
@@ -37,10 +32,8 @@ export default class ProjectView extends Component {
   };
 
   async componentDidMount() {
-    this.unsubscribe = this.ref
-      .doc(this.context.currentUser.org)
-      .collection('projects')
-      .doc(this.props.id)
+    this.unsubscribe = dbServices
+      .projectsListener(this.context.currentUser.org, this.props.id)
       .onSnapshot(
         doc => {
           this.updateProject(doc.data());
@@ -69,11 +62,11 @@ export default class ProjectView extends Component {
       return (
         <>
           <div>
-            <header id="company_header" className="App__org_header">
+            <header id="company_header">
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
-            <header className="ProjectView__header">
+            <header id="project_header">
               <div id="name_manager">
                 <h3 id="projectName">{project.name}</h3>
                 <h4 id="projectManager">Manager: {project.project_manager}</h4>
@@ -90,32 +83,12 @@ export default class ProjectView extends Component {
                   Deadline: {dateConversions.TStoDisplayDate(project.deadline)}
                 </span>
               </div>
-              {user.role === 'owner' &&
-              project.project_manager === 'unassigned' ? (
-                <div id="select_pm">
-                  <h3>SELECT Project Manager</h3>
-                  <Dropdown
-                    employees={this.renderPmList()}
-                    isMulti={false}
-                    setSelected={this.setSelected}
-                  />
-                  {this.state.selectedProjectManager ? (
-                    <div id="submit_pm">
-                      <button onClick={this.setProjectManager}></button>
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              ) : (
-                ''
-              )}
             </header>
           </div>
           <div id="projectView_main">
             <div id="jobs_stats_container">
               {user.role === 'project worker' ? <></> : <Statistics />}
-              <div id="jobs_container" className="ProjectView__jobs_header">
+              <div id="jobs_container">
                 {user.role === 'project worker' ? (
                   <h3>Your Jobs</h3>
                 ) : (
@@ -141,7 +114,7 @@ export default class ProjectView extends Component {
               <Jobs projectId={this.props.id} />
             </div>
             <div id="sidebar_container">
-              {/* <Sidebar view="project" /> */}
+              <Sidebar view="project" project={this.state.project} />
               <h1>Sidebar</h1>
             </div>
           </div>

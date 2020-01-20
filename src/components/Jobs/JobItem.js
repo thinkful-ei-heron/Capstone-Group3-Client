@@ -4,7 +4,6 @@ import JobForm from '../JobForm/JobForm';
 import dbServices from '../../services/dbServices';
 import WorkerEditForm from '../WorkerEditForm/WorkerEditForm';
 import { AuthContext } from '../../services/Auth';
-import StyleIcon from '../StyleIcon/StyleIcon';
 
 class JobItem extends Component {
   constructor(props) {
@@ -12,8 +11,7 @@ class JobItem extends Component {
     this.state = {
       expandJob: false,
       showEditForm: false,
-      showWorkerEditForm: false,
-      role: 'project manager'
+      showWorkerEditForm: false
     };
   }
 
@@ -95,7 +93,7 @@ class JobItem extends Component {
                 onClick={e => this.handleApprovalSubmit(id, 'completed', true)}
               >
                 Approve
-              </button>
+              </button>{' '}
               <button onClick={e => this.handleApprovalSubmit(id, 'revisions')}>
                 Request Revision
               </button>
@@ -108,21 +106,19 @@ class JobItem extends Component {
     }
   }
 
-  toggleExpand = e => {
+  toggleExpand = () => {
     this.setState({
       expandJob: !this.state.expandJob
     });
   };
 
-  showEditForm = e => {
-    e.stopPropagation();
+  showEditForm = () => {
     this.setState({
       showEditForm: !this.state.showEditForm
     });
   };
 
-  showWorkerEditForm = e => {
-    e.stopPropagation();
+  showWorkerEditForm = () => {
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm
     });
@@ -166,7 +162,7 @@ class JobItem extends Component {
         {this.state.expandJob ? (
           <ul>{this.renderEmployeeList(job.project_workers)}</ul>
         ) : (
-          <></>
+          ''
         )}
       </li>
     );

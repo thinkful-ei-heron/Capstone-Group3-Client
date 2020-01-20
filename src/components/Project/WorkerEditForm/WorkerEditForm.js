@@ -65,7 +65,7 @@ const WorkerEditForm = props => {
   return (
     <div>
       <Label htmlFor="job_name">
-        Job name
+        Task name
         <Input
           name="job_name"
           type="text"
@@ -74,7 +74,7 @@ const WorkerEditForm = props => {
         />
       </Label>
       <Label htmlFor="job_description">
-        Job Description
+        Task Description
         <Textarea
           name="job_description"
           type="text"

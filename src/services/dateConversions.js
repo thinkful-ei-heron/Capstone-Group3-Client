@@ -24,6 +24,20 @@ const dateConversions = {
     const day = date.toJSON().slice(8, 10);
 
     return `${month}/${day}/${year}`;
+  },
+
+  //get the number of days overdue
+  dateDiff(deadline) {
+    let currDate = new Date();
+    let dueDate = new Date(deadline.seconds * 1000);
+
+    if (currDate > dueDate) {
+      let res = Math.abs(currDate - dueDate) / 1000;
+      let days = Math.floor(res / 86400)
+      return days
+    } else {
+      return null
+    }
   }
 };
 

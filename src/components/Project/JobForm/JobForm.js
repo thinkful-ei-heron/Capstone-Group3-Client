@@ -146,9 +146,9 @@ const NewJob = props => {
         className="newjob__form"
       >
         <fieldset>
-          <legend>{props.projectId ? "Add New Job" : "Edit Job"}</legend>
+          <legend>{props.projectId ? "Add New Task" : "Edit Task"}</legend>
           <div className="input">
-            <Label htmlFor="name">Job Name: </Label>
+            <Label htmlFor="name">Task Name: </Label>
             <Input type="text" name="name" id="name" {...bindName} required />
           </div>
           <div className="input">

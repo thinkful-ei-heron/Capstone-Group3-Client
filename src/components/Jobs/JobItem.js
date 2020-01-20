@@ -4,6 +4,7 @@ import JobForm from '../JobForm/JobForm';
 import dbServices from '../../services/dbServices';
 import WorkerEditForm from '../WorkerEditForm/WorkerEditForm';
 import { AuthContext } from '../../services/Auth';
+import StyleIcon from '../StyleIcon/StyleIcon';
 
 class JobItem extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class JobItem extends Component {
     this.state = {
       expandJob: false,
       showEditForm: false,
-      showWorkerEditForm: false
+      showWorkerEditForm: false,
+      role: 'project manager'
     };
   }
 
@@ -106,19 +108,21 @@ class JobItem extends Component {
     }
   }
 
-  toggleExpand = () => {
+  toggleExpand = e => {
     this.setState({
       expandJob: !this.state.expandJob
     });
   };
 
-  showEditForm = () => {
+  showEditForm = e => {
+    e.stopPropagation();
     this.setState({
       showEditForm: !this.state.showEditForm
     });
   };
 
-  showWorkerEditForm = () => {
+  showWorkerEditForm = e => {
+    e.stopPropagation();
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm
     });

@@ -50,11 +50,16 @@ export default class Dropdown extends Component {
 
   render() {
     const { selectedOption, employees } = this.state;
+    console.log(this.props.PMs, employees);
     return (
       <Select
         value={selectedOption}
         onChange={this.handleChange}
-        options={this.populateOptions(employees)}
+        options={
+          this.props.PMs
+            ? this.populateOptions(this.props.PMs)
+            : this.populateOptions(employees)
+        }
         isMulti={this.props.isMulti ? true : false}
         isSearchable={true}
         // defaultValue={this.props.defaultValue ? this.props.defaultValue : false}

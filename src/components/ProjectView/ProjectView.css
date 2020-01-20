@@ -1,10 +1,12 @@
-#company_header {
+.ProjectView__jobs_header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1em;
-  border: 1px solid grey;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-family: var(--oxygen);
+  background-color: var(--header-bg-color);
 }
 
 #projectView__container {
@@ -12,14 +14,16 @@
   flex-direction: row;
 }
 
-#project_header {
+.ProjectView__header {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  width: 95%;
+  margin: 0 auto;
   padding: 1em;
-  border: 1px solid grey;
   margin-top: 10px;
+  background-color: rgba(127, 204, 233, 0.8);
 }
 
 #project_progress {
@@ -35,7 +39,6 @@
   flex-direction: column;
   flex-basis: 80%;
   margin: 5px;
-  border: 1px solid grey;
 }
 
 #sidebar_container {
@@ -44,16 +47,10 @@
   border: 1px solid grey;
 }
 
-#projectView_main {
-  display: flex;
-  flex-direction: row;
-  padding: 1em;
-}
-
-#jobs_container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid grey;
+@media only screen and (min-width: 750px) {
+  #projectView_main {
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+  }
 }

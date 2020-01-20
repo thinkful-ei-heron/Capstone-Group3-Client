@@ -5,6 +5,7 @@ import dateConversions from '../../services/dateConversions';
 import Dropdown from '../Dropdown/Dropdown';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import ProjectForm from '../ProjectForm/ProjectForm';
+import StyleIcon from '../StyleIcon/StyleIcon';
 import './ProjectBar.css';
 
 const ProjectBar = props => {
@@ -36,42 +37,40 @@ const ProjectBar = props => {
     setEdit(!edit);
   };
 
-  const renderPmList = () => {
-    let result = [];
-    props.projectManagers.forEach(pm => result.push(pm.name));
-    return result;
-  };
+  // const renderPmList = () => {
+  //   let result = [];
+  //   props.projectManagers.forEach(pm => result.push(pm.name));
+  //   return result;
+  // };
 
   return (
-    <ul className="ProjectBar__project_container">
+    <div className="ProjectBar__project_container">
       <Link
         className="ProjectBar__link_wrapper"
         to={`/project/${props.proj.id}`}
         key={props.proj.id}
       >
-        <li className="ProjectBar__header">
+        <div className="ProjectBar__header">
           <span className="ProjectBar__proj_name">{props.proj.name}</span>
           <span className="ProjectBar__proj_mgr">
             Manager: {props.proj.project_manager}
           </span>
-        </li>
-        <li className="ProjectBar__description">
+        </div>
+        <div className="ProjectBar__description">
           <span>Description:</span>
           <div className="ProjectBar__description_text">
             {props.proj.description}
           </div>
-        </li>
-        <li>
-          <div className="ProjectBar__proj_prog_date">
-            <div className="ProjectBar__proj_prog">
-              Est. Progress <ProgressBar percentage={props.proj.progress} />
-            </div>
-            Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
+        </div>
+        <div className="ProjectBar__proj_prog_date">
+          <div className="ProjectBar__proj_prog">
+            Est. Progress <ProgressBar percentage={props.proj.progress} />
           </div>
-        </li>
+          Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
+        </div>
       </Link>
       {props.role === 'owner' && (
-        <li>
+        <div className="ProjectBar__buttons">
           {!assign && (
             <button onClick={toggleAssign}>
               {props.proj.project_manager === 'unassigned'
@@ -79,15 +78,15 @@ const ProjectBar = props => {
                 : 'Reassign'}
             </button>
           )}
-          <button className="ProjectBar__edit" onClick={toggleEdit}>
-            Edit
-          </button>
-        </li>
+          <div className="ProjectBar__edit" onClick={toggleEdit}>
+            {StyleIcon({ style: 'edit' })}
+          </div>
+        </div>
       )}
       {assign && (
-        <li className="ProjectBar__selectPM">
+        <div className="ProjectBar__selectPM">
           <Dropdown
-            employees={renderPmList()}
+            PMs={props.projectManagers}
             isMulti={false}
             setSelected={setSelected}
           />
@@ -100,7 +99,7 @@ const ProjectBar = props => {
             </button>
             <button onClick={toggleAssign}>Cancel</button>
           </div>
-        </li>
+        </div>
       )}
       {edit && (
         <ProjectForm
@@ -110,7 +109,7 @@ const ProjectBar = props => {
           proj={props.proj}
         />
       )}
-    </ul>
+    </div>
   );
 };
 

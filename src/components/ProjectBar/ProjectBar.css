@@ -1,5 +1,6 @@
 .ProjectBar__project_container {
   box-sizing: border-box;
+  position: relative;
   width: 100%;
   padding: 10px;
 }
@@ -8,10 +9,12 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
+  width: calc(100% - 70px);
 }
 
 .ProjectBar__proj_name {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
+  font-weight: 600;
   line-height: 2rem;
 }
 
@@ -32,7 +35,7 @@
 .ProjectBar__description_text {
   margin-top: 3px;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--text-bg-color);
 }
 
 .ProjectBar__proj_prog_date {
@@ -45,25 +48,40 @@
   width: 150px;
 }
 
+.ProjectBar__buttons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 70px;
+  top: 10px;
+  right: 10px;
+}
+
+.ProjectBar__edit {
+  margin-top: 5px;
+}
+
 @media only screen and (min-width: 1024px) {
   .ProjectBar__link_wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
     margin-right: 10px;
     margin-left: 5px;
+    margin-top: 20px;
   }
 
   .ProjectBar__header {
+    width: auto;
+    grid-column: 1/2;
     align-self: start;
   }
 
   .ProjectBar__proj_name {
-    font-size: 1.3rem;
+    font-size: 1.3em;
   }
 
   .ProjectBar__proj_mgr {
-    font-size: 1rem;
+    font-size: 1em;
   }
 
   .ProjectBar__proj_prog {
@@ -73,7 +91,11 @@
   .ProjectBar__proj_prog_date {
     flex-direction: column;
     align-items: start;
+    grid-column: 3/4;
+    justify-self: end;
+    align-self: center;
     width: 150px;
+    height: 75px;
   }
 
   .ProjectBar__proj_prog {
@@ -81,7 +103,8 @@
   }
 
   .ProjectBar__description {
-    width: 40%;
+    grid-column: 2/3;
+    width: 100%;
     min-width: 250px;
     margin-bottom: 15px;
     margin-left: 5px;
@@ -93,9 +116,19 @@
   }
 
   .ProjectBar__description_text {
-    height: 50px;
+    min-height: 50px;
     margin-top: 3px;
     line-height: 1.2rem;
     background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .ProjectBar__buttons {
+    flex-direction: row;
+    width: 120px;
+  }
+
+  .ProjectBar__edit {
+    margin-top: 0;
+    margin-left: 10px;
   }
 }

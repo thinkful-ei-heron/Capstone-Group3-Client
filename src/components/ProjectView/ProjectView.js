@@ -66,11 +66,11 @@ export default class ProjectView extends Component {
       return (
         <>
           <div>
-            <header id="company_header">
+            <header id="company_header" className="App__org_header">
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
-            <header id="project_header">
+            <header className="ProjectView__header">
               <div id="name_manager">
                 <h3 id="projectName">{project.name}</h3>
                 <h4 id="projectManager">Manager: {project.project_manager}</h4>
@@ -112,7 +112,7 @@ export default class ProjectView extends Component {
           <div id="projectView_main">
             <div id="jobs_stats_container">
               {user.role === 'project worker' ? <></> : <Statistics />}
-              <div id="jobs_container">
+              <div id="jobs_container" className="ProjectView__jobs_header">
                 {user.role === 'project worker' ? (
                   <h3>Your Jobs</h3>
                 ) : (

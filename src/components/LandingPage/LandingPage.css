@@ -19,8 +19,8 @@
   margin-bottom: 40px;
   font-family: 'Oxygen', sans-serif;
   font-size: 2.5rem;
-  line-height: 6rem;
-  color: #c4f7ff;
+  line-height: 4rem;
+  color: #fff;
   z-index: 1;
 }
 
@@ -48,13 +48,44 @@ img {
 }
 
 @media only screen and (min-width: 750px) {
+  .LandingPage h1 {
+    width: 700px;
+    align-self: center;
+  }
+
   .LandingPage__hero_text {
-    margin-bottom: 0;
-    margin-left: 50px;
-    font-family: 'Oxygen', sans-serif;
-    font-size: 4rem;
-    line-height: 8rem;
-    color: #fff;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 2.8rem;
+  }
+
+  .LandingPage__t1 {
+    align-self: start;
+  }
+
+  .LandingPage__t2 {
+    align-self: center;
+  }
+
+  .LandingPage__t3 {
+    align-self: flex-end;
+  }
+
+  img {
+    left: 15%;
+    height: 50%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .LandingPage h1 {
+    width: 800px;
+    align-self: center;
+  }
+
+  .LandingPage__hero_text {
+    font-size: 3.2rem;
   }
 
   .LandingPage__btn {
@@ -62,10 +93,5 @@ img {
     height: 65px;
     margin-bottom: 75px;
     font-size: 1.8rem;
-  }
-
-  img {
-    left: 15%;
-    height: 60%;
   }
 }

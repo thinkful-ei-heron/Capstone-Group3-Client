@@ -15,11 +15,11 @@ export default class Header extends Component {
             Log In
           </Link>
           {this.context.currentUser === null ? (
-            <Link className="Header__btn" to="/register">
+            <Link className="Header__btn Header__primary" to="/register">
               Register
             </Link>
           ) : (
-            <Link className="Header__btn" to="/logout">
+            <Link className="Header__btn Header__alt" to="/logout">
               Log Out
             </Link>
           )}
@@ -37,9 +37,9 @@ export default class Header extends Component {
         </div>
         <div className="Header__db_logout">
           <Link to="/dashboard">
-            <h3>Dashboard</h3>
+            <h3 className="Header__dashboard">Dashboard</h3>
           </Link>
-          <Link className="Header__btn" to="/logout">
+          <Link className="Header__btn  Header__alt" to="/logout">
             Log Out
           </Link>
         </div>

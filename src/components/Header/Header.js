@@ -32,8 +32,8 @@ export default class Header extends Component {
     return (
       <div className="Header__sub_container">
         <div className="Header__user_info">
-          <span>Welcome, {this.props.userName}!</span>
-          <span>Role: {this.props.role}</span>
+          <span>Welcome, {this.context.currentUser.name}!</span>
+          <span>Role: {this.context.currentUser.role}</span>
         </div>
         <div className="Header__db_logout">
           <Link to="/dashboard">

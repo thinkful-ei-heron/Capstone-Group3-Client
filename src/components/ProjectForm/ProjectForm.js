@@ -23,7 +23,7 @@ const ProjectForm = props => {
 
     if (!props.proj) {
       const docRef = await dbServices.addProject(data);
-      console.log(!props.proj);
+      // console.log(!props.proj);
       await dbServices.setProjId(docRef.id, data.org_id);
       props.addToProjState({ ...data, id: docRef.id });
     } else {
@@ -34,7 +34,7 @@ const ProjectForm = props => {
     //props.history.push('/dashboard');
   };
 
-  console.log(props.proj);
+  // console.log(props.proj);
 
   return (
     <form className="ProjectForm" onSubmit={e => handleSubmit(e)}>

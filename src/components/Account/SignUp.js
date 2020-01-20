@@ -17,13 +17,15 @@ const SignUp = ({ history }, props) => {
       password: password.value,
       name: name.value,
       org: orgName.value,
-      displayName: name.value
+      displayName: name.value,
+      role: "owner"
     };
     let valuesNoPass = {
       email: email.value,
       name: name.value,
       org: orgName.value,
-      displayName: name.value
+      displayName: name.value,
+      role: "project worker"
     };
     switch (history.location.pathname) {
       case "/owner-signup":

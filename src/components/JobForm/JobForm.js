@@ -11,7 +11,7 @@ const NewJob = props => {
   const [submitted, setSubmitted] = useState(false);
 
   const context = useContext(AuthContext);
-  
+
   useEffect(() => {
     const resetFunction = () => {
       resetName();
@@ -40,15 +40,11 @@ const NewJob = props => {
     }
   };
 
-  const { value: name, bind: bindName, reset: resetName } = useInput(
-    props.job ? props.job.name : ''
-  );
+  const { value: name, bind: bindName, reset: resetName } = useInput(props.job ? props.job.name : '');
   const { value: description, bind: bindDescription, reset: resetDescription } = useInput(
     props.job ? props.job.description : ''
   );
-  const { value: deadline, bind: bindDeadline, reset: resetDeadline } = useInput(
-    props.job ? getDate() : ''
-  );
+  const { value: deadline, bind: bindDeadline, reset: resetDeadline } = useInput(props.job ? getDate() : '');
   const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(
     props.job ? props.job.total_hours : ''
   );
@@ -69,15 +65,13 @@ const NewJob = props => {
     let alert = [];
 
     if (props.job) {
-      if (props.job.status === "edit request") status = "in progress";
+      if (props.job.status === 'edit request') status = 'in progress';
       else status = props.job.status;
 
       employees.map(employee => {
-        if (!props.job.project_workers.includes(employee))
-          return alert.push(employee);
+        if (!props.job.project_workers.includes(employee)) return alert.push(employee);
         else return null;
       });
-
     } else {
       employees.map(employee => {
         return alert.push(employee);
@@ -112,8 +106,9 @@ const NewJob = props => {
 
     if (props.job) {
       let projects = [];
-      await dbServices.getProjectById(props.job.project_id, context.currentUser.displayName)
-        .then(project => projects.push(project.data()))
+      await dbServices
+        .getProjectById(props.job.project_id, context.currentUser.displayName)
+        .then(project => projects.push(project.data()));
       let project = projects[0];
       updatedProjectWorkers = project.project_workers;
     } else {
@@ -126,25 +121,19 @@ const NewJob = props => {
       } else return null;
     });
 
-    await dbServices.updateProjectWorkers(
-      projectId,
-      updatedProjectWorkers,
-      context.currentUser.displayName
-    ).then(props.showJobForm());
+    await dbServices
+      .updateProjectWorkers(projectId, updatedProjectWorkers, context.currentUser.displayName)
+      .then(props.showJobForm(e));
   };
-
 
   return (
     <>
-      <form
-        onSubmit={e => handleSubmit(e).then(setSubmitted(true))}
-        className="newjob__form"
-      >
+      <form onSubmit={e => handleSubmit(e).then(setSubmitted(true))} className="newjob__form">
         <fieldset>
           <legend>{props.projectId ? 'Add New Job' : 'Edit Job'}</legend>
           <div className="input">
             <Label htmlFor="name">Job Name: </Label>
-            <Input type="text" name="name" id="name" {...bindName} required /> 
+            <Input type="text" name="name" id="name" {...bindName} required />
           </div>
           <div className="input">
             <Label htmlFor="description">Details: </Label>

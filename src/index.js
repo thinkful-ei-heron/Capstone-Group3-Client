@@ -12,10 +12,11 @@ import {
   faPlus,
   faMinus,
   faChevronUp,
-  faChevronDown
+  faChevronDown,
+  faEdit
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faAngleRight, faAngleDown, faPlus, faMinus, faChevronUp, faChevronDown);
+library.add(faAngleRight, faAngleDown, faPlus, faMinus, faChevronUp, faChevronDown, faEdit);
 
 ReactDOM.render(
   <Router>

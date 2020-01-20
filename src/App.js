@@ -43,27 +43,27 @@ const App = props => {
         <header>
           <Header userName={'refactoring'} role={'Refactoring'} />
         </header>
-        <main className='app__main'>
+        <main className="app__main">
           <Switch>
-            <Route exact path='/' component={LandingPage} />
-            <Route exact path='/login' component={Login} />
+            <Route exact path="/" component={LandingPage} />
+            <Route exact path="/login" component={Login} />
             <Route
               exact
               // drop down instead for selecting owner/worker?
-              path='/(owner|worker)-signup/'
+              path="/(owner|worker)-signup/"
               // path="/register"
               render={() => <SignUp />}
             />
             <PrivateRoute
               exact
-              path='/dashboard'
+              path="/dashboard"
               location={props.location}
               setPath={setPath}
               component={Dashboard}
             />
             <PrivateRoute
               exact
-              path='/project/:id'
+              path="/project/:id"
               location={props.location}
               setPath={setPath}
               render={props => <ProjectView id={props.match.params.id} />}
@@ -78,7 +78,7 @@ const App = props => {
             /> */}
             <PrivateRoute
               exact
-              path='/logout'
+              path="/logout"
               location={props.location}
               setPath={setPath}
               component={Logout}
@@ -87,6 +87,9 @@ const App = props => {
               <h3>Need to implement a catchall route/component here</h3>
             </Route>
           </Switch>
+          {/* <PrivateRoute>
+            This will be the sidebar, we don't need to render it in dashboard/project view directly.
+          </PrivateRoute> */}
         </main>
       </>
     );

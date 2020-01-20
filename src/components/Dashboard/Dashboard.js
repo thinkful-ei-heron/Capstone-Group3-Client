@@ -4,10 +4,10 @@ import { AuthContext } from '../../services/Auth.js';
 import dbServices from '../../services/dbServices';
 import Loading from '../Loading/Loading';
 import NewProject from '../NewProject/NewProject';
-import Sidebar from '../Sidebar/Sidebar';
+// import Sidebar from '../Sidebar/Sidebar';
 import StyleIcon from '../StyleIcon/StyleIcon';
 import ProjectBar from '../ProjectBar/ProjectBar';
-import JobNotification from '../JobNotification/JobNotification';
+// import JobNotification from '../JobNotification/JobNotification';
 import './Dashboard.css';
 
 ////////////////////////////////////////////////////////////////////
@@ -33,9 +33,11 @@ export default class Dashboard extends Component {
 
   async componentDidMount() {
     const email = this.context.currentUser.email;
-    const org = this.context.currentUser.displayName;
+    const org = this.context.currentUser.org;
+    const name = this.context.currentUser.name;
+    const role = this.context.currentUser.role;
 
-    const data = await dbServices.initDashboard(email, org);
+    const data = await dbServices.initDashboard(name, role, org);
 
     this.setState({
       user: {
@@ -105,7 +107,7 @@ export default class Dashboard extends Component {
               <span className="Dashboard__date">
                 {new Date().toLocaleString()}
               </span>
-              <JobNotification user={this.state.user} />
+              {/* <JobNotification user={this.state.user} /> */}
             </div>
 
             <div className="Dashboard__main">
@@ -173,7 +175,7 @@ export default class Dashboard extends Component {
                     <h1>PERSONNEL</h1>
                   </div>
                 </div>
-                <Sidebar user={this.state.user} />
+                {/* <Sidebar user={this.state.user} /> */}
               </section>
             </div>
           </section>

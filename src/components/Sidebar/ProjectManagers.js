@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from 'react';
 //import FirebaseContext from "../../services/context";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const ProjectManagers = props => {
   //const context = useContext(FirebaseContext);
@@ -44,7 +44,7 @@ const ProjectManagers = props => {
   const renderProjectManagers = () => {
     if (completeManagerList.length === 0) return <></>;
     return completeManagerList.map((manager, index) => {
-      let itemId = "manager" + index;
+      let itemId = 'manager' + index;
       return (
         <li key={index}>
           <button id={itemId} onClick={e => props.toggleExpand(e)}>

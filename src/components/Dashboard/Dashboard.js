@@ -1,13 +1,12 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../../services/Auth.js";
-import dbServices from "../../services/dbServices";
-import Loading from "../Loading/Loading";
-import NewProject from "../NewProject/NewProject";
-import { Sidebar } from "../Sidebar/Sidebar";
-import StyleIcon from "../StyleIcon/StyleIcon";
-import ProjectBar from "../ProjectBar/ProjectBar";
-import "./Dashboard.css";
+import React, { Component } from 'react';
+import { AuthContext } from '../../services/Auth.js';
+import dbServices from '../../services/dbServices';
+import Loading from '../Loading/Loading';
+import NewProject from '../NewProject/NewProject';
+// import { Sidebar } from '../Sidebar/Sidebar';
+import StyleIcon from '../StyleIcon/StyleIcon';
+import ProjectBar from '../ProjectBar/ProjectBar';
+import './Dashboard.css';
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -112,11 +111,11 @@ export default class Dashboard extends Component {
                 >
                   <div className="Dashboard__fa_h1">
                     {StyleIcon({
-                      style: `${this.state.expandProjects ? "minus" : "plus"}`
+                      style: `${this.state.expandProjects ? 'minus' : 'plus'}`
                     })}
                     <h1>PROJECTS</h1>
                   </div>
-                  {this.state.user.role !== "project worker" && (
+                  {this.state.user.role !== 'project worker' && (
                     <button onClick={this.toggleNewProj}>NEW</button>
                   )}
                 </div>
@@ -143,7 +142,7 @@ export default class Dashboard extends Component {
                               />
                             </li>
                           );
-                        })}{" "}
+                        })}{' '}
                       </ul>
                     ) : (
                       <div className="Dashboard__no_projects">
@@ -164,7 +163,7 @@ export default class Dashboard extends Component {
                 >
                   <div className="Dashboard__fa_h1">
                     {StyleIcon({
-                      style: `${this.state.expandPersonnel ? "minus" : "plus"}`
+                      style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`
                     })}
                     <h1>PERSONNEL</h1>
                   </div>

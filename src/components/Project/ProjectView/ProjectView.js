@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { ProgressBar } from "../ProgressBar/ProgressBar";
+import { ProgressBar } from "../../ProgressBar/ProgressBar";
 import "./ProjectView.css";
-import Loading from "../Loading/Loading";
-import { AuthContext } from "../../services/Auth.js";
-import Jobs from "../Jobs/Jobs";
-import Statistics from "../Statistics/Statistics";
-import Sidebar from "../Sidebar/Sidebar";
+import Loading from "../../Loading/Loading";
+import { AuthContext } from "../../../services/Auth.js";
+import Jobs from "../Project/Jobs/Jobs/Jobs";
+import Statistics from "../../Statistics/Statistics";
+import Sidebar from "../../Sidebar/Sidebar";
 import JobForm from "../JobForm/JobForm";
-import dbServices from "../../services/dbServices";
-import dateConversions from "../../services/dateConversions";
+import dbServices from "../../../services/dbServices";
+import dateConversions from "../../../services/dateConversions";
 
 export default class ProjectView extends Component {
   constructor(props) {

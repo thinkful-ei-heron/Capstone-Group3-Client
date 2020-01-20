@@ -1,7 +1,7 @@
 import React from "react";
-import { Input, Label } from "../Form/Form";
-import dbServices from "../../services/dbServices";
-import dateConversions from "../../services/dateConversions";
+import { Input, Label } from "../../Form/Form";
+import dbServices from "../../../services/dbServices";
+import dateConversions from "../../../services/dateConversions";
 
 const ProjectForm = props => {
   const handleSubmit = async e => {

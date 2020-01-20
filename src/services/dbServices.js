@@ -239,15 +239,6 @@ const dbServices = {
       .update({ ...jobObj });
   },
 
-  // async updateProject(projObj) {
-  //   await db
-  //     .collection("organizations")
-  //     .doc(projObj.org_id)
-  //     .collection("projects")
-  //     .doc(projObj.id)
-  //     .update({ ...projObj });
-  // },
-
   async updateJobStatus(id, status, project_id, approval, org) {
     await db
       .collection("organizations")

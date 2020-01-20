@@ -71,9 +71,9 @@ class JobItem extends Component {
 
     if (
       this.context.currentUser.role === "project manager" ||
-      this.context.currentUser.role === "admin"
+      this.context.currentUser.role === "owner"
     ) {
-      if (status === "completed") return <span>Job Completed</span>;
+      if (status === "completed") return <span>Task Completed</span>;
       return (
         <>
           {!approval && progress === 100 && status !== "revisions" ? (

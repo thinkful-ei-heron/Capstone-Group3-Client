@@ -67,6 +67,9 @@ const ProjectBar = props => {
             Est. Progress <ProgressBar percentage={props.proj.progress} />
           </div>
           Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
+          {dateConversions.dateDiff(props.proj.deadline) ? 
+            `Overdue by ${dateConversions.dateDiff(props.proj.deadline)} days`
+            : ''}
         </div>
       </Link>
       {props.role === "owner" && (

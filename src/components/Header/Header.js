@@ -3,9 +3,18 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../services/Auth";
 import lazy from "../../images/lazy.svg";
 import "./Header.css";
+import app from "../../services/base";
 
 export default class Header extends Component {
   static contextType = AuthContext;
+
+  doStuff = () => {
+    console.log("in doStuff");
+    app
+      .auth()
+      .signOut()
+      .then(() => console.log("after signOut"));
+  };
 
   renderLoginLink() {
     return (
@@ -39,9 +48,13 @@ export default class Header extends Component {
           <Link to="/dashboard">
             <h3 className="Header__dashboard">Dashboard</h3>
           </Link>
-          <Link className="Header__btn  Header__alt" to="/logout">
+          <button
+            onClick={() => this.doStuff()}
+            className="Header__btn  Header__alt"
+            to="/logout"
+          >
             Log Out
-          </Link>
+          </button>
         </div>
       </div>
     );

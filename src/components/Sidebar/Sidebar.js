@@ -27,7 +27,6 @@ const Sidebar = props => {
   };
 
   useEffect(() => {
-    console.log(props.view);
     const getEmployees = async () => {
       let employees = [];
       return await dbServices.getEmployees(currentUser.org).then(snapshot => {
@@ -77,9 +76,7 @@ const Sidebar = props => {
   };
 
   const renderEmployees = () => {
-    console.log(employeeList);
     return employeeList.map((emp, index) => {
-      console.log(emp);
       return (
         <li key={emp.name + index}>
           <Link to={`/profile/${emp.email}`}>{emp.name}</Link>

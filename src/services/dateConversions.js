@@ -33,10 +33,10 @@ const dateConversions = {
 
     if (currDate > dueDate) {
       let res = Math.abs(currDate - dueDate) / 1000;
-      let days = Math.floor(res / 86400)
-      return days
+      let days = Math.floor(res / 86400);
+      return days;
     } else {
-      return null
+      return null;
     }
   }
 };

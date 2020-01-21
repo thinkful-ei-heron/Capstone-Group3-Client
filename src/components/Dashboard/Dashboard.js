@@ -46,10 +46,14 @@ export default class Dashboard extends Component {
         return sortedProjectsComplete.push(project);
       } else return sortedProjectsIncomplete.push(project);
     });
+
+    sortedProjectsIncomplete.sort((a, b) => {
+      console.log(b.deadline.seconds);
+      return a.deadline.seconds - b.deadline.seconds;
+    });
     let sortedProjects = sortedProjectsIncomplete.concat(
       sortedProjectsComplete
     );
-    sortedProjectsIncomplete.sort((a, b) => a.deadline - b.deadline);
     this.setState({
       user: {
         id: email,

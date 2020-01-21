@@ -48,7 +48,6 @@ export default class Dashboard extends Component {
     });
 
     sortedProjectsIncomplete.sort((a, b) => {
-      console.log(b.deadline.seconds);
       return a.deadline.seconds - b.deadline.seconds;
     });
     let sortedProjects = sortedProjectsIncomplete.concat(

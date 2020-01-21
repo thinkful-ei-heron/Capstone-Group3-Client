@@ -53,15 +53,11 @@ export default class Jobs extends Component {
   grabProgress = () => {
     let totalHours = 0;
     let totalProgress = 0;
-    console.log(this.state.jobs);
     this.state.jobs.map(job => {
-      console.log(job);
       totalHours = parseInt(job.total_hours) + totalHours;
       totalProgress = parseInt(job.hours_completed) + totalProgress;
       return null;
     });
-    console.log(totalHours);
-    console.log(totalProgress);
     this.props.getProgress(totalProgress, totalHours);
   };
 

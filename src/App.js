@@ -12,6 +12,7 @@ import { AuthContext } from "./services/Auth.js";
 import Logout from "./components/Account/Logout";
 import Profile from "./components/Profile/Profile";
 import "./App.css";
+import { CatchAll } from "./components/CatchAll/CatchAll";
 // import Sidebar from "./components/Sidebar/Sidebar";
 
 const App = props => {
@@ -47,16 +48,11 @@ const App = props => {
           <Route exact path="/login" setPath={setPath} component={Login} />
           <PrivateRoute
             path="/profile/:id"
-            // setPath={setPath}
-            // location={props.location}
-            // id={props.match.params.id}
             component={props => <Profile id={props.match.params.id} />}
           />
           <Route
-            // exact
             // drop down instead for selecting owner/worker?
-            path="/(owner|worker|manager)-signup/"
-            // path="/register"
+            path="/(worker|manager|owner)-signup/"
             render={() => <SignUp />}
           />
           <PrivateRoute
@@ -73,25 +69,8 @@ const App = props => {
             setPath={setPath}
             component={props => <ProjectView id={props.match.params.id} />}
           />
-          {/* <PrivateRoute
-              exact
-              path='/profile/:id'
-              location={props.location}
-              setPath={setPath}
-              id={props.match.params.id}
-              component={ProfileView}
-            /> */}
-          {/* <PrivateRoute
-            exact
-            path="/logout"
-            setPath={setPath}
-            component={Logout}
-          /> */}
-          {/* <Route>
-              <h3>Need to implement a catchall route/component here</h3>
-          </Route> */}
+          <Route component={CatchAll} />
         </Switch>
-        {/* <PrivateRoute path="/" component={() => <Sidebar />} /> */}
       </main>
     </>
   );

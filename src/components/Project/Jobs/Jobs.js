@@ -30,40 +30,16 @@ export default class Jobs extends Component {
         ) {
           jobs.push(doc.data());
         }
-      }, error => {
-        console.warn(error)
-            Swal.fire({
-              title: "Error!",
-              text: 'There was an issue loading your tasks - please refresh the page and try again.',
-              icon: 'error',
-              confirmButtonText: 'Close'
-            })
       });
     } else if (this.context.currentUser.role === "project manager") {
       querySnapshot.forEach(doc => {
         if (doc.data().project_manager === this.context.currentUser.name) {
           jobs.push(doc.data());
         }
-      }, error => {
-        console.warn(error)
-            Swal.fire({
-              title: "Error!",
-              text: 'There was an issue loading your project\'s tasks - please refresh the page and try again.',
-              icon: 'error',
-              confirmButtonText: 'Close'
-            })
       });
     } else {
       querySnapshot.forEach(doc => {
         jobs.push(doc.data());
-      }, error => {
-        console.warn(error)
-            Swal.fire({
-              title: "Error!",
-              text: 'There was an issue loading this project\'s tasks - please refresh the page and try again.',
-              icon: 'error',
-              confirmButtonText: 'Close'
-            })
       });
     }
 
@@ -87,9 +63,18 @@ export default class Jobs extends Component {
   };
 
   componentDidMount() {
-    this.unsubscribe = dbServices
+    try {
+      this.unsubscribe = dbServices
       .jobsListener(this.context.currentUser.org, this.props.projectId)
       .onSnapshot(this.onJobsUpdate);
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: 'There was an issue loading this project\'s tasks - please refresh the page and try again.',
+        icon: 'error',
+        confirmButtonText: 'Close'
+      })
+    }
   }
 
   componentWillUnmount() {

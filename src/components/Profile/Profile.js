@@ -25,21 +25,13 @@ const Profile = props => {
           setUserInfo(info);
         })
       )
-      .catch(error => {
-        console.warn(error)
-        Swal.fire({
-          title: "Error!",
-          text: 'There was an issue promoting this employee - please refresh the page and try again.',
-          icon: 'error',
-          confirmButtonText: 'Close'
-        })
-      });
     });
   };
 
   const getUserInfo = async () => {
     let info = {};
-    await dbServices
+    try {
+      await dbServices
       .getUser(props.match.params.id, currentUser.org)
       .then(snapshot => {
         snapshot.forEach(doc => {
@@ -51,7 +43,8 @@ const Profile = props => {
           };
         });
       })
-      .catch(error => {
+    } catch (error) {
+        console.log('caught error!')
         console.warn(error)
         Swal.fire({
           title: "Error!",
@@ -59,41 +52,45 @@ const Profile = props => {
           icon: 'error',
           confirmButtonText: 'Close'
         })
-      });
+    }
+    
+      
     return info;
   };
 
   const getUserProjects = async info => {
     if (info.role === "project worker")
-      dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
-        snapshot.forEach(doc => {
-          setUserProjects([...userProjects, doc.data()]);
-        });
-      })
-      .catch(error => {
+      try {
+        await dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
+          snapshot.forEach(doc => {
+            setUserProjects([...userProjects, doc.data()]);
+          });
+        })
+      } catch (error) {
         console.warn(error)
         Swal.fire({
           title: "Error!",
-          text: 'There was an issue loading this employee\'s information - please refresh the page and try again.',
+          text: 'There was an issue loading this employee\'s project information - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })
-      });
+      }
     else if (info.role === "project manager") {
-      dbServices.getManagerProjects(info.name, info.org).then(snapshot => {
-        snapshot.forEach(doc => {
-          setUserProjects([...userProjects, doc.data()]);
-        });
-      })
-      .catch(error => {
+      try {
+        await dbServices.getManagerProjects(info.name, info.org).then(snapshot => {
+          snapshot.forEach(doc => {
+            setUserProjects([...userProjects, doc.data()]);
+          });
+        })
+      } catch (error) {
         console.warn(error)
         Swal.fire({
           title: "Error!",
-          text: 'There was an issue loading this employee\'s information - please refresh the page and try again.',
+          text: 'There was an issue loading this employee\'s project information - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })
-      });
+      }
     }
   };
 

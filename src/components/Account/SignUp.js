@@ -3,11 +3,9 @@ import { withRouter } from "react-router";
 import app from "../../services/base";
 import dbServices from "../../services/dbServices";
 import { Label, Input } from "../Form/Form";
-// import useFormValidation from "../../../hooks/useFormValidation";
-// import validateInput from "../../../hooks/validateInput";
 import useFormValidation from "../../hooks/useFormValidation";
 import validateInput from "../../hooks/validateInput";
-import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const SignUp = ({ history }, props) => {
   const functions = app.functions();
@@ -58,14 +56,30 @@ const SignUp = ({ history }, props) => {
           .then(() =>
             dbServices.createOwner({ ...infoNoPass, role: "owner" }, info.org)
           )
-          .catch(error => alert(`An error occurd: ${error}`));
+          .catch(error => {
+            console.warn(error)
+            Swal.fire({
+              title: "Error!",
+              text: 'There was an issue with registration - please refresh the page and try again.',
+              icon: 'error',
+              confirmButtonText: 'Close'
+            })
+          });
         break;
       case "/worker-signup":
         registerWorker(info).then(() =>
           dbServices
             .createUserInOrg({ ...infoNoPass, role: "project worker" }, orgName)
-            .catch(error => alert(`An error occurd: ${error}`))
-        );
+        )
+        .catch(error => {
+          console.warn(error)
+          Swal.fire({
+            title: "Error!",
+            text: 'There was an issue with registration - please refresh the page and try again.',
+            icon: 'error',
+            confirmButtonText: 'Close'
+          })
+        });
         break;
       case "/manager-signup":
         registerProjectManager(info).then(() =>
@@ -74,8 +88,16 @@ const SignUp = ({ history }, props) => {
               { ...infoNoPass, role: "project manager" },
               orgName
             )
-            .catch(error => alert(`An error occurd: ${error}`))
-        );
+        )
+        .catch(error => {
+          console.warn(error)
+          Swal.fire({
+            title: "Error!",
+            text: 'There was an issue with registration - please refresh the page and try again.',
+            icon: 'error',
+            confirmButtonText: 'Close'
+          })
+        });
     }
     history.push("/login");
     return `${email} signed up`;
@@ -100,7 +122,6 @@ const SignUp = ({ history }, props) => {
             value={values.email}
             onBlur={handleBlur}
             placeholder="Email"
-            //required
           />
           {errors.email && <p>*{errors.email}</p>}
         </Label>
@@ -113,7 +134,6 @@ const SignUp = ({ history }, props) => {
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.password}
-            //required
           />
           {errors.password && <p>*{errors.password}</p>}
         </Label>
@@ -126,7 +146,6 @@ const SignUp = ({ history }, props) => {
             value={values.name}
             onBlur={handleBlur}
             placeholder="Username"
-            //required
           />
           {errors.name && <p>*{errors.name}</p>}
         </Label>
@@ -139,7 +158,6 @@ const SignUp = ({ history }, props) => {
             value={values.orgName}
             onBlur={handleBlur}
             placeholder="Organization name"
-            //required
           >
             {orgList && orgList.length > 0 ? (
               orgList.map((item, i) => {
@@ -154,14 +172,6 @@ const SignUp = ({ history }, props) => {
             )}
           </select>
           {errors.orgName && <p>*{errors.orgName}</p>}
-          {/* <Input
-            type="text"
-            name="orgName"
-            onChange={handleChange}
-            value={values.orgName}
-            placeholder="Organization name"
-            required
-          /> */}
         </Label>
         <button type="submit" disabled={isSubmitting}>Sign Up</button>
       </form>

@@ -8,7 +8,6 @@ import dbServices from "../../services/dbServices";
 const Profile = props => {
   const { currentUser } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState({});
-  // const [userJobs, setUserJobs] = useState([]);
   const [userProjects, setUserProjects] = useState([]);
 
   const getUserInfo = async () => {
@@ -29,11 +28,19 @@ const Profile = props => {
   };
 
   const getUserProjects = async info => {
-    dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
-      snapshot.forEach(doc => {
-        setUserProjects([...userProjects, doc.data()]);
+    if (info.role === "project worker")
+      dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
+        snapshot.forEach(doc => {
+          setUserProjects([...userProjects, doc.data()]);
+        });
       });
-    });
+    else if (info.role === "project manager") {
+      dbServices.getManagerProjects(info.name, info.org).then(snapshot => {
+        snapshot.forEach(doc => {
+          setUserProjects([...userProjects, doc.data()]);
+        });
+      });
+    }
   };
 
   useEffect(() => {
@@ -45,29 +52,42 @@ const Profile = props => {
 
   if (userInfo && userInfo.role)
     return (
-      <div>
-        <h3>User Info:</h3>
-        <ul>
-          <li>Role: {userInfo.role}</li>
-          <li>Email: {userInfo.email}</li>
-          <li>Name: {userInfo.name}</li>
-          <li>Org: {userInfo.org}</li>
-        </ul>
-        <h3>User Projects:</h3>
-        {userProjects ? (
+      <>
+        <div>
+          <h3>User Info:</h3>
           <ul>
-            {userProjects.map((proj, i) => {
-              return (
-                <li key={i}>
-                  <Link to={`/project/${proj.id}`}>{proj.name}</Link>
-                </li>
-              );
-            })}
+            <li>Role: {userInfo.role}</li>
+            <li>Email: {userInfo.email}</li>
+            <li>Name: {userInfo.name}</li>
+            <li>Org: {userInfo.org}</li>
           </ul>
-        ) : (
-          <p>No Projects assigned.</p>
-        )}
-      </div>
+          <h3>User Projects:</h3>
+          {userProjects ? (
+            <ul>
+              {userProjects.map((proj, i) => {
+                return (
+                  <li key={i}>
+                    <Link to={`/project/${proj.id}`}>{proj.name}</Link>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p>No Projects assigned.</p>
+          )}
+        </div>
+        {/* yes I know this is kind of gross. */}
+        <div>
+          {currentUser &&
+          currentUser.role === "owner" &&
+          userInfo &&
+          userInfo.role === "project worker" ? (
+            <button>Promote User</button>
+          ) : (
+            <></>
+          )}
+        </div>
+      </>
     );
   return <></>;
 };

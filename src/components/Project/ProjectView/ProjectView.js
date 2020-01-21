@@ -9,6 +9,7 @@ import Sidebar from "../../Sidebar/Sidebar";
 import JobForm from "../JobForm/JobForm";
 import dbServices from "../../../services/dbServices";
 import dateConversions from "../../../services/dateConversions";
+import { CatchAll } from "../../CatchAll/CatchAll";
 
 export default class ProjectView extends Component {
   constructor(props) {

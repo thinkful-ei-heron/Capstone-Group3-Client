@@ -41,7 +41,6 @@ const ProjectForm = props => {
         text: error.message,
         icon: "error",
         confirmButtonText: "Close"
-        // onClose: props.toggleForm
       });
     }
 

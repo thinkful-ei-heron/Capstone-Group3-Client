@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../services/Auth";
 import dbServices from "../../services/dbServices";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Sidebar = props => {
   let [employeeList, setEmployeeList] = useState([]);
@@ -29,40 +30,52 @@ const Sidebar = props => {
   useEffect(() => {
     const getEmployees = async () => {
       let employees = [];
-      return await dbServices.getEmployees(currentUser.org).then(snapshot => {
-        snapshot.forEach(doc => {
-          employees.push(doc.data());
+      try {
+        return await dbServices.getEmployees(currentUser.org).then(snapshot => {
+          // return await dbServices.getEmployees().then(snapshot => {
+          snapshot.forEach(doc => {
+            employees.push(doc.data());
+          });
+          return employees;
         });
-        return employees;
-      });
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "Close",
+          onClose: (window.location.href = "/catchall")
+        });
+      }
     };
 
     const getPMs = async () => {
       let pms = [];
-      return await dbServices
-        .getProjectManagers(currentUser.org)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            pms.push(doc.data());
+      try {
+        return await dbServices
+          .getProjectManagers(currentUser.org)
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              pms.push(doc.data());
+            });
+            return pms;
           });
-          return pms;
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "Close",
+          onClose: (window.location.href = "/catchall")
         });
+      }
     };
-
-    // };
-    // if (props.view === 'project') {
-    //   setEmployeeList(props.project.project_workers);
-    //   let pmList = [];
-    //   pmList.push(props.project.project_manager);
-    //   setPMList(pmList);
-    // } else {
     getEmployees().then(employees => {
       setEmployeeList(employees);
     });
     getPMs().then(pms => {
       setPMList(pms);
     });
-    // }
   }, []);
 
   const renderProjectManagers = () => {

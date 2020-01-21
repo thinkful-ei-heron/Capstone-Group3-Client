@@ -59,6 +59,22 @@ export default class Dashboard extends Component {
       });
     }
 
+    let sortedProjectsComplete = [];
+    let sortedProjectsIncomplete = [];
+
+    data.projects.map((project, index) => {
+      if (project.progress === 100) {
+        return sortedProjectsComplete.push(project);
+      } else return sortedProjectsIncomplete.push(project);
+    });
+
+    sortedProjectsIncomplete.sort((a, b) => {
+      console.log(b.deadline.seconds);
+      return a.deadline.seconds - b.deadline.seconds;
+    });
+    let sortedProjects = sortedProjectsIncomplete.concat(
+      sortedProjectsComplete
+    );
     this.setState({
       user: {
         id: email,
@@ -66,7 +82,7 @@ export default class Dashboard extends Component {
         org: org,
         role: role
       },
-      projects: data.projects,
+      projects: sortedProjects,
       projectManagers: data.project_managers,
       loading: false
     });

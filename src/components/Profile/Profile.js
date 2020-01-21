@@ -12,22 +12,19 @@ const Profile = props => {
   const [userInfo, setUserInfo] = useState({});
   const [userProjects, setUserProjects] = useState([]);
   const functions = app.functions();
-  const promoteFunc = functions.httpsCallable("promoteUser");
 
-  const promoteUser = async event => {
+  const handleClick = async event => {
     event.preventDefault();
+    const promoteFunc = await functions.httpsCallable("promoteUser");
     promoteFunc({
       email: userInfo.email,
       org: userInfo.org
-    }).then(() => dbServices.promoteUser(userInfo.org, userInfo.email))
-    .catch(error => {
-      console.warn(error)
-      Swal.fire({
-        title: "Error!",
-        text: 'There was an issue - please refresh the page and try again.',
-        icon: 'error',
-        confirmButtonText: 'Close'
-      })
+    }).then(() => {
+      dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
+        getUserInfo().then(info => {
+          setUserInfo(info);
+        })
+      );
     });
   };
 
@@ -110,7 +107,7 @@ const Profile = props => {
             <li>Org: {userInfo.org}</li>
           </ul>
           <h3>User Projects:</h3>
-          {userProjects ? (
+          {userProjects.length > 0 ? (
             <ul>
               {userProjects.map((proj, i) => {
                 return (
@@ -130,7 +127,7 @@ const Profile = props => {
           currentUser.role === "owner" &&
           userInfo &&
           userInfo.role === "project worker" ? (
-            <button onClick={() => promoteUser}>Promote User</button>
+            <button onClick={event => handleClick(event)}>Promote User</button>
           ) : (
             <></>
           )}

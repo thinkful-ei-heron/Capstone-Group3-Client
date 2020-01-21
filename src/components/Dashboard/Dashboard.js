@@ -50,8 +50,6 @@ export default class Dashboard extends Component {
       sortedProjectsComplete
     );
     sortedProjectsIncomplete.sort((a, b) => a.deadline - b.deadline);
-    console.log(sortedProjectsIncomplete);
-    console.log(sortedProjects);
     this.setState({
       user: {
         id: email,

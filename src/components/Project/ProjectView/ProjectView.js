@@ -41,17 +41,24 @@ export default class ProjectView extends Component {
 
     currentProgress = currentProgress + jobProg;
     currentTotal = currentTotal + jobTotal;
+    if (currentProgress === 0) {
+      this.setState({
+        progress: 0
+      });
+    } else {
+      this.setState({
+        progress: parseInt(currentProgress),
+        total: currentTotal
+      });
 
-    this.setState({
-      progress: currentProgress,
-      total: currentTotal
-    });
-
-    newProject.progress = (currentProgress / currentTotal) * 100;
-    dbServices.updateProject(newProject);
-    this.setState({
-      project: newProject
-    });
+      newProject.progress = parseInt(
+        ((currentProgress / currentTotal) * 100).toFixed(2)
+      );
+      dbServices.updateProject(newProject);
+      this.setState({
+        project: newProject
+      });
+    }
   };
 
   async componentDidMount() {
@@ -99,7 +106,9 @@ export default class ProjectView extends Component {
               </div>
               <div id="project_progress">
                 <span>Est. Progress</span>
-                <ProgressBar percentage={this.state.project.progress} />
+                <ProgressBar
+                  percentage={parseInt(this.state.project.progress)}
+                />
               </div>
               <div id="project_deadline">
                 <span>

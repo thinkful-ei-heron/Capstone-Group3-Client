@@ -11,6 +11,7 @@ const dbServices = {
         .set({
           name: org
         });
+    user.role = "owner";
     addOrg().then(() => this.createUserInOrg(user, org));
     return "success";
   },

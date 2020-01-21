@@ -52,6 +52,15 @@ const dbServices = {
       .get();
   },
 
+  async getManagerProjects(name, org) {
+    return db
+      .collection("organizations")
+      .doc(org)
+      .collection("projects")
+      .where("project_manager", "==", name)
+      .get();
+  },
+
   async getProjectJobsForEmployee(name, org, id) {
     return db
       .collection("organizations")

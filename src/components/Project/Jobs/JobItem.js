@@ -5,6 +5,7 @@ import dbServices from "../../../services/dbServices";
 import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
 import { AuthContext } from "../../../services/Auth";
 import dateConversions from "../../../services/dateConversions";
+import Swal from "sweetalert2";
 
 class JobItem extends Component {
   constructor(props) {
@@ -25,7 +26,16 @@ class JobItem extends Component {
       this.props.job.project_id,
       approval,
       this.props.job.organization
-    );
+    )
+    .catch(error => {
+      console.warn(error)
+      Swal.fire({
+        title: "Error!",
+        text: 'There was an issue - please refresh the page and try again.',
+        icon: 'error',
+        confirmButtonText: 'Close'
+      })
+    });
   };
 
   renderEmployeeList = jobWorkers => {

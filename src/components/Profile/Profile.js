@@ -28,17 +28,19 @@ const Profile = props => {
     return info;
   };
 
-  useEffect(() => {
-    // let projs = [];
-    getUserInfo().then(info => {
-      setUserInfo(info);
-      dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
-        snapshot.forEach(doc => {
-          setUserProjects([...userProjects, doc.data()]);
-        });
+  const getUserProjects = async info => {
+    dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
+      snapshot.forEach(doc => {
+        setUserProjects([...userProjects, doc.data()]);
       });
     });
-    // .then(() => setUserProjects(projs));
+  };
+
+  useEffect(() => {
+    getUserInfo().then(info => {
+      setUserInfo(info);
+      getUserProjects(info);
+    });
   }, []);
 
   if (userInfo && userInfo.role)

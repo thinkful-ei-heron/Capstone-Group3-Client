@@ -1,12 +1,14 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router";
 import app from "../../services/base.js"; 
 import { AuthContext } from "../../services/Auth.js";
 import { Label, Input } from "../Form/Form";
+import Swal from "sweetalert2";
 import "./Login.css";
 
 const Login = (setPath, { history }) => {
   const { currentUser } = useContext(AuthContext);
+
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
@@ -14,7 +16,15 @@ const Login = (setPath, { history }) => {
       await app
         .auth()
         .signInWithEmailAndPassword(email.value, password.value)
-        .catch(error => console.warn(error));
+        .catch(error => {
+          console.warn(error)
+          Swal.fire({
+            title: "Error!",
+            text: error.code === 'auth/user-not-found' ? 'Incorrect email' : 'Incorrect password',
+            icon: 'error',
+            confirmButtonText: 'Close'
+          })
+        });
     },
     [history]
   );

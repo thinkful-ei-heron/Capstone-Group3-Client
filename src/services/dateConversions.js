@@ -1,6 +1,6 @@
 import * as firebase from "firebase/app";
 
-const dateConversions = {
+const dateConversions = { 
   //Convert <input type='date'> format to firestore timestamp
   dateToTimestamp(date) {
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());

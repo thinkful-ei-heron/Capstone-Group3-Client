@@ -76,14 +76,12 @@ const SignUp = ({ history }, props) => {
             )
             .catch(error => alert(`An error occurd: ${error}`))
         );
-      default:
-        registerWorker(info);
     }
     history.push("/login");
     return `${email} signed up`;
   };
 
-  const { handleSubmit, errors, handleChange, values, isSubmitting, handleBlur } = useFormValidation(
+  const { handleSubmit, errors, handleChange, values, handleBlur, isSubmitting } = useFormValidation(
     inputValues,
     validateInput.validateSignup,
     handleSignUp
@@ -113,8 +111,8 @@ const SignUp = ({ history }, props) => {
             type="password"
             placeholder="Password"
             onChange={handleChange}
-            value={values.password}
             onBlur={handleBlur}
+            value={values.password}
             //required
           />
           {errors.password && <p>*{errors.password}</p>}

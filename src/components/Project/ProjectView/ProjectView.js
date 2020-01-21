@@ -63,22 +63,23 @@ export default class ProjectView extends Component {
   };
 
   async componentDidMount() {
-    this.unsubscribe = dbServices
+    try {
+      this.unsubscribe = dbServices
       .projectsListener(this.context.currentUser.org, this.props.id)
       .onSnapshot(
         doc => {
           this.updateProject(doc.data());
-        },
-        error => {
-            console.warn(error)
-            Swal.fire({
-              title: "Error!",
-              text: 'There was an issue loading this project - please refresh the page and try again.',
-              icon: 'error',
-              confirmButtonText: 'Close'
-            })
         }
       );
+    } catch (error) {
+      console.warn(error)
+        Swal.fire({
+          title: "Error!",
+          text: 'There was an issue loading this project\'s information - please refresh the page and try again.',
+          icon: 'error',
+          confirmButtonText: 'Close'
+        })
+    }
   }
 
   componentWillUnmount() {

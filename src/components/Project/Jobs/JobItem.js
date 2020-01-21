@@ -20,22 +20,23 @@ class JobItem extends Component {
   static contextType = AuthContext;
 
   handleApprovalSubmit = async (id, status, approval = false) => {
-    await dbServices.updateJobStatus(
-      id,
-      status,
-      this.props.job.project_id,
-      approval,
-      this.props.job.organization
-    )
-    .catch(error => {
+    try {
+      await dbServices.updateJobStatus(
+        id,
+        status,
+        this.props.job.project_id,
+        approval,
+        this.props.job.organization
+      )
+    } catch (error) {
       console.warn(error)
       Swal.fire({
         title: "Error!",
-        text: 'There was an issue - please refresh the page and try again.',
+        text: 'There was an issue approving this task - please refresh the page and try again.',
         icon: 'error',
         confirmButtonText: 'Close'
       })
-    });
+    }
   };
 
   renderEmployeeList = jobWorkers => {

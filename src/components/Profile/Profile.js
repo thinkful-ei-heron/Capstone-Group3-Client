@@ -4,11 +4,22 @@ import { withRouter, Link } from "react-router-dom";
 import { AuthContext } from "../../services/Auth";
 import app from "../../services/base.js";
 import dbServices from "../../services/dbServices";
+import { functions } from "firebase";
 
 const Profile = props => {
   const { currentUser } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState({});
   const [userProjects, setUserProjects] = useState([]);
+  const functions = app.functions();
+  const promoteFunc = functions.httpsCallable("promoteUser");
+
+  const promoteUser = async event => {
+    event.preventDefault();
+    promoteFunc({
+      email: userInfo.email,
+      org: userInfo.org
+    }).then(() => dbServices.promoteUser(userInfo.org, userInfo.email));
+  };
 
   const getUserInfo = async () => {
     let info = {};
@@ -82,7 +93,7 @@ const Profile = props => {
           currentUser.role === "owner" &&
           userInfo &&
           userInfo.role === "project worker" ? (
-            <button>Promote User</button>
+            <button onClick={() => promoteUser}>Promote User</button>
           ) : (
             <></>
           )}

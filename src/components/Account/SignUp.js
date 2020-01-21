@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router";
 import app from "../../services/base";
 import dbServices from "../../services/dbServices";
-import { Label, Input } from "../Form/Form"; 
+import { Label, Input } from "../Form/Form";
 
 const SignUp = ({ history }, props) => {
   const functions = app.functions();

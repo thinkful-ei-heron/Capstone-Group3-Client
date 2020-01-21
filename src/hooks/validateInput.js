@@ -41,7 +41,7 @@ const validateInput = {
       errors.email = "Please enter your email"
     }
     if (!values.password) {
-      error.password = "Please enter your password"
+      errors.password = "Please enter your password"
     }
 
   },
@@ -58,18 +58,18 @@ const validateInput = {
     }
 
     if (!values.password) {
-      error.password = "Please enter a password"
+      errors.password = "Please enter a password"
     }
     if (values.password && !passRegex.test(values.password)) {
-      error.password = "Password must be eight characters or longer and contain at least 1 lowercase, 1 uppercase, 1 numeric, and one special character";
+      errors.password = "Password must be eight characters or longer and contain at least 1 lowercase, 1 uppercase, 1 numeric, and one special character";
     }
 
     if (!values.name) {
-      error.name = "Please enter a username"
+      errors.name = "Please enter a username"
     }
 
     if (!values.orgName) {
-      error.orgName = "Please enter an organization name"
+      errors.orgName = "Please enter an organization name"
     }
 
   },

@@ -10,6 +10,7 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import PrivateRoute from "./services/PrivateRoute";
 import { AuthContext } from "./services/Auth.js";
 import Logout from "./components/Account/Logout";
+import Profile from "./components/Profile/Profile";
 import "./App.css";
 // import Sidebar from "./components/Sidebar/Sidebar";
 
@@ -44,6 +45,13 @@ const App = props => {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" setPath={setPath} component={Login} />
+          <PrivateRoute
+            path="/profile/:id"
+            // setPath={setPath}
+            // location={props.location}
+            // id={props.match.params.id}
+            component={props => <Profile id={props.match.params.id} />}
+          />
           <Route
             // exact
             // drop down instead for selecting owner/worker?
@@ -81,7 +89,7 @@ const App = props => {
           /> */}
           {/* <Route>
               <h3>Need to implement a catchall route/component here</h3>
-            </Route> */}
+          </Route> */}
         </Switch>
         {/* <PrivateRoute path="/" component={() => <Sidebar />} /> */}
       </main>

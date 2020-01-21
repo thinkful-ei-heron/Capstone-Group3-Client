@@ -80,10 +80,10 @@ export default class Statistics extends Component {
     }
   }
 
-  componentDidMount = () => {
-    db.collection('organizations')
-      .doc()
-  }
+  // componentDidMount = () => {
+  //   db.collection('organizations')
+  //     .doc()
+  // }
 
   render() {
     return (

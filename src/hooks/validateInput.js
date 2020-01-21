@@ -44,6 +44,8 @@ const validateInput = {
       errors.password = "Please enter your password"
     }
 
+    return errors
+
   },
 
   validateSignup(values) {
@@ -71,6 +73,8 @@ const validateInput = {
     if (!values.orgName) {
       errors.orgName = "Please enter an organization name"
     }
+
+    return errors
 
   },
 

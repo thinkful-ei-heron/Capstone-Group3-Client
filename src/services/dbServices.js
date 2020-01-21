@@ -16,14 +16,24 @@ const dbServices = {
     return "success";
   },
 
+  async getAllOrgs() {
+    return db.collection("organizations").get();
+  },
+
   createUserInOrg(newUser, org) {
     newUser.new = true;
-    return db
-      .collection("organizations")
-      .doc(org)
-      .collection("users")
-      .doc(newUser.email)
-      .set(newUser);
+    const orgRef = db.collection("organizations").doc(org);
+
+    return orgRef.get().then(docSnapshot => {
+      if (docSnapshot.exists) {
+        return orgRef.onSnapshot(() => {
+          orgRef
+            .collection("users")
+            .doc(newUser.email)
+            .set(newUser);
+        });
+      } else throw new Error("org not found");
+    });
   },
 
   jobsListener(org, id) {

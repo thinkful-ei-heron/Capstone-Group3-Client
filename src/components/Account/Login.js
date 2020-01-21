@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { withRouter, Redirect } from "react-router";
-import app from "../../services/base.js"; 
+import app from "../../services/base.js";
 import { AuthContext } from "../../services/Auth.js";
 import { Label, Input } from "../Form/Form";
 import "./Login.css";
@@ -14,7 +14,7 @@ const Login = (setPath, { history }) => {
       await app
         .auth()
         .signInWithEmailAndPassword(email.value, password.value)
-        .catch(error => console.warn(error));
+        .catch(error => alert(error));
     },
     [history]
   );
@@ -29,11 +29,16 @@ const Login = (setPath, { history }) => {
       <form className="Login__form" onSubmit={handleLogin}>
         <Label>
           Email
-          <Input name="email" type="email" placeholder="Email" />
+          <Input name="email" type="email" placeholder="Email" required />
         </Label>
         <Label>
           Password
-          <Input name="password" type="password" placeholder="Password" />
+          <Input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+          />
         </Label>
         <button type="submit">Log in</button>
       </form>

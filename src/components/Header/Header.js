@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../services/Auth";
 import lazy from "../../images/lazy.svg";
 import "./Header.css";

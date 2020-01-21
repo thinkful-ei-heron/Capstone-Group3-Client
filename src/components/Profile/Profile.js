@@ -4,21 +4,26 @@ import { withRouter, Link } from "react-router-dom";
 import { AuthContext } from "../../services/Auth";
 import app from "../../services/base.js";
 import dbServices from "../../services/dbServices";
-import { functions } from "firebase";
 
 const Profile = props => {
   const { currentUser } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState({});
   const [userProjects, setUserProjects] = useState([]);
   const functions = app.functions();
-  const promoteFunc = functions.httpsCallable("promoteUser");
 
-  const promoteUser = async event => {
+  const handleClick = async event => {
     event.preventDefault();
+    const promoteFunc = await functions.httpsCallable("promoteUser");
     promoteFunc({
       email: userInfo.email,
       org: userInfo.org
-    }).then(() => dbServices.promoteUser(userInfo.org, userInfo.email));
+    }).then(() => {
+      dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
+        getUserInfo().then(info => {
+          setUserInfo(info);
+        })
+      );
+    });
   };
 
   const getUserInfo = async () => {
@@ -73,7 +78,7 @@ const Profile = props => {
             <li>Org: {userInfo.org}</li>
           </ul>
           <h3>User Projects:</h3>
-          {userProjects ? (
+          {userProjects.length > 0 ? (
             <ul>
               {userProjects.map((proj, i) => {
                 return (
@@ -93,7 +98,7 @@ const Profile = props => {
           currentUser.role === "owner" &&
           userInfo &&
           userInfo.role === "project worker" ? (
-            <button onClick={() => promoteUser}>Promote User</button>
+            <button onClick={event => handleClick(event)}>Promote User</button>
           ) : (
             <></>
           )}

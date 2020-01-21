@@ -40,8 +40,7 @@ const dbServices = {
       .collection("organizations")
       .doc(org)
       .collection("users")
-      .where("email", "==", email)
-      .doc()
+      .doc(email)
       .update({ role: "project manager" });
   },
 

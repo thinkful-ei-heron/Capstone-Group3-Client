@@ -35,6 +35,16 @@ const dbServices = {
       .collection("jobs");
   },
 
+  promoteUser(org, email) {
+    return db
+      .collection("organizations")
+      .doc(org)
+      .collection("users")
+      .where("email", "==", email)
+      .doc()
+      .update({ role: "project manager" });
+  },
+
   projectsListener(org, id) {
     return db
       .collection("organizations")

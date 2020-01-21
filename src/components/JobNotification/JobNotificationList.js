@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import dbServices from "../../services/dbServices";
 import JobForm from "../Project/JobForm/JobForm";
 import { AuthContext } from "../../services/Auth";
+import Swal from "sweetalert2";
 
 export default class JobNotificationList extends Component {
   state = {
     editing: false,
     editJob: null,
-    notificationList: []
+    notificationList: [],
+    error: false
   };
 
   static contextType = AuthContext;
@@ -19,19 +21,35 @@ export default class JobNotificationList extends Component {
     });
   }
 
+  setError = () => {
+    this.setState({
+      error: true
+    });
+  };
+
   handleApprovalSubmit = async (id, status, approval = false, jobObj) => {
     // let jobData = this.state.notificationList.find(item => item.id === id);
     // let projectId = jobData.project_id;
-    jobObj.approval = approval;
-    if (status === "completed" || status === "revisions") {
-      jobObj.alert = jobObj.project_workers;
+    try {
+      jobObj.approval = approval;
+      if (status === "completed" || status === "revisions") {
+        jobObj.alert = jobObj.project_workers;
+      }
+      jobObj.status = status;
+      await dbServices.updateJob(jobObj);
+      this.props.updateList(jobObj);
+      this.setState({
+        notificationList: this.props.notificationList
+      });
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to post job update.",
+        icon: "error",
+        confirmButtonText: "Close",
+        onClose: this.setError()
+      });
     }
-    jobObj.status = status;
-    await dbServices.updateJob(jobObj);
-    this.props.updateList(jobObj);
-    this.setState({
-      notificationList: this.props.notificationList
-    });
   };
 
   handleClick = async (id, jobObj) => {
@@ -41,11 +59,22 @@ export default class JobNotificationList extends Component {
     )
       return null;
     else {
-      let newAlert = jobObj.alert.filter(
-        name => name !== this.context.currentUser.name
-      );
-      jobObj.alert = newAlert;
-      await dbServices.updateJob(jobObj);
+      try {
+        let newAlert = jobObj.alert.filter(
+          name => name !== this.context.currentUser.name
+        );
+        jobObj.alert = newAlert;
+        await dbServices.updateJob(jobObj);
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text:
+            "Failed to update notification status. You are being directed to the project page.",
+          icon: "error",
+          confirmButtonText: "Close",
+          onClose: this.setError()
+        });
+      }
     }
   };
 
@@ -152,15 +181,18 @@ export default class JobNotificationList extends Component {
   };
 
   render() {
-    return (
-      <div>
-        <ul>{this.renderJobList()}</ul>
-        {this.state.editing ? (
-          <JobForm showJobForm={this.openEdit} job={this.state.editJob} />
-        ) : (
-          <></>
-        )}
-      </div>
-    );
+    if (this.state.error) return null;
+    else {
+      return (
+        <div>
+          <ul>{this.renderJobList()}</ul>
+          {this.state.editing ? (
+            <JobForm showJobForm={this.openEdit} job={this.state.editJob} />
+          ) : (
+            <></>
+          )}
+        </div>
+      );
+    }
   }
 }

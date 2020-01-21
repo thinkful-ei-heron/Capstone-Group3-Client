@@ -12,10 +12,17 @@ export default class JobNotification extends Component {
     notificationDropDown: false,
     newEmployees: [],
     completedProjects: [],
-    newProjects: []
+    newProjects: [],
+    error: false
   };
 
   static contextType = AuthContext;
+
+  setError = () => {
+    this.setState({
+      error: true
+    });
+  };
 
   getProjects = async () => {
     let projectList = [];
@@ -23,22 +30,22 @@ export default class JobNotification extends Component {
       try {
         await dbServices
           .getProjectsByRole(this.context.currentUser)
-          // .getProjectsByRole()
           .then(snapshot => {
             snapshot.forEach(doc => {
               projectList.push(doc.data());
             });
           });
+        return projectList;
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: "Error in your notifications: " + error.message,
+          text:
+            "Failed to fetch projects. Notifications are temporarily disabled.",
           icon: "error",
-          confirmButtonText: "Close"
+          confirmButtonText: "Close",
+          onClose: this.setError()
         });
       }
-
-    return projectList;
   };
 
   populateNotificationList = async (projectList = null) => {
@@ -48,28 +55,27 @@ export default class JobNotification extends Component {
         let snapshot;
         try {
           snapshot = await dbServices.getJobs(project.org_id, project.id);
+          snapshot.forEach(doc => {
+            if (
+              doc.data().status === "submitted" ||
+              doc.data().status === "edit request"
+            )
+              jobsList.push(doc.data());
+          });
+          this.setState({
+            notificationList: jobsList,
+            notificationCount: jobsList.length
+          });
+          return jobsList;
         } catch (error) {
           Swal.fire({
             title: "Error!",
-            text: "Error in your notifications: " + error.message,
+            text: "Jobs failed to load. Notifications temporarily disabled.",
             icon: "error",
             confirmButtonText: "Close",
-            onClose: (window.location.href = "/catchall")
+            onClose: this.setError()
           });
         }
-
-        snapshot.forEach(doc => {
-          if (
-            doc.data().status === "submitted" ||
-            doc.data().status === "edit request"
-          )
-            jobsList.push(doc.data());
-        });
-        this.setState({
-          notificationList: jobsList,
-          notificationCount: jobsList.length
-        });
-        return jobsList;
       });
     }
 
@@ -79,24 +85,24 @@ export default class JobNotification extends Component {
         let snapshot;
         try {
           snapshot = await dbServices.getJobs(project.org_id, project.id);
+          snapshot.forEach(doc => {
+            if (doc.data().alert.includes(this.context.currentUser.name))
+              jobsList.push(doc.data());
+          });
+          this.setState({
+            notificationList: jobsList,
+            notificationCount: jobsList.length
+          });
+          return jobsList;
         } catch (error) {
           Swal.fire({
             title: "Error!",
-            text: error.message,
+            text: "Jobs failed to load. Notifications temporarily disabled.",
             icon: "error",
             confirmButtonText: "Close",
-            onClose: (window.location.href = "/catchall")
+            onClose: this.setError()
           });
         }
-        snapshot.forEach(doc => {
-          if (doc.data().alert.includes(this.context.currentUser.name))
-            jobsList.push(doc.data());
-        });
-        this.setState({
-          notificationList: jobsList,
-          notificationCount: jobsList.length
-        });
-        return jobsList;
       });
     }
 
@@ -104,10 +110,8 @@ export default class JobNotification extends Component {
       let employees = [];
       let completed = [];
       let newProj = [];
-      // console.log("employees");
       try {
         await dbServices
-          // .getEmployees()
           .getEmployees(this.context.currentUser.org)
           .then(snapshot => {
             snapshot.forEach(doc => {
@@ -119,7 +123,6 @@ export default class JobNotification extends Component {
             });
           });
         await dbServices
-          // .getProjectsByRole()
           .getProjectsByRole(this.context.currentUser)
           .then(snapshot => {
             snapshot.forEach(doc => {
@@ -138,9 +141,10 @@ export default class JobNotification extends Component {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: "Error in your notifications: " + error.message,
+          text: "Failed to fetch projects. Notifications temporarily disabled.",
           icon: "error",
-          confirmButtonText: "Close"
+          confirmButtonText: "Close",
+          onClose: this.setError()
         });
       }
 
@@ -189,37 +193,40 @@ export default class JobNotification extends Component {
   };
 
   render() {
-    if (this.context.currentUser.role === "owner")
+    if (this.state.error) return null;
+    else {
+      if (this.context.currentUser.role === "owner")
+        return (
+          <>
+            <button onClick={e => this.renderList(e)}>
+              Notifications: {this.state.notificationCount}
+            </button>
+            {this.state.notificationDropDown ? (
+              <OwnerNotification
+                newEmployees={this.state.newEmployees}
+                completedProjects={this.state.completedProjects}
+                newProjects={this.state.newProjects}
+                user={this.context.currentUser}
+                updateList={this.updateNewEmployees}
+              />
+            ) : (
+              <></>
+            )}
+          </>
+        );
       return (
         <>
           <button onClick={e => this.renderList(e)}>
             Notifications: {this.state.notificationCount}
           </button>
           {this.state.notificationDropDown ? (
-            <OwnerNotification
-              newEmployees={this.state.newEmployees}
-              completedProjects={this.state.completedProjects}
-              newProjects={this.state.newProjects}
-              user={this.context.currentUser}
-              updateList={this.updateNewEmployees}
+            <JobNotificationList
+              notificationList={this.state.notificationList}
+              updateList={this.updateList}
             />
-          ) : (
-            <></>
-          )}
+          ) : null}
         </>
       );
-    return (
-      <>
-        <button onClick={e => this.renderList(e)}>
-          Notifications: {this.state.notificationCount}
-        </button>
-        {this.state.notificationDropDown ? (
-          <JobNotificationList
-            notificationList={this.state.notificationList}
-            updateList={this.updateList}
-          />
-        ) : null}
-      </>
-    );
+    }
   }
 }

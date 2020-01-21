@@ -24,7 +24,16 @@ const Profile = props => {
         getUserInfo().then(info => {
           setUserInfo(info);
         })
-      );
+      )
+      .catch(error => {
+        console.warn(error)
+        Swal.fire({
+          title: "Error!",
+          text: 'There was an issue promoting this employee - please refresh the page and try again.',
+          icon: 'error',
+          confirmButtonText: 'Close'
+        })
+      });
     });
   };
 
@@ -46,7 +55,7 @@ const Profile = props => {
         console.warn(error)
         Swal.fire({
           title: "Error!",
-          text: error.message,
+          text: 'There was an issue loading this employee\'s information - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })
@@ -65,7 +74,7 @@ const Profile = props => {
         console.warn(error)
         Swal.fire({
           title: "Error!",
-          text: error.message,
+          text: 'There was an issue loading this employee\'s information - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })
@@ -80,7 +89,7 @@ const Profile = props => {
         console.warn(error)
         Swal.fire({
           title: "Error!",
-          text: error.message,
+          text: 'There was an issue loading this employee\'s information - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })

@@ -83,7 +83,7 @@ const SignUp = ({ history }, props) => {
     return `${email} signed up`;
   };
 
-  const { handleSubmit, errors, handleChange, values } = useFormValidation(
+  const { handleSubmit, errors, handleChange, values, isSubmitting, handleBlur } = useFormValidation(
     inputValues,
     validateInput.validateSignup,
     handleSignUp
@@ -100,9 +100,11 @@ const SignUp = ({ history }, props) => {
             type="email"
             onChange={handleChange}
             value={values.email}
+            onBlur={handleBlur}
             placeholder="Email"
-            required
+            //required
           />
+          {errors.email && <p>*{errors.email}</p>}
         </Label>
         <Label>
           Password
@@ -112,7 +114,8 @@ const SignUp = ({ history }, props) => {
             placeholder="Password"
             onChange={handleChange}
             value={values.password}
-            required
+            onBlur={handleBlur}
+            //required
           />
           {errors.password && <p>*{errors.password}</p>}
         </Label>
@@ -123,8 +126,9 @@ const SignUp = ({ history }, props) => {
             name="name"
             onChange={handleChange}
             value={values.name}
+            onBlur={handleBlur}
             placeholder="Username"
-            required
+            //required
           />
           {errors.name && <p>*{errors.name}</p>}
         </Label>
@@ -135,8 +139,9 @@ const SignUp = ({ history }, props) => {
             name="orgName"
             onChange={handleChange}
             value={values.orgName}
+            onBlur={handleBlur}
             placeholder="Organization name"
-            required
+            //required
           >
             {orgList && orgList.length > 0 ? (
               orgList.map((item, i) => {
@@ -150,6 +155,7 @@ const SignUp = ({ history }, props) => {
               <></>
             )}
           </select>
+          {errors.orgName && <p>*{errors.orgName}</p>}
           {/* <Input
             type="text"
             name="orgName"
@@ -159,7 +165,7 @@ const SignUp = ({ history }, props) => {
             required
           /> */}
         </Label>
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={isSubmitting}>Sign Up</button>
       </form>
     </div>
   );

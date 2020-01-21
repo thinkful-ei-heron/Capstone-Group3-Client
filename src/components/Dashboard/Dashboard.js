@@ -38,6 +38,20 @@ export default class Dashboard extends Component {
 
     const data = await dbServices.initDashboard(name, role, org);
 
+    let sortedProjectsComplete = [];
+    let sortedProjectsIncomplete = [];
+
+    data.projects.map((project, index) => {
+      if (project.progress === 100) {
+        return sortedProjectsComplete.push(project);
+      } else return sortedProjectsIncomplete.push(project);
+    });
+    let sortedProjects = sortedProjectsIncomplete.concat(
+      sortedProjectsComplete
+    );
+    sortedProjectsIncomplete.sort((a, b) => a.deadline - b.deadline);
+    console.log(sortedProjectsIncomplete);
+    console.log(sortedProjects);
     this.setState({
       user: {
         id: email,
@@ -45,7 +59,7 @@ export default class Dashboard extends Component {
         org: org,
         role: role
       },
-      projects: data.projects,
+      projects: sortedProjects,
       projectManagers: data.project_managers,
       loading: false
     });

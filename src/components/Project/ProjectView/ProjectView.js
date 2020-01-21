@@ -47,7 +47,7 @@ export default class ProjectView extends Component {
       total: currentTotal
     });
 
-    newProject.progress = (currentProgress / currentTotal) * 100;
+    newProject.progress = ((currentProgress / currentTotal) * 100).toFixed(2);
     dbServices.updateProject(newProject);
     this.setState({
       project: newProject

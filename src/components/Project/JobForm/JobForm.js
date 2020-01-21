@@ -82,45 +82,80 @@ const NewJob = props => {
     };
 
     if (props.job) {
-      await dbServices.editJob(id, jobObj)
-        .catch(error => {
-          console.warn(error)
+      try {
+        await dbServices.editJob(id, jobObj)
+      } catch (error) {
+        console.warn(error)
           Swal.fire({
             title: "Error!",
             text: 'There was an issue - please refresh the page and try again.',
             icon: 'error',
             confirmButtonText: 'Close'
           })
-        });
+      }
+      // await dbServices.editJob(id, jobObj)
+      //   .catch(error => {
+      //     console.warn(error)
+      //     Swal.fire({
+      //       title: "Error!",
+      //       text: 'There was an issue - please refresh the page and try again.',
+      //       icon: 'error',
+      //       confirmButtonText: 'Close'
+      //     })
+      //   });
     } else {
-      await dbServices.addJob(jobObj, projectId)
-        .catch(error => {
-          console.warn(error)
+      try {
+        await dbServices.addJob(jobObj, projectId)
+      } catch (error) {
+        console.warn(error)
           Swal.fire({
             title: "Error!",
             text: 'There was an issue - please refresh the page and try again.',
             icon: 'error',
             confirmButtonText: 'Close'
           })
-        });
+      }
+      // await dbServices.addJob(jobObj, projectId)
+      //   .catch(error => {
+      //     console.warn(error)
+      //     Swal.fire({
+      //       title: "Error!",
+      //       text: 'There was an issue - please refresh the page and try again.',
+      //       icon: 'error',
+      //       confirmButtonText: 'Close'
+      //     })
+      //   });
     }
 
     let updatedProjectWorkers = null;
 
     if (props.job) {
       let projects = [];
-      await dbServices
+      try {
+        await dbServices
         .getProjectById(props.job.project_id, currentUser.org)
         .then(project => projects.push(project.data()))
-        .catch(error => {
-          console.warn(error)
+      } catch (error) {
+        console.warn(error)
           Swal.fire({
             title: "Error!",
             text: 'There was an issue - please refresh the page and try again.',
             icon: 'error',
             confirmButtonText: 'Close'
           })
-        });
+      }
+      // await dbServices
+      //   .getProjectById(props.job.project_id, currentUser.org)
+      //   .then(project => projects.push(project.data()))
+      //   .catch(error => {
+      //     console.warn(error)
+      //     Swal.fire({
+      //       title: "Error!",
+      //       text: 'There was an issue - please refresh the page and try again.',
+      //       icon: 'error',
+      //       confirmButtonText: 'Close'
+      //     })
+      //   });
       let project = projects[0];
       updatedProjectWorkers = project.project_workers;
     } else {
@@ -133,20 +168,35 @@ const NewJob = props => {
       } else return null;
     });
 
-    await dbServices
+    try {
+      await dbServices
       .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
       .then(() => {
         props.showJobForm();
       })
-      .catch(error => {
-        console.warn(error)
+    } catch (error) {
+      console.warn(error)
         Swal.fire({
           title: "Error!",
           text: 'There was an issue - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })
-      });
+    }
+    // await dbServices
+    //   .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
+    //   .then(() => {
+    //     props.showJobForm();
+    //   })
+    //   .catch(error => {
+    //     console.warn(error)
+    //     Swal.fire({
+    //       title: "Error!",
+    //       text: 'There was an issue - please refresh the page and try again.',
+    //       icon: 'error',
+    //       confirmButtonText: 'Close'
+    //     })
+    //   });
   };
 
   const {

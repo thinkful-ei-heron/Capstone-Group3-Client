@@ -119,7 +119,7 @@ export default class ProjectView extends Component {
           </div>
           <div id="projectView_main">
             <div id="jobs_stats_container">
-              {user.role === "project worker" ? <></> : <Statistics />}
+              {user.role === "project worker" ? <></> : <Statistics {...this.props}/>}
               <div id="jobs_container">
                 {user.role === "project worker" ? (
                   <h3>Your Tasks</h3>

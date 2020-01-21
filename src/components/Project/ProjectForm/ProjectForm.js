@@ -2,6 +2,7 @@ import React from "react";
 import { Input, Label } from "../../Form/Form";
 import dbServices from "../../../services/dbServices";
 import dateConversions from "../../../services/dateConversions";
+import Swal from "sweetalert2";
 
 const ProjectForm = props => {
   const handleSubmit = async e => {
@@ -21,17 +22,29 @@ const ProjectForm = props => {
       id: null,
       alert: true
     };
-
-    if (!props.proj) {
-      const docRef = await dbServices.addProject(data);
-      // console.log(!props.proj);
-      await dbServices.setProjId(docRef.id, data.org_id);
-      props.addToProjState({ ...data, id: docRef.id });
-    } else {
-      await dbServices.updateProject(data);
-      props.updateProjInState({ ...data });
-      props.toggleForm();
+    try {
+      if (!props.proj) {
+        const docRef = await dbServices.addProject(data);
+        // const docRef = await dbServices.addProject();
+        // console.log(!props.proj);
+        await dbServices.setProjId(docRef.id, data.org_id);
+        props.addToProjState({ ...data, id: docRef.id });
+      } else {
+        await dbServices.updateProject(data);
+        // await dbServices.updateProject();
+        props.updateProjInState({ ...data });
+        props.toggleForm();
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "Close"
+        // onClose: props.toggleForm
+      });
     }
+
     //props.history.push('/dashboard');
   };
 

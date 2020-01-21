@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Label, Input, Textarea } from "../../Form/Form";
 import { useInput } from "../../../hooks/useInput";
 import dbServices from "../../../services/dbServices";
+import { AuthContext } from "../../../services/Auth";
 
 const WorkerEditForm = props => {
   const [submitted, setSubmitted] = useState(false);
+  const { currentUser } = useContext(AuthContext);
 
   const { value: name, bind: bindName, reset: resetName } = useInput("");
   const {
@@ -26,7 +28,7 @@ const WorkerEditForm = props => {
       description: description,
       total_hours: parseInt(totalHours),
       note: note,
-      employee: "Test PM"
+      employee: currentUser.name
     };
     if (
       props.job.name === name &&

@@ -19,7 +19,9 @@ export default class ProjectView extends Component {
       project: null,
       showJobForm: false,
       loading: true,
-      toggleState: false
+      toggleState: false,
+      progress: 0,
+      total: 0
     };
   }
 
@@ -30,6 +32,21 @@ export default class ProjectView extends Component {
       project: data,
       loading: false
     });
+  };
+
+  getProgress = (jobProg, jobTotal) => {
+    let currentProgress = 0;
+    let currentTotal = 0;
+
+    currentProgress = currentProgress + jobProg;
+    currentTotal = currentTotal + jobTotal;
+
+    this.setState({
+      progress: currentProgress,
+      total: currentTotal
+    });
+
+    console.log((currentProgress / currentTotal) * 100);
   };
 
   async componentDidMount() {
@@ -77,7 +94,9 @@ export default class ProjectView extends Component {
               </div>
               <div id="project_progress">
                 <span>Est. Progress</span>
-                <ProgressBar percentage={project.progress} />
+                <ProgressBar
+                  percentage={(this.state.progress / this.state.total) * 100}
+                />
               </div>
               <div id="project_deadline">
                 <span>
@@ -112,7 +131,7 @@ export default class ProjectView extends Component {
               ) : (
                 ""
               )}
-              <Jobs projectId={this.props.id} />
+              <Jobs projectId={this.props.id} getProgress={this.getProgress} />
             </div>
             <div id="sidebar_container">
               <Sidebar view="project" project={this.state.project} />

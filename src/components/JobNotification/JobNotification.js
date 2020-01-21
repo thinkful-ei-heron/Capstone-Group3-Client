@@ -3,6 +3,7 @@ import dbServices from "../../services/dbServices";
 import JobNotificationList from "./JobNotificationList";
 import OwnerNotification from "./OwnerNotification";
 import { AuthContext } from "../../services/Auth";
+import Swal from "sweetalert2";
 
 export default class JobNotification extends Component {
   state = {
@@ -19,13 +20,23 @@ export default class JobNotification extends Component {
   getProjects = async () => {
     let projectList = [];
     if (this.context.currentUser.role !== "owner")
-      await dbServices
-        .getProjectsByRole(this.context.currentUser)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            projectList.push(doc.data());
+      try {
+        await dbServices
+          .getProjectsByRole(this.context.currentUser)
+          // .getProjectsByRole()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              projectList.push(doc.data());
+            });
           });
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "Error in your notifications: " + error.message,
+          icon: "error",
+          confirmButtonText: "Close"
         });
+      }
 
     return projectList;
   };
@@ -34,7 +45,19 @@ export default class JobNotification extends Component {
     if (this.context.currentUser.role === "project manager") {
       let jobsList = [];
       projectList.map(async project => {
-        const snapshot = await dbServices.getJobs(project.org_id, project.id);
+        let snapshot;
+        try {
+          snapshot = await dbServices.getJobs(project.org_id, project.id);
+        } catch (error) {
+          Swal.fire({
+            title: "Error!",
+            text: "Error in your notifications: " + error.message,
+            icon: "error",
+            confirmButtonText: "Close",
+            onClose: (window.location.href = "/catchall")
+          });
+        }
+
         snapshot.forEach(doc => {
           if (
             doc.data().status === "submitted" ||
@@ -49,10 +72,22 @@ export default class JobNotification extends Component {
         return jobsList;
       });
     }
+
     if (this.context.currentUser.role === "project worker") {
       let jobsList = [];
       projectList.map(async project => {
-        const snapshot = await dbServices.getJobs(project.org_id, project.id);
+        let snapshot;
+        try {
+          snapshot = await dbServices.getJobs(project.org_id, project.id);
+        } catch (error) {
+          Swal.fire({
+            title: "Error!",
+            text: error.message,
+            icon: "error",
+            confirmButtonText: "Close",
+            onClose: (window.location.href = "/catchall")
+          });
+        }
         snapshot.forEach(doc => {
           if (doc.data().alert.includes(this.context.currentUser.name))
             jobsList.push(doc.data());
@@ -64,39 +99,52 @@ export default class JobNotification extends Component {
         return jobsList;
       });
     }
+
     if (this.context.currentUser.role === "owner") {
       let employees = [];
       let completed = [];
       let newProj = [];
       // console.log("employees");
-      await dbServices
-        .getEmployees(this.context.currentUser.org)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            if (doc.data().new) employees.push(doc.data());
+      try {
+        await dbServices
+          // .getEmployees()
+          .getEmployees(this.context.currentUser.org)
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              if (doc.data().new) employees.push(doc.data());
+            });
+            this.setState({
+              newEmployees: employees,
+              notificationCount: this.state.notificationCount + employees.length
+            });
           });
-          this.setState({
-            newEmployees: employees,
-            notificationCount: this.state.notificationCount + employees.length
+        await dbServices
+          // .getProjectsByRole()
+          .getProjectsByRole(this.context.currentUser)
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              if (doc.data().alert === true && doc.data().completed === true)
+                completed.push(doc.data());
+              if (doc.data().alert === true && !doc.data().completed)
+                newProj.push(doc.data());
+            });
+            this.setState({
+              newProjects: newProj,
+              completedProjects: completed,
+              notificationCount:
+                this.state.notificationCount + newProj.length + completed.length
+            });
           });
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "Error in your notifications: " + error.message,
+          icon: "error",
+          confirmButtonText: "Close"
         });
+      }
+
       // console.log("projects");
-      await dbServices
-        .getProjectsByRole(this.context.currentUser)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            if (doc.data().alert === true && doc.data().completed === true)
-              completed.push(doc.data());
-            if (doc.data().alert === true && !doc.data().completed)
-              newProj.push(doc.data());
-          });
-          this.setState({
-            newProjects: newProj,
-            completedProjects: completed,
-            notificationCount:
-              this.state.notificationCount + newProj.length + completed.length
-          });
-        });
     }
   };
 

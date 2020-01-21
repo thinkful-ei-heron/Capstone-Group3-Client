@@ -7,6 +7,8 @@ import Sidebar from "../Sidebar/Sidebar";
 import StyleIcon from "../StyleIcon/StyleIcon";
 import ProjectBar from "../Project/ProjectBar/ProjectBar";
 import JobNotification from "../JobNotification/JobNotification";
+import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
 ////////////////////////////////////////////////////////////////////
@@ -30,13 +32,28 @@ export default class Dashboard extends Component {
     newProj: false
   };
 
+  errorClose = () => {
+    this.props.history.push("/");
+  };
+
   async componentDidMount() {
     const email = this.context.currentUser.email;
     const org = this.context.currentUser.org;
     const name = this.context.currentUser.name;
     const role = this.context.currentUser.role;
 
-    const data = await dbServices.initDashboard(name, role, org);
+    let data = [];
+    try {
+      data = await dbServices.initDashboard(name, role, org);
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "Close",
+        onClose: this.errorClose()
+      });
+    }
 
     let sortedProjectsComplete = [];
     let sortedProjectsIncomplete = [];

@@ -4,6 +4,7 @@ import "./Jobs.css";
 import JobItem from "./JobItem";
 import LogHours from "../../LogHours/LogHours";
 import dbServices from "../../../services/dbServices";
+import Swal from "sweetalert2";
 import { faHollyBerry } from "@fortawesome/free-solid-svg-icons";
 
 export default class Jobs extends Component {
@@ -29,16 +30,40 @@ export default class Jobs extends Component {
         ) {
           jobs.push(doc.data());
         }
+      }, error => {
+        console.warn(error)
+            Swal.fire({
+              title: "Error!",
+              text: 'There was an issue loading your tasks - please refresh the page and try again.',
+              icon: 'error',
+              confirmButtonText: 'Close'
+            })
       });
     } else if (this.context.currentUser.role === "project manager") {
       querySnapshot.forEach(doc => {
         if (doc.data().project_manager === this.context.currentUser.name) {
           jobs.push(doc.data());
         }
+      }, error => {
+        console.warn(error)
+            Swal.fire({
+              title: "Error!",
+              text: 'There was an issue loading your project\'s tasks - please refresh the page and try again.',
+              icon: 'error',
+              confirmButtonText: 'Close'
+            })
       });
     } else {
       querySnapshot.forEach(doc => {
         jobs.push(doc.data());
+      }, error => {
+        console.warn(error)
+            Swal.fire({
+              title: "Error!",
+              text: 'There was an issue loading this project\'s tasks - please refresh the page and try again.',
+              icon: 'error',
+              confirmButtonText: 'Close'
+            })
       });
     }
 

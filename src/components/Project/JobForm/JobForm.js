@@ -7,6 +7,7 @@ import useFormValidation from "../../../hooks/useFormValidation";
 import validateInput from "../../../hooks/validateInput";
 import "./JobForm.css";
 import dateConversions from "../../../services/dateConversions";
+import Swal from "sweetalert2";
 
 const NewJob = props => {
   const [selected, setSelected] = useState(0);
@@ -81,9 +82,27 @@ const NewJob = props => {
     };
 
     if (props.job) {
-      await dbServices.editJob(id, jobObj);
+      await dbServices.editJob(id, jobObj)
+        .catch(error => {
+          console.warn(error)
+          Swal.fire({
+            title: "Error!",
+            text: 'There was an issue - please refresh the page and try again.',
+            icon: 'error',
+            confirmButtonText: 'Close'
+          })
+        });
     } else {
-      await dbServices.addJob(jobObj, projectId);
+      await dbServices.addJob(jobObj, projectId)
+        .catch(error => {
+          console.warn(error)
+          Swal.fire({
+            title: "Error!",
+            text: 'There was an issue - please refresh the page and try again.',
+            icon: 'error',
+            confirmButtonText: 'Close'
+          })
+        });
     }
 
     let updatedProjectWorkers = null;
@@ -92,7 +111,16 @@ const NewJob = props => {
       let projects = [];
       await dbServices
         .getProjectById(props.job.project_id, currentUser.org)
-        .then(project => projects.push(project.data()));
+        .then(project => projects.push(project.data()))
+        .catch(error => {
+          console.warn(error)
+          Swal.fire({
+            title: "Error!",
+            text: 'There was an issue - please refresh the page and try again.',
+            icon: 'error',
+            confirmButtonText: 'Close'
+          })
+        });
       let project = projects[0];
       updatedProjectWorkers = project.project_workers;
     } else {
@@ -109,6 +137,15 @@ const NewJob = props => {
       .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
       .then(() => {
         props.showJobForm();
+      })
+      .catch(error => {
+        console.warn(error)
+        Swal.fire({
+          title: "Error!",
+          text: 'There was an issue - please refresh the page and try again.',
+          icon: 'error',
+          confirmButtonText: 'Close'
+        })
       });
   };
 

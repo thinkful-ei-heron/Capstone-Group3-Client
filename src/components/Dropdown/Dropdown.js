@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import { AuthContext } from "../../services/Auth";
 import dbServices from "../../services/dbServices";
+import Swal from "sweetalert2";
 
 export default class Dropdown extends Component {
   constructor(props) {
@@ -24,6 +25,15 @@ export default class Dropdown extends Component {
           snapshot.forEach(doc => {
             employees.push(doc.data().name);
           });
+        })
+        .catch(error => {
+          console.warn(error);
+          Swal.fire({
+            title: "Error!",
+            text: 'There was an issue - please refresh the page and try again.',
+            icon: 'error',
+            confirmButtonText: 'Close'
+          })
         });
     }
 
@@ -34,6 +44,15 @@ export default class Dropdown extends Component {
           snapshot.forEach(doc => {
             employees.push(doc.data().name);
           });
+        })
+        .catch(error => {
+          console.warn(error);
+          Swal.fire({
+            title: "Error!",
+            text: 'There was an issue - please refresh the page and try again.',
+            icon: 'error',
+            confirmButtonText: 'Close'
+          })
         });
     }
 

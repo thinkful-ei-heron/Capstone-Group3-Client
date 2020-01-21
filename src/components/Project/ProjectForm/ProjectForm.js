@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input, Label } from "../../Form/Form";
 import dbServices from "../../../services/dbServices";
 import dateConversions from "../../../services/dateConversions";
 import Swal from "sweetalert2";
 
 const ProjectForm = props => {
+  const [error, setError] = useState(false);
+
   const handleSubmit = async e => {
     e.preventDefault();
     const { name, description, projectManager, deadline } = e.target;
@@ -25,70 +27,66 @@ const ProjectForm = props => {
     try {
       if (!props.proj) {
         const docRef = await dbServices.addProject(data);
-        // const docRef = await dbServices.addProject();
-        // console.log(!props.proj);
         await dbServices.setProjId(docRef.id, data.org_id);
         props.addToProjState({ ...data, id: docRef.id });
       } else {
         await dbServices.updateProject(data);
-        // await dbServices.updateProject();
         props.updateProjInState({ ...data });
         props.toggleForm();
       }
     } catch (error) {
       Swal.fire({
         title: "Error!",
-        text: error.message,
+        text: "Project failed to post!",
         icon: "error",
-        confirmButtonText: "Close"
+        confirmButtonText: "Close",
+        onClose: setError(true)
       });
     }
-
-    //props.history.push('/dashboard');
   };
-
-  // console.log(props.proj);
-
-  return (
-    <form className="ProjectForm" onSubmit={e => handleSubmit(e)}>
-      <Label htmlFor="project_name">Name</Label>
-      <Input
-        name="name"
-        id="project_name"
-        type="text"
-        placeholder="Project Name"
-        defaultValue={props.proj ? props.proj.name : ""}
-        required
-      />
-      <Label htmlFor="project_description">Description</Label>
-      <Input
-        name="description"
-        id="project_description"
-        type="text"
-        placeholder="Project Description"
-        defaultValue={props.proj ? props.proj.description : ""}
-      />
-      <Label htmlFor="project_description">Project Manager</Label>
-      <Input
-        name="projectManager"
-        id="project_manager"
-        type="text"
-        placeholder="Project Manager"
-        defaultValue={props.proj ? props.proj.project_manager : ""}
-      />
-      <Label htmlFor="project_deadline">Deadline</Label>
-      <input
-        name="deadline"
-        id="project_deadline"
-        type="date"
-        defaultValue={
-          props.proj ? dateConversions.TStoFormDate(props.proj.deadline) : ""
-        }
-      />
-      <button type="submit">SUBMIT</button>
-      <button onClick={props.toggleForm}>CANCEL</button>
-    </form>
-  );
+  if (error) return null;
+  else {
+    return (
+      <form className="ProjectForm" onSubmit={e => handleSubmit(e)}>
+        <Label htmlFor="project_name">Name</Label>
+        <Input
+          name="name"
+          id="project_name"
+          type="text"
+          placeholder="Project Name"
+          defaultValue={props.proj ? props.proj.name : ""}
+          required
+        />
+        <Label htmlFor="project_description">Description</Label>
+        <Input
+          name="description"
+          id="project_description"
+          type="text"
+          placeholder="Project Description"
+          defaultValue={props.proj ? props.proj.description : ""}
+        />
+        <Label htmlFor="project_description">Project Manager</Label>
+        <Input
+          name="projectManager"
+          id="project_manager"
+          type="text"
+          placeholder="Project Manager"
+          defaultValue={props.proj ? props.proj.project_manager : ""}
+        />
+        <Label htmlFor="project_deadline">Deadline</Label>
+        <input
+          name="deadline"
+          id="project_deadline"
+          type="date"
+          defaultValue={
+            props.proj ? dateConversions.TStoFormDate(props.proj.deadline) : ""
+          }
+        />
+        <button type="submit">SUBMIT</button>
+        <button onClick={props.toggleForm}>CANCEL</button>
+      </form>
+    );
+  }
 };
 
 export default ProjectForm;

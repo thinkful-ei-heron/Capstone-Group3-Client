@@ -9,6 +9,7 @@ const Sidebar = props => {
   let [pmList, setPMList] = useState([]);
   let [expanded, setExpanded] = useState([]);
   let [clicked, setClick] = useState(false);
+  let [error, setError] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
   if (clicked === true) setClick(false);
@@ -41,10 +42,10 @@ const Sidebar = props => {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: error.message,
+          text: "Employees failed to load. Sidebar temporarily disabled.",
           icon: "error",
           confirmButtonText: "Close",
-          onClose: (window.location.href = "/catchall")
+          onClose: setError(true)
         });
       }
     };
@@ -63,10 +64,10 @@ const Sidebar = props => {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: error.message,
+          text: "Employees failed to load. Sidebar temporarily disabled.",
           icon: "error",
           confirmButtonText: "Close",
-          onClose: (window.location.href = "/catchall")
+          onClose: setError(true)
         });
       }
     };
@@ -97,19 +98,26 @@ const Sidebar = props => {
       );
     });
   };
-
-  return (
-    <div>
-      <h3>
-        <button onClick={() => toggleExpand("pm")}>Project Managers</button>
-      </h3>
-      {!expanded.includes("pm") ? <ul>{renderProjectManagers()}</ul> : <></>}
-      <h3>
-        <button onClick={() => toggleExpand("employees")}>Employees</button>
-      </h3>
-      {!expanded.includes("employees") ? <ul>{renderEmployees()}</ul> : <></>}
-    </div>
-  );
+  if (error) return null;
+  // <div>
+  //   <img
+  //     src="https://media.giphy.com/media/jWexOOlYe241y/giphy.gif"
+  //     alt="where is it?"
+  //   />
+  // </div>
+  else
+    return (
+      <div>
+        <h3>
+          <button onClick={() => toggleExpand("pm")}>Project Managers</button>
+        </h3>
+        {!expanded.includes("pm") ? <ul>{renderProjectManagers()}</ul> : <></>}
+        <h3>
+          <button onClick={() => toggleExpand("employees")}>Employees</button>
+        </h3>
+        {!expanded.includes("employees") ? <ul>{renderEmployees()}</ul> : <></>}
+      </div>
+    );
 };
 
 export default Sidebar;

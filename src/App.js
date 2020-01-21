@@ -68,8 +68,8 @@ const App = props => {
             setPath={setPath}
             component={props => <ProjectView id={props.match.params.id} />}
           />
-          <Route exact component={CatchAll} />
         </Switch>
+        <Route exact path="/catchall" component={CatchAll} />
       </main>
     </>
   );

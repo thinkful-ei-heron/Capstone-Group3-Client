@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 
 const NewJob = props => {
   const [selected, setSelected] = useState(0);
-  
+
   const { currentUser } = useContext(AuthContext);
 
   const getEmployees = () => {
@@ -150,30 +150,31 @@ const NewJob = props => {
   };
 
   const {
-    handleSubmit, 
-    handleChange, 
-    handleBlur, 
-    values, 
-    errors, 
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    values,
+    errors,
     isSubmitting
-  } = useFormValidation(INITIAL_STATE, validateInput.validateJobForm, handleSubmitForm);
+  } = useFormValidation(
+    INITIAL_STATE,
+    validateInput.validateJobForm,
+    handleSubmitForm
+  );
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-        className="newjob__form"
-      >
+      <form onSubmit={handleSubmit} className="newjob__form">
         <fieldset>
           <legend>{props.projectId ? "Add New Task" : "Edit Task"}</legend>
           <div className="input">
             <Label htmlFor="name">Task Name: </Label>
-            <Input 
-              type="text" 
-              name="name" 
+            <Input
+              type="text"
+              name="name"
               id="name"
               onChange={handleChange}
-              value={values.name} 
+              value={values.name}
               onBlur={handleBlur}
             />
             {errors.name && <p>*{errors.name}</p>}
@@ -184,7 +185,7 @@ const NewJob = props => {
               name="description"
               id="description"
               onChange={handleChange}
-              value={values.description} 
+              value={values.description}
               onBlur={handleBlur}
             />
             {errors.description && <p>*{errors.description}</p>}
@@ -196,7 +197,7 @@ const NewJob = props => {
               name="total_hours"
               id="total_hours"
               onChange={handleChange}
-              value={values.total_hours} 
+              value={values.total_hours}
               onBlur={handleBlur}
             />
             {errors.total_hours && <p>*{errors.total_hours}</p>}
@@ -208,7 +209,7 @@ const NewJob = props => {
               name="deadline"
               id="deadline"
               onChange={handleChange}
-              value={values.deadline} 
+              value={values.deadline}
               onBlur={handleBlur}
             />
             {errors.deadline && <p>*{errors.deadline}</p>}

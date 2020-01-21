@@ -9,7 +9,6 @@ import ProjectView from "./components/Project/ProjectView/ProjectView";
 import LandingPage from "./components/LandingPage/LandingPage";
 import PrivateRoute from "./services/PrivateRoute";
 import { AuthContext } from "./services/Auth.js";
-//import Logout from "./components/Account/Logout";
 import Profile from "./components/Profile/Profile";
 import "./App.css";
 import { CatchAll } from "./components/CatchAll/CatchAll";

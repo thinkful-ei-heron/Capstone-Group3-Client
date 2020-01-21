@@ -62,15 +62,21 @@ const ProjectBar = props => {
             {props.proj.description}
           </div>
         </div>
-        <div className="ProjectBar__proj_prog_date">
-          <div className="ProjectBar__proj_prog">
-            Est. Progress <ProgressBar percentage={props.proj.progress} />
+        {props.proj.progress === 100 ? (
+          <p>Project Completed</p>
+        ) : (
+          <div className="ProjectBar__proj_prog_date">
+            <div className="ProjectBar__proj_prog">
+              Est. Progress <ProgressBar percentage={props.proj.progress} />
+            </div>
+            Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
+            {dateConversions.dateDiff(props.proj.deadline)
+              ? `Overdue by ${dateConversions.dateDiff(
+                  props.proj.deadline
+                )} days`
+              : ""}
           </div>
-          Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
-          {dateConversions.dateDiff(props.proj.deadline)
-            ? `Overdue by ${dateConversions.dateDiff(props.proj.deadline)} days`
-            : ""}
-        </div>
+        )}
       </Link>
       {props.role === "owner" && (
         <div className="ProjectBar__buttons">

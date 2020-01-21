@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router";
-import app from "../../services/base.js"; 
+import app from "../../services/base.js";
 import { AuthContext } from "../../services/Auth.js";
 import { Label, Input } from "../Form/Form";
 import Swal from "sweetalert2";
@@ -39,11 +39,16 @@ const Login = (setPath, { history }) => {
       <form className="Login__form" onSubmit={handleLogin}>
         <Label>
           Email
-          <Input name="email" type="email" placeholder="Email" />
+          <Input name="email" type="email" placeholder="Email" required />
         </Label>
         <Label>
           Password
-          <Input name="password" type="password" placeholder="Password" />
+          <Input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+          />
         </Label>
         <button type="submit">Log in</button>
       </form>

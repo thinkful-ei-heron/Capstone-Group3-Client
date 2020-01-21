@@ -9,6 +9,7 @@ import Sidebar from "../../Sidebar/Sidebar";
 import JobForm from "../JobForm/JobForm";
 import dbServices from "../../../services/dbServices";
 import dateConversions from "../../../services/dateConversions";
+import Swal from "sweetalert2";
 import { CatchAll } from "../../CatchAll/CatchAll";
 
 export default class ProjectView extends Component {
@@ -61,7 +62,15 @@ export default class ProjectView extends Component {
         doc => {
           this.updateProject(doc.data());
         },
-        error => console.error(error)
+        error => {
+            console.warn(error)
+            Swal.fire({
+              title: "Error!",
+              text: 'There was an issue loading this project - please refresh the page and try again.',
+              icon: 'error',
+              confirmButtonText: 'Close'
+            })
+        }
       );
   }
 

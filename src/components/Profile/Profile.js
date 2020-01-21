@@ -4,6 +4,7 @@ import { withRouter, Link } from "react-router-dom";
 import { AuthContext } from "../../services/Auth";
 import app from "../../services/base.js";
 import dbServices from "../../services/dbServices";
+import Swal from "sweetalert2";
 import { functions } from "firebase";
 
 const Profile = props => {
@@ -18,7 +19,16 @@ const Profile = props => {
     promoteFunc({
       email: userInfo.email,
       org: userInfo.org
-    }).then(() => dbServices.promoteUser(userInfo.org, userInfo.email));
+    }).then(() => dbServices.promoteUser(userInfo.org, userInfo.email))
+    .catch(error => {
+      console.warn(error)
+      Swal.fire({
+        title: "Error!",
+        text: 'There was an issue - please refresh the page and try again.',
+        icon: 'error',
+        confirmButtonText: 'Close'
+      })
+    });
   };
 
   const getUserInfo = async () => {
@@ -34,6 +44,15 @@ const Profile = props => {
             org: doc.data().org
           };
         });
+      })
+      .catch(error => {
+        console.warn(error)
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: 'error',
+          confirmButtonText: 'Close'
+        })
       });
     return info;
   };
@@ -44,12 +63,30 @@ const Profile = props => {
         snapshot.forEach(doc => {
           setUserProjects([...userProjects, doc.data()]);
         });
+      })
+      .catch(error => {
+        console.warn(error)
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: 'error',
+          confirmButtonText: 'Close'
+        })
       });
     else if (info.role === "project manager") {
       dbServices.getManagerProjects(info.name, info.org).then(snapshot => {
         snapshot.forEach(doc => {
           setUserProjects([...userProjects, doc.data()]);
         });
+      })
+      .catch(error => {
+        console.warn(error)
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: 'error',
+          confirmButtonText: 'Close'
+        })
       });
     }
   };

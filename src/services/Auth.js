@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
           .currentUser.getIdTokenResult()
           .then(idTokenResult => {
             if (!!idTokenResult.claims) {
-              // console.log(idTokenResult.claims);
               setCurrentUser(idTokenResult.claims);
             } else {
               alert("ruh roh");

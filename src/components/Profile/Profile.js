@@ -12,28 +12,26 @@ const Profile = props => {
   const [userInfo, setUserInfo] = useState({});
   const [userProjects, setUserProjects] = useState([]);
   const functions = app.functions();
-  const promoteFunc = functions.httpsCallable("promoteUser");
 
-  const promoteUser = async event => {
+  const handleClick = async event => {
     event.preventDefault();
+    const promoteFunc = await functions.httpsCallable("promoteUser");
     promoteFunc({
       email: userInfo.email,
       org: userInfo.org
-    }).then(() => dbServices.promoteUser(userInfo.org, userInfo.email))
-    .catch(error => {
-      console.warn(error)
-      Swal.fire({
-        title: "Error!",
-        text: 'There was an issue - please refresh the page and try again.',
-        icon: 'error',
-        confirmButtonText: 'Close'
-      })
+    }).then(() => {
+      dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
+        getUserInfo().then(info => {
+          setUserInfo(info);
+        })
+      )
     });
   };
 
   const getUserInfo = async () => {
     let info = {};
-    await dbServices
+    try {
+      await dbServices
       .getUser(props.match.params.id, currentUser.org)
       .then(snapshot => {
         snapshot.forEach(doc => {
@@ -45,49 +43,54 @@ const Profile = props => {
           };
         });
       })
-      .catch(error => {
+    } catch (error) {
+        console.log('caught error!')
         console.warn(error)
         Swal.fire({
           title: "Error!",
-          text: error.message,
+          text: 'There was an issue loading this employee\'s information - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })
-      });
+    }
+    
+      
     return info;
   };
 
   const getUserProjects = async info => {
     if (info.role === "project worker")
-      dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
-        snapshot.forEach(doc => {
-          setUserProjects([...userProjects, doc.data()]);
-        });
-      })
-      .catch(error => {
+      try {
+        await dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
+          snapshot.forEach(doc => {
+            setUserProjects([...userProjects, doc.data()]);
+          });
+        })
+      } catch (error) {
         console.warn(error)
         Swal.fire({
           title: "Error!",
-          text: error.message,
+          text: 'There was an issue loading this employee\'s project information - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })
-      });
+      }
     else if (info.role === "project manager") {
-      dbServices.getManagerProjects(info.name, info.org).then(snapshot => {
-        snapshot.forEach(doc => {
-          setUserProjects([...userProjects, doc.data()]);
-        });
-      })
-      .catch(error => {
+      try {
+        await dbServices.getManagerProjects(info.name, info.org).then(snapshot => {
+          snapshot.forEach(doc => {
+            setUserProjects([...userProjects, doc.data()]);
+          });
+        })
+      } catch (error) {
         console.warn(error)
         Swal.fire({
           title: "Error!",
-          text: error.message,
+          text: 'There was an issue loading this employee\'s project information - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close'
         })
-      });
+      }
     }
   };
 
@@ -110,7 +113,7 @@ const Profile = props => {
             <li>Org: {userInfo.org}</li>
           </ul>
           <h3>User Projects:</h3>
-          {userProjects ? (
+          {userProjects.length > 0 ? (
             <ul>
               {userProjects.map((proj, i) => {
                 return (
@@ -130,7 +133,7 @@ const Profile = props => {
           currentUser.role === "owner" &&
           userInfo &&
           userInfo.role === "project worker" ? (
-            <button onClick={() => promoteUser}>Promote User</button>
+            <button onClick={event => handleClick(event)}>Promote User</button>
           ) : (
             <></>
           )}

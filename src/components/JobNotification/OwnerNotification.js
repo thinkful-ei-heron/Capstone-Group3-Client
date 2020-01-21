@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import dbServices from "../../services/dbServices";
 import { AuthContext } from "../../services/Auth";
+import Swal from "sweetalert2";
 
 export default class OwnerNotification extends Component {
   state = {
@@ -13,13 +14,23 @@ export default class OwnerNotification extends Component {
   static contextType = AuthContext;
 
   handleNewEmployee = async (e, employee) => {
-    e.preventDefault();
-    employee.new = false;
-    await dbServices.updateWorker(employee, this.context.currentUser.org);
-    this.props.updateList(employee);
-    this.setState({
-      newEmployees: this.props.newEmployees
-    });
+    try {
+      e.preventDefault();
+      employee.new = false;
+      await dbServices.updateWorker();
+      // await dbServices.updateWorker(employee, this.context.currentUser.org);
+      this.props.updateList(employee);
+      this.setState({
+        newEmployees: this.props.newEmployees
+      });
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Employee status failed to update.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
+    }
   };
 
   handleClick = async project => {

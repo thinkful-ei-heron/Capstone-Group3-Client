@@ -29,11 +29,14 @@ export default class Dashboard extends Component {
     loading: true,
     expandProjects: true,
     expandPersonnel: true,
-    newProj: false
+    newProj: false,
+    error: false
   };
 
   errorClose = () => {
-    this.props.history.push("/");
+    this.setState({
+      error: true
+    });
   };
 
   async componentDidMount() {
@@ -45,10 +48,11 @@ export default class Dashboard extends Component {
     let data = [];
     try {
       data = await dbServices.initDashboard(name, role, org);
+      // data = await dbServices.initDashboard();
     } catch (error) {
       Swal.fire({
         title: "Error!",
-        text: error.message,
+        text: "Dashboard failed to load. Please try again.",
         icon: "error",
         confirmButtonText: "Close",
         onClose: this.errorClose()
@@ -124,94 +128,104 @@ export default class Dashboard extends Component {
   };
 
   render() {
+    if (!this.state.error) {
+      if (this.state.loading) return <Loading />;
+      else
+        return (
+          <>
+            <section className="Dashboard__container">
+              <div className="App__org_header">
+                {<h2>{this.state.user.org}</h2>}
+                <span className="Dashboard__date">
+                  {new Date().toLocaleString()}
+                </span>
+                <JobNotification user={this.state.user} />
+              </div>
+
+              <div className="Dashboard__main">
+                <section className="Dashboard__projects">
+                  <div
+                    className="Dashboard__project_header"
+                    onClick={this.toggleExpandProjects}
+                  >
+                    <div className="Dashboard__fa_h1">
+                      {StyleIcon({
+                        style: `${this.state.expandProjects ? "minus" : "plus"}`
+                      })}
+                      <h1>Projects</h1>
+                    </div>
+                    {this.state.user.role !== "project worker" && (
+                      <button onClick={this.toggleNewProj}>NEW</button>
+                    )}
+                  </div>
+                  {this.state.newProj && (
+                    <NewProject
+                      org={this.state.user.org}
+                      addToProjState={this.addToProjState}
+                      toggleForm={this.toggleNewProj}
+                    />
+                  )}
+                  {this.state.expandProjects && (
+                    <div className="Dashboard__projects_container">
+                      {this.state.projects.length !== 0 ? (
+                        <ul className="Dashboard__list">
+                          {this.state.projects.map(proj => {
+                            return (
+                              <li key={proj.id}>
+                                <ProjectBar
+                                  proj={proj}
+                                  role={this.state.user.role}
+                                  projectManagers={this.state.projectManagers}
+                                  updatePM={this.updatePM}
+                                  updateProjInState={this.updateProjInState}
+                                />
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <div className="Dashboard__no_projects">
+                          <span className="Dashboard__welcome">Welcome!</span>
+                          <span>
+                            You currently have no projects, click the NEW button
+                            above to add one.
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </section>
+                <section className="Dashboard__personnel">
+                  <div
+                    className="Dashboard__personnel_header"
+                    onClick={this.toggleExpandPersonnel}
+                  >
+                    <div className="Dashboard__fa_h1">
+                      {StyleIcon({
+                        style: `${
+                          this.state.expandPersonnel ? "minus" : "plus"
+                        }`
+                      })}
+                      <h1>Personnel</h1>
+                    </div>
+                  </div>
+                  <Sidebar />
+                </section>
+              </div>
+            </section>
+          </>
+        );
+    } else
+      return (
+        <body
+          alt="something terrible happened"
+          background="https://i.pinimg.com/originals/6b/6d/7e/6b6d7e420e1f2e8b58deac8357fd1000.gif"
+        />
+      );
     // console.log('this.state.user', this.state.user);
     //console.log('this.state.projects ', this.state.projects);
     // console.log('this.context.jobs ', this.context.jobs);
     // console.log('this.context.employees', this.context.employees);
     // console.log("this.context.project_managers", this.state.projectManagers);
-    if (this.state.loading) return <Loading />;
-    else
-      return (
-        <>
-          <section className="Dashboard__container">
-            <div className="App__org_header">
-              {<h2>{this.state.user.org}</h2>}
-              <span className="Dashboard__date">
-                {new Date().toLocaleString()}
-              </span>
-              <JobNotification user={this.state.user} />
-            </div>
-
-            <div className="Dashboard__main">
-              <section className="Dashboard__projects">
-                <div
-                  className="Dashboard__project_header"
-                  onClick={this.toggleExpandProjects}
-                >
-                  <div className="Dashboard__fa_h1">
-                    {StyleIcon({
-                      style: `${this.state.expandProjects ? "minus" : "plus"}`
-                    })}
-                    <h1>Projects</h1>
-                  </div>
-                  {this.state.user.role !== "project worker" && (
-                    <button onClick={this.toggleNewProj}>NEW</button>
-                  )}
-                </div>
-                {this.state.newProj && (
-                  <NewProject
-                    org={this.state.user.org}
-                    addToProjState={this.addToProjState}
-                    toggleForm={this.toggleNewProj}
-                  />
-                )}
-                {this.state.expandProjects && (
-                  <div className="Dashboard__projects_container">
-                    {this.state.projects.length !== 0 ? (
-                      <ul className="Dashboard__list">
-                        {this.state.projects.map(proj => {
-                          return (
-                            <li key={proj.id}>
-                              <ProjectBar
-                                proj={proj}
-                                role={this.state.user.role}
-                                projectManagers={this.state.projectManagers}
-                                updatePM={this.updatePM}
-                                updateProjInState={this.updateProjInState}
-                              />
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    ) : (
-                      <div className="Dashboard__no_projects">
-                        <span className="Dashboard__welcome">Welcome!</span>
-                        <span>
-                          You currently have no projects, click the NEW button
-                          above to add one.
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </section>
-              <section className="Dashboard__personnel">
-                <div
-                  className="Dashboard__personnel_header"
-                  onClick={this.toggleExpandPersonnel}
-                >
-                  <div className="Dashboard__fa_h1">
-                    {StyleIcon({
-                      style: `${this.state.expandPersonnel ? "minus" : "plus"}`
-                    })}
-                    <h1>Personnel</h1>
-                  </div>
-                </div>
-                <Sidebar />
-              </section>
-            </div>
-          </section>
-        </>
-      );
   }
 }

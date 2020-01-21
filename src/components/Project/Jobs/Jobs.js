@@ -4,7 +4,6 @@ import "./Jobs.css";
 import JobItem from "./JobItem";
 import LogHours from "../../LogHours/LogHours";
 import dbServices from "../../../services/dbServices";
-import { faHollyBerry } from "@fortawesome/free-solid-svg-icons";
 
 export default class Jobs extends Component {
   constructor(props) {

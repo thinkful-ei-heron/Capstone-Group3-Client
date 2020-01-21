@@ -65,7 +65,7 @@ const NewJob = props => {
     const jobObj = {
       approval,
       date_created,
-      deadline: new Date(deadline),
+      deadline: dateConversions.dateToTimestamp(new Date(deadline)),
       description,
       name,
       organization: currentUser.org,

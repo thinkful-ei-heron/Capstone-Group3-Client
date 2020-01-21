@@ -3,6 +3,8 @@ import dbServices from "../../services/dbServices";
 import JobNotificationList from "./JobNotificationList";
 import OwnerNotification from "./OwnerNotification";
 import { AuthContext } from "../../services/Auth";
+import Swal from "sweetalert2";
+import { Redirect } from "react-router-dom";
 
 export default class JobNotification extends Component {
   state = {
@@ -19,13 +21,23 @@ export default class JobNotification extends Component {
   getProjects = async () => {
     let projectList = [];
     if (this.context.currentUser.role !== "owner")
-      await dbServices
-        .getProjectsByRole(this.context.currentUser)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            projectList.push(doc.data());
+      try {
+        await dbServices
+          .getProjectsByRole(this.context.currentUser)
+          // .getProjectsByRole()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              projectList.push(doc.data());
+            });
           });
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "Error in your notifications: " + error.message,
+          icon: "error",
+          confirmButtonText: "Close"
         });
+      }
 
     return projectList;
   };
@@ -53,6 +65,10 @@ export default class JobNotification extends Component {
       let jobsList = [];
       projectList.map(async project => {
         const snapshot = await dbServices.getJobs(project.org_id, project.id);
+        // let snapshot;
+
+        // snapshot = await dbServices.getJobs();
+
         snapshot.forEach(doc => {
           if (doc.data().alert.includes(this.context.currentUser.name))
             jobsList.push(doc.data());

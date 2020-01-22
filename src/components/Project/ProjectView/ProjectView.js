@@ -166,7 +166,6 @@ export default class ProjectView extends Component {
             </div>
             <div className="ProjectView__sidebar">
               <Sidebar view="project" project={this.state.project} />
-              <h1>Sidebar</h1>
             </div>
           </div>
         </>

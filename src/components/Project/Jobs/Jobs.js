@@ -24,15 +24,10 @@ export default class Jobs extends Component {
 
     if (this.context.currentUser.role === 'project worker') {
       querySnapshot.forEach(doc => {
-<<<<<<< HEAD
-        if (doc.data().project_workers.includes(this.context.currentUser.name)) {
-          jobs.push(doc.data());
-=======
         if (
           doc.data().project_workers.includes(this.context.currentUser.name)
         ) {
           jobs.push(doc.data())
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
         }
       })
     } else if (this.context.currentUser.role === 'project manager') {
@@ -73,20 +68,12 @@ export default class Jobs extends Component {
         .onSnapshot(this.onJobsUpdate)
     } catch (error) {
       Swal.fire({
-<<<<<<< HEAD
-        title: "Error!",
-        text: "There was an issue loading this project's tasks - please refresh the page and try again.",
-        icon: "error",
-        confirmButtonText: "Close"
-      });
-=======
         title: 'Error!',
         text:
           "There was an issue loading this project's tasks - please refresh the page and try again.",
         icon: 'error',
         confirmButtonText: 'Close',
       })
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
     }
   }
 
@@ -117,13 +104,26 @@ export default class Jobs extends Component {
                 <></>
               )}
             </div>
-            {this.state.showLogHours && <LogHours jobs={jobs} renderLogHoursForm={this.renderLogHoursForm} />}
+            {this.state.showLogHours && (
+              <LogHours
+                jobs={jobs}
+                renderLogHoursForm={this.renderLogHoursForm}
+              />
+            )}
           </div>
           <ul className="Jobs__list">
             {jobs.length > 0 ? (
-              jobs.map(job => <JobItem projectId={this.props.projectId} job={job} key={job.id} />)
+              jobs.map(job => (
+                <JobItem
+                  projectId={this.props.projectId}
+                  job={job}
+                  key={job.id}
+                />
+              ))
             ) : (
-              <span>There are currently no tasks to display for this project.</span>
+              <span>
+                There are currently no tasks to display for this project.
+              </span>
             )}
           </ul>
         </>

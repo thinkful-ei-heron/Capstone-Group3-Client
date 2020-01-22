@@ -91,10 +91,8 @@ export default class Statistics extends Component {
   };
 
   componentDidMount = async () => {
-    const jobDue = [];
-    const jobHistory = [];
-    const employeeLabels = [];
-    const employeeHours = [];
+    let jobDue = [];
+    let jobHistory = [];
     for (let i = 0; i < this.state.jobDue.labels.length; i++) {
       await db
         .collection("organizations")
@@ -137,7 +135,15 @@ export default class Statistics extends Component {
           jobDue.push(jobDueCount);
           jobHistory.push(jobHistoryCount);
         });
+        if (jobDue.every(item => item === 0)) {
+          jobDue = []
+        }
+        if (jobHistory.every(item => item === 0)) {
+          jobHistory = []
+        }
     }
+    console.log(jobDue)
+    console.log(jobHistory)
     this.setState({
       jobDue: {
         labels: this.state.jobDue.labels,
@@ -166,8 +172,8 @@ export default class Statistics extends Component {
     return (
       <div className="Statistics">
         <h5>STATISTICS</h5>
-        <Bar className="due" data={this.state.jobDue} options={{ maintainAspectRatio: false }}/>
-        <Bar className="history" data={this.state.jobHistory} options={{ maintainAspectRatio: false }} />
+        {this.state.jobDue.datasets[0].data.length !== 0 ? <Bar className="due" data={this.state.jobDue} options={{ maintainAspectRatio: false }}/> : <span>You have no tasks due soon</span>}
+        {this.state.jobHistory.datasets[0].data.length !== 0 ? <Bar className="history" data={this.state.jobHistory} options={{ maintainAspectRatio: false }} /> : <span>You have not completed any tasks in the last 7 days</span>}
       </div>
     );
   }

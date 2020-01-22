@@ -97,9 +97,9 @@ class JobItem extends Component {
 
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
     const progress = Math.floor((hours_completed / total_hours) * 100);
-    if (this.context.currentUser.role === 'project worker') {
-      if (status === 'completed') return <span>Task Completed</span>;
-      if (status === 'submitted' || status === 'completed') return <></>;
+    if (this.context.currentUser.role === "project worker") {
+      if (status === "completed") return <span>Task Completed</span>;
+      if (status === "submitted" || status === "completed") return <></>;
       if (approval || progress !== 100) {
         return (
           <>
@@ -209,11 +209,23 @@ class JobItem extends Component {
                 <></>
               )}
             </div>
-            <span className="JobItem__date">Due: {dateConversions.TStoDisplayDate(job.deadline)}</span>
-          {!job.approval && progress === 100 && job.status !== 'revisions' ? <span>AWAITING APPROVAL</span> : <></>}
-          {!job.approval && progress === 100 && job.status === 'revisions' ? <span>Revision Requested</span> : <></>}
-          {job.status !== 'completed' ? (dateConversions.dateDiff(job.deadline)
-             && `Overdue by ${dateConversions.dateDiff(job.deadline)} days`) : ''}
+            <span className="JobItem__date">
+              Due: {dateConversions.TStoDisplayDate(job.deadline)}
+            </span>
+            {!job.approval && progress === 100 && job.status !== "revisions" ? (
+              <span>AWAITING APPROVAL</span>
+            ) : (
+              <></>
+            )}
+            {!job.approval && progress === 100 && job.status === "revisions" ? (
+              <span>Revision Requested</span>
+            ) : (
+              <></>
+            )}
+            {job.status !== "completed"
+              ? dateConversions.dateDiff(job.deadline) &&
+                `Overdue by ${dateConversions.dateDiff(job.deadline)} days`
+              : ""}
           </div>
           <div className="JobItem__buttons">
             {this.renderProjectButtons(

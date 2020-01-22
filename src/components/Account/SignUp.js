@@ -6,6 +6,7 @@ import { Label, Input } from "../Form/Form";
 import useFormValidation from "../../hooks/useFormValidation";
 import validateInput from "../../hooks/validateInput";
 import Swal from "sweetalert2";
+import "./SignUp.css";
 
 const SignUp = ({ history }, props) => {
   const functions = app.functions();
@@ -18,6 +19,7 @@ const SignUp = ({ history }, props) => {
   };
 
   const [orgList, setOrgList] = useState([]);
+  const [role, setRole] = useState(null);
 
   const getOrgs = async () => {
     let orgs = [];
@@ -50,8 +52,8 @@ const SignUp = ({ history }, props) => {
       org: orgName,
       displayName: name
     };
-    switch (history.location.pathname) {
-      case "/owner-signup":
+    switch (role) {
+      case "owner":
         registerOwner(info)
           .then(() =>
             dbServices.createOwner({ ...infoNoPass, role: "owner" }, info.org)
@@ -67,7 +69,7 @@ const SignUp = ({ history }, props) => {
             });
           });
         break;
-      case "/worker-signup":
+      case "worker":
         registerWorker(info)
           .then(() =>
             dbServices.createUserInOrg(
@@ -86,7 +88,7 @@ const SignUp = ({ history }, props) => {
             });
           });
         break;
-      case "/manager-signup":
+      case "manager":
         registerProjectManager(info)
           .then(() =>
             dbServices.createUserInOrg(
@@ -109,6 +111,48 @@ const SignUp = ({ history }, props) => {
     return `${email} signed up`;
   };
 
+  const renderOrgSelect = () => {
+    if (role === "owner") {
+      return (
+        <Input
+          type="text"
+          name="orgName"
+          onChange={handleChange}
+          value={values.orgName}
+          onBlur={handleBlur}
+          placeholder="Organization name"
+        />
+      );
+    }
+    return (
+      <select
+        type="text"
+        name="orgName"
+        onChange={handleChange}
+        value={values.orgName}
+        onBlur={handleBlur}
+        placeholder="Organization name"
+      >
+        {orgList && orgList.length > 0 ? (
+          orgList.map((item, i) => {
+            return (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            );
+          })
+        ) : (
+          <></>
+        )}
+      </select>
+    );
+  };
+
+  const changeRole = (e, role) => {
+    e.stopPropagation();
+    setRole(role);
+  };
+
   const {
     handleSubmit,
     errors,
@@ -126,6 +170,33 @@ const SignUp = ({ history }, props) => {
     <div className="Login">
       <h1>Sign up</h1>
       <form className="Login__form" onSubmit={handleSubmit}>
+        <h1>I am a: </h1>
+        <div className="radio-toolbar">
+          <Input
+            type="radio"
+            value="worker"
+            id="check_worker"
+            name="entry_type"
+            onChange={e => changeRole(e, "worker")}
+          />
+          <Label htmlFor="check_worker">Project Worker</Label>
+          <Input
+            type="radio"
+            value="manager"
+            id="check_manager"
+            name="entry_type"
+            onChange={e => changeRole(e, "manager")}
+          />
+          <Label htmlFor="check_manager">Project Manager</Label>
+          <Input
+            type="radio"
+            value="owner"
+            id="check_owner"
+            name="entry_type"
+            onChange={e => changeRole(e, "owner")}
+          />
+          <Label htmlFor="check_owner">Company Owner</Label>
+        </div>
         <Label>
           email
           <Input
@@ -164,26 +235,7 @@ const SignUp = ({ history }, props) => {
         </Label>
         <Label htmlFor="orgName">
           Organization Name
-          <select
-            type="text"
-            name="orgName"
-            onChange={handleChange}
-            value={values.orgName}
-            onBlur={handleBlur}
-            placeholder="Organization name"
-          >
-            {orgList && orgList.length > 0 ? (
-              orgList.map((item, i) => {
-                return (
-                  <option key={i} value={item}>
-                    {item}
-                  </option>
-                );
-              })
-            ) : (
-              <></>
-            )}
-          </select>
+          {renderOrgSelect()}
           {errors.orgName && <p>*{errors.orgName}</p>}
         </Label>
         <button type="submit" disabled={isSubmitting}>

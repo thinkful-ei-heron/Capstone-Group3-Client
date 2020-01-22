@@ -25,7 +25,7 @@ const WorkerEditForm = props => {
       description: description,
       total_hours: parseInt(total_hours),
       note: note,
-      employee: currentUser.name,
+      employee: currentUser.name
       // logged_hours: {name: currentUser.name, hours:}
     };
     try {

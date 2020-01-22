@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import { AuthContext } from "../../services/Auth";
 import app from "../../services/base";
-import './Statistics.css'
+import "./Statistics.css";
 const db = app.firestore();
 
 export default class Statistics extends Component {
@@ -164,7 +164,7 @@ export default class Statistics extends Component {
             backgroundColor: this.state.jobHistory.datasets[0].backgroundColor
           }
         ]
-      },
+      }
     });
   };
 
@@ -172,8 +172,10 @@ export default class Statistics extends Component {
     return (
       <div className="Statistics">
         <h5>STATISTICS</h5>
+
         {this.state.jobDue.datasets[0].data.length !== 0 ? <Bar className="due" data={this.state.jobDue} options={{ maintainAspectRatio: false }}/> : <span>You have no tasks due soon</span>}
         {this.state.jobHistory.datasets[0].data.length !== 0 ? <Bar className="history" data={this.state.jobHistory} options={{ maintainAspectRatio: false }} /> : <span>You have not completed any tasks in the last 7 days</span>}
+
       </div>
     );
   }

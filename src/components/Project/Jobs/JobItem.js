@@ -9,7 +9,6 @@ import dateConversions from "../../../services/dateConversions";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import Swal from "sweetalert2";
 
-
 class JobItem extends Component {
   constructor(props) {
     super(props);
@@ -44,12 +43,13 @@ class JobItem extends Component {
     let employeeHours = [];
     let labels = [];
     this.props.job.employee_hours &&
-    this.props.job.employee_hours.forEach(emp => {
-      labels.push(emp.name);
-      employeeHours.push(emp.hours);
-    });
+      this.props.job.employee_hours.forEach(emp => {
+        labels.push(emp.name);
+        employeeHours.push(emp.hours);
+      });
+
     if (employeeHours.every(item => item === 0)) {
-      employeeHours = []
+      employeeHours = [];
     }
     await this.setState({
       employeeHours: {
@@ -58,9 +58,10 @@ class JobItem extends Component {
           {
             label: this.state.employeeHours.datasets[0].label,
             data: employeeHours,
-            backgroundColor: this.state.employeeHours.datasets[0].backgroundColor
+            backgroundColor: this.state.employeeHours.datasets[0]
+              .backgroundColor
           }
-        ],
+        ]
       }
     });
   };
@@ -98,7 +99,7 @@ class JobItem extends Component {
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
     const progress = Math.floor((hours_completed / total_hours) * 100);
     if (this.context.currentUser.role === "project worker") {
-      if (status === "completed") return <span>Project Completed</span>;
+      if (status === "completed") return <span>Task Completed</span>;
       if (status === "submitted" || status === "completed") return <></>;
       if (approval || progress !== 100) {
         return (
@@ -135,16 +136,6 @@ class JobItem extends Component {
       if (status === "completed") return <span>Task Completed</span>;
       return (
         <>
-          {!approval && progress === 100 && status !== "revisions" ? (
-            <span>AWAITING APPROVAL</span>
-          ) : (
-            <></>
-          )}
-          {!approval && progress === 100 && status === "revisions" ? (
-            <span>Revision Requested</span>
-          ) : (
-            <></>
-          )}
           <div className="JobItem__edit" onClick={this.showEditForm}>
             {StyleIcon({ style: "edit" })}
           </div>
@@ -210,13 +201,32 @@ class JobItem extends Component {
             <div>
               <span>Est. Progress</span>
               <ProgressBar percentage={progress} />
-              {this.state.employeeHours.datasets[0].data.length !== 0 ? <Pie data={this.state.employeeHours} options={{ maintainAspectRatio: false }}/> : <></>}
+              {this.state.employeeHours.datasets[0].data.length !== 0 ? (
+                <Pie
+                  data={this.state.employeeHours}
+                  options={{ maintainAspectRatio: false }}
+                />
+              ) : (
+                <></>
+              )}
             </div>
             <span className="JobItem__date">
               Due: {dateConversions.TStoDisplayDate(job.deadline)}
             </span>
-            {dateConversions.dateDiff(job.deadline) &&
-              `Overdue by ${dateConversions.dateDiff(job.deadline)} days`}
+            {!job.approval && progress === 100 && job.status !== "revisions" ? (
+              <span>AWAITING APPROVAL</span>
+            ) : (
+              <></>
+            )}
+            {!job.approval && progress === 100 && job.status === "revisions" ? (
+              <span>Revision Requested</span>
+            ) : (
+              <></>
+            )}
+            {job.status !== "completed"
+              ? dateConversions.dateDiff(job.deadline) &&
+                `Overdue by ${dateConversions.dateDiff(job.deadline)} days`
+              : ""}
           </div>
           <div className="JobItem__buttons">
             {this.renderProjectButtons(

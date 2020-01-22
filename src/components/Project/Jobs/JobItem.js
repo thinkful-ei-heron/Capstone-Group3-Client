@@ -9,7 +9,6 @@ import dateConversions from "../../../services/dateConversions";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import Swal from "sweetalert2";
 
-
 class JobItem extends Component {
   constructor(props) {
     super(props);
@@ -43,12 +42,13 @@ class JobItem extends Component {
   componentDidMount = async () => {
     let employeeHours = [];
     let labels = [];
-    this.props.job.employee_hours.forEach(emp => {
-      labels.push(emp.name);
-      employeeHours.push(emp.hours);
-    });
+    this.props.job.employee_hours &&
+      this.props.job.employee_hours.forEach(emp => {
+        labels.push(emp.name);
+        employeeHours.push(emp.hours);
+      });
     if (employeeHours.every(item => item === 0)) {
-      employeeHours = []
+      employeeHours = [];
     }
     await this.setState({
       employeeHours: {
@@ -57,9 +57,10 @@ class JobItem extends Component {
           {
             label: this.state.employeeHours.datasets[0].label,
             data: employeeHours,
-            backgroundColor: this.state.employeeHours.datasets[0].backgroundColor
+            backgroundColor: this.state.employeeHours.datasets[0]
+              .backgroundColor
           }
-        ],
+        ]
       }
     });
   };
@@ -209,7 +210,14 @@ class JobItem extends Component {
             <div>
               <span>Est. Progress</span>
               <ProgressBar percentage={progress} />
-              {this.state.employeeHours.datasets[0].data.length !== 0 ? <Pie data={this.state.employeeHours} options={{ maintainAspectRatio: false }}/> : <></>}
+              {this.state.employeeHours.datasets[0].data.length !== 0 ? (
+                <Pie
+                  data={this.state.employeeHours}
+                  options={{ maintainAspectRatio: false }}
+                />
+              ) : (
+                <></>
+              )}
             </div>
             <span className="JobItem__date">
               Due: {dateConversions.TStoDisplayDate(job.deadline)}

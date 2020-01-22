@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { AuthContext } from '../../../services/Auth';
-import './Jobs.css';
-import JobItem from './JobItem';
-import LogHours from '../../LogHours/LogHours';
-import dbServices from '../../../services/dbServices';
-import { faHollyBerry } from '@fortawesome/free-solid-svg-icons';
+import React, { Component } from "react";
+import { AuthContext } from "../../../services/Auth";
+import "./Jobs.css";
+import JobItem from "./JobItem";
+import LogHours from "../../LogHours/LogHours";
+import dbServices from "../../../services/dbServices";
+import Swal from "sweetalert2";
 
 export default class Jobs extends Component {
   constructor(props) {
@@ -22,13 +22,13 @@ export default class Jobs extends Component {
   onJobsUpdate = querySnapshot => {
     const jobs = [];
 
-    if (this.context.currentUser.role === 'project worker') {
+    if (this.context.currentUser.role === "project worker") {
       querySnapshot.forEach(doc => {
         if (doc.data().project_workers.includes(this.context.currentUser.name)) {
           jobs.push(doc.data());
         }
       });
-    } else if (this.context.currentUser.role === 'project manager') {
+    } else if (this.context.currentUser.role === "project manager") {
       querySnapshot.forEach(doc => {
         if (doc.data().project_manager === this.context.currentUser.name) {
           jobs.push(doc.data());
@@ -60,9 +60,18 @@ export default class Jobs extends Component {
   };
 
   componentDidMount() {
-    this.unsubscribe = dbServices
-      .jobsListener(this.context.currentUser.org, this.props.projectId)
-      .onSnapshot(this.onJobsUpdate);
+    try {
+      this.unsubscribe = dbServices
+        .jobsListener(this.context.currentUser.org, this.props.projectId)
+        .onSnapshot(this.onJobsUpdate);
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "There was an issue loading this project's tasks - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -86,7 +95,7 @@ export default class Jobs extends Component {
         <>
           <div>
             <div>
-              {user.role === 'project worker' ? (
+              {user.role === "project worker" ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>
@@ -96,7 +105,7 @@ export default class Jobs extends Component {
           </div>
           <ul className="Jobs__list">
             {jobs.length > 0 ? (
-              jobs.map(job => <JobItem job={job} key={job.id} />)
+              jobs.map(job => <JobItem projectId={this.props.projectId} job={job} key={job.id} />)
             ) : (
               <span>There are currently no tasks to display for this project.</span>
             )}

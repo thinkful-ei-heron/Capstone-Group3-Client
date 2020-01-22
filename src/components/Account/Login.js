@@ -1,12 +1,14 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router";
 import app from "../../services/base.js";
 import { AuthContext } from "../../services/Auth.js";
 import { Label, Input } from "../Form/Form";
+import Swal from "sweetalert2";
 import "./Login.css";
 
 const Login = (setPath, { history }) => {
   const { currentUser } = useContext(AuthContext);
+
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
@@ -14,7 +16,18 @@ const Login = (setPath, { history }) => {
       await app
         .auth()
         .signInWithEmailAndPassword(email.value, password.value)
-        .catch(error => alert(error));
+        .catch(error => {
+          console.warn(error);
+          Swal.fire({
+            title: "Error!",
+            text:
+              error.code === "auth/user-not-found"
+                ? "Incorrect email"
+                : "Incorrect password",
+            icon: "error",
+            confirmButtonText: "Close"
+          });
+        });
     },
     [history]
   );
@@ -29,18 +42,27 @@ const Login = (setPath, { history }) => {
       <form className="Login__form" onSubmit={handleLogin}>
         <Label>
           Email
-          <Input name="email" type="email" placeholder="Email" required />
+          <Input
+            test-id="login-email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+          />
         </Label>
         <Label>
           Password
           <Input
+            test-id="login-password"
             name="password"
             type="password"
             placeholder="Password"
             required
           />
         </Label>
-        <button type="submit">Log in</button>
+        <button type="submit" test-id="login-button">
+          Log in
+        </button>
       </form>
     </div>
   );

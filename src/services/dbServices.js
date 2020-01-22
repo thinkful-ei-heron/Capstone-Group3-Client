@@ -1,4 +1,5 @@
 import app from "./base";
+import Swal from "sweetalert2";
 
 const db = app.firestore();
 
@@ -168,7 +169,6 @@ const dbServices = {
   },
 
   updateProject(proj) {
-    console.log(proj);
     return db
       .collection("organizations")
       .doc(proj.org_id)
@@ -238,12 +238,18 @@ const dbServices = {
         `organizations/${newJob.organization}/projects/${project_id}/jobs`
       )
       .add(newJob)
+      .catch(error => {
+        return error;
+      })
       .then(function(docRef) {
         db.collection(
           `organizations/${newJob.organization}/projects/${project_id}/jobs`
         )
           .doc(`${docRef.id}`)
-          .update({ id: docRef.id });
+          .update({ id: docRef.id })
+          .catch(error => {
+            return error;
+          });
       });
   },
 

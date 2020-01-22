@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import * as firebase from "firebase/app";
 
 const dateConversions = {
   //Convert <input type='date'> format to firestore timestamp
@@ -20,7 +20,7 @@ const dateConversions = {
     const date = ts.toDate();
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
     const day = date.toJSON().slice(8, 10);
 
     return `${month}/${day}/${year}`;

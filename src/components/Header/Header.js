@@ -42,7 +42,7 @@ export default class Header extends Component {
             </h3>
           </Link>
           <Link
-            onClick={() => app.auth().signOut()}
+            onClick={() => this.handleLogout()}
             className="Header__btn  Header__alt"
             to="/"
             test-id="logout-button"

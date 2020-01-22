@@ -25,7 +25,7 @@ const ProjectBar = props => {
           <div className="ProjectBar__description_text">{props.proj.description}</div>
         </div>
         {props.proj.progress === 100 ? (
-          <p>Project Completed</p>
+          <p>Project Completed on {props.proj.date_completed && dateConversions.TStoDisplayDate(props.proj.date_completed)}</p>
         ) : (
           <div className="ProjectBar__proj_prog_date">
             <div className="ProjectBar__proj_prog">

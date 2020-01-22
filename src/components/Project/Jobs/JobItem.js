@@ -58,14 +58,6 @@ class JobItem extends Component {
           {
             label: this.state.employeeHours.datasets[0].label,
             data: employeeHours,
-<<<<<<< HEAD
-            backgroundColor: this.state.employeeHours.datasets[0].backgroundColor
-          }
-        ]
-      }
-    });
-  };
-=======
             backgroundColor: this.state.employeeHours.datasets[0]
               .backgroundColor,
           },
@@ -73,7 +65,6 @@ class JobItem extends Component {
       },
     })
   }
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
 
   handleApprovalSubmit = async (id, status, approval = false) => {
     try {
@@ -87,30 +78,18 @@ class JobItem extends Component {
     } catch (error) {
       console.warn(error)
       Swal.fire({
-<<<<<<< HEAD
-        title: "Error!",
-        text: "There was an issue approving this task - please refresh the page and try again.",
-        icon: "error",
-        confirmButtonText: "Close"
-      });
-=======
         title: 'Error!',
         text:
           'There was an issue approving this task - please refresh the page and try again.',
         icon: 'error',
         confirmButtonText: 'Close',
       })
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
     }
   }
 
   renderEmployeeList = jobWorkers => {
-<<<<<<< HEAD
-    if (!jobWorkers || jobWorkers.length === 0) return <h5>No Workers Assigned</h5>;
-=======
     if (!jobWorkers || jobWorkers.length === 0)
       return <h5>No Workers Assigned</h5>
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
     return jobWorkers.map((employee, index) => {
       let itemKey = index + employee
       return <li key={itemKey}>{employee}</li>
@@ -126,16 +105,11 @@ class JobItem extends Component {
         return (
           <>
             <button disabled>Submit for Approval</button>
-<<<<<<< HEAD
-            {(status !== "completed" || status !== "submitted") && status !== "edit request" ? (
-              <button onClick={e => this.showWorkerEditForm()}>Request Edit</button>
-=======
             {(status !== 'completed' || status !== 'submitted') &&
             status !== 'edit request' ? (
               <button onClick={e => this.showWorkerEditForm()}>
                 Request Edit
               </button>
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
             ) : (
               <></>
             )}
@@ -144,15 +118,10 @@ class JobItem extends Component {
       } else {
         return (
           <>
-<<<<<<< HEAD
-            {status === "revisions" ? <span>Revision Requested</span> : <></>}
-            <button onClick={e => this.handleApprovalSubmit(id, "submitted", false)}>
-=======
             {status === 'revisions' ? <span>Revision Requested</span> : <></>}
             <button
               onClick={e => this.handleApprovalSubmit(id, 'submitted', false)}
             >
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
               Submit for Approval
             </button>
           </>
@@ -160,16 +129,11 @@ class JobItem extends Component {
       }
     }
 
-<<<<<<< HEAD
-    if (this.context.currentUser.role === "project manager" || this.context.currentUser.role === "owner") {
-      if (status === "completed") return <span>Task Completed</span>;
-=======
     if (
       this.context.currentUser.role === 'project manager' ||
       this.context.currentUser.role === 'owner'
     ) {
       if (status === 'completed') return <span>Task Completed</span>
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
       return (
         <>
           <div className="JobItem__edit" onClick={this.showEditForm}>
@@ -177,10 +141,6 @@ class JobItem extends Component {
           </div>
           {status === 'submitted' ? (
             <div>
-<<<<<<< HEAD
-              <button onClick={e => this.handleApprovalSubmit(id, "completed", true)}>Approve</button>{" "}
-              <button onClick={e => this.handleApprovalSubmit(id, "revisions")}>Request Revision</button>
-=======
               <button
                 onClick={e => this.handleApprovalSubmit(id, 'completed', true)}
               >
@@ -189,7 +149,6 @@ class JobItem extends Component {
               <button onClick={e => this.handleApprovalSubmit(id, 'revisions')}>
                 Request Revision
               </button>
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
             </div>
           ) : (
             <></>
@@ -221,7 +180,12 @@ class JobItem extends Component {
     const job = this.props.job
     const progress = Math.floor((job.hours_completed / job.total_hours) * 100)
     return (
-      <li className="JobItem" key={job.id} id={job.id} onClick={this.toggleExpand}>
+      <li
+        className="JobItem"
+        key={job.id}
+        id={job.id}
+        onClick={this.toggleExpand}
+      >
         <div className="JobItem__container">
           <div className="JobItem__icon">
             {StyleIcon({
@@ -238,20 +202,18 @@ class JobItem extends Component {
               <span>Est. Progress</span>
               <ProgressBar percentage={progress} />
               {this.state.employeeHours.datasets[0].data.length !== 0 ? (
-                <Pie data={this.state.employeeHours} options={{ maintainAspectRatio: false }} />
+                <Pie
+                  data={this.state.employeeHours}
+                  options={{ maintainAspectRatio: false }}
+                />
               ) : (
                 <></>
               )}
             </div>
-<<<<<<< HEAD
-            <span className="JobItem__date">Due: {dateConversions.TStoDisplayDate(job.deadline)}</span>
-            {!job.approval && progress === 100 && job.status !== "revisions" ? (
-=======
             <span className="JobItem__date">
               Due: {dateConversions.TStoDisplayDate(job.deadline)}
             </span>
             {!job.approval && progress === 100 && job.status !== 'revisions' ? (
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
               <span>AWAITING APPROVAL</span>
             ) : (
               <></>
@@ -276,22 +238,15 @@ class JobItem extends Component {
             )}
           </div>
         </div>
-        {this.state.expandJob && <ul>{this.renderEmployeeList(job.project_workers)}</ul>}
+        {this.state.expandJob && (
+          <ul>{this.renderEmployeeList(job.project_workers)}</ul>
+        )}
         <div className="JobItem__form_container">
           {this.state.showEditForm && (
             <div className="JobItem__form">
               <JobForm showJobForm={this.showEditForm} job={job} />
             </div>
           )}
-<<<<<<< HEAD
-          {this.state.showWorkerEditForm && this.context.currentUser.role === "project worker" && (
-            <WorkerEditForm
-              job={job}
-              renderEditForm={this.showWorkerEditForm}
-              handleStatus={this.handleApprovalSubmit}
-            />
-          )}
-=======
           {this.state.showWorkerEditForm &&
             this.context.currentUser.role === 'project worker' && (
               <WorkerEditForm
@@ -300,7 +255,6 @@ class JobItem extends Component {
                 handleStatus={this.handleApprovalSubmit}
               />
             )}
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
         </div>
       </li>
     )

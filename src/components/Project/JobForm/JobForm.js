@@ -16,17 +16,11 @@ const NewJob = props => {
 
   const getEmployees = () => {
     if (props.job) {
-<<<<<<< HEAD
-      let workers = [];
-      props.job.project_workers.forEach(worker => workers.push({ value: worker, label: worker }));
-      return workers;
-=======
       let workers = []
       props.job.project_workers.forEach(worker =>
         workers.push({ value: worker, label: worker })
       )
       return workers
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
     }
   }
 
@@ -42,20 +36,6 @@ const NewJob = props => {
     let employees = []
     if (selected) selected.map(itm => employees.push(itm.value))
 
-<<<<<<< HEAD
-    let projectId = props.job ? props.job.project_id : props.projectId;
-    let projectManager = props.job ? props.job.project_manager : props.project.project_manager;
-    let id = props.job ? props.job.id : null;
-    let approval = props.job ? props.job.approval : false;
-    let date_created = props.job ? props.job.date_created : new Date();
-    let hours_completed = props.job ? props.job.hours_completed : 0;
-    let status = "in progress";
-    let edit = null;
-    let alert = [];
-    let employee_hours = [];
-    console.log(employees);
-    employees.forEach(emp => employee_hours.push({ name: emp, hours: 0 }));
-=======
     let projectId = props.job ? props.job.project_id : props.projectId
     let projectManager = props.job
       ? props.job.project_manager
@@ -70,23 +50,16 @@ const NewJob = props => {
     let employee_hours = []
     console.log(employees)
     employees.forEach(emp => employee_hours.push({ name: emp, hours: 0 }))
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
 
     if (props.job) {
       if (props.job.status === 'edit request') status = 'in progress'
       else status = props.job.status
 
       employees.map(employee => {
-<<<<<<< HEAD
-        if (!props.job.project_workers.includes(employee)) return alert.push(employee);
-        else return null;
-      });
-=======
         if (!props.job.project_workers.includes(employee))
           return alert.push(employee)
         else return null
       })
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
     } else {
       employees.map(employee => {
         return alert.push(employee)
@@ -119,20 +92,12 @@ const NewJob = props => {
       } catch (error) {
         console.warn(error)
         Swal.fire({
-<<<<<<< HEAD
-          title: "Error!",
-          text: "There was an issue editing this task - please refresh the page and try again. 1",
-          icon: "error",
-          confirmButtonText: "Close"
-        });
-=======
           title: 'Error!',
           text:
             'There was an issue editing this task - please refresh the page and try again. 1',
           icon: 'error',
           confirmButtonText: 'Close',
         })
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
       }
     } else {
       try {
@@ -178,17 +143,11 @@ const NewJob = props => {
     })
 
     try {
-<<<<<<< HEAD
-      await dbServices.updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org).then(() => {
-        props.showJobForm();
-      });
-=======
       await dbServices
         .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
         .then(() => {
           props.showJobForm()
         })
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
     } catch (error) {
       console.warn(error)
       Swal.fire({
@@ -201,9 +160,6 @@ const NewJob = props => {
     }
   }
 
-<<<<<<< HEAD
-  const { handleSubmit, handleChange, handleBlur, values, errors, isSubmitting } = useFormValidation(
-=======
   const {
     handleSubmit,
     handleChange,
@@ -212,7 +168,6 @@ const NewJob = props => {
     errors,
     isSubmitting,
   } = useFormValidation(
->>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
     INITIAL_STATE,
     validateInput.validateJobForm,
     handleSubmitForm

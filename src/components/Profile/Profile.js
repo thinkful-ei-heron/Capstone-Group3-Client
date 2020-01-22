@@ -1,46 +1,46 @@
-import React, { useContext, useState, useEffect } from "react";
-import { withRouter, Link } from "react-router-dom";
+import React, { useContext, useState, useEffect } from 'react'
+import { withRouter, Link } from 'react-router-dom'
 
-import { AuthContext } from "../../services/Auth";
-import app from "../../services/base.js";
-import dbServices from "../../services/dbServices";
-import Swal from "sweetalert2";
-import { functions } from "firebase";
-import Sidebar from "../Sidebar/Sidebar";
+import { AuthContext } from '../../services/Auth'
+import app from '../../services/base.js'
+import dbServices from '../../services/dbServices'
+import Swal from 'sweetalert2'
+import { functions } from 'firebase'
+import Sidebar from '../Sidebar/Sidebar'
 
 const Profile = props => {
-  const { currentUser } = useContext(AuthContext);
-  const [userInfo, setUserInfo] = useState({});
-  const [userProjects, setUserProjects] = useState([]);
-  const functions = app.functions();
+  const { currentUser } = useContext(AuthContext)
+  const [userInfo, setUserInfo] = useState({})
+  const [userProjects, setUserProjects] = useState([])
+  const functions = app.functions()
 
   const handleClick = async event => {
-    event.preventDefault();
-    const promoteFunc = await functions.httpsCallable("promoteUser");
-    console.log(promoteFunc);
+    event.preventDefault()
+    const promoteFunc = await functions.httpsCallable('promoteUser')
+    console.log(promoteFunc)
     promoteFunc({
       email: userInfo.email,
-      org: userInfo.org
+      org: userInfo.org,
     }).then(() => {
       try {
         dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
           getUserInfo().then(info => {
-            setUserInfo(info);
+            setUserInfo(info)
           })
-        );
+        )
       } catch (error) {
         Swal.fire({
-          title: "Error!",
-          text: "Failed to promote employee.",
-          icon: "error",
-          confirmButtonText: "Close"
-        });
+          title: 'Error!',
+          text: 'Failed to promote employee.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
       }
-    });
-  };
+    })
+  }
 
   const getUserInfo = async () => {
-    let info = {};
+    let info = {}
     try {
       await dbServices
         .getUser(props.match.params.id, currentUser.org)
@@ -50,73 +50,73 @@ const Profile = props => {
               role: doc.data().role,
               email: doc.data().email,
               name: doc.data().name,
-              org: doc.data().org
-            };
-          });
-        });
+              org: doc.data().org,
+            }
+          })
+        })
     } catch (error) {
-      console.log("caught error!");
-      console.warn(error);
+      console.log('caught error!')
+      console.warn(error)
       Swal.fire({
-        title: "Error!",
+        title: 'Error!',
         text:
           "There was an issue loading this employee's information - please refresh the page and try again.",
-        icon: "error",
-        confirmButtonText: "Close"
-      });
+        icon: 'error',
+        confirmButtonText: 'Close',
+      })
     }
 
-    return info;
-  };
+    return info
+  }
 
   const getUserProjects = async info => {
-    if (info.role === "project worker")
+    if (info.role === 'project worker')
       try {
         await dbServices
           .getEmployeeProjects(info.name, info.org)
           .then(snapshot => {
             snapshot.forEach(doc => {
-              setUserProjects([...userProjects, doc.data()]);
-            });
-          });
+              setUserProjects([...userProjects, doc.data()])
+            })
+          })
       } catch (error) {
-        console.warn(error);
+        console.warn(error)
         Swal.fire({
-          title: "Error!",
+          title: 'Error!',
           text:
             "There was an issue loading this employee's project information - please refresh the page and try again.",
-          icon: "error",
-          confirmButtonText: "Close"
-        });
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
       }
-    else if (info.role === "project manager") {
+    else if (info.role === 'project manager') {
       try {
         await dbServices
           .getManagerProjects(info.name, info.org)
           .then(snapshot => {
             snapshot.forEach(doc => {
-              setUserProjects([...userProjects, doc.data()]);
-            });
-          });
+              setUserProjects([...userProjects, doc.data()])
+            })
+          })
       } catch (error) {
-        console.warn(error);
+        console.warn(error)
         Swal.fire({
-          title: "Error!",
+          title: 'Error!',
           text:
             "There was an issue loading this employee's project information - please refresh the page and try again.",
-          icon: "error",
-          confirmButtonText: "Close"
-        });
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
       }
     }
-  };
+  }
 
   useEffect(() => {
     getUserInfo().then(info => {
-      setUserInfo(info);
-      getUserProjects(info);
-    });
-  }, []);
+      setUserInfo(info)
+      getUserProjects(info)
+    })
+  }, [])
 
   if (userInfo && userInfo.role)
     return (
@@ -137,7 +137,7 @@ const Profile = props => {
                   <li key={i}>
                     <Link to={`/project/${proj.id}`}>{proj.name}</Link>
                   </li>
-                );
+                )
               })}
             </ul>
           ) : (
@@ -147,9 +147,9 @@ const Profile = props => {
         {/* yes I know this is kind of gross. */}
         <div>
           {currentUser &&
-          currentUser.role === "owner" &&
+          currentUser.role === 'owner' &&
           userInfo &&
-          userInfo.role === "project worker" ? (
+          userInfo.role === 'project worker' ? (
             <button onClick={event => handleClick(event)}>Promote User</button>
           ) : (
             <></>
@@ -157,8 +157,8 @@ const Profile = props => {
         </div>
         <Sidebar />
       </>
-    );
-  return <></>;
-};
+    )
+  return <></>
+}
 
-export default withRouter(Profile);
+export default withRouter(Profile)

@@ -1,43 +1,43 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import dbServices from "../../services/dbServices";
-import { AuthContext } from "../../services/Auth";
-import Swal from "sweetalert2";
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import dbServices from '../../services/dbServices'
+import { AuthContext } from '../../services/Auth'
+import Swal from 'sweetalert2'
 
 export default class OwnerNotification extends Component {
   state = {
     newEmployees: null,
     newProjects: null,
-    completedProjects: null
-  };
+    completedProjects: null,
+  }
 
-  static contextType = AuthContext;
+  static contextType = AuthContext
 
   handleNewEmployee = async (e, employee) => {
     try {
-      e.preventDefault();
-      employee.new = false;
-      await dbServices.updateWorker();
-      // await dbServices.updateWorker(employee, this.context.currentUser.org);
-      this.props.updateList(employee);
+      e.preventDefault()
+      employee.new = false
+      // await dbServices.updateWorker();
+      await dbServices.updateWorker(employee, this.context.currentUser.org)
+      this.props.updateList(employee)
       this.setState({
-        newEmployees: this.props.newEmployees
-      });
+        newEmployees: this.props.newEmployees,
+      })
     } catch (error) {
       Swal.fire({
-        title: "Error!",
-        text: "Employee status failed to update.",
-        icon: "error",
-        confirmButtonText: "Close"
-      });
+        title: 'Error!',
+        text: 'Employee status failed to update.',
+        icon: 'error',
+        confirmButtonText: 'Close',
+      })
     }
-  };
+  }
 
   handleClick = async project => {
-    project.alert = false;
-    await dbServices.updateProject(project);
-    console.log(project);
-  };
+    project.alert = false
+    await dbServices.updateProject(project)
+    console.log(project)
+  }
 
   renderNewEmployees = () => {
     if (this.props.newEmployees.length > 0) {
@@ -49,10 +49,10 @@ export default class OwnerNotification extends Component {
               Cool.
             </button>
           </li>
-        );
-      });
+        )
+      })
     }
-  };
+  }
 
   renderNewProjects = () => {
     if (this.props.newProjects.length > 0) {
@@ -66,10 +66,10 @@ export default class OwnerNotification extends Component {
               {project.name} has started.
             </Link>
           </li>
-        );
-      });
+        )
+      })
     }
-  };
+  }
 
   renderCompletedProjects = () => {
     if (this.props.completedProjects.length > 0) {
@@ -83,17 +83,17 @@ export default class OwnerNotification extends Component {
               {project.name} has been completed!
             </Link>
           </li>
-        );
-      });
+        )
+      })
     }
-  };
+  }
 
   componentDidMount() {
     this.setState({
       newEmployees: this.props.newEmployees,
       newProjects: this.props.newProjects,
-      completedProjects: this.props.completedProjects
-    });
+      completedProjects: this.props.completedProjects,
+    })
   }
 
   render() {
@@ -105,6 +105,6 @@ export default class OwnerNotification extends Component {
           {this.renderCompletedProjects()}
         </ul>
       </div>
-    );
+    )
   }
 }

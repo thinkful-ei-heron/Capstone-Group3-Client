@@ -1,118 +1,118 @@
-import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router";
-import app from "../../services/base";
-import dbServices from "../../services/dbServices";
-import { Label, Input } from "../Form/Form";
-import useFormValidation from "../../hooks/useFormValidation";
-import validateInput from "../../hooks/validateInput";
-import Swal from "sweetalert2";
-import "./SignUp.css";
+import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router'
+import app from '../../services/base'
+import dbServices from '../../services/dbServices'
+import { Label, Input } from '../Form/Form'
+import useFormValidation from '../../hooks/useFormValidation'
+import validateInput from '../../hooks/validateInput'
+import Swal from 'sweetalert2'
+import './SignUp.css'
 
 const SignUp = ({ history }, props) => {
-  const functions = app.functions();
+  const functions = app.functions()
 
   const inputValues = {
-    email: "",
-    name: "",
-    password: "",
-    orgName: ""
-  };
+    email: '',
+    name: '',
+    password: '',
+    orgName: '',
+  }
 
-  const [orgList, setOrgList] = useState([]);
-  const [role, setRole] = useState(null);
+  const [orgList, setOrgList] = useState([])
+  const [role, setRole] = useState(null)
 
   const getOrgs = async () => {
-    let orgs = [];
-    const dborgs = await dbServices.getAllOrgs();
-    dborgs.forEach(item => orgs.push(item.data().name));
-    return orgs;
-  };
+    let orgs = []
+    const dborgs = await dbServices.getAllOrgs()
+    dborgs.forEach(item => orgs.push(item.data().name))
+    return orgs
+  }
 
   useEffect(() => {
-    getOrgs().then(list => setOrgList(list));
-  }, []);
+    getOrgs().then(list => setOrgList(list))
+  }, [])
 
   const handleSignUp = async () => {
-    const { email, name, password, orgName } = values;
-    const registerOwner = await functions.httpsCallable("registerOwner");
-    const registerWorker = await functions.httpsCallable("registerWorker");
+    const { email, name, password, orgName } = values
+    const registerOwner = await functions.httpsCallable('registerOwner')
+    const registerWorker = await functions.httpsCallable('registerWorker')
     const registerProjectManager = await functions.httpsCallable(
-      "registerProjectManager"
-    );
+      'registerProjectManager'
+    )
     let info = {
       email: email,
       password: password,
       name: name,
       org: orgName,
-      displayName: name
-    };
+      displayName: name,
+    }
     let infoNoPass = {
       email: email,
       name: name,
       org: orgName,
-      displayName: name
-    };
+      displayName: name,
+    }
     switch (role) {
-      case "owner":
+      case 'owner':
         registerOwner(info)
           .then(() =>
-            dbServices.createOwner({ ...infoNoPass, role: "owner" }, info.org)
+            dbServices.createOwner({ ...infoNoPass, role: 'owner' }, info.org)
           )
           .catch(error => {
-            console.warn(error);
+            console.warn(error)
             Swal.fire({
-              title: "Error!",
+              title: 'Error!',
               text:
-                "There was an issue with registration - please refresh the page and try again.",
-              icon: "error",
-              confirmButtonText: "Close"
-            });
-          });
-        break;
-      case "worker":
+                'There was an issue with registration - please refresh the page and try again.',
+              icon: 'error',
+              confirmButtonText: 'Close',
+            })
+          })
+        break
+      case 'worker':
         registerWorker(info)
           .then(() =>
             dbServices.createUserInOrg(
-              { ...infoNoPass, role: "project worker" },
+              { ...infoNoPass, role: 'project worker' },
               orgName
             )
           )
           .catch(error => {
-            console.warn(error);
+            console.warn(error)
             Swal.fire({
-              title: "Error!",
+              title: 'Error!',
               text:
-                "There was an issue with registration - please refresh the page and try again.",
-              icon: "error",
-              confirmButtonText: "Close"
-            });
-          });
-        break;
-      case "manager":
+                'There was an issue with registration - please refresh the page and try again.',
+              icon: 'error',
+              confirmButtonText: 'Close',
+            })
+          })
+        break
+      case 'manager':
         registerProjectManager(info)
           .then(() =>
             dbServices.createUserInOrg(
-              { ...infoNoPass, role: "project manager" },
+              { ...infoNoPass, role: 'project manager' },
               orgName
             )
           )
           .catch(error => {
-            console.warn(error);
+            console.warn(error)
             Swal.fire({
-              title: "Error!",
+              title: 'Error!',
               text:
-                "There was an issue with registration - please refresh the page and try again.",
-              icon: "error",
-              confirmButtonText: "Close"
-            });
-          });
+                'There was an issue with registration - please refresh the page and try again.',
+              icon: 'error',
+              confirmButtonText: 'Close',
+            })
+          })
     }
-    history.push("/login");
-    return `${email} signed up`;
-  };
+    history.push('/login')
+    return `${email} signed up`
+  }
 
   const renderOrgSelect = () => {
-    if (role === "owner") {
+    if (role === 'owner') {
       return (
         <Input
           type="text"
@@ -122,7 +122,7 @@ const SignUp = ({ history }, props) => {
           onBlur={handleBlur}
           placeholder="Organization name"
         />
-      );
+      )
     }
     return (
       <select
@@ -139,19 +139,19 @@ const SignUp = ({ history }, props) => {
               <option key={i} value={item}>
                 {item}
               </option>
-            );
+            )
           })
         ) : (
           <></>
         )}
       </select>
-    );
-  };
+    )
+  }
 
   const changeRole = (e, role) => {
-    e.stopPropagation();
-    setRole(role);
-  };
+    e.stopPropagation()
+    setRole(role)
+  }
 
   const {
     handleSubmit,
@@ -159,12 +159,8 @@ const SignUp = ({ history }, props) => {
     handleChange,
     values,
     handleBlur,
-    isSubmitting
-  } = useFormValidation(
-    inputValues,
-    validateInput.validateSignup,
-    handleSignUp
-  );
+    isSubmitting,
+  } = useFormValidation(inputValues, validateInput.validateSignup, handleSignUp)
 
   return (
     <div className="Login">
@@ -177,7 +173,7 @@ const SignUp = ({ history }, props) => {
             value="worker"
             id="check_worker"
             name="entry_type"
-            onChange={e => changeRole(e, "worker")}
+            onChange={e => changeRole(e, 'worker')}
           />
           <Label htmlFor="check_worker">Project Worker</Label>
           <Input
@@ -185,7 +181,7 @@ const SignUp = ({ history }, props) => {
             value="manager"
             id="check_manager"
             name="entry_type"
-            onChange={e => changeRole(e, "manager")}
+            onChange={e => changeRole(e, 'manager')}
           />
           <Label htmlFor="check_manager">Project Manager</Label>
           <Input
@@ -193,7 +189,7 @@ const SignUp = ({ history }, props) => {
             value="owner"
             id="check_owner"
             name="entry_type"
-            onChange={e => changeRole(e, "owner")}
+            onChange={e => changeRole(e, 'owner')}
           />
           <Label htmlFor="check_owner">Company Owner</Label>
         </div>
@@ -243,7 +239,7 @@ const SignUp = ({ history }, props) => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default withRouter(SignUp);
+export default withRouter(SignUp)

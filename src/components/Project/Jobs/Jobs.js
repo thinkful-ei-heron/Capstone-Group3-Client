@@ -1,101 +1,117 @@
-import React, { Component } from "react";
-import { AuthContext } from "../../../services/Auth";
-import "./Jobs.css";
-import JobItem from "./JobItem";
-import LogHours from "../../LogHours/LogHours";
-import dbServices from "../../../services/dbServices";
-import Swal from "sweetalert2";
+import React, { Component } from 'react'
+import { AuthContext } from '../../../services/Auth'
+import './Jobs.css'
+import JobItem from './JobItem'
+import LogHours from '../../LogHours/LogHours'
+import dbServices from '../../../services/dbServices'
+import Swal from 'sweetalert2'
 
 export default class Jobs extends Component {
   constructor(props) {
-    super(props);
-    this.unsubscribe = null;
+    super(props)
+    this.unsubscribe = null
     this.state = {
       jobs: [],
       loading: true,
-      showLogHours: false
-    };
+      showLogHours: false,
+    }
   }
 
-  static contextType = AuthContext;
+  static contextType = AuthContext
 
   onJobsUpdate = querySnapshot => {
-    const jobs = [];
+    const jobs = []
 
-    if (this.context.currentUser.role === "project worker") {
+    if (this.context.currentUser.role === 'project worker') {
       querySnapshot.forEach(doc => {
+<<<<<<< HEAD
         if (doc.data().project_workers.includes(this.context.currentUser.name)) {
           jobs.push(doc.data());
+=======
+        if (
+          doc.data().project_workers.includes(this.context.currentUser.name)
+        ) {
+          jobs.push(doc.data())
+>>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
         }
-      });
-    } else if (this.context.currentUser.role === "project manager") {
+      })
+    } else if (this.context.currentUser.role === 'project manager') {
       querySnapshot.forEach(doc => {
         if (doc.data().project_manager === this.context.currentUser.name) {
-          jobs.push(doc.data());
+          jobs.push(doc.data())
         }
-      });
+      })
     } else {
       querySnapshot.forEach(doc => {
-        jobs.push(doc.data());
-      });
+        jobs.push(doc.data())
+      })
     }
 
     this.setState({
       jobs,
-      loading: false
-    });
+      loading: false,
+    })
 
-    this.grabProgress();
-  };
+    this.grabProgress()
+  }
 
   grabProgress = () => {
-    let totalHours = 0;
-    let totalProgress = 0;
+    let totalHours = 0
+    let totalProgress = 0
     this.state.jobs.map(job => {
-      totalHours = parseInt(job.total_hours) + totalHours;
-      totalProgress = parseInt(job.hours_completed) + totalProgress;
-      return null;
-    });
-    this.props.getProgress(totalProgress, totalHours);
-  };
+      totalHours = parseInt(job.total_hours) + totalHours
+      totalProgress = parseInt(job.hours_completed) + totalProgress
+      return null
+    })
+    this.props.getProgress(totalProgress, totalHours)
+  }
 
   componentDidMount() {
     try {
       this.unsubscribe = dbServices
         .jobsListener(this.context.currentUser.org, this.props.projectId)
-        .onSnapshot(this.onJobsUpdate);
+        .onSnapshot(this.onJobsUpdate)
     } catch (error) {
       Swal.fire({
+<<<<<<< HEAD
         title: "Error!",
         text: "There was an issue loading this project's tasks - please refresh the page and try again.",
         icon: "error",
         confirmButtonText: "Close"
       });
+=======
+        title: 'Error!',
+        text:
+          "There was an issue loading this project's tasks - please refresh the page and try again.",
+        icon: 'error',
+        confirmButtonText: 'Close',
+      })
+>>>>>>> 5020e89627b274804f70f006b7b36936e10bbbf5
     }
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    this.unsubscribe()
   }
 
   renderLogHoursForm = () => {
     this.setState({
-      showLogHours: !this.state.showLogHours
-    });
-  };
+      showLogHours: !this.state.showLogHours,
+    })
+  }
 
   render() {
-    const { jobs } = this.state;
-    const user = this.context.currentUser;
+    const { jobs } = this.state
+    const user = this.context.currentUser
 
     if (this.state.loading) {
-      return <div></div>;
+      return <div></div>
     } else {
       return (
         <>
           <div>
             <div>
-              {user.role === "project worker" ? (
+              {user.role === 'project worker' ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>
@@ -111,7 +127,7 @@ export default class Jobs extends Component {
             )}
           </ul>
         </>
-      );
+      )
     }
   }
 }

@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
-import { AuthContext } from "./Auth";
+import React, { useContext } from 'react'
+import { Route, Redirect } from 'react-router-dom'
+import { AuthContext } from './Auth'
 
 const PrivateRoute = ({
   component: RouteComponent,
@@ -8,9 +8,9 @@ const PrivateRoute = ({
   setPath,
   ...rest
 }) => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext)
 
-  if (currentUser) setPath(location.pathname);
+  if (currentUser) setPath(location.pathname)
 
   return (
     <Route
@@ -19,11 +19,11 @@ const PrivateRoute = ({
         !!currentUser ? (
           <RouteComponent {...routeProps} />
         ) : (
-          <Redirect to={"/"} />
+          <Redirect to={'/'} />
         )
       }
     />
-  );
-};
+  )
+}
 
-export default PrivateRoute;
+export default PrivateRoute

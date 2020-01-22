@@ -1,28 +1,28 @@
-import React, { Component } from "react";
-import { AuthContext } from "../../services/Auth.js";
-import dbServices from "../../services/dbServices";
-import Loading from "../Loading/Loading";
-import NewProject from "../Project/NewProject/NewProject";
-import Sidebar from "../Sidebar/Sidebar";
-import StyleIcon from "../StyleIcon/StyleIcon";
-import ProjectBar from "../Project/ProjectBar/ProjectBar";
-import JobNotification from "../JobNotification/JobNotification";
-import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
-import "./Dashboard.css";
+import React, { Component } from 'react'
+import { AuthContext } from '../../services/Auth.js'
+import dbServices from '../../services/dbServices'
+import Loading from '../Loading/Loading'
+import NewProject from '../Project/NewProject/NewProject'
+import Sidebar from '../Sidebar/Sidebar'
+import StyleIcon from '../StyleIcon/StyleIcon'
+import ProjectBar from '../Project/ProjectBar/ProjectBar'
+import JobNotification from '../JobNotification/JobNotification'
+import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
+import './Dashboard.css'
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
 // Do not change it.  If something doesn't work ask me to fix it. //
 ////////////////////////////////////////////////////////////////////
 export default class Dashboard extends Component {
-  static contextType = AuthContext;
+  static contextType = AuthContext
   state = {
     user: {
       id: null,
       name: null,
       org: null,
-      role: null
+      role: null,
     },
     projects: [],
     projectManagers: [],
@@ -31,114 +31,111 @@ export default class Dashboard extends Component {
     expandCompleteProjects: false,
     expandPersonnel: true,
     newProj: false,
-    error: false
-  };
+    error: false,
+  }
 
   errorClose = () => {
     this.setState({
-      error: true
-    });
-  };
+      error: true,
+    })
+  }
 
   async componentDidMount() {
-    const email = this.context.currentUser.email;
-    const org = this.context.currentUser.org;
-    const name = this.context.currentUser.name;
-    const role = this.context.currentUser.role;
+    const email = this.context.currentUser.email
+    const org = this.context.currentUser.org
+    const name = this.context.currentUser.name
+    const role = this.context.currentUser.role
 
-    let data = [];
+    let data = []
     try {
-      data = await dbServices.initDashboard(name, role, org);
+      data = await dbServices.initDashboard(name, role, org)
       // data = await dbServices.initDashboard();
-      let sortedProjectsComplete = [];
-      let sortedProjectsIncomplete = [];
+      let sortedProjectsComplete = []
+      let sortedProjectsIncomplete = []
 
       data.projects.map((project, index) => {
         if (project.progress === 100) {
-          return sortedProjectsComplete.push(project);
-        } else return sortedProjectsIncomplete.push(project);
-      });
+          return sortedProjectsComplete.push(project)
+        } else return sortedProjectsIncomplete.push(project)
+      })
 
       sortedProjectsIncomplete.sort((a, b) => {
-        return a.deadline.seconds - b.deadline.seconds;
-      });
-
-      // let sortedProjects = sortedProjectsIncomplete.concat(
-      //   sortedProjectsComplete
-      // );
-
+        return a.deadline.seconds - b.deadline.seconds
+      })
+      let sortedProjects = sortedProjectsIncomplete.concat(
+        sortedProjectsComplete
+      )
       this.setState({
         user: {
           id: email,
           name: name,
           org: org,
-          role: role
+          role: role,
         },
-        projects: sortedProjectsIncomplete,
+        projects: sortedProjects,
         completeProjects: sortedProjectsComplete,
         projectManagers: data.project_managers,
-        loading: false
-      });
+        loading: false,
+      })
     } catch (error) {
       Swal.fire({
-        title: "Error!",
-        text: "Dashboard failed to load. Please try again.",
-        icon: "error",
-        confirmButtonText: "Close",
-        onClose: this.errorClose()
-      });
+        title: 'Error!',
+        text: 'Dashboard failed to load. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'Close',
+        onClose: this.errorClose(),
+      })
     }
   }
 
   toggleExpandProjects = e => {
-    e.stopPropagation();
-    this.setState({ expandProjects: !this.state.expandProjects });
-  };
+    e.stopPropagation()
+    this.setState({ expandProjects: !this.state.expandProjects })
+  }
 
   toggleExpandCompleteProjects = e => {
-    e.stopPropagation();
+    e.stopPropagation()
     this.setState({
-      expandCompleteProjects: !this.state.expandCompleteProjects
-    });
-  };
-
+      expandCompleteProjects: !this.state.expandCompleteProjects,
+    })
+  }
   toggleExpandPersonnel = e => {
-    e.stopPropagation();
-    this.setState({ expandPersonnel: !this.state.expandPersonnel });
-  };
+    e.stopPropagation()
+    this.setState({ expandPersonnel: !this.state.expandPersonnel })
+  }
 
   toggleNewProj = e => {
-    e.stopPropagation();
+    e.stopPropagation()
     if (this.state.newProj)
-      this.setState({ newProj: false, expandProjects: true });
-    else this.setState({ newProj: true, expandProjects: false });
-  };
+      this.setState({ newProj: false, expandProjects: true })
+    else this.setState({ newProj: true, expandProjects: false })
+  }
 
   addToProjState = newProj =>
     this.setState({
       projects: [...this.state.projects, newProj],
       newProj: false,
-      expandProjects: true
-    });
+      expandProjects: true,
+    })
 
   updateProjInState = proj => {
-    let projects = this.state.projects;
-    projects = projects.map(p => (p.id === proj.id ? proj : p));
-    this.setState({ projects: projects });
-  };
+    let projects = this.state.projects
+    projects = projects.map(p => (p.id === proj.id ? proj : p))
+    this.setState({ projects: projects })
+  }
 
   updatePM = (projId, pm) => {
-    const projs = this.state.projects;
+    const projs = this.state.projects
     projs.map(proj => {
-      if (proj.id === projId) proj.project_manager = pm;
-      return proj;
-    });
-    this.setState({ projects: projs });
-  };
+      if (proj.id === projId) proj.project_manager = pm
+      return proj
+    })
+    this.setState({ projects: projs })
+  }
 
   render() {
     if (!this.state.error) {
-      if (this.state.loading) return <Loading />;
+      if (this.state.loading) return <Loading />
       else
         return (
           <>
@@ -159,11 +156,13 @@ export default class Dashboard extends Component {
                   >
                     <div className="Dashboard__fa_h1">
                       {StyleIcon({
-                        style: `${this.state.expandProjects ? "minus" : "plus"}`
+                        style: `${
+                          this.state.expandProjects ? 'minus' : 'plus'
+                        }`,
                       })}
                       <h1>Projects</h1>
                     </div>
-                    {this.state.user.role !== "project worker" && (
+                    {this.state.user.role !== 'project worker' && (
                       <button onClick={this.toggleNewProj}>NEW</button>
                     )}
                   </div>
@@ -189,7 +188,7 @@ export default class Dashboard extends Component {
                                   updateProjInState={this.updateProjInState}
                                 />
                               </li>
-                            );
+                            )
                           })}
                         </ul>
                       ) : (
@@ -198,47 +197,6 @@ export default class Dashboard extends Component {
                           <span>
                             You currently have no projects, click the NEW button
                             above to add one.
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  <div
-                    className="Dashboard__project_header"
-                    onClick={this.toggleExpandCompleteProjects}
-                  >
-                    <div className="Dashboard__fa_h1">
-                      {StyleIcon({
-                        style: `${
-                          this.state.expandCompleteProjects ? "minus" : "plus"
-                        }`
-                      })}
-                      <h1>Completed Projects</h1>
-                    </div>
-                  </div>
-                  {this.state.expandCompleteProjects && (
-                    <div className="Dashboard__projects_container">
-                      {this.state.completeProjects.length !== 0 ? (
-                        <ul className="Dashboard__list">
-                          {this.state.completeProjects.map(proj => {
-                            return (
-                              <li key={proj.id}>
-                                <ProjectBar
-                                  proj={proj}
-                                  role={this.state.user.role}
-                                  projectManagers={this.state.projectManagers}
-                                  updatePM={this.updatePM}
-                                  updateProjInState={this.updateProjInState}
-                                />
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      ) : (
-                        <div className="Dashboard__no_projects">
-                          <span>
-                            You currently have no complete projects. Time to get
-                            to work!
                           </span>
                         </div>
                       )}
@@ -253,8 +211,8 @@ export default class Dashboard extends Component {
                     <div className="Dashboard__fa_h1">
                       {StyleIcon({
                         style: `${
-                          this.state.expandPersonnel ? "minus" : "plus"
-                        }`
+                          this.state.expandPersonnel ? 'minus' : 'plus'
+                        }`,
                       })}
                       <h1>Personnel</h1>
                     </div>
@@ -264,14 +222,14 @@ export default class Dashboard extends Component {
               </div>
             </section>
           </>
-        );
+        )
     } else
       return (
         <body
           alt="something terrible happened"
           background="https://media.giphy.com/media/jWexOOlYe241y/giphy.gif"
         />
-      );
+      )
     // console.log('this.state.user', this.state.user);
     //console.log('this.state.projects ', this.state.projects);
     // console.log('this.context.jobs ', this.context.jobs);

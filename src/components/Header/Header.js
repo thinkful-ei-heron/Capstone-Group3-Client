@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../../services/Auth';
-import lazy from '../../images/lazy.svg';
-import './Header.css';
-import app from '../../services/base';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { AuthContext } from '../../services/Auth'
+import lazy from '../../images/lazy.svg'
+import './Header.css'
+import app from '../../services/base'
+import JobNotification from '../../components/JobNotification/JobNotification'
 
 export default class Header extends Component {
-  static contextType = AuthContext;
+  static contextType = AuthContext
 
   renderLoginLink() {
     return (
@@ -20,15 +21,19 @@ export default class Header extends Component {
           </Link>
         </div>
       </div>
-    );
+    )
   }
 
   renderLogoutLink() {
     return (
       <div className="Header__sub_container">
         <div className="Header__user_info">
-          <span test-id="header-name">Welcome, {this.context.currentUser.name}!</span>
-          <span test-id="header-role">Role: {this.context.currentUser.role}</span>
+          <span test-id="header-name">
+            Welcome, {this.context.currentUser.name}!
+          </span>
+          <span test-id="header-role">
+            Role: {this.context.currentUser.role}
+          </span>
         </div>
         <div className="Header__db_logout">
           <Link to="/dashboard">
@@ -46,14 +51,14 @@ export default class Header extends Component {
           </Link>
         </div>
       </div>
-    );
+    )
   }
 
   handleLogout = () => {
-    this.props.setPath(null);
-    localStorage.removeItem('path');
-    app.auth().signOut();
-  };
+    this.props.setPath(null)
+    localStorage.removeItem('path')
+    app.auth().signOut()
+  }
 
   render() {
     return (
@@ -61,13 +66,22 @@ export default class Header extends Component {
         <nav className="Header">
           <h1>
             <Link className="Header__link" to="/">
-              <img className="Header__logo" src={lazy} alt="man reclining in chair" />
+              <img
+                className="Header__logo"
+                src={lazy}
+                alt="man reclining in chair"
+              />
               <span className="Header__app_name">manageLazily</span>
             </Link>
           </h1>
-          {this.context.currentUser ? this.renderLogoutLink() : this.renderLoginLink()}
+          {this.context.currentUser
+            ? this.renderLogoutLink()
+            : this.renderLoginLink()}
         </nav>
+        {this.context.currentUser && (
+          <JobNotification user={this.context.currentUser} />
+        )}
       </>
-    );
+    )
   }
 }

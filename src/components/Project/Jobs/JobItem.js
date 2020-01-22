@@ -47,6 +47,7 @@ class JobItem extends Component {
         labels.push(emp.name);
         employeeHours.push(emp.hours);
       });
+
     if (employeeHours.every(item => item === 0)) {
       employeeHours = [];
     }

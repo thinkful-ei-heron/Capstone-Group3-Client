@@ -33,8 +33,12 @@ const NewJob = props => {
 
   const handleSubmitForm = async () => {
     const { name, description, total_hours, deadline } = values;
-    let employees = [];
-    if (selected) selected.map(itm => employees.push(itm.value));
+    let employees = props.job ? [props.job.project_manager] : [props.project.project_manager];
+    if (selected) selected.map(itm => {
+      if (itm.value !== employees[0]) {
+        employees.push(itm.value)
+      }
+    });
 
     let projectId = props.job ? props.job.project_id : props.projectId;
     let projectManager = props.job
@@ -47,9 +51,8 @@ const NewJob = props => {
     let status = "in progress";
     let edit = null;
     let alert = [];
-    let employee_hours = props.job ? props.job.employee_hours : [];
+    let employee_hours = props.job ? props.job.employee_hours : [{ name: props.project.project_manager, hours: 0 }];
 
-    
 
     if (props.job) {
       if (props.job.status === "edit request") status = "in progress";
@@ -74,7 +77,11 @@ const NewJob = props => {
         return alert.push(employee);
       });
 
-      employees.forEach(emp => employee_hours.push({ name: emp, hours: 0 }));
+      employees.forEach(emp => {
+        if (emp !== props.project.project_manager) {
+          employee_hours.push({ name: emp, hours: 0 })
+        }
+      });
     }
 
     const jobObj = {

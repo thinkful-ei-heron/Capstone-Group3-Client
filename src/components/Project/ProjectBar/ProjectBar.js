@@ -51,7 +51,9 @@ const ProjectBar = props => {
         key={props.proj.id}
       >
         <div className="ProjectBar__header">
-          <span className="ProjectBar__proj_name">{props.proj.name}</span>
+          <span className="ProjectBar__proj_name" test-id="project-link">
+            {props.proj.name}
+          </span>
           <span className="ProjectBar__proj_mgr">
             Manager: {props.proj.project_manager}
           </span>

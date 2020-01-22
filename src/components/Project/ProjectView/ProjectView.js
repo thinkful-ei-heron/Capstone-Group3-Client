@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { ProgressBar } from "../../ProgressBar/ProgressBar";
-import "./ProjectView.css";
-import Loading from "../../Loading/Loading";
-import { AuthContext } from "../../../services/Auth.js";
-import Jobs from "../Jobs/Jobs";
-import Statistics from "../../Statistics/Statistics";
-import Sidebar from "../../Sidebar/Sidebar";
-import JobForm from "../JobForm/JobForm";
-import dbServices from "../../../services/dbServices";
-import dateConversions from "../../../services/dateConversions";
-import Swal from "sweetalert2";
-import { CatchAll } from "../../CatchAll/CatchAll";
+import React, { Component } from 'react'
+import { ProgressBar } from '../../ProgressBar/ProgressBar'
+import './ProjectView.css'
+import Loading from '../../Loading/Loading'
+import { AuthContext } from '../../../services/Auth.js'
+import Jobs from '../Jobs/Jobs'
+import Statistics from '../../Statistics/Statistics'
+import Sidebar from '../../Sidebar/Sidebar'
+import JobForm from '../JobForm/JobForm'
+import dbServices from '../../../services/dbServices'
+import dateConversions from '../../../services/dateConversions'
+import Swal from 'sweetalert2'
+import { CatchAll } from '../../CatchAll/CatchAll'
 
 export default class ProjectView extends Component {
   constructor(props) {
-    super(props);
-    this.unsubscribe = null;
+    super(props)
+    this.unsubscribe = null
     this.state = {
       project: null,
       showJobForm: false,
@@ -23,65 +23,65 @@ export default class ProjectView extends Component {
       toggleState: false,
       progress: 0,
       total: 0,
-      error: null
-    };
+      error: null,
+    }
   }
 
-  static contextType = AuthContext;
+  static contextType = AuthContext
 
   updateProject = data => {
     this.setState({
       project: data,
-      loading: false
-    });
-  };
+      loading: false,
+    })
+  }
 
   getProgress = (jobProg, jobTotal, job) => {
-    let currentProgress = 0;
-    let currentTotal = 0;
-    let newProject = this.state.project;
+    let currentProgress = 0
+    let currentTotal = 0
+    let newProject = this.state.project
 
-    currentProgress = currentProgress + jobProg;
-    currentTotal = currentTotal + jobTotal;
+    currentProgress = currentProgress + jobProg
+    currentTotal = currentTotal + jobTotal
     if (currentProgress === 0) {
       this.setState({
-        progress: 0
-      });
+        progress: 0,
+      })
     } else {
       this.setState({
         progress: parseInt(currentProgress),
-        total: currentTotal
-      });
+        total: currentTotal,
+      })
 
       newProject.progress = parseInt(
         ((currentProgress / currentTotal) * 100).toFixed(2)
-      );
-      dbServices.updateProject(newProject);
+      )
+      dbServices.updateProject(newProject)
       this.setState({
-        project: newProject
-      });
+        project: newProject,
+      })
     }
-  };
+  }
 
   async componentDidMount() {
     try {
       this.unsubscribe = dbServices
         .projectsListener(this.context.currentUser.org, this.props.id)
         .onSnapshot(doc => {
-          this.updateProject(doc.data());
-        });
+          this.updateProject(doc.data())
+        })
     } catch (error) {
       this.setState({
-        error: "Error"
-      });
-      console.warn(error);
+        error: 'Error',
+      })
+      console.warn(error)
       Swal.fire({
-        title: "Error!",
+        title: 'Error!',
         text:
           "There was an issue loading this project's information - please refresh the page and try again.",
-        icon: "error",
-        confirmButtonText: "Close"
-      });
+        icon: 'error',
+        confirmButtonText: 'Close',
+      })
     }
   }
 
@@ -102,23 +102,23 @@ export default class ProjectView extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    this.unsubscribe()
   }
 
   showJobForm = () => {
     this.setState({
-      showJobForm: !this.state.showJobForm
-    });
-  };
+      showJobForm: !this.state.showJobForm,
+    })
+  }
 
   render() {
-    const { project, showJobForm } = this.state;
-    const user = this.context.currentUser;
+    const { project, showJobForm } = this.state
+    const user = this.context.currentUser
 
     if (this.state.loading && !this.state.error) {
-      return <Loading />;
+      return <Loading />
     } else if (this.state.error) {
-      return <h2>Project was unable to load</h2>;
+      return <h2>Project was unable to load</h2>
     } else {
       return (
         <>
@@ -155,19 +155,19 @@ export default class ProjectView extends Component {
           </div>
           <div id="projectView_main">
             <div className="ProjectView__jobs_stats">
-              {user.role === "project worker" ? (
+              {user.role === 'project worker' ? (
                 <></>
               ) : (
                 <Statistics {...this.props} />
               )}
               <div className="ProjectView__jobs_header">
-                {user.role === "project worker" ? (
+                {user.role === 'project worker' ? (
                   <h3>Your Tasks</h3>
                 ) : (
                   <h3>Tasks</h3>
                 )}
-                {user.role === "project worker" ? (
-                  ""
+                {user.role === 'project worker' ? (
+                  ''
                 ) : (
                   <button onClick={this.showJobForm}>Add Task</button>
                 )}
@@ -185,11 +185,10 @@ export default class ProjectView extends Component {
             </div>
             <div className="ProjectView__sidebar">
               <Sidebar view="project" project={this.state.project} />
-              <h1>Sidebar</h1>
             </div>
           </div>
         </>
-      );
+      )
     }
   }
 }

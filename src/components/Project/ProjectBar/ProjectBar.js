@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import dateConversions from "../../../services/dateConversions";
-import { ProgressBar } from "../../ProgressBar/ProgressBar";
-import ProjectForm from "../ProjectForm/ProjectForm";
-import StyleIcon from "../../StyleIcon/StyleIcon";
-import "./ProjectBar.css";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import dateConversions from '../../../services/dateConversions'
+import { ProgressBar } from '../../ProgressBar/ProgressBar'
+import ProjectForm from '../ProjectForm/ProjectForm'
+import StyleIcon from '../../StyleIcon/StyleIcon'
+import './ProjectBar.css'
 
 const ProjectBar = props => {
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(false)
 
   const toggleEdit = () => {
-    setEdit(!edit);
-  };
+    setEdit(!edit)
+  }
 
   return (
     <div className="ProjectBar__project_container">
@@ -34,6 +34,7 @@ const ProjectBar = props => {
             {props.proj.description}
           </div>
         </div>
+<<<<<<< HEAD
         {props.proj.progress === 100 || props.proj.autoComplete ? (
           <p>Project Completed on {props.proj.date_completed && dateConversions.TStoDisplayDate(props.proj.date_completed)}</p>
         ) : (
@@ -47,11 +48,41 @@ const ProjectBar = props => {
           </div>
         )}
 
+=======
+        <div className="ProjectBar__proj_prog_date">
+          {props.proj.progress === 100 ? (
+            <p>
+              Project Completed on{' '}
+              {props.proj.date_completed &&
+                dateConversions.TStoDisplayDate(props.proj.date_completed)}
+            </p>
+          ) : (
+            <>
+              <div className="ProjectBar__proj_prog">
+                Est. Progress <ProgressBar percentage={props.proj.progress} />
+              </div>
+              <div className="ProjectBar__deadline">
+                <span className="ProjectBar__deadline_first">
+                  Deadline:{' '}
+                  {dateConversions.TStoDisplayDate(props.proj.deadline)}
+                </span>
+                <span className="ProjectBar__overdue">
+                  {props.proj.progress !== 100 &&
+                    dateConversions.dateDiff(props.proj.deadline) &&
+                    `Overdue by ${dateConversions.dateDiff(
+                      props.proj.deadline
+                    )} days`}
+                </span>
+              </div>
+            </>
+          )}
+        </div>
+>>>>>>> 2154c7524db1747ec072850e716ab680a4612709
       </Link>
-      {props.role === "owner" && (
+      {props.role === 'owner' && (
         <div className="ProjectBar__buttons">
           <div className="ProjectBar__edit" onClick={toggleEdit}>
-            {StyleIcon({ style: "edit" })}
+            {StyleIcon({ style: 'edit' })}
           </div>
         </div>
       )}
@@ -64,7 +95,7 @@ const ProjectBar = props => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ProjectBar;
+export default ProjectBar

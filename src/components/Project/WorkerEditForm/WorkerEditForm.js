@@ -1,54 +1,54 @@
-import React, { useState, useContext } from "react";
-import { Label, Input, Textarea } from "../../Form/Form";
-import dbServices from "../../../services/dbServices";
-import { AuthContext } from "../../../services/Auth";
-import validateInput from "../../../hooks/validateInput";
-import useFormValidation from "../../../hooks/useFormValidation";
-import Swal from "sweetalert2";
+import React, { useState, useContext } from 'react'
+import { Label, Input, Textarea } from '../../Form/Form'
+import dbServices from '../../../services/dbServices'
+import { AuthContext } from '../../../services/Auth'
+import validateInput from '../../../hooks/validateInput'
+import useFormValidation from '../../../hooks/useFormValidation'
+import Swal from 'sweetalert2'
 
 const WorkerEditForm = props => {
-  const [submitted, setSubmitted] = useState(false);
-  const { currentUser } = useContext(AuthContext);
+  const [submitted, setSubmitted] = useState(false)
+  const { currentUser } = useContext(AuthContext)
 
   const INITIAL_STATE = {
     name: props.job.name,
     description: props.job.description,
     total_hours: props.job.total_hours,
-    note: "",
-    employee: currentUser.name
-  };
+    note: '',
+    employee: currentUser.name,
+  }
 
   const submitRequest = async () => {
-    const { name, description, total_hours, note } = values;
+    const { name, description, total_hours, note } = values
     const editObj = {
       name: name,
       description: description,
       total_hours: parseInt(total_hours),
       note: note,
-      employee: currentUser.name
+      employee: currentUser.name,
       // logged_hours: {name: currentUser.name, hours:}
-    };
+    }
     try {
       await dbServices.updateEdit(
         editObj,
         props.job.id,
         props.job.project_id,
         props.job.organization
-      );
+      )
       // await dbServices.updateEdit();
       await props
-        .handleStatus(props.job.id, "edit request")
+        .handleStatus(props.job.id, 'edit request')
         .then(setSubmitted(true))
-        .then(props.renderEditForm());
+        .then(props.renderEditForm())
     } catch (error) {
       Swal.fire({
-        title: "Error!",
+        title: 'Error!',
         text: error.message,
-        icon: "error",
-        confirmButtonText: "Close"
-      });
+        icon: 'error',
+        confirmButtonText: 'Close',
+      })
     }
-  };
+  }
 
   const {
     handleSubmit,
@@ -56,12 +56,12 @@ const WorkerEditForm = props => {
     handleBlur,
     values,
     errors,
-    isSubmitting
+    isSubmitting,
   } = useFormValidation(
     INITIAL_STATE,
     validateInput.validateWorkerEditForm,
     submitRequest
-  );
+  )
 
   return (
     <>
@@ -115,7 +115,7 @@ const WorkerEditForm = props => {
       </form>
       {errors.note && <p>{errors.note}</p>}
     </>
-  );
-};
+  )
+}
 
-export default WorkerEditForm;
+export default WorkerEditForm

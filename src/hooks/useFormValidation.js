@@ -52,7 +52,7 @@ const useFormValidation = (initialState, validate, runOnSubmit) => {
     setErrors(validationErrors);
     setSubmitting(true);
   };
-
+  
   return {
     handleSubmit,
     handleChange,

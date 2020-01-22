@@ -238,16 +238,19 @@ const dbServices = {
       .collection(
         `organizations/${newJob.organization}/projects/${project_id}/jobs`
       )
-      .catch(error => {
-        if (error) throw new Error("Error");
-      })
       .add(newJob)
+      .catch(error => {
+        return error;
+      })
       .then(function(docRef) {
         db.collection(
           `organizations/${newJob.organization}/projects/${project_id}/jobs`
         )
           .doc(`${docRef.id}`)
-          .update({ id: docRef.id });
+          .update({ id: docRef.id })
+          .catch(error => {
+            return error;
+          });
       });
   },
 

@@ -34,11 +34,7 @@ export default class Header extends Component {
           <Link to="/dashboard">
             <h3 className="Header__dashboard">Dashboard</h3>
           </Link>
-          <Link
-            onClick={() => app.auth().signOut()}
-            className="Header__btn  Header__alt"
-            to="/"
-          >
+          <Link onClick={this.handleLogout} className="Header__btn  Header__alt" to="/">
             Log Out
           </Link>
         </div>
@@ -46,23 +42,23 @@ export default class Header extends Component {
     );
   }
 
+  handleLogout = () => {
+    this.props.setPath(null);
+    localStorage.removeItem('path');
+    app.auth().signOut();
+  };
+
   render() {
     return (
       <>
         <nav className="Header">
           <h1>
             <Link className="Header__link" to="/">
-              <img
-                className="Header__logo"
-                src={lazy}
-                alt="man reclining in chair"
-              />
+              <img className="Header__logo" src={lazy} alt="man reclining in chair" />
               <span className="Header__app_name">manageLazily</span>
             </Link>
           </h1>
-          {this.context.currentUser
-            ? this.renderLogoutLink()
-            : this.renderLoginLink()}
+          {this.context.currentUser ? this.renderLogoutLink() : this.renderLoginLink()}
         </nav>
       </>
     );

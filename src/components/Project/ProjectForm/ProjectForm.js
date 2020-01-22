@@ -1,28 +1,38 @@
 import React, { useState } from "react";
-import { Input, Label } from "../../Form/Form";
+import useFormValidation from "../../../hooks/useFormValidation";
+import validateInput from "../../../hooks/validateInput";
+import { Input, Label, Textarea } from "../../Form/Form";
 import dbServices from "../../../services/dbServices";
 import dateConversions from "../../../services/dateConversions";
+import Dropdown from "../../Dropdown/Dropdown";
 import Swal from "sweetalert2";
 
 const ProjectForm = props => {
   const [error, setError] = useState(false);
+  const proj = props.proj;
+  const [selected, setSelected] = useState(0);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    const { name, description, projectManager, deadline } = e.target;
+  const INITIAL_STATE = {
+    name: proj ? proj.name : "",
+    description: proj ? proj.description : "",
+    deadline: proj ? dateConversions.TStoFormDate(props.proj.deadline) : ""
+  };
+
+  const handleSubmitForm = async () => {
+    const { name, description, deadline } = values;
     let id = null;
     if (props.proj) id = props.proj.id;
     const data = {
-      name: name.value,
-      description: description.value,
-      project_manager: projectManager.value,
-      deadline: dateConversions.dateToTimestamp(new Date(deadline.value)),
-      date_created: new Date(),
+      alert: false,
+      name: name,
+      description: description,
+      project_manager: selected.value || "Unassigned",
+      deadline: dateConversions.dateToTimestamp(new Date(deadline)),
+      date_created: dateConversions.dateToTimestamp(new Date()),
       org_id: props.org,
       progress: 0,
       project_workers: [],
-      id: null,
-      alert: true
+      id: id
     };
     try {
       if (!props.proj) {
@@ -44,49 +54,68 @@ const ProjectForm = props => {
       });
     }
   };
+
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    values,
+    errors,
+    isSubmitting
+  } = useFormValidation(
+    INITIAL_STATE,
+    validateInput.validateProjectForm,
+    handleSubmitForm
+  );
   if (error) return null;
-  else {
-    return (
-      <form className="ProjectForm" onSubmit={e => handleSubmit(e)}>
-        <Label htmlFor="project_name">Name</Label>
-        <Input
-          name="name"
-          id="project_name"
-          type="text"
-          placeholder="Project Name"
-          defaultValue={props.proj ? props.proj.name : ""}
-          required
-        />
-        <Label htmlFor="project_description">Description</Label>
-        <Input
-          name="description"
-          id="project_description"
-          type="text"
-          placeholder="Project Description"
-          defaultValue={props.proj ? props.proj.description : ""}
-        />
-        <Label htmlFor="project_description">Project Manager</Label>
-        <Input
-          name="projectManager"
-          id="project_manager"
-          type="text"
-          placeholder="Project Manager"
-          defaultValue={props.proj ? props.proj.project_manager : ""}
-        />
-        <Label htmlFor="project_deadline">Deadline</Label>
-        <input
-          name="deadline"
-          id="project_deadline"
-          type="date"
-          defaultValue={
-            props.proj ? dateConversions.TStoFormDate(props.proj.deadline) : ""
-          }
-        />
-        <button type="submit">SUBMIT</button>
-        <button onClick={props.toggleForm}>CANCEL</button>
-      </form>
-    );
-  }
+  return (
+    <form className="ProjectForm" onSubmit={handleSubmit}>
+      {errors.name && <span className="error">{errors.name}</span>}
+      <Label htmlFor="project_name">Name</Label>
+      <Input
+        name="name"
+        id="project_name"
+        type="text"
+        placeholder="Project Name"
+        onChange={handleChange}
+        value={values.name}
+        onBlur={handleBlur}
+        required
+      />
+      {errors.description && (
+        <span className="error">{errors.description}</span>
+      )}
+      <Label htmlFor="project_description">Description</Label>
+      <Textarea
+        name="description"
+        id="project_description"
+        type="text"
+        placeholder="Project Description"
+        onChange={handleChange}
+        value={values.description}
+        onBlur={handleBlur}
+      />
+      <Label htmlFor="project_description">Project Manager</Label>
+      <Dropdown
+        pm={true}
+        isMulti={false}
+        setSelected={setSelected}
+        defaultValue={proj && proj.project_manager}
+      />
+      {errors.deadline && <span className="error">{errors.deadline}</span>}
+      <Label htmlFor="project_deadline">Deadline</Label>
+      <input
+        name="deadline"
+        id="project_deadline"
+        type="date"
+        onChange={handleChange}
+        value={values.deadline}
+        onBlur={handleBlur}
+      />
+      <button type="submit">SUBMIT</button>
+      <button onClick={props.toggleForm}>CANCEL</button>
+    </form>
+  );
 };
 
 export default ProjectForm;

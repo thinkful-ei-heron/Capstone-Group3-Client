@@ -56,7 +56,7 @@ const App = props => {
           />
           <Route
             // drop down instead for selecting owner/worker?
-            path="/(worker|manager|owner)-signup/"
+            path="/register"
             render={() => <SignUp />}
           />
           <PrivateRoute

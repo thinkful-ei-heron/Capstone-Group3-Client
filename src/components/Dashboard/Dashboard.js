@@ -58,6 +58,7 @@ export default class Dashboard extends Component {
         } else return sortedProjectsIncomplete.push(project);
       });
 
+
       sortedProjectsIncomplete.sort((a, b) => {
         return a.deadline.seconds - b.deadline.seconds;
       });
@@ -84,6 +85,7 @@ export default class Dashboard extends Component {
         onClose: this.errorClose()
       });
     }
+
   }
 
   toggleExpandProjects = e => {

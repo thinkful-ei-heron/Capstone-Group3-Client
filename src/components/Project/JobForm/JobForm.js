@@ -32,24 +32,27 @@ const NewJob = props => {
   }
 
   const handleSubmitForm = async () => {
-    const { name, description, total_hours, deadline } = values
-    let employees = []
-    if (selected) selected.map(itm => employees.push(itm.value))
+    const { name, description, total_hours, deadline } = values;
+    let employees = props.job ? [props.job.project_manager] : [props.project.project_manager];
+    if (selected) selected.map(itm => {
+      if (itm.value !== employees[0]) {
+        employees.push(itm.value)
+      }
+    });
 
     let projectId = props.job ? props.job.project_id : props.projectId
     let projectManager = props.job
       ? props.job.project_manager
-      : props.project.project_manager
-    let id = props.job ? props.job.id : null
-    let approval = props.job ? props.job.approval : false
-    let date_created = props.job ? props.job.date_created : new Date()
-    let hours_completed = props.job ? props.job.hours_completed : 0
-    let status = 'in progress'
-    let edit = null
-    let alert = []
-    let employee_hours = []
-    console.log(employees)
-    employees.forEach(emp => employee_hours.push({ name: emp, hours: 0 }))
+      : props.project.project_manager;
+    let id = props.job ? props.job.id : null;
+    let approval = props.job ? props.job.approval : false;
+    let date_created = props.job ? props.job.date_created : new Date();
+    let hours_completed = props.job ? props.job.hours_completed : 0;
+    let status = "in progress";
+    let edit = null;
+    let alert = [];
+    let employee_hours = props.job ? props.job.employee_hours : [{ name: props.project.project_manager, hours: 0 }];
+
 
     if (props.job) {
       if (props.job.status === 'edit request') status = 'in progress'
@@ -57,13 +60,28 @@ const NewJob = props => {
 
       employees.map(employee => {
         if (!props.job.project_workers.includes(employee))
-          return alert.push(employee)
+          return alert.push(employee);
+        else return null;
+      });
+
+      employees.forEach(employee => {
+        let hoursObj = props.job.employee_hours.find(({ name }) => name === employee)
+        if (!hoursObj) {
+          return employee_hours.push({ name: employee, hours: 0 });
+        }
         else return null
       })
+
     } else {
       employees.map(employee => {
-        return alert.push(employee)
-      })
+        return alert.push(employee);
+      });
+
+      employees.forEach(emp => {
+        if (emp !== props.project.project_manager) {
+          employee_hours.push({ name: emp, hours: 0 })
+        }
+      });
     }
 
     const jobObj = {

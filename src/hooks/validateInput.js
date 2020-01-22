@@ -58,6 +58,10 @@ const validateInput = {
       '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
     )
 
+    if (!values.role) {
+      errors.role = "Please select a role";
+    }
+
     if (!values.email) {
       errors.email = 'Please enter your email'
     }

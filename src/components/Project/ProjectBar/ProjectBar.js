@@ -34,6 +34,21 @@ const ProjectBar = props => {
             {props.proj.description}
           </div>
         </div>
+<<<<<<< HEAD
+        {props.proj.progress === 100 || props.proj.autoComplete ? (
+          <p>Project Completed on {props.proj.date_completed && dateConversions.TStoDisplayDate(props.proj.date_completed)}</p>
+        ) : (
+          <div className="ProjectBar__proj_prog_date">
+            <div className="ProjectBar__proj_prog">
+              Est. Progress <ProgressBar percentage={props.proj.progress} />
+            </div>
+            Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
+            {props.proj.progress !== 100 ? (dateConversions.dateDiff(props.proj.deadline)
+             && `Overdue by ${dateConversions.dateDiff(props.proj.deadline)} days`) : ''}
+          </div>
+        )}
+
+=======
         <div className="ProjectBar__proj_prog_date">
           {props.proj.progress === 100 ? (
             <p>
@@ -62,6 +77,7 @@ const ProjectBar = props => {
             </>
           )}
         </div>
+>>>>>>> 2154c7524db1747ec072850e716ab680a4612709
       </Link>
       {props.role === 'owner' && (
         <div className="ProjectBar__buttons">

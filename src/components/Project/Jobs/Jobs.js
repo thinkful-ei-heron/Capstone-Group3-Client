@@ -98,7 +98,7 @@ export default class Jobs extends Component {
         <>
           <div>
             <div>
-              {user.role === 'project worker' ? (
+              {user.role === "project worker" || user.role === "project manager" ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>

@@ -54,10 +54,10 @@ export default class Dashboard extends Component {
       let sortedProjectsIncomplete = []
 
       data.projects.map((project, index) => {
-        if (project.progress === 100) {
-          return sortedProjectsComplete.push(project)
-        } else return sortedProjectsIncomplete.push(project)
-      })
+        if (project.progress === 100 || project.autoComplete) {
+          return sortedProjectsComplete.push(project);
+        } else return sortedProjectsIncomplete.push(project);
+      });
 
       sortedProjectsIncomplete.sort((a, b) => {
         return a.deadline.seconds - b.deadline.seconds

@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../../services/Auth";
-import dbServices from "../../services/dbServices";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../services/Auth';
+import dbServices from '../../services/dbServices';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import StyleIcon from '../StyleIcon/StyleIcon';
+import './Sidebar.css';
 
 const Sidebar = props => {
   let [employeeList, setEmployeeList] = useState([]);
@@ -41,10 +43,10 @@ const Sidebar = props => {
         });
       } catch (error) {
         Swal.fire({
-          title: "Error!",
-          text: "Employees failed to load. Sidebar temporarily disabled.",
-          icon: "error",
-          confirmButtonText: "Close",
+          title: 'Error!',
+          text: 'Employees failed to load. Sidebar temporarily disabled.',
+          icon: 'error',
+          confirmButtonText: 'Close',
           onClose: setError(true)
         });
       }
@@ -53,20 +55,18 @@ const Sidebar = props => {
     const getPMs = async () => {
       let pms = [];
       try {
-        return await dbServices
-          .getProjectManagers(currentUser.org)
-          .then(snapshot => {
-            snapshot.forEach(doc => {
-              pms.push(doc.data());
-            });
-            return pms;
+        return await dbServices.getProjectManagers(currentUser.org).then(snapshot => {
+          snapshot.forEach(doc => {
+            pms.push(doc.data());
           });
+          return pms;
+        });
       } catch (error) {
         Swal.fire({
-          title: "Error!",
-          text: "Employees failed to load. Sidebar temporarily disabled.",
-          icon: "error",
-          confirmButtonText: "Close",
+          title: 'Error!',
+          text: 'Employees failed to load. Sidebar temporarily disabled.',
+          icon: 'error',
+          confirmButtonText: 'Close',
           onClose: setError(true)
         });
       }
@@ -98,6 +98,7 @@ const Sidebar = props => {
       );
     });
   };
+
   if (error) return null;
   // <div>
   //   <img
@@ -107,15 +108,15 @@ const Sidebar = props => {
   // </div>
   else
     return (
-      <div>
+      <div className="Sidebar">
         <h3>
-          <button onClick={() => toggleExpand("pm")}>Project Managers</button>
+          <button onClick={() => toggleExpand('pm')}>Project Managers</button>
         </h3>
-        {!expanded.includes("pm") ? <ul>{renderProjectManagers()}</ul> : <></>}
+        {!expanded.includes('pm') ? <ul>{renderProjectManagers()}</ul> : <></>}
         <h3>
-          <button onClick={() => toggleExpand("employees")}>Employees</button>
+          <button onClick={() => toggleExpand('employees')}>Employees</button>
         </h3>
-        {!expanded.includes("employees") ? <ul>{renderEmployees()}</ul> : <></>}
+        {!expanded.includes('employees') ? <ul>{renderEmployees()}</ul> : <></>}
       </div>
     );
 };

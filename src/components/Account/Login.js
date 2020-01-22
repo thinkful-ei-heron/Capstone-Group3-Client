@@ -29,18 +29,27 @@ const Login = (setPath, { history }) => {
       <form className="Login__form" onSubmit={handleLogin}>
         <Label>
           Email
-          <Input name="email" type="email" placeholder="Email" required />
+          <Input
+            id="login-email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+          />
         </Label>
         <Label>
           Password
           <Input
+            id="login-password"
             name="password"
             type="password"
             placeholder="Password"
             required
           />
         </Label>
-        <button type="submit">Log in</button>
+        <button type="submit" id="login-button">
+          Log in
+        </button>
       </form>
     </div>
   );

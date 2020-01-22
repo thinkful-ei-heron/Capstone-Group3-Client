@@ -1,12 +1,22 @@
 describe("when authenticated", () => {
+  const login = () => {
+    cy.visit("/login");
+    cy.get("#login-email").type("bridgerrhammond@gmail.com");
+    cy.get("#login-password").type("password");
+    cy.get("#login-button").click();
+  };
+
   before(() => {
-    // Login using custom token
-    cy.login();
-    // Go to /dashboard (which requires user to be logged in)
-    cy.visit("/dashboard");
+    // Login using UI
+    login();
+  });
+  afterEach(() => {
+    cy.get("#logout-button").click();
+    cy.visit("/");
   });
 
   it("Does not redirect", () => {
-    cy.url().should("equal", "/dashboard");
+    // just ignore the random XHR errors in Cypress, they're fine!
+    cy.url().should("equal", "http://localhost:3000/dashboard");
   });
 });

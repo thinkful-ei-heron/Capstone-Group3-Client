@@ -18,10 +18,14 @@ const App = props => {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
 
+  if (currentUser === null) console.log(null);
+  else console.log("found user");
+
   const initialPath = () => {
     if (localStorage.getItem("path")) return localStorage.getItem("path");
     return null;
   };
+
   const [path, setPath] = useState(initialPath);
 
   useEffect(() => {

@@ -55,6 +55,8 @@ const App = props => {
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" setPath={setPath} component={Login} />
           <PrivateRoute
+            location={props.location}
+            setPath={setPath}
             path="/profile/:id"
             component={props => <Profile id={props.match.params.id} />}
           />

@@ -13,7 +13,6 @@ const LogHours = props => {
 
   const [submitted, setSubmitted] = useState(false);
 
-
   const populateSelect = () => {
     return props.jobs.map(job => {
       if (job.project_workers.includes(currentUser.name))
@@ -26,11 +25,13 @@ const LogHours = props => {
     if (job === "..." || !job) return null;
     else {
       let selectedJob = props.jobs.find(item => item.name === job);
-      let maxHours = parseInt(selectedJob.total_hours) - parseInt(selectedJob.hours_completed)
+      let maxHours =
+        parseInt(selectedJob.total_hours) -
+        parseInt(selectedJob.hours_completed);
 
-      return maxHours
+      return maxHours;
     }
-  }
+  };
 
   const renderJobHours = () => {
     if (job === "..." || !job) return <></>;
@@ -102,7 +103,14 @@ const LogHours = props => {
       </Label>
       <Label htmlFor="job_hours">
         Number of Hours Worked:
-        <Input name="job_hours" type="number" placeholder={0} min="1" max={getMaxHours()} {...bindHours} />
+        <Input
+          name="job_hours"
+          type="number"
+          placeholder={0}
+          min="1"
+          max={getMaxHours()}
+          {...bindHours}
+        />
       </Label>
       <div>{renderJobHours()}</div>
       {job === "..." || job === "" ? (

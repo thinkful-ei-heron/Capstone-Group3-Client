@@ -97,8 +97,10 @@ export default class Dashboard extends Component {
 
   toggleExpandCompleteProjects = e => {
     e.stopPropagation();
-    this.setState({ expandCompleteProjects: !this.state.expandCompleteProjects });
-  }
+    this.setState({
+      expandCompleteProjects: !this.state.expandCompleteProjects
+    });
+  };
 
   toggleExpandPersonnel = e => {
     e.stopPropagation();
@@ -207,7 +209,9 @@ export default class Dashboard extends Component {
                   >
                     <div className="Dashboard__fa_h1">
                       {StyleIcon({
-                        style: `${this.state.expandCompleteProjects ? "minus" : "plus"}`
+                        style: `${
+                          this.state.expandCompleteProjects ? "minus" : "plus"
+                        }`
                       })}
                       <h1>Completed Projects</h1>
                     </div>
@@ -233,7 +237,8 @@ export default class Dashboard extends Component {
                       ) : (
                         <div className="Dashboard__no_projects">
                           <span>
-                            You currently have no complete projects. Time to get to work!
+                            You currently have no complete projects. Time to get
+                            to work!
                           </span>
                         </div>
                       )}

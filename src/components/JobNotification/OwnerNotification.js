@@ -33,10 +33,11 @@ export default class OwnerNotification extends Component {
     }
   }
 
-  handleClick = async project => {
+  handleClick = async (project, type) => {
     project.alert = false
-    await dbServices.updateProject(project)
-    console.log(project)
+    await dbServices
+      .updateProject(project)
+      .then(this.props.updateProjectList(project, type))
   }
 
   renderNewEmployees = () => {
@@ -60,7 +61,7 @@ export default class OwnerNotification extends Component {
         return (
           <li key={project.id}>
             <Link
-              onClick={() => this.handleClick(project)}
+              onClick={() => this.handleClick(project, 'new')}
               to={{ pathname: `/project/${project.id}` }}
             >
               {project.name} has started.
@@ -77,7 +78,7 @@ export default class OwnerNotification extends Component {
         return (
           <li key={project.id}>
             <Link
-              onClick={() => this.handleClick(project)}
+              onClick={() => this.handleClick(project, 'completed')}
               to={{ pathname: `/project/${project.id}` }}
             >
               {project.name} has been completed!

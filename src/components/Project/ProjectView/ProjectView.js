@@ -9,6 +9,7 @@ import Sidebar from '../../Sidebar/Sidebar';
 import JobForm from '../JobForm/JobForm';
 import dbServices from '../../../services/dbServices';
 import dateConversions from '../../../services/dateConversions';
+import { CatchAll } from '../../CatchAll/CatchAll';
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -18,7 +19,9 @@ export default class ProjectView extends Component {
       project: null,
       showJobForm: false,
       loading: true,
-      toggleState: false
+      toggleState: false,
+      progress: 0,
+      total: 0
     };
   }
 
@@ -29,6 +32,31 @@ export default class ProjectView extends Component {
       project: data,
       loading: false
     });
+  };
+
+  getProgress = (jobProg, jobTotal, job) => {
+    let currentProgress = 0;
+    let currentTotal = 0;
+    let newProject = this.state.project;
+
+    currentProgress = currentProgress + jobProg;
+    currentTotal = currentTotal + jobTotal;
+    if (currentProgress === 0) {
+      this.setState({
+        progress: 0
+      });
+    } else {
+      this.setState({
+        progress: parseInt(currentProgress),
+        total: currentTotal
+      });
+
+      newProject.progress = parseInt(((currentProgress / currentTotal) * 100).toFixed(2));
+      dbServices.updateProject(newProject);
+      this.setState({
+        project: newProject
+      });
+    }
   };
 
   async componentDidMount() {
@@ -74,7 +102,7 @@ export default class ProjectView extends Component {
               </div>
               <div id="project_progress">
                 <span>Est. Progress</span>
-                <ProgressBar percentage={project.progress} />
+                <ProgressBar percentage={parseInt(this.state.project.progress)} />
               </div>
               <div id="project_deadline">
                 <span>Deadline: {dateConversions.TStoDisplayDate(project.deadline)}</span>
@@ -85,8 +113,8 @@ export default class ProjectView extends Component {
             <div className="ProjectView__jobs_stats">
               {user.role === 'project worker' ? <></> : <Statistics />}
               <div className="ProjectView__jobs_header">
-                {user.role === 'project worker' ? <h3>Your Jobs</h3> : <h3>Jobs</h3>}
-                {user.role === 'project worker' ? '' : <button onClick={this.showJobForm}>Add Job</button>}
+                {user.role === 'project worker' ? <h3>Your Tasks</h3> : <h3>Tasks</h3>}
+                {user.role === 'project worker' ? '' : <button onClick={this.showJobForm}>Add Task</button>}
               </div>
               {showJobForm && (
                 <JobForm
@@ -97,7 +125,7 @@ export default class ProjectView extends Component {
                   projectId={this.props.id}
                 />
               )}
-              <Jobs projectId={this.props.id} />
+              <Jobs projectId={this.props.id} getProgress={this.getProgress} />
             </div>
             <div className="ProjectView__sidebar">
               <Sidebar view="project" project={this.state.project} />

@@ -98,7 +98,7 @@ export default class JobNotificationList extends Component {
             <>
               {jobObj.status === "submitted" ? (
                 <div>
-                  <h5>Job Submitted For Approval</h5>
+                  <h5>Task Submitted For Approval</h5>
                   <button
                     onClick={e =>
                       this.handleApprovalSubmit(

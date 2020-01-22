@@ -104,11 +104,6 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    // console.log('this.state.user', this.state.user);
-    //console.log('this.state.projects ', this.state.projects);
-    // console.log('this.context.jobs ', this.context.jobs);
-    // console.log('this.context.employees', this.context.employees);
-    // console.log("this.context.project_managers", this.state.projectManagers);
     if (this.state.loading) return <Loading />;
     else
       return (

@@ -98,7 +98,7 @@ export default class Jobs extends Component {
             {jobs.length > 0 ? (
               jobs.map(job => <JobItem job={job} key={job.id} />)
             ) : (
-              <h4>There are currently no tasks to display for this project.</h4>
+              <span>There are currently no tasks to display for this project.</span>
             )}
           </ul>
         </>

@@ -28,6 +28,7 @@ export default class Dashboard extends Component {
     projectManagers: [],
     loading: true,
     expandProjects: true,
+    expandCompleteProjects: false,
     expandPersonnel: true,
     newProj: false,
     error: false
@@ -61,9 +62,11 @@ export default class Dashboard extends Component {
       sortedProjectsIncomplete.sort((a, b) => {
         return a.deadline.seconds - b.deadline.seconds;
       });
-      let sortedProjects = sortedProjectsIncomplete.concat(
-        sortedProjectsComplete
-      );
+
+      // let sortedProjects = sortedProjectsIncomplete.concat(
+      //   sortedProjectsComplete
+      // );
+
       this.setState({
         user: {
           id: email,
@@ -71,7 +74,8 @@ export default class Dashboard extends Component {
           org: org,
           role: role
         },
-        projects: sortedProjects,
+        projects: sortedProjectsIncomplete,
+        completeProjects: sortedProjectsComplete,
         projectManagers: data.project_managers,
         loading: false
       });
@@ -90,6 +94,11 @@ export default class Dashboard extends Component {
     e.stopPropagation();
     this.setState({ expandProjects: !this.state.expandProjects });
   };
+
+  toggleExpandCompleteProjects = e => {
+    e.stopPropagation();
+    this.setState({ expandCompleteProjects: !this.state.expandCompleteProjects });
+  }
 
   toggleExpandPersonnel = e => {
     e.stopPropagation();
@@ -187,6 +196,44 @@ export default class Dashboard extends Component {
                           <span>
                             You currently have no projects, click the NEW button
                             above to add one.
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <div
+                    className="Dashboard__project_header"
+                    onClick={this.toggleExpandCompleteProjects}
+                  >
+                    <div className="Dashboard__fa_h1">
+                      {StyleIcon({
+                        style: `${this.state.expandCompleteProjects ? "minus" : "plus"}`
+                      })}
+                      <h1>Completed Projects</h1>
+                    </div>
+                  </div>
+                  {this.state.expandCompleteProjects && (
+                    <div className="Dashboard__projects_container">
+                      {this.state.completeProjects.length !== 0 ? (
+                        <ul className="Dashboard__list">
+                          {this.state.completeProjects.map(proj => {
+                            return (
+                              <li key={proj.id}>
+                                <ProjectBar
+                                  proj={proj}
+                                  role={this.state.user.role}
+                                  projectManagers={this.state.projectManagers}
+                                  updatePM={this.updatePM}
+                                  updateProjInState={this.updateProjInState}
+                                />
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <div className="Dashboard__no_projects">
+                          <span>
+                            You currently have no complete projects. Time to get to work!
                           </span>
                         </div>
                       )}

@@ -16,15 +16,25 @@ const Profile = props => {
   const handleClick = async event => {
     event.preventDefault();
     const promoteFunc = await functions.httpsCallable("promoteUser");
+    console.log(promoteFunc);
     promoteFunc({
       email: userInfo.email,
       org: userInfo.org
     }).then(() => {
-      dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
-        getUserInfo().then(info => {
-          setUserInfo(info);
-        })
-      )
+      try {
+        dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
+          getUserInfo().then(info => {
+            setUserInfo(info);
+          })
+        );
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to promote employee.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      }
     });
   };
 
@@ -32,64 +42,70 @@ const Profile = props => {
     let info = {};
     try {
       await dbServices
-      .getUser(props.match.params.id, currentUser.org)
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          info = {
-            role: doc.data().role,
-            email: doc.data().email,
-            name: doc.data().name,
-            org: doc.data().org
-          };
+        .getUser(props.match.params.id, currentUser.org)
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            info = {
+              role: doc.data().role,
+              email: doc.data().email,
+              name: doc.data().name,
+              org: doc.data().org
+            };
+          });
         });
-      })
     } catch (error) {
-        console.log('caught error!')
-        console.warn(error)
-        Swal.fire({
-          title: "Error!",
-          text: 'There was an issue loading this employee\'s information - please refresh the page and try again.',
-          icon: 'error',
-          confirmButtonText: 'Close'
-        })
+      console.log("caught error!");
+      console.warn(error);
+      Swal.fire({
+        title: "Error!",
+        text:
+          "There was an issue loading this employee's information - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
     }
-    
-      
+
     return info;
   };
 
   const getUserProjects = async info => {
     if (info.role === "project worker")
       try {
-        await dbServices.getEmployeeProjects(info.name, info.org).then(snapshot => {
-          snapshot.forEach(doc => {
-            setUserProjects([...userProjects, doc.data()]);
+        await dbServices
+          .getEmployeeProjects(info.name, info.org)
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              setUserProjects([...userProjects, doc.data()]);
+            });
           });
-        })
       } catch (error) {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: "Error!",
-          text: 'There was an issue loading this employee\'s project information - please refresh the page and try again.',
-          icon: 'error',
-          confirmButtonText: 'Close'
-        })
+          text:
+            "There was an issue loading this employee's project information - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
       }
     else if (info.role === "project manager") {
       try {
-        await dbServices.getManagerProjects(info.name, info.org).then(snapshot => {
-          snapshot.forEach(doc => {
-            setUserProjects([...userProjects, doc.data()]);
+        await dbServices
+          .getManagerProjects(info.name, info.org)
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              setUserProjects([...userProjects, doc.data()]);
+            });
           });
-        })
       } catch (error) {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: "Error!",
-          text: 'There was an issue loading this employee\'s project information - please refresh the page and try again.',
-          icon: 'error',
-          confirmButtonText: 'Close'
-        })
+          text:
+            "There was an issue loading this employee's project information - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
       }
     }
   };

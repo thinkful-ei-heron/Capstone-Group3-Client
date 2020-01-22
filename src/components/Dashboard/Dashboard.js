@@ -49,6 +49,33 @@ export default class Dashboard extends Component {
     try {
       data = await dbServices.initDashboard(name, role, org);
       // data = await dbServices.initDashboard();
+      let sortedProjectsComplete = [];
+      let sortedProjectsIncomplete = [];
+
+      data.projects.map((project, index) => {
+        if (project.progress === 100) {
+          return sortedProjectsComplete.push(project);
+        } else return sortedProjectsIncomplete.push(project);
+      });
+
+      sortedProjectsIncomplete.sort((a, b) => {
+        console.log(b.deadline.seconds);
+        return a.deadline.seconds - b.deadline.seconds;
+      });
+      let sortedProjects = sortedProjectsIncomplete.concat(
+        sortedProjectsComplete
+      );
+      this.setState({
+        user: {
+          id: email,
+          name: name,
+          org: org,
+          role: role
+        },
+        projects: sortedProjects,
+        projectManagers: data.project_managers,
+        loading: false
+      });
     } catch (error) {
       Swal.fire({
         title: "Error!",
@@ -58,34 +85,6 @@ export default class Dashboard extends Component {
         onClose: this.errorClose()
       });
     }
-
-    let sortedProjectsComplete = [];
-    let sortedProjectsIncomplete = [];
-
-    data.projects.map((project, index) => {
-      if (project.progress === 100) {
-        return sortedProjectsComplete.push(project);
-      } else return sortedProjectsIncomplete.push(project);
-    });
-
-    sortedProjectsIncomplete.sort((a, b) => {
-      console.log(b.deadline.seconds);
-      return a.deadline.seconds - b.deadline.seconds;
-    });
-    let sortedProjects = sortedProjectsIncomplete.concat(
-      sortedProjectsComplete
-    );
-    this.setState({
-      user: {
-        id: email,
-        name: name,
-        org: org,
-        role: role
-      },
-      projects: sortedProjects,
-      projectManagers: data.project_managers,
-      loading: false
-    });
   }
 
   toggleExpandProjects = e => {
@@ -219,7 +218,7 @@ export default class Dashboard extends Component {
       return (
         <body
           alt="something terrible happened"
-          background="https://i.pinimg.com/originals/6b/6d/7e/6b6d7e420e1f2e8b58deac8357fd1000.gif"
+          background="https://media.giphy.com/media/jWexOOlYe241y/giphy.gif"
         />
       );
     // console.log('this.state.user', this.state.user);

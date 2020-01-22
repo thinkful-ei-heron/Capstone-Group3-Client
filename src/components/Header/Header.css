@@ -19,11 +19,6 @@
 
 .Header__logo {
   display: none;
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  width: 170px;
-  height: auto;
 }
 
 .Header__app_name {
@@ -110,7 +105,7 @@
 
   .Header h1 {
     position: absolute;
-    top: 0pt;
+    top: 13pt;
     left: 0;
   }
 
@@ -121,17 +116,17 @@
   .Header__logo {
     display: inline-block;
     position: absolute;
-    top: -6pt;
+    top: -2pt;
     left: 10pt;
-    width: 170px;
+    width: 140px;
     height: auto;
   }
 
   .Header__app_name {
     position: absolute;
-    top: 18pt;
-    left: 90pt;
-    font-size: 3rem;
+    top: 20pt;
+    left: 85pt;
+    font-size: 2.4rem;
   }
 
   .Header__login {
@@ -150,6 +145,10 @@
     right: 0;
     width: auto;
     margin-right: 15px;
+  }
+
+  .Header__user_info {
+    margin-right: 30px;
   }
 
   .Header__db_logout {

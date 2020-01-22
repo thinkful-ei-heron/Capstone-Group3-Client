@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import dbServices from "../../services/dbServices";
-import JobForm from "../JobForm/JobForm";
+import JobForm from "../Project/JobForm/JobForm";
+import { AuthContext } from "../../services/Auth";
 
 export default class JobNotificationList extends Component {
   state = {
@@ -9,6 +10,8 @@ export default class JobNotificationList extends Component {
     editJob: null,
     notificationList: []
   };
+
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.setState({
@@ -33,12 +36,14 @@ export default class JobNotificationList extends Component {
 
   handleClick = async (id, jobObj) => {
     if (
-      this.props.user.role === "project manager" ||
-      this.props.user.role === "owner"
+      this.context.currentUser.role === "project manager" ||
+      this.context.currentUser.role === "owner"
     )
       return null;
     else {
-      let newAlert = jobObj.alert.filter(name => name !== this.props.user.name);
+      let newAlert = jobObj.alert.filter(
+        name => name !== this.context.currentUser.name
+      );
       jobObj.alert = newAlert;
       await dbServices.updateJob(jobObj);
     }
@@ -89,7 +94,7 @@ export default class JobNotificationList extends Component {
           >
             {jobObj.name}
           </Link>
-          {this.props.user.role === "project manager" ? (
+          {this.context.currentUser.role === "project manager" ? (
             <>
               {jobObj.status === "submitted" ? (
                 <div>
@@ -136,7 +141,7 @@ export default class JobNotificationList extends Component {
           ) : (
             <></>
           )}
-          {this.props.user.role === "project worker" ? (
+          {this.context.currentUser.role === "project worker" ? (
             <p>{this.renderEmployeeNotificationDetails(jobObj)}</p>
           ) : (
             <></>

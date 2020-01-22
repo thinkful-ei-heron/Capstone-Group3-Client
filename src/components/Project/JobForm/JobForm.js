@@ -1,16 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useInput } from '../../hooks/useInput';
-import Dropdown from '../Dropdown/Dropdown';
-import { Input, Label, Textarea } from '../Form/Form';
-import dbServices from '../../services/dbServices';
-import { AuthContext } from '../../services/Auth';
+import { useInput } from '../../../hooks/useInput';
+import Dropdown from '../../Dropdown/Dropdown';
+import { Input, Label, Textarea } from '../../Form/Form';
+import dbServices from '../../../services/dbServices';
+import { AuthContext } from '../../../services/Auth';
 import './JobForm.css';
+import dateConversions from '../../../services/dateConversions';
 
 const NewJob = props => {
   const [selected, setSelected] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
-  const context = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const resetFunction = () => {
@@ -27,34 +28,23 @@ const NewJob = props => {
 
   const getDate = () => {
     if (props.job) {
-      let newDeadline = new Date(props.job.deadline.seconds * 1000);
-      return newDeadline.toLocaleDateString('en-CA');
+      return dateConversions.TStoFormDate(props.job.deadline);
     }
   };
 
   const getEmployees = () => {
     if (props.job) {
       let workers = [];
-      props.job.project_workers.forEach(worker =>
-        workers.push({ value: worker, label: worker })
-      );
+      props.job.project_workers.forEach(worker => workers.push({ value: worker, label: worker }));
       return workers;
     }
   };
 
-  const { value: name, bind: bindName, reset: resetName } = useInput(
-    props.job ? props.job.name : ''
+  const { value: name, bind: bindName, reset: resetName } = useInput(props.job ? props.job.name : '');
+  const { value: description, bind: bindDescription, reset: resetDescription } = useInput(
+    props.job ? props.job.description : ''
   );
-  const {
-    value: description,
-    bind: bindDescription,
-    reset: resetDescription
-  } = useInput(props.job ? props.job.description : '');
-  const {
-    value: deadline,
-    bind: bindDeadline,
-    reset: resetDeadline
-  } = useInput(props.job ? getDate() : '');
+  const { value: deadline, bind: bindDeadline, reset: resetDeadline } = useInput(props.job ? getDate() : '');
   const { value: total_hours, bind: bindHours, reset: resetHours } = useInput(
     props.job ? props.job.total_hours : ''
   );
@@ -65,12 +55,10 @@ const NewJob = props => {
     if (selected) selected.map(itm => employees.push(itm.value));
 
     let projectId = props.job ? props.job.project_id : props.projectId;
-    let projectManager = props.job
-      ? props.job.project_manager
-      : props.project.project_manager;
+    let projectManager = props.job ? props.job.project_manager : props.project.project_manager;
     let id = props.job ? props.job.id : null;
     let approval = props.job ? props.job.approval : false;
-    let date_created = props.job ? props.job.date_created : new Date();
+    let date_created = props.job ? props.job.date_created : dateConversions.dateToTimestamp(new Date());
     let hours_completed = props.job ? props.job.hours_completed : 0;
     let status = 'in progress';
     let edit = null;
@@ -81,8 +69,7 @@ const NewJob = props => {
       else status = props.job.status;
 
       employees.map(employee => {
-        if (!props.job.project_workers.includes(employee))
-          return alert.push(employee);
+        if (!props.job.project_workers.includes(employee)) return alert.push(employee);
         else return null;
       });
     } else {
@@ -94,10 +81,10 @@ const NewJob = props => {
     const jobObj = {
       approval,
       date_created,
-      deadline: new Date(deadline),
+      deadline: dateConversions.dateToTimestamp(new Date(deadline)),
       description,
       name,
-      organization: context.currentUser.org,
+      organization: currentUser.org,
       total_hours,
       hours_completed,
       project_id: projectId,
@@ -120,7 +107,7 @@ const NewJob = props => {
     if (props.job) {
       let projects = [];
       await dbServices
-        .getProjectById(props.job.project_id, context.currentUser.org)
+        .getProjectById(props.job.project_id, currentUser.org)
         .then(project => projects.push(project.data()));
       let project = projects[0];
       updatedProjectWorkers = project.project_workers;
@@ -135,20 +122,13 @@ const NewJob = props => {
     });
 
     await dbServices
-      .updateProjectWorkers(
-        projectId,
-        updatedProjectWorkers,
-        context.currentUser.org
-      )
+      .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
       .then(props.showJobForm());
   };
 
   return (
     <>
-      <form
-        onSubmit={e => handleSubmit(e).then(setSubmitted(true))}
-        className="newjob__form"
-      >
+      <form onSubmit={e => handleSubmit(e).then(setSubmitted(true))} className="Form">
         <fieldset>
           <legend>{props.projectId ? 'Add New Job' : 'Edit Job'}</legend>
           <div className="input">
@@ -157,32 +137,15 @@ const NewJob = props => {
           </div>
           <div className="input">
             <Label htmlFor="description">Details: </Label>
-            <Textarea
-              name="description"
-              id="description"
-              {...bindDescription}
-              required
-            />
+            <Textarea name="description" id="description" {...bindDescription} required />
           </div>
           <div className="input">
             <Label htmlFor="total_hours">Total Hours: </Label>
-            <input
-              type="number"
-              name="total_hours"
-              id="total_hours"
-              {...bindHours}
-              required
-            />
+            <input type="number" name="total_hours" id="total_hours" {...bindHours} required />
           </div>
           <div className="input">
             <Label htmlFor="deadline">Deadline: </Label>
-            <input
-              type="date"
-              name="deadline"
-              id="deadline"
-              {...bindDeadline}
-              required
-            />
+            <input type="date" name="deadline" id="deadline" {...bindDeadline} required />
           </div>
           <Dropdown
             isMulti={true}

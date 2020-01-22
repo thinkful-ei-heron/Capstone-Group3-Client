@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import { AuthContext } from '../../services/Auth';
-import Loading from '../Loading/Loading';
-import app from '../../services/base';
+import { AuthContext } from '../../../services/Auth';
 import './Jobs.css';
 import JobItem from './JobItem';
-import LogHours from '../LogHours/LogHours';
+import LogHours from '../../LogHours/LogHours';
+import dbServices from '../../../services/dbServices';
 
 export default class Jobs extends Component {
   constructor(props) {
     super(props);
     this.unsubscribe = null;
-    this.ref = app.firestore().collection('organizations');
     this.state = {
       jobs: [],
       loading: true,
-      showLogHours: false,
-      user: 'project manager'
+      showLogHours: false
     };
   }
 
@@ -26,9 +23,7 @@ export default class Jobs extends Component {
 
     if (this.context.currentUser.role === 'project worker') {
       querySnapshot.forEach(doc => {
-        if (
-          doc.data().project_workers.includes(this.context.currentUser.name)
-        ) {
+        if (doc.data().project_workers.includes(this.context.currentUser.name)) {
           jobs.push(doc.data());
         }
       });
@@ -51,11 +46,8 @@ export default class Jobs extends Component {
   };
 
   componentDidMount() {
-    this.unsubscribe = this.ref
-      .doc(this.context.currentUser.org)
-      .collection('projects')
-      .doc(this.props.projectId)
-      .collection('jobs')
+    this.unsubscribe = dbServices
+      .jobsListener(this.context.currentUser.org, this.props.projectId)
       .onSnapshot(this.onJobsUpdate);
   }
 
@@ -74,32 +66,25 @@ export default class Jobs extends Component {
     const user = this.context.currentUser;
 
     if (this.state.loading) {
-      return <Loading />;
+      return <div></div>;
     } else {
       return (
         <>
           <div>
-            <h2>
+            <div>
               {user.role === 'project worker' ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>
               )}
-            </h2>
-            {this.state.showLogHours ? (
-              <LogHours
-                jobs={jobs}
-                renderLogHoursForm={this.renderLogHoursForm}
-              />
-            ) : (
-              <></>
-            )}
+            </div>
+            {this.state.showLogHours && <LogHours jobs={jobs} renderLogHoursForm={this.renderLogHoursForm} />}
           </div>
-          <ul>
+          <ul className="Jobs__list">
             {jobs.length > 0 ? (
               jobs.map(job => <JobItem job={job} key={job.id} />)
             ) : (
-              <h4>There are currently no jobs to display for this project.</h4>
+              <span>There are currently no jobs to display for this project.</span>
             )}
           </ul>
         </>

@@ -3,9 +3,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 15px;
   font-family: var(--oxygen);
+  font-size: 1.2rem;
+  font-weight: 600;
+
   background-color: var(--header-bg-color);
 }
 
@@ -41,16 +43,20 @@
   margin: 5px;
 }
 
-#sidebar_container {
-  flex-basis: 20%;
-  margin: 5px;
-  border: 1px solid grey;
-}
-
 @media only screen and (min-width: 750px) {
   #projectView_main {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
     padding: 1em;
+  }
+
+  .ProjectView__jobs_stats {
+    width: calc(100% - 170px);
+  }
+
+  .ProjectView__sidebar {
+    margin-left: 10px;
+    width: 150px;
   }
 }

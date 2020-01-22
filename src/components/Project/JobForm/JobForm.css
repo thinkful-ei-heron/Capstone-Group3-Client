@@ -13,6 +13,7 @@
   align-items: center;
 }
 
-.newjob__form .input input, .newjob__form .input textarea {
+.newjob__form .input input,
+.newjob__form .input textarea {
   flex-basis: 80%;
 }

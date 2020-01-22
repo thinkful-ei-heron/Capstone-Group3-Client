@@ -1,39 +1,38 @@
-import React from 'react';
-import { withRouter } from 'react-router';
-import app from '../../services/base';
-import dbServices from '../../services/dbServices';
-import { Label, Input } from '../Form/Form';
+import React from "react";
+import { withRouter } from "react-router";
+import app from "../../services/base";
+import dbServices from "../../services/dbServices";
+import { Label, Input } from "../Form/Form";
 
 const SignUp = ({ history }, props) => {
   const functions = app.functions();
   const handleSignUp = async event => {
     event.preventDefault();
-    console.log(event.target.elements);
     let { email, password, name, orgName } = event.target.elements;
-    const registerOwner = await functions.httpsCallable('registerOwner');
-    const registerWorker = await functions.httpsCallable('registerWorker');
+    const registerOwner = await functions.httpsCallable("registerOwner");
+    const registerWorker = await functions.httpsCallable("registerWorker");
     let values = {
       email: email.value,
       password: password.value,
       name: name.value,
       org: orgName.value,
       displayName: name.value,
-      role: 'owner'
+      role: "owner"
     };
     let valuesNoPass = {
       email: email.value,
       name: name.value,
       org: orgName.value,
       displayName: name.value,
-      role: 'project worker'
+      role: "project worker"
     };
     switch (history.location.pathname) {
-      case '/owner-signup':
+      case "/owner-signup":
         registerOwner(values)
           .then(() => dbServices.createOwner(valuesNoPass, values.org))
           .catch(error => alert(error));
         break;
-      case '/worker-signup':
+      case "/worker-signup":
         registerWorker(values).then(() =>
           dbServices.createUserInOrg(valuesNoPass, orgName.value)
         );
@@ -41,7 +40,7 @@ const SignUp = ({ history }, props) => {
       default:
         registerWorker(values);
     }
-    history.push('/login');
+    history.push("/login");
     return `${values.email} signed up`;
   };
 

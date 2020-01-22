@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import { AuthProvider } from './services/Auth';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import './reset.css';
 
 import {
   faAngleRight,
@@ -16,15 +17,7 @@ import {
   faEdit
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(
-  faAngleRight,
-  faAngleDown,
-  faPlus,
-  faMinus,
-  faChevronUp,
-  faChevronDown,
-  faEdit
-);
+library.add(faAngleRight, faAngleDown, faPlus, faMinus, faChevronUp, faChevronDown, faEdit);
 
 ReactDOM.render(
   <Router>

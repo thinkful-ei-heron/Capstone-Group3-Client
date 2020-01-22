@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../../services/Auth";
-import lazy from "../../images/lazy.svg";
-import "./Header.css";
+import React, { Component } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { AuthContext } from '../../services/Auth';
+import lazy from '../../images/lazy.svg';
+import './Header.css';
+import app from '../../services/base';
 
 export default class Header extends Component {
   static contextType = AuthContext;
@@ -14,15 +15,9 @@ export default class Header extends Component {
           <Link className="Header__btn Header__alt" to="/login">
             Log In
           </Link>
-          {this.context.currentUser === null ? (
-            <Link className="Header__btn Header__primary" to="/register">
-              Register
-            </Link>
-          ) : (
-            <Link className="Header__btn Header__alt" to="/logout">
-              Log Out
-            </Link>
-          )}
+          <Link className="Header__btn Header__primary" to="/register">
+            Register
+          </Link>
         </div>
       </div>
     );
@@ -39,7 +34,7 @@ export default class Header extends Component {
           <Link to="/dashboard">
             <h3 className="Header__dashboard">Dashboard</h3>
           </Link>
-          <Link className="Header__btn  Header__alt" to="/logout">
+          <Link onClick={this.handleLogout} className="Header__btn  Header__alt" to="/">
             Log Out
           </Link>
         </div>
@@ -47,23 +42,23 @@ export default class Header extends Component {
     );
   }
 
+  handleLogout = () => {
+    this.props.setPath(null);
+    localStorage.removeItem('path');
+    app.auth().signOut();
+  };
+
   render() {
     return (
       <>
         <nav className="Header">
           <h1>
             <Link className="Header__link" to="/">
-              <img
-                className="Header__logo"
-                src={lazy}
-                alt="man reclining in chair"
-              />
+              <img className="Header__logo" src={lazy} alt="man reclining in chair" />
               <span className="Header__app_name">manageLazily</span>
             </Link>
           </h1>
-          {this.context.currentUser
-            ? this.renderLogoutLink()
-            : this.renderLoginLink()}
+          {this.context.currentUser ? this.renderLogoutLink() : this.renderLoginLink()}
         </nav>
       </>
     );

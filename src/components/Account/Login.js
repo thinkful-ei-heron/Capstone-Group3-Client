@@ -1,39 +1,39 @@
-import React, { useCallback, useContext, useState } from "react";
-import { withRouter, Redirect } from "react-router";
-import app from "../../services/base.js";
-import { AuthContext } from "../../services/Auth.js";
-import { Label, Input } from "../Form/Form";
-import Swal from "sweetalert2";
-import "./Login.css";
+import React, { useCallback, useContext, useState } from 'react'
+import { withRouter, Redirect } from 'react-router'
+import app from '../../services/base.js'
+import { AuthContext } from '../../services/Auth.js'
+import { Label, Input } from '../Form/Form'
+import Swal from 'sweetalert2'
+import './Login.css'
 
 const Login = (setPath, { history }) => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext)
 
   const handleLogin = useCallback(
     async event => {
-      event.preventDefault();
-      const { email, password } = event.target.elements;
+      event.preventDefault()
+      const { email, password } = event.target.elements
       await app
         .auth()
         .signInWithEmailAndPassword(email.value, password.value)
         .catch(error => {
-          console.warn(error);
+          console.warn(error)
           Swal.fire({
-            title: "Error!",
+            title: 'Error!',
             text:
-              error.code === "auth/user-not-found"
-                ? "Incorrect email"
-                : "Incorrect password",
-            icon: "error",
-            confirmButtonText: "Close"
-          });
-        });
+              error.code === 'auth/user-not-found'
+                ? 'Incorrect email'
+                : 'Incorrect password',
+            icon: 'error',
+            confirmButtonText: 'Close',
+          })
+        })
     },
     [history]
-  );
+  )
 
   if (currentUser) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/dashboard" />
   }
 
   return (
@@ -64,7 +64,7 @@ const Login = (setPath, { history }) => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default withRouter(Login);
+export default withRouter(Login)

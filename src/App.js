@@ -1,45 +1,45 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Header from "./components/Header/Header";
-import Login from "./components/Account/Login";
-import SignUp from "./components/Account/SignUp";
+import React, { useContext, useEffect, useState } from 'react'
+import { Switch, Route, withRouter } from 'react-router-dom'
+import Dashboard from './components/Dashboard/Dashboard'
+import Header from './components/Header/Header'
+import Login from './components/Account/Login'
+import SignUp from './components/Account/SignUp'
 // import NewProject from "./components/NewProject/NewProject";
-import ProjectView from "./components/Project/ProjectView/ProjectView";
-import LandingPage from "./components/LandingPage/LandingPage";
-import PrivateRoute from "./services/PrivateRoute";
-import { AuthContext } from "./services/Auth.js";
-import Profile from "./components/Profile/Profile";
-import "./App.css";
-import { CatchAll } from "./components/CatchAll/CatchAll";
+import ProjectView from './components/Project/ProjectView/ProjectView'
+import LandingPage from './components/LandingPage/LandingPage'
+import PrivateRoute from './services/PrivateRoute'
+import { AuthContext } from './services/Auth.js'
+import Profile from './components/Profile/Profile'
+import './App.css'
+import { CatchAll } from './components/CatchAll/CatchAll'
 
 const App = props => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext)
 
-  if (currentUser === null) console.log(null);
-  else console.log("found user");
+  if (currentUser === null) console.log(null)
+  else console.log('found user')
 
   const initialPath = () => {
-    if (localStorage.getItem("path")) return localStorage.getItem("path");
-    return null;
-  };
+    if (localStorage.getItem('path')) return localStorage.getItem('path')
+    return null
+  }
 
-  const [path, setPath] = useState(initialPath);
+  const [path, setPath] = useState(initialPath)
 
   useEffect(() => {
-    if (!localStorage.getItem("path") && !path) return;
-    localStorage.setItem("path", path);
+    if (!localStorage.getItem('path') && !path) return
+    localStorage.setItem('path', path)
     if (path && currentUser) {
-      props.history.push(path);
+      props.history.push(path)
     }
-  }, [currentUser, path, props.history]);
+  }, [currentUser, path, props.history])
 
   const handleBrokenUrl = location => {
-    setPath(null);
-    localStorage.removeItem("path");
+    setPath(null)
+    localStorage.removeItem('path')
 
-    return <CatchAll />;
-  };
+    return <CatchAll />
+  }
 
   return (
     <>
@@ -88,7 +88,7 @@ const App = props => {
         <Route exact path="/catchall" component={CatchAll} />
       </main>
     </>
-  );
-};
+  )
+}
 
-export default withRouter(App);
+export default withRouter(App)

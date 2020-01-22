@@ -1,4 +1,5 @@
 import app from "./base";
+import Swal from "sweetalert2";
 
 const db = app.firestore();
 
@@ -237,6 +238,9 @@ const dbServices = {
       .collection(
         `organizations/${newJob.organization}/projects/${project_id}/jobs`
       )
+      .catch(error => {
+        if (error) throw new Error("Error");
+      })
       .add(newJob)
       .then(function(docRef) {
         db.collection(

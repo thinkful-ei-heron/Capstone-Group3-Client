@@ -17,13 +17,16 @@ const Login = (setPath, { history }) => {
         .auth()
         .signInWithEmailAndPassword(email.value, password.value)
         .catch(error => {
-          console.warn(error)
+          console.warn(error);
           Swal.fire({
             title: "Error!",
-            text: error.code === 'auth/user-not-found' ? 'Incorrect email' : 'Incorrect password',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
+            text:
+              error.code === "auth/user-not-found"
+                ? "Incorrect email"
+                : "Incorrect password",
+            icon: "error",
+            confirmButtonText: "Close"
+          });
         });
     },
     [history]
@@ -39,18 +42,27 @@ const Login = (setPath, { history }) => {
       <form className="Login__form" onSubmit={handleLogin}>
         <Label>
           Email
-          <Input name="email" type="email" placeholder="Email" required />
+          <Input
+            test-id="login-email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+          />
         </Label>
         <Label>
           Password
           <Input
+            test-id="login-password"
             name="password"
             type="password"
             placeholder="Password"
             required
           />
         </Label>
-        <button type="submit">Log in</button>
+        <button type="submit" test-id="login-button">
+          Log in
+        </button>
       </form>
     </div>
   );

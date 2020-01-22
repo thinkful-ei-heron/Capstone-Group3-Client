@@ -83,28 +83,27 @@ const NewJob = props => {
 
     if (props.job) {
       try {
-        await dbServices.editJob(id, jobObj)
+        await dbServices.editJob(id, jobObj);
       } catch (error) {
-        console.warn(error)
-          Swal.fire({
-            title: "Error!",
-            text: 'There was an issue editing this task - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
+        console.warn(error);
+        Swal.fire({
+          title: "Error!",
+          text:
+            "There was an issue editing this task - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
       }
     } else {
-      try {
-        await dbServices.addJob(jobObj, projectId)
-      } catch (error) {
-        console.warn(error)
+      await dbServices.addJob(jobObj, projectId).catch(error => {
+        if (error)
           Swal.fire({
             title: "Error!",
-            text: 'There was an issue - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
-      }
+            text: "There was an issue - please refresh the page and try again.",
+            icon: "error",
+            confirmButtonText: "Close"
+          });
+      });
     }
 
     let updatedProjectWorkers = null;
@@ -113,16 +112,16 @@ const NewJob = props => {
       let projects = [];
       try {
         await dbServices
-        .getProjectById(props.job.project_id, currentUser.org)
-        .then(project => projects.push(project.data()))
+          .getProjectById(props.job.project_id, currentUser.org)
+          .then(project => projects.push(project.data()));
       } catch (error) {
-        console.warn(error)
-          Swal.fire({
-            title: "Error!",
-            text: 'There was an issue - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
+        console.warn(error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an issue - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
       }
       let project = projects[0];
       updatedProjectWorkers = project.project_workers;
@@ -138,18 +137,19 @@ const NewJob = props => {
 
     try {
       await dbServices
-      .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
-      .then(() => {
-        props.showJobForm();
-      })
+        .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
+        .then(() => {
+          props.showJobForm();
+        });
     } catch (error) {
-      console.warn(error)
-        Swal.fire({
-          title: "Error!",
-          text: 'There was an issue assigning employees to this project - please refresh the page and try again.',
-          icon: 'error',
-          confirmButtonText: 'Close'
-        })
+      console.warn(error);
+      Swal.fire({
+        title: "Error!",
+        text:
+          "There was an issue assigning employees to this project - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
     }
   };
 

@@ -62,6 +62,7 @@ export default class Dropdown extends Component {
       this.setState({
         selectedOption: this.props.defaultValue
       });
+      this.props.setSelected(this.props.defaultValue)
     }
   }
 

@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react'
 //import FirebaseContext from "../../services/context";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 const ProjectManagers = props => {
   //const context = useContext(FirebaseContext);
 
-  const expanded = props.expanded;
+  const expanded = props.expanded
 
-  let completeManagerList = [];
+  let completeManagerList = []
 
   const populateCompleteManagerList = () => {
     /*
@@ -20,31 +20,31 @@ const ProjectManagers = props => {
       return completeManagerList.push({ [manager.name]: projectArray });
     });
     */
-  };
+  }
 
   const onLinkClick = name => {
     //let project = context.projects.filter(proj => proj.name === name);
     //return project[0].id;
-  };
+  }
 
   const renderPMProjects = name => {
-    let projectNames = Object.values(name);
-    if (projectNames[0].length === 0) return <h4>No Project Assigned</h4>;
+    let projectNames = Object.values(name)
+    if (projectNames[0].length === 0) return <h4>No Project Assigned</h4>
     else {
       return projectNames[0].map((name, index) => {
         return (
           <li key={index}>
             <Link to={`/project/${onLinkClick(name)}`}>{name}</Link>
           </li>
-        );
-      });
+        )
+      })
     }
-  };
+  }
 
   const renderProjectManagers = () => {
-    if (completeManagerList.length === 0) return <></>;
+    if (completeManagerList.length === 0) return <></>
     return completeManagerList.map((manager, index) => {
-      let itemId = "manager" + index;
+      let itemId = 'manager' + index
       return (
         <li key={index}>
           <button id={itemId} onClick={e => props.toggleExpand(e)}>
@@ -57,17 +57,17 @@ const ProjectManagers = props => {
             <></>
           )}
         </li>
-      );
-    });
-  };
+      )
+    })
+  }
 
   useEffect(() => {
-    renderProjectManagers();
-  });
+    renderProjectManagers()
+  })
 
-  populateCompleteManagerList();
+  populateCompleteManagerList()
 
-  return <ul className="Sidebar__list">{renderProjectManagers()}</ul>;
-};
+  return <ul className="Sidebar__list">{renderProjectManagers()}</ul>
+}
 
-export { ProjectManagers };
+export { ProjectManagers }

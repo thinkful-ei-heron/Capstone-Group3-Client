@@ -1,15 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from 'react'
 //import FirebaseContext from "../../services/context";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 const ProjectWorkers = props => {
   //const context = useContext(FirebaseContext);
 
-  const expanded = props.expanded;
+  const expanded = props.expanded
 
-  const toggleExpand = props.toggleExpand;
+  const toggleExpand = props.toggleExpand
 
-  let completeWorkerList = [];
+  let completeWorkerList = []
 
   /*
   const populateCompleteWorkerList = () => {
@@ -113,6 +113,6 @@ const ProjectWorkers = props => {
 
   return <ul>{renderProjectWorkers()}</ul>;
   */
-};
+}
 
-export { ProjectWorkers };
+export { ProjectWorkers }

@@ -1,12 +1,13 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../../services/Auth";
-import lazy from "../../images/lazy.svg";
-import "./Header.css";
-import app from "../../services/base";
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { AuthContext } from '../../services/Auth'
+import lazy from '../../images/lazy.svg'
+import './Header.css'
+import app from '../../services/base'
+import JobNotification from '../../components/JobNotification/JobNotification'
 
 export default class Header extends Component {
-  static contextType = AuthContext;
+  static contextType = AuthContext
 
   renderLoginLink() {
     return (
@@ -20,7 +21,7 @@ export default class Header extends Component {
           </Link>
         </div>
       </div>
-    );
+    )
   }
 
   renderLogoutLink() {
@@ -41,7 +42,7 @@ export default class Header extends Component {
             </h3>
           </Link>
           <Link
-            onClick={() => app.auth().signOut()}
+            onClick={() => this.handleLogout()}
             className="Header__btn  Header__alt"
             to="/"
             test-id="logout-button"
@@ -50,14 +51,14 @@ export default class Header extends Component {
           </Link>
         </div>
       </div>
-    );
+    )
   }
 
   handleLogout = () => {
-    this.props.setPath(null);
-    localStorage.removeItem("path");
-    app.auth().signOut();
-  };
+    this.props.setPath(null)
+    localStorage.removeItem('path')
+    app.auth().signOut()
+  }
 
   render() {
     return (
@@ -77,7 +78,10 @@ export default class Header extends Component {
             ? this.renderLogoutLink()
             : this.renderLoginLink()}
         </nav>
+        {this.context.currentUser && (
+          <JobNotification user={this.context.currentUser} />
+        )}
       </>
-    );
+    )
   }
 }

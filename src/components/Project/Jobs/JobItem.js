@@ -6,6 +6,7 @@ import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
 import { AuthContext } from "../../../services/Auth";
 import StyleIcon from '../../StyleIcon/StyleIcon';
 import dateConversions from "../../../services/dateConversions";
+import Swal from "sweetalert2";
 
 class JobItem extends Component {
   constructor(props) {
@@ -20,13 +21,23 @@ class JobItem extends Component {
   static contextType = AuthContext;
 
   handleApprovalSubmit = async (id, status, approval = false) => {
-    await dbServices.updateJobStatus(
-      id,
-      status,
-      this.props.job.project_id,
-      approval,
-      this.props.job.organization
-    );
+    try {
+      await dbServices.updateJobStatus(
+        id,
+        status,
+        this.props.job.project_id,
+        approval,
+        this.props.job.organization
+      )
+    } catch (error) {
+      console.warn(error)
+      Swal.fire({
+        title: "Error!",
+        text: 'There was an issue approving this task - please refresh the page and try again.',
+        icon: 'error',
+        confirmButtonText: 'Close'
+      })
+    }
   };
 
   renderEmployeeList = jobWorkers => {

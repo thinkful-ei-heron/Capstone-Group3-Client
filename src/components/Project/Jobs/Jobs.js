@@ -4,7 +4,7 @@ import "./Jobs.css";
 import JobItem from "./JobItem";
 import LogHours from "../../LogHours/LogHours";
 import dbServices from "../../../services/dbServices";
-import { faHollyBerry } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 
 export default class Jobs extends Component {
   constructor(props) {
@@ -60,9 +60,19 @@ export default class Jobs extends Component {
   };
 
   componentDidMount() {
-    this.unsubscribe = dbServices
-      .jobsListener(this.context.currentUser.org, this.props.projectId)
-      .onSnapshot(this.onJobsUpdate);
+    try {
+      this.unsubscribe = dbServices
+        .jobsListener(this.context.currentUser.org, this.props.projectId)
+        .onSnapshot(this.onJobsUpdate);
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text:
+          "There was an issue loading this project's tasks - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
+    }
   }
 
   componentWillUnmount() {

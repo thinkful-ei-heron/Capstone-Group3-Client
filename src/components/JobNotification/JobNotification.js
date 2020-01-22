@@ -3,6 +3,7 @@ import dbServices from "../../services/dbServices";
 import JobNotificationList from "./JobNotificationList";
 import OwnerNotification from "./OwnerNotification";
 import { AuthContext } from "../../services/Auth";
+import Swal from "sweetalert2";
 
 export default class JobNotification extends Component {
   state = {
@@ -11,92 +12,143 @@ export default class JobNotification extends Component {
     notificationDropDown: false,
     newEmployees: [],
     completedProjects: [],
-    newProjects: []
+    newProjects: [],
+    error: false
   };
 
   static contextType = AuthContext;
 
+  setError = () => {
+    this.setState({
+      error: true
+    });
+  };
+
   getProjects = async () => {
     let projectList = [];
     if (this.context.currentUser.role !== "owner")
-      await dbServices
-        .getProjectsByRole(this.context.currentUser)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            projectList.push(doc.data());
+      try {
+        await dbServices
+          .getProjectsByRole(this.context.currentUser)
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              projectList.push(doc.data());
+            });
           });
+        return projectList;
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text:
+            "Failed to fetch projects. Notifications are temporarily disabled.",
+          icon: "error",
+          confirmButtonText: "Close",
+          onClose: this.setError()
         });
-
-    return projectList;
+      }
   };
 
   populateNotificationList = async (projectList = null) => {
     if (this.context.currentUser.role === "project manager") {
       let jobsList = [];
       projectList.map(async project => {
-        const snapshot = await dbServices.getJobs(project.org_id, project.id);
-        snapshot.forEach(doc => {
-          if (
-            doc.data().status === "submitted" ||
-            doc.data().status === "edit request"
-          )
-            jobsList.push(doc.data());
-        });
-        this.setState({
-          notificationList: jobsList,
-          notificationCount: jobsList.length
-        });
-        return jobsList;
+        let snapshot;
+        try {
+          snapshot = await dbServices.getJobs(project.org_id, project.id);
+          snapshot.forEach(doc => {
+            if (
+              doc.data().status === "submitted" ||
+              doc.data().status === "edit request"
+            )
+              jobsList.push(doc.data());
+          });
+          this.setState({
+            notificationList: jobsList,
+            notificationCount: jobsList.length
+          });
+          return jobsList;
+        } catch (error) {
+          Swal.fire({
+            title: "Error!",
+            text: "Jobs failed to load. Notifications temporarily disabled.",
+            icon: "error",
+            confirmButtonText: "Close",
+            onClose: this.setError()
+          });
+        }
       });
     }
+
     if (this.context.currentUser.role === "project worker") {
       let jobsList = [];
       projectList.map(async project => {
-        const snapshot = await dbServices.getJobs(project.org_id, project.id);
-        snapshot.forEach(doc => {
-          if (doc.data().alert.includes(this.context.currentUser.name))
-            jobsList.push(doc.data());
-        });
-        this.setState({
-          notificationList: jobsList,
-          notificationCount: jobsList.length
-        });
-        return jobsList;
+        let snapshot;
+        try {
+          snapshot = await dbServices.getJobs(project.org_id, project.id);
+          snapshot.forEach(doc => {
+            if (doc.data().alert.includes(this.context.currentUser.name))
+              jobsList.push(doc.data());
+          });
+          this.setState({
+            notificationList: jobsList,
+            notificationCount: jobsList.length
+          });
+          return jobsList;
+        } catch (error) {
+          Swal.fire({
+            title: "Error!",
+            text: "Jobs failed to load. Notifications temporarily disabled.",
+            icon: "error",
+            confirmButtonText: "Close",
+            onClose: this.setError()
+          });
+        }
       });
     }
+
     if (this.context.currentUser.role === "owner") {
       let employees = [];
       let completed = [];
       let newProj = [];
-      // console.log("employees");
-      await dbServices
-        .getEmployees(this.context.currentUser.org)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            if (doc.data().new) employees.push(doc.data());
+      try {
+        await dbServices
+          .getEmployees(this.context.currentUser.org)
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              if (doc.data().new) employees.push(doc.data());
+            });
+            this.setState({
+              newEmployees: employees,
+              notificationCount: this.state.notificationCount + employees.length
+            });
           });
-          this.setState({
-            newEmployees: employees,
-            notificationCount: this.state.notificationCount + employees.length
+        await dbServices
+          .getProjectsByRole(this.context.currentUser)
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              if (doc.data().alert === true && doc.data().completed === true)
+                completed.push(doc.data());
+              if (doc.data().alert === true && !doc.data().completed)
+                newProj.push(doc.data());
+            });
+            this.setState({
+              newProjects: newProj,
+              completedProjects: completed,
+              notificationCount:
+                this.state.notificationCount + newProj.length + completed.length
+            });
           });
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to fetch projects. Notifications temporarily disabled.",
+          icon: "error",
+          confirmButtonText: "Close",
+          onClose: this.setError()
         });
+      }
+
       // console.log("projects");
-      await dbServices
-        .getProjectsByRole(this.context.currentUser)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            if (doc.data().alert === true && doc.data().completed === true)
-              completed.push(doc.data());
-            if (doc.data().alert === true && !doc.data().completed)
-              newProj.push(doc.data());
-          });
-          this.setState({
-            newProjects: newProj,
-            completedProjects: completed,
-            notificationCount:
-              this.state.notificationCount + newProj.length + completed.length
-          });
-        });
     }
   };
 
@@ -141,37 +193,40 @@ export default class JobNotification extends Component {
   };
 
   render() {
-    if (this.context.currentUser.role === "owner")
+    if (this.state.error) return null;
+    else {
+      if (this.context.currentUser.role === "owner")
+        return (
+          <>
+            <button onClick={e => this.renderList(e)}>
+              Notifications: {this.state.notificationCount}
+            </button>
+            {this.state.notificationDropDown ? (
+              <OwnerNotification
+                newEmployees={this.state.newEmployees}
+                completedProjects={this.state.completedProjects}
+                newProjects={this.state.newProjects}
+                user={this.context.currentUser}
+                updateList={this.updateNewEmployees}
+              />
+            ) : (
+              <></>
+            )}
+          </>
+        );
       return (
         <>
           <button onClick={e => this.renderList(e)}>
             Notifications: {this.state.notificationCount}
           </button>
           {this.state.notificationDropDown ? (
-            <OwnerNotification
-              newEmployees={this.state.newEmployees}
-              completedProjects={this.state.completedProjects}
-              newProjects={this.state.newProjects}
-              user={this.context.currentUser}
-              updateList={this.updateNewEmployees}
+            <JobNotificationList
+              notificationList={this.state.notificationList}
+              updateList={this.updateList}
             />
-          ) : (
-            <></>
-          )}
+          ) : null}
         </>
       );
-    return (
-      <>
-        <button onClick={e => this.renderList(e)}>
-          Notifications: {this.state.notificationCount}
-        </button>
-        {this.state.notificationDropDown ? (
-          <JobNotificationList
-            notificationList={this.state.notificationList}
-            updateList={this.updateList}
-          />
-        ) : null}
-      </>
-    );
+    }
   }
 }

@@ -113,7 +113,13 @@ export default class Jobs extends Component {
           </div>
           <ul className="Jobs__list">
             {jobs.length > 0 ? (
-              jobs.map(job => <JobItem projectId={this.props.projectId} job={job} key={job.id} />)
+              jobs.map(job => (
+                <JobItem
+                  projectId={this.props.projectId}
+                  job={job}
+                  key={job.id}
+                />
+              ))
             ) : (
               <span>
                 There are currently no tasks to display for this project.

@@ -93,7 +93,7 @@ const LogHours = props => {
       </Label>
       <Label htmlFor="job_hours">
         Number of Hours Worked:
-        <input name="job_hours" type="number" placeholder={0} min="1" max={getMaxHours()} {...bindHours} />
+        <Input name="job_hours" type="number" placeholder={0} min="1" max={getMaxHours()} {...bindHours} />
       </Label>
       <div>{renderJobHours()}</div>
       {job === "..." || job === "" ? (

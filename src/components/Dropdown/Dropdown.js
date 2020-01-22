@@ -85,6 +85,7 @@ export default class Dropdown extends Component {
     const { selectedOption, employees } = this.state
     return (
       <Select
+        className="select"
         value={selectedOption}
         onChange={this.handleChange}
         options={this.populateOptions(employees)}

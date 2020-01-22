@@ -3,6 +3,7 @@ import { useInput } from "../../hooks/useInput";
 import { Label, Input } from "../Form/Form";
 import dbServices from "../../services/dbServices";
 import { AuthContext } from "../../services/Auth";
+import Swal from "sweetalert2";
 
 const LogHours = props => {
   const { currentUser } = useContext(AuthContext);
@@ -52,7 +53,16 @@ const LogHours = props => {
     dbServices
       .editJob(jobObj.id, jobObj)
       .then(setSubmitted(true))
-      .then(props.renderLogHoursForm());
+      .then(props.renderLogHoursForm())
+      .catch(error => {
+        console.warn(error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an issue - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      });
   };
 
   useEffect(() => {

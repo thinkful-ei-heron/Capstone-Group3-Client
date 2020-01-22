@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const styleIconMap = {
-  plus: <FontAwesomeIcon icon={faPlus} />,
-  minus: <FontAwesomeIcon icon={faMinus} />,
-  collapse: <FontAwesomeIcon icon="angle-right" />,
-  expand: <FontAwesomeIcon icon="angle-down" />,
-  edit: <FontAwesomeIcon icon="edit" />,
+  plus: <FontAwesomeIcon className="fa_plus" icon={faPlus} />,
+  minus: <FontAwesomeIcon className="fa_minus" icon={faMinus} />,
+  collapse: <FontAwesomeIcon className="fa_collapse" icon="angle-right" />,
+  expand: <FontAwesomeIcon className="fa_expand" icon="angle-down" />,
+  edit: <FontAwesomeIcon className="fa_edit" icon="edit" />,
   collapseBig: (
     <FontAwesomeIcon
       icon="chevron-up"

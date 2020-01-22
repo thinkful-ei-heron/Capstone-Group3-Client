@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App";
 import { AuthProvider } from "./services/Auth";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import "./reset.css";
 
 import {
   faAngleRight,

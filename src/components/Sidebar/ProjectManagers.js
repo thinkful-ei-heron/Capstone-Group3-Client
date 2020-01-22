@@ -67,7 +67,7 @@ const ProjectManagers = props => {
 
   populateCompleteManagerList();
 
-  return <ul>{renderProjectManagers()}</ul>;
+  return <ul className="Sidebar__list">{renderProjectManagers()}</ul>;
 };
 
 export { ProjectManagers };

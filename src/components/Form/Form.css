@@ -1,3 +1,14 @@
+.Form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  margin: 15px auto;
+  padding: 10px;
+  background-color: white;
+}
+
 label {
   width: 200px;
   margin-right: 10px;

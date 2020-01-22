@@ -18,7 +18,7 @@ const dateConversions = {
   //Convert firestore timestamp to display format
   TStoDisplayDate(ts) {
     const date = ts.toDate();
-    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     const year = date.getFullYear();
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
     const day = date.toJSON().slice(8, 10);

@@ -27,17 +27,24 @@ export default class Header extends Component {
     return (
       <div className="Header__sub_container">
         <div className="Header__user_info">
-          <span>Welcome, {this.context.currentUser.name}!</span>
-          <span>Role: {this.context.currentUser.role}</span>
+          <span test-id="header-name">
+            Welcome, {this.context.currentUser.name}!
+          </span>
+          <span test-id="header-role">
+            Role: {this.context.currentUser.role}
+          </span>
         </div>
         <div className="Header__db_logout">
           <Link to="/dashboard">
-            <h3 className="Header__dashboard">Dashboard</h3>
+            <h3 className="Header__dashboard" id="dashboard-button">
+              Dashboard
+            </h3>
           </Link>
           <Link
             onClick={() => app.auth().signOut()}
             className="Header__btn  Header__alt"
             to="/"
+            test-id="logout-button"
           >
             Log Out
           </Link>
@@ -45,6 +52,12 @@ export default class Header extends Component {
       </div>
     );
   }
+
+  handleLogout = () => {
+    this.props.setPath(null);
+    localStorage.removeItem("path");
+    app.auth().signOut();
+  };
 
   render() {
     return (

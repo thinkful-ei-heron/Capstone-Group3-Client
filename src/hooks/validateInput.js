@@ -1,3 +1,5 @@
+import dateConversions from "../services/dateConversions";
+
 const validateInput = {
   validateJobForm(values) {
     let errors = {};
@@ -108,7 +110,11 @@ const validateInput = {
     if (!values.deadline) {
       errors.deadline = "Deadline is required";
     }
-    if (values.deadline && new Date() > new Date(values.deadline)) {
+    if (
+      values.deadline &&
+      Math.floor(Date.now() / 1000) >
+        dateConversions.dateToTimestamp(new Date(values.deadline)).seconds
+    ) {
       errors.deadline = "Deadline must be in the future";
     }
 

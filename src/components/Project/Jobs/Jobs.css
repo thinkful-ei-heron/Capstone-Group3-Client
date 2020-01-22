@@ -7,9 +7,14 @@
 }
 
 .JobItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.JobItem__container {
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 5% 85% 10%;
+  grid-template-columns: 5% 65% 30%;
   grid-template-rows: 20% 50% 30%;
   align-items: start;
   padding: 10px;
@@ -41,7 +46,8 @@
   grid-column: 1/4;
   grid-row: 3/4;
   justify-self: center;
-  max-width: 150px;
+  display: flex;
+  max-width: 250px;
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -49,13 +55,19 @@
 .ProgressBar__meter {
   height: 20px;
   min-width: 150px;
+  max-width: 150px;
   margin-top: 3px;
+}
+
+.JobItem__date {
+  margin-left: 10px;
 }
 
 .JobItem__buttons {
   grid-column: 3/4;
   grid-row: 1/2;
-  align-self: center;
+  align-self: start;
+  justify-self: end;
 }
 
 .JobItem__edit {
@@ -73,12 +85,13 @@
 
 .JobItem__form {
   grid-column: 1/4;
-  background-color: white;
+  grid-row-start: 4;
 }
 
-@media only screen and (min-width: 750px) {
-  .JobItem {
-    grid-template-columns: 3% 22% 45% 25% 5%;
+@media only screen and (min-width: 1024px) {
+  .JobItem__container {
+    grid-template-columns: 2% 15% calc(100% - 235px - 27%) 235px 10%;
+    grid-template-rows: 100%;
   }
 
   .JobItem__icon {
@@ -102,10 +115,14 @@
     grid-row: 1/2;
   }
 
+  .JobItem__date {
+  }
+
   .JobItem__buttons {
     grid-column: 5/6;
     grid-row: 1/2;
     align-self: start;
+    justify-self: end;
     margin-top: 10px;
   }
 

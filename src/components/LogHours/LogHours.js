@@ -10,8 +10,8 @@ const LogHours = props => {
 
   const { value: hours, bind: bindHours, reset: resetHours } = useInput("");
   const { value: job, bind: bindJob, reset: resetJob } = useInput("");
-  const [submitted, setSubmitted] = useState(false);
 
+  const [submitted, setSubmitted] = useState(false);
 
   const populateSelect = () => {
     return props.jobs.map(job => {
@@ -19,6 +19,18 @@ const LogHours = props => {
         return <option key={job.id}>{job.name}</option>;
       else return null;
     });
+  };
+
+  const getMaxHours = () => {
+    if (job === "..." || !job) return null;
+    else {
+      let selectedJob = props.jobs.find(item => item.name === job);
+      let maxHours =
+        parseInt(selectedJob.total_hours) -
+        parseInt(selectedJob.hours_completed);
+
+      return maxHours;
+    }
   };
 
   const renderJobHours = () => {
@@ -42,12 +54,16 @@ const LogHours = props => {
     let jobObj = props.jobs.find(item => item.name === job);
     let oldHours = parseInt(jobObj.hours_completed);
     let newHours = oldHours + parseInt(hours);
-    let employeeHoursObj = jobObj.employee_hours.find(item => item.name === currentUser.name)
-    let oldEmpHours = parseInt(employeeHoursObj.hours)
-    let newEmpHours = oldEmpHours + parseInt(hours)
-    employeeHoursObj.hours = newEmpHours
-    let index = jobObj.employee_hours.findIndex(item => item.name === employeeHoursObj.name)
-    jobObj.employee_hours[index] = employeeHoursObj
+    let employeeHoursObj = jobObj.employee_hours.find(
+      item => item.name === currentUser.name
+    );
+    let oldEmpHours = parseInt(employeeHoursObj.hours);
+    let newEmpHours = oldEmpHours + parseInt(hours);
+    employeeHoursObj.hours = newEmpHours;
+    let index = jobObj.employee_hours.findIndex(
+      item => item.name === employeeHoursObj.name
+    );
+    jobObj.employee_hours[index] = employeeHoursObj;
     jobObj.hours_completed = newHours;
 
     dbServices
@@ -87,7 +103,14 @@ const LogHours = props => {
       </Label>
       <Label htmlFor="job_hours">
         Number of Hours Worked:
-        <Input name="job_hours" type="number" placeholder={0} {...bindHours} />
+        <Input
+          name="job_hours"
+          type="number"
+          placeholder={0}
+          min="1"
+          max={getMaxHours()}
+          {...bindHours}
+        />
       </Label>
       <div>{renderJobHours()}</div>
       {job === "..." || job === "" ? (

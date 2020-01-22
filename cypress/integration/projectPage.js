@@ -23,7 +23,9 @@ describe("navigate to a project", () => {
   });
 
   it("Renders correct project", () => {
-    cy.get("[test-id=project-link]").click();
+    cy.get("[test-id=project-link]")
+      .first()
+      .click();
     cy.get("[test-id=projectContainer]")
       .invoke("attr", "test-data")
       .then(projId => {

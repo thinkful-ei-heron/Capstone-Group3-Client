@@ -25,8 +25,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "react-test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build:testConfig": "cypress-firebase createTestEnvFile",
+    "test": "npm run build:testConfig && cypress run",
+    "test:open": "npm run build:testConfig && cypress open",
+    "test:stage": "npm run test -- --env envName=stage",
+    "test:open:stage": "npm run test:open -- --env envName=stage"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,6 +49,8 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^3.8.2",
+    "cypress-firebase": "^0.7.0",
     "react-responsive-select": "^5.1.0"
   }
 }

@@ -88,25 +88,6 @@ export default class Statistics extends Component {
         }
       ]
     }
-    // employeeHours: {
-    //   labels: ["Reif", "Balay", "Dan", "Alex", "Adam"],
-    //   datasets: [
-    //     {
-    //       label: `Employee Job Hours`,
-    //       data: [8, 8, 7, 6, 3],
-    //       backgroundColor: [
-    //         "rgba(255, 99, 132, 0.6)",
-    //         "rgba(54, 162, 235, 0.6)",
-    //         "rgba(255, 206, 86, 0.6)",
-    //         "rgba(75, 192, 192, 0.6)",
-    //         "rgba(153, 102, 255, 0.6)",
-    //         "rgba(255, 159, 64, 0.6)",
-    //         "rgba(255, 99, 132, 0.6)"
-    //       ]
-    //     }
-    //   ]
-    // },
-    // jobs: []
   };
 
   componentDidMount = async () => {
@@ -178,17 +159,6 @@ export default class Statistics extends Component {
           }
         ]
       },
-      // employeeHours: {
-      //   labels: employeeLabels,
-      //   datasets: [
-      //     {
-      //       label: this.state.employeeHours.datasets[0].label,
-      //       data: employeeHours,
-      //       backgroundColor: this.state.employeeHours.datasets[0]
-      //         .backgroundColor
-      //     }
-      //   ]
-      // }
     });
   };
 
@@ -196,10 +166,8 @@ export default class Statistics extends Component {
     return (
       <div className="Statistics">
         <h5>STATISTICS</h5>
-        <Bar className="due" data={this.state.jobDue} />
-        <Bar className="history" data={this.state.jobHistory} />
-        
-        {/* <Pie className="employeeHours" data={this.state.employeeHours} /> */}
+        <Bar className="due" data={this.state.jobDue} options={{ maintainAspectRatio: false }}/>
+        <Bar className="history" data={this.state.jobHistory} options={{ maintainAspectRatio: false }} />
       </div>
     );
   }

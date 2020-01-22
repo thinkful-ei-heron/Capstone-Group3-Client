@@ -47,6 +47,9 @@ const NewJob = props => {
     let status = "in progress";
     let edit = null;
     let alert = [];
+    let employee_hours = []
+    console.log(employees)
+    employees.forEach(emp => employee_hours.push({name: emp, hours: 0}))
 
     if (props.job) {
       if (props.job.status === "edit request") status = "in progress";
@@ -78,9 +81,10 @@ const NewJob = props => {
       status,
       id,
       edit,
-      alert
+      alert,
+      employee_hours
     };
-
+    console.log(jobObj)
     if (props.job) {
       try {
         console.log(jobObj);

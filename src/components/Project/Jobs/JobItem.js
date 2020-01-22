@@ -6,7 +6,9 @@ import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
 import { AuthContext } from "../../../services/Auth";
 import StyleIcon from "../../StyleIcon/StyleIcon";
 import dateConversions from "../../../services/dateConversions";
+import { Bar, Line, Pie } from "react-chartjs-2";
 import Swal from "sweetalert2";
+
 
 class JobItem extends Component {
   constructor(props) {
@@ -14,11 +16,53 @@ class JobItem extends Component {
     this.state = {
       expandJob: false,
       showEditForm: false,
-      showWorkerEditForm: false
+      showWorkerEditForm: false,
+      employeeHours: {
+        labels: [],
+        datasets: [
+          {
+            label: `Logged Hours by Employee`,
+            data: [],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+              "rgba(255, 159, 64, 0.6)",
+              "rgba(255, 99, 132, 0.6)"
+            ]
+          }
+        ]
+      }
     };
   }
 
   static contextType = AuthContext;
+
+  componentDidMount = async () => {
+    let employeeHours = [];
+    let labels = [];
+    this.props.job.employee_hours.forEach(emp => {
+      labels.push(emp.name);
+      employeeHours.push(emp.hours);
+    });
+    if (employeeHours.every(item => item === 0)) {
+      employeeHours = []
+    }
+    await this.setState({
+      employeeHours: {
+        labels: labels,
+        datasets: [
+          {
+            label: this.state.employeeHours.datasets[0].label,
+            data: employeeHours,
+            backgroundColor: this.state.employeeHours.datasets[0].backgroundColor
+          }
+        ],
+      }
+    });
+  };
 
   handleApprovalSubmit = async (id, status, approval = false) => {
     try {
@@ -165,6 +209,7 @@ class JobItem extends Component {
             <div>
               <span>Est. Progress</span>
               <ProgressBar percentage={progress} />
+              {this.state.employeeHours.datasets[0].data.length !== 0 ? <Pie data={this.state.employeeHours} options={{ maintainAspectRatio: false }}/> : <></>}
             </div>
             <span className="JobItem__date">
               Due: {dateConversions.TStoDisplayDate(job.deadline)}

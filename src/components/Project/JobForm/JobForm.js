@@ -7,6 +7,7 @@ import useFormValidation from "../../../hooks/useFormValidation";
 import validateInput from "../../../hooks/validateInput";
 import "./JobForm.css";
 import dateConversions from "../../../services/dateConversions";
+import Swal from "sweetalert2";
 
 const NewJob = props => {
   const [selected, setSelected] = useState(0);
@@ -16,7 +17,9 @@ const NewJob = props => {
   const getEmployees = () => {
     if (props.job) {
       let workers = [];
-      props.job.project_workers.forEach(worker => workers.push({ value: worker, label: worker }));
+      props.job.project_workers.forEach(worker =>
+        workers.push({ value: worker, label: worker })
+      );
       return workers;
     }
   };
@@ -34,21 +37,24 @@ const NewJob = props => {
     if (selected) selected.map(itm => employees.push(itm.value));
 
     let projectId = props.job ? props.job.project_id : props.projectId;
-    let projectManager = props.job ? props.job.project_manager : props.project.project_manager;
+    let projectManager = props.job
+      ? props.job.project_manager
+      : props.project.project_manager;
     let id = props.job ? props.job.id : null;
     let approval = props.job ? props.job.approval : false;
-    let date_created = props.job ? props.job.date_created : dateConversions.dateToTimestamp(new Date());
+    let date_created = props.job ? props.job.date_created : new Date();
     let hours_completed = props.job ? props.job.hours_completed : 0;
-    let status = 'in progress';
+    let status = "in progress";
     let edit = null;
     let alert = [];
 
     if (props.job) {
-      if (props.job.status === 'edit request') status = 'in progress';
+      if (props.job.status === "edit request") status = "in progress";
       else status = props.job.status;
 
       employees.map(employee => {
-        if (!props.job.project_workers.includes(employee)) return alert.push(employee);
+        if (!props.job.project_workers.includes(employee))
+          return alert.push(employee);
         else return null;
       });
     } else {
@@ -76,18 +82,50 @@ const NewJob = props => {
     };
 
     if (props.job) {
-      await dbServices.editJob(id, jobObj);
+      try {
+        await dbServices.editJob(id, jobObj);
+      } catch (error) {
+        console.warn(error);
+        Swal.fire({
+          title: "Error!",
+          text:
+            "There was an issue editing this task - please refresh the page and try again. 1",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      }
     } else {
-      await dbServices.addJob(jobObj, projectId);
+      console.log(jobObj, projectId);
+      try {
+        await dbServices.addJob(jobObj, projectId);
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an issue - please refresh the page and try again. 2",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      }
     }
 
     let updatedProjectWorkers = null;
 
     if (props.job) {
       let projects = [];
-      await dbServices
-        .getProjectById(props.job.project_id, currentUser.org)
-        .then(project => projects.push(project.data()));
+      try {
+        await dbServices
+          .getProjectById(props.job.project_id, currentUser.org)
+          .then(project => projects.push(project.data()));
+      } catch (error) {
+        console.warn(error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an issue - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      }
       let project = projects[0];
       updatedProjectWorkers = project.project_workers;
     } else {
@@ -100,11 +138,22 @@ const NewJob = props => {
       } else return null;
     });
 
-    await dbServices
-      .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
-      .then(() => {
-        props.showJobForm();
+    try {
+      await dbServices
+        .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
+        .then(() => {
+          props.showJobForm();
+        });
+    } catch (error) {
+      console.warn(error);
+      Swal.fire({
+        title: "Error!",
+        text:
+          "There was an issue assigning employees to this project - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
       });
+    }
   };
 
   const {
@@ -124,7 +173,7 @@ const NewJob = props => {
     <>
       <form onSubmit={handleSubmit} className="Form">
         <fieldset>
-          <legend>{props.projectId ? 'Add New Task' : 'Edit Task'}</legend>
+          <legend>{props.projectId ? "Add New Task" : "Edit Task"}</legend>
           <div className="input">
             <Label htmlFor="name">Task Name: </Label>
             <Input

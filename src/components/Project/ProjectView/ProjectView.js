@@ -9,6 +9,7 @@ import Sidebar from "../../Sidebar/Sidebar";
 import JobForm from "../JobForm/JobForm";
 import dbServices from "../../../services/dbServices";
 import dateConversions from "../../../services/dateConversions";
+import Swal from "sweetalert2";
 import { CatchAll } from "../../CatchAll/CatchAll";
 
 export default class ProjectView extends Component {
@@ -21,7 +22,8 @@ export default class ProjectView extends Component {
       loading: true,
       toggleState: false,
       progress: 0,
-      total: 0
+      total: 0,
+      error: null
     };
   }
 
@@ -62,12 +64,25 @@ export default class ProjectView extends Component {
   };
 
   async componentDidMount() {
-    this.unsubscribe = dbServices.projectsListener(this.context.currentUser.org, this.props.id).onSnapshot(
-      doc => {
-        this.updateProject(doc.data());
-      },
-      error => console.error(error)
-    );
+    try {
+      this.unsubscribe = dbServices
+        .projectsListener(this.context.currentUser.org, this.props.id)
+        .onSnapshot(doc => {
+          this.updateProject(doc.data());
+        });
+    } catch (error) {
+      this.setState({
+        error: "Error"
+      });
+      console.warn(error);
+      Swal.fire({
+        title: "Error!",
+        text:
+          "There was an issue loading this project's information - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -84,8 +99,10 @@ export default class ProjectView extends Component {
     const { project, showJobForm } = this.state;
     const user = this.context.currentUser;
 
-    if (this.state.loading) {
+    if (this.state.loading && !this.state.error) {
       return <Loading />;
+    } else if (this.state.error) {
+      return <h2>Project was unable to load</h2>;
     } else {
       return (
         <>
@@ -109,13 +126,15 @@ export default class ProjectView extends Component {
                 />
               </div>
               <div id="project_deadline">
-                <span>Deadline: {dateConversions.TStoDisplayDate(project.deadline)}</span>
+                <span>
+                  Deadline: {dateConversions.TStoDisplayDate(project.deadline)}
+                </span>
               </div>
             </header>
           </div>
           <div id="projectView_main">
             <div className="ProjectView__jobs_stats">
-              {user.role === 'project worker' ? <></> : <Statistics />}
+              {user.role === "project worker" ? <></> : <Statistics />}
               <div className="ProjectView__jobs_header">
                 {user.role === 'project worker' ? <h3>Your Tasks</h3> : <h3>Tasks</h3>}
                 {user.role === 'project worker' ? '' : <button onClick={this.showJobForm}>Add Task</button>}

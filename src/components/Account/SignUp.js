@@ -70,24 +70,28 @@ const SignUp = ({ history }, props) => {
           });
         break;
       case "worker":
-        registerWorker(info).then(() =>
-          dbServices
-            .createUserInOrg({ ...infoNoPass, role: "project worker" }, orgName)
-        )
-        .catch(error => {
-          console.warn(error)
-          Swal.fire({
-            title: "Error!",
-            text: 'There was an issue with registration - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
-        });
+        registerWorker(info)
+          .then(() =>
+            dbServices.createUserInOrg(
+              { ...infoNoPass, role: "project worker" },
+              orgName
+            )
+          )
+          .catch(error => {
+            console.warn(error);
+            Swal.fire({
+              title: "Error!",
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
+          });
         break;
       case "manager":
-        registerProjectManager(info).then(() =>
-          dbServices
-            .createUserInOrg(
+        registerProjectManager(info)
+          .then(() =>
+            dbServices.createUserInOrg(
               { ...infoNoPass, role: "project manager" },
               orgName
             )
@@ -108,7 +112,7 @@ const SignUp = ({ history }, props) => {
   };
 
   const renderOrgSelect = () => {
-    if (role === 'owner') {
+    if (role === "owner") {
       return (
         <Input
           type="text"
@@ -118,7 +122,7 @@ const SignUp = ({ history }, props) => {
           onBlur={handleBlur}
           placeholder="Organization name"
         />
-      )
+      );
     }
     return (
       <select
@@ -141,15 +145,22 @@ const SignUp = ({ history }, props) => {
           <></>
         )}
       </select>
-    )
-  }
+    );
+  };
 
   const changeRole = (e, role) => {
     e.stopPropagation();
-    setRole(role)
-  }
+    setRole(role);
+  };
 
-  const { handleSubmit, errors, handleChange, values, handleBlur, isSubmitting } = useFormValidation(
+  const {
+    handleSubmit,
+    errors,
+    handleChange,
+    values,
+    handleBlur,
+    isSubmitting
+  } = useFormValidation(
     inputValues,
     validateInput.validateSignup,
     handleSignUp
@@ -161,11 +172,29 @@ const SignUp = ({ history }, props) => {
       <form className="Login__form" onSubmit={handleSubmit}>
         <h1>I am a: </h1>
         <div className="radio-toolbar">
-          <Input type="radio" value="worker" id="check_worker" name="entry_type" onChange={e => changeRole(e, 'worker')} />
+          <Input
+            type="radio"
+            value="worker"
+            id="check_worker"
+            name="entry_type"
+            onChange={e => changeRole(e, "worker")}
+          />
           <Label htmlFor="check_worker">Project Worker</Label>
-          <Input type="radio" value="manager" id="check_manager" name="entry_type" onChange={e => changeRole(e, 'manager')} />
+          <Input
+            type="radio"
+            value="manager"
+            id="check_manager"
+            name="entry_type"
+            onChange={e => changeRole(e, "manager")}
+          />
           <Label htmlFor="check_manager">Project Manager</Label>
-          <Input type="radio" value="owner" id="check_owner" name="entry_type" onChange={e => changeRole(e, 'owner')} />
+          <Input
+            type="radio"
+            value="owner"
+            id="check_owner"
+            name="entry_type"
+            onChange={e => changeRole(e, "owner")}
+          />
           <Label htmlFor="check_owner">Company Owner</Label>
         </div>
         <Label>

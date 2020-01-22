@@ -9,11 +9,13 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
+    "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "firebase": "^7.6.1",
     "firebase-admin": "^8.9.0",
     "multi-select-react": "^0.1.8",
     "react": "^16.12.0",
+    "react-chartjs-2": "^2.8.0",
     "react-dom": "^16.12.0",
     "react-fontawesome": "^1.7.1",
     "react-loading": "^2.0.3",
@@ -26,8 +28,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "react-test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build:testConfig": "cypress-firebase createTestEnvFile",
+    "test": "npm run build:testConfig && cypress run",
+    "test:open": "npm run build:testConfig && cypress open",
+    "test:stage": "npm run test -- --env envName=stage",
+    "test:open:stage": "npm run test:open -- --env envName=stage"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,6 +52,8 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^3.8.2",
+    "cypress-firebase": "^0.7.0",
     "react-responsive-select": "^5.1.0"
   }
 }

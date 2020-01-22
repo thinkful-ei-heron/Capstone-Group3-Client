@@ -6,6 +6,7 @@ import app from "../../services/base.js";
 import dbServices from "../../services/dbServices";
 import Swal from "sweetalert2";
 import { functions } from "firebase";
+import Sidebar from "../Sidebar/Sidebar";
 
 const Profile = props => {
   const { currentUser } = useContext(AuthContext);
@@ -154,6 +155,7 @@ const Profile = props => {
             <></>
           )}
         </div>
+        <Sidebar />
       </>
     );
   return <></>;

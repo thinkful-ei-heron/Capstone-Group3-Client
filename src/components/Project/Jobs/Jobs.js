@@ -22,13 +22,15 @@ export default class Jobs extends Component {
   onJobsUpdate = querySnapshot => {
     const jobs = [];
 
-    if (this.context.currentUser.role === 'project worker') {
+    if (this.context.currentUser.role === "project worker") {
       querySnapshot.forEach(doc => {
-        if (doc.data().project_workers.includes(this.context.currentUser.name)) {
+        if (
+          doc.data().project_workers.includes(this.context.currentUser.name)
+        ) {
           jobs.push(doc.data());
         }
       });
-    } else if (this.context.currentUser.role === 'project manager') {
+    } else if (this.context.currentUser.role === "project manager") {
       querySnapshot.forEach(doc => {
         if (doc.data().project_manager === this.context.currentUser.name) {
           jobs.push(doc.data());
@@ -96,19 +98,32 @@ export default class Jobs extends Component {
         <>
           <div>
             <div>
-              {user.role === 'project worker' ? (
+              {user.role === "project worker" ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>
               )}
             </div>
-            {this.state.showLogHours && <LogHours jobs={jobs} renderLogHoursForm={this.renderLogHoursForm} />}
+            {this.state.showLogHours && (
+              <LogHours
+                jobs={jobs}
+                renderLogHoursForm={this.renderLogHoursForm}
+              />
+            )}
           </div>
           <ul className="Jobs__list">
             {jobs.length > 0 ? (
-              jobs.map(job => <JobItem job={job} key={job.id} />)
+              jobs.map(job => (
+                <JobItem
+                  projectId={this.props.projectId}
+                  job={job}
+                  key={job.id}
+                />
+              ))
             ) : (
-              <span>There are currently no tasks to display for this project.</span>
+              <span>
+                There are currently no tasks to display for this project.
+              </span>
             )}
           </ul>
         </>

@@ -254,7 +254,7 @@ export default class Dashboard extends Component {
                       <h1>Personnel</h1>
                     </div>
                   </div>
-                  <Sidebar />
+                  {this.state.expandPersonnel && <Sidebar />}
                 </section>
               </div>
             </section>

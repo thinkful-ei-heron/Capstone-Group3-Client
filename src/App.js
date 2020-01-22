@@ -16,10 +16,14 @@ import { CatchAll } from "./components/CatchAll/CatchAll";
 const App = props => {
   const { currentUser } = useContext(AuthContext);
 
+  if (currentUser === null) console.log(null);
+  else console.log("found user");
+
   const initialPath = () => {
     if (localStorage.getItem("path")) return localStorage.getItem("path");
     return null;
   };
+
   const [path, setPath] = useState(initialPath);
 
   useEffect(() => {
@@ -51,6 +55,8 @@ const App = props => {
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" setPath={setPath} component={Login} />
           <PrivateRoute
+            location={props.location}
+            setPath={setPath}
             path="/profile/:id"
             component={props => <Profile id={props.match.params.id} />}
           />

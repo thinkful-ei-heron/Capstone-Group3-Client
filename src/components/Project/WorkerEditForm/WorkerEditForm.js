@@ -26,6 +26,7 @@ const WorkerEditForm = props => {
       total_hours: parseInt(total_hours),
       note: note,
       employee: currentUser.name
+      // logged_hours: {name: currentUser.name, hours:}
     };
     try {
       await dbServices.updateEdit(

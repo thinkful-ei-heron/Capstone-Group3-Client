@@ -43,19 +43,19 @@ const LogHours = props => {
     let newHours = oldHours + parseInt(hours);
     jobObj.hours_completed = newHours;
 
-      dbServices
+    dbServices
       .editJob(jobObj.id, jobObj)
       .then(setSubmitted(true))
       .then(props.renderLogHoursForm())
       .catch(error => {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: "Error!",
-          text: 'There was an issue - please refresh the page and try again.',
-          icon: 'error',
-          confirmButtonText: 'Close'
-        })
-      })
+          text: "There was an issue - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      });
   };
 
   useEffect(() => {

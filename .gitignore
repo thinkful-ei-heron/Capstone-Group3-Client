@@ -3,5 +3,8 @@ node_modules
 ./.env
 .replit
 ./.replit
-serviceAccount.json
+cypress.env.json
 .firebaserc
+serviceAccount.json
+cypress/config.json
+cypress/support/commands.js

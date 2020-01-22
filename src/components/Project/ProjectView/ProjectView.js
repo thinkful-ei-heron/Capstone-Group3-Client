@@ -106,15 +106,17 @@ export default class ProjectView extends Component {
     } else {
       return (
         <>
-          <div>
-            <header className="App__org_header" id="company_header">
+          <div test-id="projectContainer" test-data={project.id}>
+            <header id="company_header">
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
             <header className="ProjectView__header" id="project_header">
               <div id="name_manager">
                 <h3 id="projectName">{project.name}</h3>
-                <h4 id="projectManager">Manager: {project.project_manager}</h4>
+                <h4 id="projectManager" test-id="manager-name">
+                  Manager: {project.project_manager}
+                </h4>
               </div>
               <div id="project_description">
                 <span>{project.description}</span>
@@ -134,10 +136,22 @@ export default class ProjectView extends Component {
           </div>
           <div id="projectView_main">
             <div className="ProjectView__jobs_stats">
-              {user.role === "project worker" ? <></> : <Statistics />}
+              {user.role === "project worker" ? (
+                <></>
+              ) : (
+                <Statistics {...this.props} />
+              )}
               <div className="ProjectView__jobs_header">
-                {user.role === 'project worker' ? <h3>Your Tasks</h3> : <h3>Tasks</h3>}
-                {user.role === 'project worker' ? '' : <button onClick={this.showJobForm}>Add Task</button>}
+                {user.role === "project worker" ? (
+                  <h3>Your Tasks</h3>
+                ) : (
+                  <h3>Tasks</h3>
+                )}
+                {user.role === "project worker" ? (
+                  ""
+                ) : (
+                  <button onClick={this.showJobForm}>Add Task</button>
+                )}
               </div>
               {showJobForm && (
                 <JobForm

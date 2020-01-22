@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const useFormValidation = (initialState, validate, runOnSubmit) => {
   const [values, setValues] = useState(initialState);
-  const [errors, setErrors] = useState({}); 
+  const [errors, setErrors] = useState({});
 
   const [touched, setTouched] = useState([]);
   const [isSubmitting, setSubmitting] = useState(false);
@@ -52,7 +52,7 @@ const useFormValidation = (initialState, validate, runOnSubmit) => {
     setErrors(validationErrors);
     setSubmitting(true);
   };
-  
+
   return {
     handleSubmit,
     handleChange,

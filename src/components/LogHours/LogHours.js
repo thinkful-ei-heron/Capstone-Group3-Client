@@ -12,7 +12,7 @@ const LogHours = props => {
   const { value: job, bind: bindJob, reset: resetJob } = useInput("");
 
   const [submitted, setSubmitted] = useState(false);
-  const [totalHours, setTotalHours] = useState(null);
+
 
   const populateSelect = () => {
     return props.jobs.map(job => {
@@ -53,22 +53,31 @@ const LogHours = props => {
     let jobObj = props.jobs.find(item => item.name === job);
     let oldHours = parseInt(jobObj.hours_completed);
     let newHours = oldHours + parseInt(hours);
+    let employeeHoursObj = jobObj.employee_hours.find(
+      item => item.name === currentUser.name
+    );
+    let oldEmpHours = parseInt(employeeHoursObj.hours);
+    let newEmpHours = oldEmpHours + parseInt(hours);
+    employeeHoursObj.hours = newEmpHours;
+    let index = jobObj.employee_hours.findIndex(
+      item => item.name === employeeHoursObj.name
+    );
+    jobObj.employee_hours[index] = employeeHoursObj;
     jobObj.hours_completed = newHours;
 
-      dbServices
+    dbServices
       .editJob(jobObj.id, jobObj)
       .then(setSubmitted(true))
       .then(props.renderLogHoursForm())
       .catch(error => {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: "Error!",
-          text: 'There was an issue - please refresh the page and try again.',
-          icon: 'error',
-          confirmButtonText: 'Close'
-        })
-      })
-
+          text: "There was an issue - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      });
   };
 
   useEffect(() => {

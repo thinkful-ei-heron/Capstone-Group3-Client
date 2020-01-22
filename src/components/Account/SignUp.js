@@ -59,13 +59,14 @@ const SignUp = ({ history }, props) => {
             dbServices.createOwner({ ...infoNoPass, role: "owner" }, info.org)
           )
           .catch(error => {
-            console.warn(error)
+            console.warn(error);
             Swal.fire({
               title: "Error!",
-              text: 'There was an issue with registration - please refresh the page and try again.',
-              icon: 'error',
-              confirmButtonText: 'Close'
-            })
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
           });
         break;
       case "worker":
@@ -90,16 +91,17 @@ const SignUp = ({ history }, props) => {
               { ...infoNoPass, role: "project manager" },
               orgName
             )
-        )
-        .catch(error => {
-          console.warn(error)
-          Swal.fire({
-            title: "Error!",
-            text: 'There was an issue with registration - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
-        });
+          )
+          .catch(error => {
+            console.warn(error);
+            Swal.fire({
+              title: "Error!",
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
+          });
     }
     history.push("/login");
     return `${email} signed up`;
@@ -207,7 +209,9 @@ const SignUp = ({ history }, props) => {
           {renderOrgSelect()}
           {errors.orgName && <p>*{errors.orgName}</p>}
         </Label>
-        <button type="submit" disabled={isSubmitting}>Sign Up</button>
+        <button type="submit" disabled={isSubmitting}>
+          Sign Up
+        </button>
       </form>
     </div>
   );

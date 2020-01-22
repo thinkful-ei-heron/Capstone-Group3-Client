@@ -66,23 +66,22 @@ export default class ProjectView extends Component {
   async componentDidMount() {
     try {
       this.unsubscribe = dbServices
-      .projectsListener(this.context.currentUser.org, this.props.id)
-      .onSnapshot(
-        doc => {
+        .projectsListener(this.context.currentUser.org, this.props.id)
+        .onSnapshot(doc => {
           this.updateProject(doc.data());
-        }
-      );
+        });
     } catch (error) {
       this.setState({
-        error: 'Error'
-      })
-      console.warn(error)
-        Swal.fire({
-          title: "Error!",
-          text: 'There was an issue loading this project\'s information - please refresh the page and try again.',
-          icon: 'error',
-          confirmButtonText: 'Close'
-        })
+        error: "Error"
+      });
+      console.warn(error);
+      Swal.fire({
+        title: "Error!",
+        text:
+          "There was an issue loading this project's information - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
     }
   }
 
@@ -103,16 +102,16 @@ export default class ProjectView extends Component {
     if (this.state.loading && !this.state.error) {
       return <Loading />;
     } else if (this.state.error) {
-      return <h2>Project was unable to load</h2>
+      return <h2>Project was unable to load</h2>;
     } else {
       return (
         <>
           <div>
-            <header id="company_header">
+            <header className="App__org_header" id="company_header">
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
-            <header id="project_header">
+            <header className="ProjectView__header" id="project_header">
               <div id="name_manager">
                 <h3 id="projectName">{project.name}</h3>
                 <h4 id="projectManager">Manager: {project.project_manager}</h4>
@@ -134,9 +133,9 @@ export default class ProjectView extends Component {
             </header>
           </div>
           <div id="projectView_main">
-            <div id="jobs_stats_container">
+            <div className="ProjectView__jobs_stats">
               {user.role === "project worker" ? <></> : <Statistics />}
-              <div id="jobs_container">
+              <div className="ProjectView__jobs_header">
                 {user.role === "project worker" ? (
                   <h3>Your Tasks</h3>
                 ) : (
@@ -145,10 +144,10 @@ export default class ProjectView extends Component {
                 {user.role === "project worker" ? (
                   ""
                 ) : (
-                  <button onClick={this.showJobForm}>Add Task</button>
+                  <button onClick={this.showJobForm}>Add Job</button>
                 )}
               </div>
-              {showJobForm ? (
+              {showJobForm && (
                 <JobForm
                   {...this.props}
                   setJob={this.setJob}
@@ -156,12 +155,10 @@ export default class ProjectView extends Component {
                   showJobForm={this.showJobForm}
                   projectId={this.props.id}
                 />
-              ) : (
-                ""
               )}
               <Jobs projectId={this.props.id} getProgress={this.getProgress} />
             </div>
-            <div id="sidebar_container">
+            <div className="ProjectView__sidebar">
               <Sidebar view="project" project={this.state.project} />
               <h1>Sidebar</h1>
             </div>

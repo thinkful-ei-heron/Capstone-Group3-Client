@@ -10,7 +10,7 @@ const PrivateRoute = ({
 }) => {
   const { currentUser } = useContext(AuthContext);
 
-  //if (currentUser) setPath(location.pathname);
+  if (currentUser) setPath(location.pathname);
 
   return (
     <Route

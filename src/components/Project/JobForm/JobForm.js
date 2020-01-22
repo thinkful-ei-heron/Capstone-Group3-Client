@@ -89,21 +89,24 @@ const NewJob = props => {
         Swal.fire({
           title: "Error!",
           text:
-            "There was an issue editing this task - please refresh the page and try again.",
+            "There was an issue editing this task - please refresh the page and try again. 1",
           icon: "error",
           confirmButtonText: "Close"
         });
       }
     } else {
-      await dbServices.addJob(jobObj, projectId).catch(error => {
-        if (error)
-          Swal.fire({
-            title: "Error!",
-            text: "There was an issue - please refresh the page and try again.",
-            icon: "error",
-            confirmButtonText: "Close"
-          });
-      });
+      console.log(jobObj, projectId);
+      try {
+        await dbServices.addJob(jobObj, projectId);
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an issue - please refresh the page and try again. 2",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      }
     }
 
     let updatedProjectWorkers = null;

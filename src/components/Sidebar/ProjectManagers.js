@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 //import FirebaseContext from "../../services/context";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const ProjectManagers = props => {
   //const context = useContext(FirebaseContext);
@@ -44,18 +44,14 @@ const ProjectManagers = props => {
   const renderProjectManagers = () => {
     if (completeManagerList.length === 0) return <></>;
     return completeManagerList.map((manager, index) => {
-      let itemId = "manager" + index;
+      let itemId = 'manager' + index;
       return (
         <li key={index}>
           <button id={itemId} onClick={e => props.toggleExpand(e)}>
             EXPAND
           </button>
           <h4>{Object.keys(manager)[0]}</h4>
-          {expanded.includes(itemId) ? (
-            <ul>{renderPMProjects(manager)}</ul>
-          ) : (
-            <></>
-          )}
+          {expanded.includes(itemId) ? <ul>{renderPMProjects(manager)}</ul> : <></>}
         </li>
       );
     });
@@ -67,7 +63,7 @@ const ProjectManagers = props => {
 
   populateCompleteManagerList();
 
-  return <ul>{renderProjectManagers()}</ul>;
+  return <ul className="Sidebar__list">{renderProjectManagers()}</ul>;
 };
 
 export { ProjectManagers };

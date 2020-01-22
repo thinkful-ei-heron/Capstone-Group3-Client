@@ -30,10 +30,10 @@ export default class Dropdown extends Component {
           console.warn(error);
           Swal.fire({
             title: "Error!",
-            text: 'There was an issue - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
+            text: "There was an issue - please refresh the page and try again.",
+            icon: "error",
+            confirmButtonText: "Close"
+          });
         });
     }
 
@@ -49,10 +49,10 @@ export default class Dropdown extends Component {
           console.warn(error);
           Swal.fire({
             title: "Error!",
-            text: 'There was an issue - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
+            text: "There was an issue - please refresh the page and try again.",
+            icon: "error",
+            confirmButtonText: "Close"
+          });
         });
     }
 
@@ -80,6 +80,9 @@ export default class Dropdown extends Component {
   };
 
   render() {
+    console.log(
+      "In dropdown defaultValue for pm is " + this.props.defaultValue
+    );
     const { selectedOption, employees } = this.state;
     return (
       <Select

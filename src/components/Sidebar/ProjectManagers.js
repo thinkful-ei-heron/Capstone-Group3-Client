@@ -51,11 +51,7 @@ const ProjectManagers = props => {
             EXPAND
           </button>
           <h4>{Object.keys(manager)[0]}</h4>
-          {expanded.includes(itemId) ? (
-            <ul>{renderPMProjects(manager)}</ul>
-          ) : (
-            <></>
-          )}
+          {expanded.includes(itemId) ? <ul>{renderPMProjects(manager)}</ul> : <></>}
         </li>
       );
     });
@@ -67,7 +63,7 @@ const ProjectManagers = props => {
 
   populateCompleteManagerList();
 
-  return <ul>{renderProjectManagers()}</ul>;
+  return <ul className="Sidebar__list">{renderProjectManagers()}</ul>;
 };
 
 export { ProjectManagers };

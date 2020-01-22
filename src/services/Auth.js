@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     app.auth().onAuthStateChanged(user => {
-      if (user)
+      if (user) {
         app
           .auth()
           .currentUser.getIdTokenResult()
@@ -22,6 +22,9 @@ export const AuthProvider = ({ children }) => {
           .catch(error => {
             console.warn(error);
           });
+      } else {
+        setCurrentUser(null);
+      }
     });
   }, []);
 

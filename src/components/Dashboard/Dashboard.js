@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { AuthContext } from '../../services/Auth.js';
 import dbServices from '../../services/dbServices';
 import Loading from '../Loading/Loading';
-import NewProject from '../NewProject/NewProject';
+import NewProject from '../Project/NewProject/NewProject';
 import Sidebar from '../Sidebar/Sidebar';
 import StyleIcon from '../StyleIcon/StyleIcon';
-import ProjectBar from '../ProjectBar/ProjectBar';
+import ProjectBar from '../Project/ProjectBar/ProjectBar';
 import JobNotification from '../JobNotification/JobNotification';
 import './Dashboard.css';
 
@@ -116,7 +116,9 @@ export default class Dashboard extends Component {
                     <h1>Projects</h1>
                   </div>
                   {this.state.user.role !== 'project worker' && (
-                    <button onClick={this.toggleNewProj}>NEW</button>
+                    <button className="Dashboard__new" onClick={this.toggleNewProj}>
+                      NEW
+                    </button>
                   )}
                 </div>
                 {this.state.newProj && (
@@ -147,7 +149,11 @@ export default class Dashboard extends Component {
                     ) : (
                       <div className="Dashboard__no_projects">
                         <span className="Dashboard__welcome">Welcome!</span>
-                        <span>You currently have no projects, click the NEW button above to add one.</span>
+                        {this.state.user.role !== 'project worker' ? (
+                          <span>You currently have no projects, click the NEW button above to add one.</span>
+                        ) : (
+                          <span>You are not currently assigned to any projects.</span>
+                        )}
                       </div>
                     )}
                   </div>
@@ -162,7 +168,7 @@ export default class Dashboard extends Component {
                     <h1>Personnel</h1>
                   </div>
                 </div>
-                <Sidebar user={this.state.user} />
+                {this.state.expandPersonnel && <Sidebar />}
               </section>
             </div>
           </section>

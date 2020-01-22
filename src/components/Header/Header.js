@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { AuthContext } from '../../services/Auth';
-import lazy from '../../images/lazy.svg';
-import './Header.css';
-import app from '../../services/base';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../services/Auth";
+import lazy from "../../images/lazy.svg";
+import "./Header.css";
+import app from "../../services/base";
 
 export default class Header extends Component {
   static contextType = AuthContext;

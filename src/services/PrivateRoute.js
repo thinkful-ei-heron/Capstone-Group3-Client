@@ -6,7 +6,6 @@ const PrivateRoute = ({ component: RouteComponent, location, setPath, ...rest })
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) setPath(location.pathname);
-  if (currentUser) console.log(location);
 
   return (
     <Route

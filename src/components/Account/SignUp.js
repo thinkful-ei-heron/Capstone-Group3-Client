@@ -57,53 +57,66 @@ const SignUp = ({ history }, props) => {
             dbServices.createOwner({ ...infoNoPass, role: "owner" }, info.org)
           )
           .catch(error => {
-            console.warn(error)
+            console.warn(error);
             Swal.fire({
               title: "Error!",
-              text: 'There was an issue with registration - please refresh the page and try again.',
-              icon: 'error',
-              confirmButtonText: 'Close'
-            })
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
           });
         break;
       case "/worker-signup":
-        registerWorker(info).then(() =>
-          dbServices
-            .createUserInOrg({ ...infoNoPass, role: "project worker" }, orgName)
-        )
-        .catch(error => {
-          console.warn(error)
-          Swal.fire({
-            title: "Error!",
-            text: 'There was an issue with registration - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
-        });
+        registerWorker(info)
+          .then(() =>
+            dbServices.createUserInOrg(
+              { ...infoNoPass, role: "project worker" },
+              orgName
+            )
+          )
+          .catch(error => {
+            console.warn(error);
+            Swal.fire({
+              title: "Error!",
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
+          });
         break;
       case "/manager-signup":
-        registerProjectManager(info).then(() =>
-          dbServices
-            .createUserInOrg(
+        registerProjectManager(info)
+          .then(() =>
+            dbServices.createUserInOrg(
               { ...infoNoPass, role: "project manager" },
               orgName
             )
-        )
-        .catch(error => {
-          console.warn(error)
-          Swal.fire({
-            title: "Error!",
-            text: 'There was an issue with registration - please refresh the page and try again.',
-            icon: 'error',
-            confirmButtonText: 'Close'
-          })
-        });
+          )
+          .catch(error => {
+            console.warn(error);
+            Swal.fire({
+              title: "Error!",
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
+          });
     }
     history.push("/login");
     return `${email} signed up`;
   };
 
-  const { handleSubmit, errors, handleChange, values, handleBlur, isSubmitting } = useFormValidation(
+  const {
+    handleSubmit,
+    errors,
+    handleChange,
+    values,
+    handleBlur,
+    isSubmitting
+  } = useFormValidation(
     inputValues,
     validateInput.validateSignup,
     handleSignUp
@@ -173,7 +186,9 @@ const SignUp = ({ history }, props) => {
           </select>
           {errors.orgName && <p>*{errors.orgName}</p>}
         </Label>
-        <button type="submit" disabled={isSubmitting}>Sign Up</button>
+        <button type="submit" disabled={isSubmitting}>
+          Sign Up
+        </button>
       </form>
     </div>
   );

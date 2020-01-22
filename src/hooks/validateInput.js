@@ -1,4 +1,4 @@
-import dateConversions from '../services/dateConversions';
+import dateConversions from "../services/dateConversions";
 
 const validateInput = {
   validateJobForm(values) {
@@ -91,27 +91,31 @@ const validateInput = {
     let errors = {};
 
     if (!values.name) {
-      errors.name = 'Project name is required';
+      errors.name = "Project name is required";
     }
     if (values.name && (values.name.length === 0 || !values.name.trim())) {
-      errors.name = 'Project name is required';
+      errors.name = "Project name is required";
     }
 
     if (!values.description) {
-      errors.description = 'Description is required';
+      errors.description = "Description is required";
     }
-    if (values.description && (values.description.length === 0 || !values.description.trim())) {
-      errors.description = 'Description is required';
+    if (
+      values.description &&
+      (values.description.length === 0 || !values.description.trim())
+    ) {
+      errors.description = "Description is required";
     }
 
     if (!values.deadline) {
-      errors.deadline = 'Deadline is required';
+      errors.deadline = "Deadline is required";
     }
     if (
       values.deadline &&
-      Math.floor(Date.now() / 1000) > dateConversions.dateToTimestamp(new Date(values.deadline)).seconds
+      Math.floor(Date.now() / 1000) >
+        dateConversions.dateToTimestamp(new Date(values.deadline)).seconds
     ) {
-      errors.deadline = 'Deadline must be in the future';
+      errors.deadline = "Deadline must be in the future";
     }
 
     return errors;

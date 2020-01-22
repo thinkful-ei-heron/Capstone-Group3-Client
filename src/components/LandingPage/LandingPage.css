@@ -1,7 +1,7 @@
 .LandingPage {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100%;
@@ -15,20 +15,38 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: left;
-  margin-bottom: 40px;
+  align-items: center;
+  justify-content: flex-start;
+  height: 80%;
   font-family: 'Oxygen', sans-serif;
-  font-size: 2.5rem;
-  line-height: 4rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 2.5rem;
   color: #fff;
   z-index: 1;
+}
+
+.LandingPage__hero_text h1 span {
+  display: block;
+}
+
+.LandingPage__blurb {
+  width: 250px;
+  margin-top: 20px;
+  font-size: 1rem;
+  line-height: 1.4rem;
+  padding: 10px;
+  font-family: var(--roboto-slab);
+  font-weight: 500;
+  color: white;
+  background-color: rgba(1, 7, 26, 0.7);
 }
 
 img {
   position: fixed;
   bottom: 0;
   left: 10%;
-  height: 40%;
+  height: 35%;
   z-index: 0;
 }
 
@@ -48,44 +66,41 @@ img {
 }
 
 @media only screen and (min-width: 750px) {
-  .LandingPage h1 {
-    width: 700px;
-    align-self: center;
-  }
-
   .LandingPage__hero_text {
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 2.8rem;
+    font-size: 2.5rem;
+    line-height: 4.5rem;
   }
 
-  .LandingPage__t1 {
-    align-self: start;
-  }
-
-  .LandingPage__t2 {
-    align-self: center;
-  }
-
-  .LandingPage__t3 {
-    align-self: flex-end;
+  .LandingPage__blurb {
+    width: 500px;
+    font-size: 1.6rem;
+    line-height: 2rem;
   }
 
   img {
-    left: 15%;
-    height: 50%;
+    left: 10%;
+    height: 45%;
   }
 }
 
 @media only screen and (min-width: 1024px) {
-  .LandingPage h1 {
-    width: 800px;
-    align-self: center;
+  .LandingPage__hero_text {
+    height: 60%;
+    margin-top: 50px;
   }
 
-  .LandingPage__hero_text {
-    font-size: 3.2rem;
+  .LandingPage__hero_text h1 {
+    display: flex;
+    justify-content: space-between;
+    width: 850px;
+    align-self: center;
+    font-size: 3rem;
+  }
+
+  .LandingPage__blurb {
+    width: 610px;
+    font-size: 1.2rem;
+    margin-top: 30px;
   }
 
   .LandingPage__btn {

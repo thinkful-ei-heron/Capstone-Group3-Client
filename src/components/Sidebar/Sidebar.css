@@ -1,16 +1,29 @@
 .Sidebar {
   width: 100%;
   box-sizing: border-box;
+  background-color: var(--list-odd-color);
 }
 
 .Sidebar__list li {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 5px;
 }
 
+.Sidebar__PM_header,
+.Sidebar__emp_header {
+  background-color: var(--list-even-color);
+  padding: 10px 5px 10px 5px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.Sidebar__PM_header .fa_collapse,
+.Sidebar__PM_header .fa_expand,
+.Sidebar__emp_header .fa_collapse,
+.Sidebar__emp_header .fa_expand {
+  margin-right: 5px;
+}
+
+/*
 .Sidebar__list li:nth-child(even) {
   background-color: var(--list-even-color);
 }
@@ -18,3 +31,4 @@
 .Sidebar__list li:nth-child(odd) {
   background-color: var(--list-odd-color);
 }
+*/

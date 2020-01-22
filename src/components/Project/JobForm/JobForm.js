@@ -16,9 +16,7 @@ const NewJob = props => {
   const getEmployees = () => {
     if (props.job) {
       let workers = [];
-      props.job.project_workers.forEach(worker =>
-        workers.push({ value: worker, label: worker })
-      );
+      props.job.project_workers.forEach(worker => workers.push({ value: worker, label: worker }));
       return workers;
     }
   };
@@ -36,24 +34,21 @@ const NewJob = props => {
     if (selected) selected.map(itm => employees.push(itm.value));
 
     let projectId = props.job ? props.job.project_id : props.projectId;
-    let projectManager = props.job
-      ? props.job.project_manager
-      : props.project.project_manager;
+    let projectManager = props.job ? props.job.project_manager : props.project.project_manager;
     let id = props.job ? props.job.id : null;
     let approval = props.job ? props.job.approval : false;
-    let date_created = props.job ? props.job.date_created : new Date();
+    let date_created = props.job ? props.job.date_created : dateConversions.dateToTimestamp(new Date());
     let hours_completed = props.job ? props.job.hours_completed : 0;
-    let status = "in progress";
+    let status = 'in progress';
     let edit = null;
     let alert = [];
 
     if (props.job) {
-      if (props.job.status === "edit request") status = "in progress";
+      if (props.job.status === 'edit request') status = 'in progress';
       else status = props.job.status;
 
       employees.map(employee => {
-        if (!props.job.project_workers.includes(employee))
-          return alert.push(employee);
+        if (!props.job.project_workers.includes(employee)) return alert.push(employee);
         else return null;
       });
     } else {
@@ -65,7 +60,7 @@ const NewJob = props => {
     const jobObj = {
       approval,
       date_created,
-      deadline: new Date(deadline),
+      deadline: dateConversions.dateToTimestamp(new Date(deadline)),
       description,
       name,
       organization: currentUser.org,
@@ -127,9 +122,9 @@ const NewJob = props => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="newjob__form">
+      <form onSubmit={e => handleSubmit(e).then(setSubmitted(true))} className="Form">
         <fieldset>
-          <legend>{props.projectId ? "Add New Task" : "Edit Task"}</legend>
+          <legend>{props.projectId ? 'Add New Task' : 'Edit Task'}</legend>
           <div className="input">
             <Label htmlFor="name">Task Name: </Label>
             <Input

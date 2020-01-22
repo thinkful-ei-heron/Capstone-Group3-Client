@@ -10,8 +10,10 @@ body {
   --header-bg-color: #5c9ad1;
   --highlight-color: #dc2e5e;
   --oxygen: 'Oxygen', sans-serif;
+  --roboto-slab: 'Roboto Slab', serif;
   --text-color: #000925;
   font-size: 14px;
+  overflow-y: visible;
 }
 
 body {
@@ -28,12 +30,6 @@ a,
 a:hover,
 a:visited {
   text-decoration: none;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 
 .Header {

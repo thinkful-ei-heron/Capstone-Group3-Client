@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { AuthContext } from "../../services/Auth.js";
-import dbServices from "../../services/dbServices";
-import Loading from "../Loading/Loading";
-import NewProject from "../Project/NewProject/NewProject";
-import Sidebar from "../Sidebar/Sidebar";
-import StyleIcon from "../StyleIcon/StyleIcon";
-import ProjectBar from "../Project/ProjectBar/ProjectBar";
-import JobNotification from "../JobNotification/JobNotification";
-import "./Dashboard.css";
+import React, { Component } from 'react';
+import { AuthContext } from '../../services/Auth.js';
+import dbServices from '../../services/dbServices';
+import Loading from '../Loading/Loading';
+import NewProject from '../Project/NewProject/NewProject';
+import Sidebar from '../Sidebar/Sidebar';
+import StyleIcon from '../StyleIcon/StyleIcon';
+import ProjectBar from '../Project/ProjectBar/ProjectBar';
+import JobNotification from '../JobNotification/JobNotification';
+import './Dashboard.css';
 
 ////////////////////////////////////////////////////////////////////
 // This component is managed by Dan.  It is MIIIINE!!             //
@@ -79,8 +79,7 @@ export default class Dashboard extends Component {
 
   toggleNewProj = e => {
     e.stopPropagation();
-    if (this.state.newProj)
-      this.setState({ newProj: false, expandProjects: true });
+    if (this.state.newProj) this.setState({ newProj: false, expandProjects: true });
     else this.setState({ newProj: true, expandProjects: false });
   };
 
@@ -107,11 +106,6 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    // console.log('this.state.user', this.state.user);
-    //console.log('this.state.projects ', this.state.projects);
-    // console.log('this.context.jobs ', this.context.jobs);
-    // console.log('this.context.employees', this.context.employees);
-    // console.log("this.context.project_managers", this.state.projectManagers);
     if (this.state.loading) return <Loading />;
     else
       return (
@@ -119,26 +113,23 @@ export default class Dashboard extends Component {
           <section className="Dashboard__container">
             <div className="App__org_header">
               {<h2>{this.state.user.org}</h2>}
-              <span className="Dashboard__date">
-                {new Date().toLocaleString()}
-              </span>
+              <span className="Dashboard__date">{new Date().toLocaleString()}</span>
               <JobNotification user={this.state.user} />
             </div>
 
             <div className="Dashboard__main">
               <section className="Dashboard__projects">
-                <div
-                  className="Dashboard__project_header"
-                  onClick={this.toggleExpandProjects}
-                >
+                <div className="Dashboard__project_header" onClick={this.toggleExpandProjects}>
                   <div className="Dashboard__fa_h1">
                     {StyleIcon({
-                      style: `${this.state.expandProjects ? "minus" : "plus"}`
+                      style: `${this.state.expandProjects ? 'minus' : 'plus'}`
                     })}
                     <h1>Projects</h1>
                   </div>
-                  {this.state.user.role !== "project worker" && (
-                    <button onClick={this.toggleNewProj}>NEW</button>
+                  {this.state.user.role !== 'project worker' && (
+                    <button className="Dashboard__new" onClick={this.toggleNewProj}>
+                      NEW
+                    </button>
                   )}
                 </div>
                 {this.state.newProj && (
@@ -169,28 +160,26 @@ export default class Dashboard extends Component {
                     ) : (
                       <div className="Dashboard__no_projects">
                         <span className="Dashboard__welcome">Welcome!</span>
-                        <span>
-                          You currently have no projects, click the NEW button
-                          above to add one.
-                        </span>
+                        {this.state.user.role !== 'project worker' ? (
+                          <span>You currently have no projects, click the NEW button above to add one.</span>
+                        ) : (
+                          <span>You are not currently assigned to any projects.</span>
+                        )}
                       </div>
                     )}
                   </div>
                 )}
               </section>
               <section className="Dashboard__personnel">
-                <div
-                  className="Dashboard__personnel_header"
-                  onClick={this.toggleExpandPersonnel}
-                >
+                <div className="Dashboard__personnel_header" onClick={this.toggleExpandPersonnel}>
                   <div className="Dashboard__fa_h1">
                     {StyleIcon({
-                      style: `${this.state.expandPersonnel ? "minus" : "plus"}`
+                      style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`
                     })}
                     <h1>Personnel</h1>
                   </div>
                 </div>
-                <Sidebar />
+                {this.state.expandPersonnel && <Sidebar />}
               </section>
             </div>
           </section>

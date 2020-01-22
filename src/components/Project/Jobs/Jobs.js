@@ -22,15 +22,13 @@ export default class Jobs extends Component {
   onJobsUpdate = querySnapshot => {
     const jobs = [];
 
-    if (this.context.currentUser.role === "project worker") {
+    if (this.context.currentUser.role === 'project worker') {
       querySnapshot.forEach(doc => {
-        if (
-          doc.data().project_workers.includes(this.context.currentUser.name)
-        ) {
+        if (doc.data().project_workers.includes(this.context.currentUser.name)) {
           jobs.push(doc.data());
         }
       });
-    } else if (this.context.currentUser.role === "project manager") {
+    } else if (this.context.currentUser.role === 'project manager') {
       querySnapshot.forEach(doc => {
         if (doc.data().project_manager === this.context.currentUser.name) {
           jobs.push(doc.data());
@@ -87,27 +85,20 @@ export default class Jobs extends Component {
       return (
         <>
           <div>
-            <h2>
-              {user.role === "project worker" ? (
+            <div>
+              {user.role === 'project worker' ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>
               )}
-            </h2>
-            {this.state.showLogHours ? (
-              <LogHours
-                jobs={jobs}
-                renderLogHoursForm={this.renderLogHoursForm}
-              />
-            ) : (
-              <></>
-            )}
+            </div>
+            {this.state.showLogHours && <LogHours jobs={jobs} renderLogHoursForm={this.renderLogHoursForm} />}
           </div>
-          <ul>
+          <ul className="Jobs__list">
             {jobs.length > 0 ? (
               jobs.map(job => <JobItem job={job} key={job.id} />)
             ) : (
-              <h4>There are currently no tasks to display for this project.</h4>
+              <span>There are currently no tasks to display for this project.</span>
             )}
           </ul>
         </>

@@ -43,6 +43,7 @@ class JobItem extends Component {
   componentDidMount = async () => {
     let employeeHours = [];
     let labels = [];
+    this.props.job.employee_hours &&
     this.props.job.employee_hours.forEach(emp => {
       labels.push(emp.name);
       employeeHours.push(emp.hours);

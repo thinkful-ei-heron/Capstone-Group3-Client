@@ -5,31 +5,34 @@ const validateInput = {
     let errors = {};
 
     if (!values.name) {
-      errors.name = 'Task name is required';
+      errors.name = "Task name is required";
     }
 
     if (values.name && (values.name.length === 0 || !values.name.trim())) {
-      errors.name = 'Task name is required';
+      errors.name = "Task name is required";
     }
 
     if (!values.description) {
-      errors.description = 'Description is required';
+      errors.description = "Description is required";
     }
 
-    if (values.description && (values.description.length === 0 || !values.description.trim())) {
-      errors.description = 'Description is required';
+    if (
+      values.description &&
+      (values.description.length === 0 || !values.description.trim())
+    ) {
+      errors.description = "Description is required";
     }
 
     if (!values.total_hours) {
-      errors.total_hours = 'Total hours is required';
+      errors.total_hours = "Total hours is required";
     }
 
     if (!values.deadline) {
-      errors.deadline = 'Deadline is required';
+      errors.deadline = "Deadline is required";
     }
 
     if (values.deadline && new Date() > new Date(values.deadline)) {
-      errors.deadline = 'Deadline must be in the future';
+      errors.deadline = "Deadline must be in the future";
     }
 
     return errors;
@@ -39,10 +42,10 @@ const validateInput = {
     let errors = {};
 
     if (!values.email) {
-      errors.email = 'Please enter your email';
+      errors.email = "Please enter your email";
     }
     if (!values.password) {
-      errors.password = 'Please enter your password';
+      errors.password = "Please enter your password";
     }
 
     return errors;
@@ -51,29 +54,34 @@ const validateInput = {
   validateSignup(values) {
     // console.log(values);
     let errors = {};
-    let passRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
+    let passRegex = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+    );
 
     if (!values.email) {
-      errors.email = 'Please enter your email';
+      errors.email = "Please enter your email";
     }
-    if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z].{2,}$/i.test(values.email)) {
-      errors.email = 'Please enter a valid email address';
+    if (
+      values.email &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z].{2,}$/i.test(values.email)
+    ) {
+      errors.email = "Please enter a valid email address";
     }
 
     if (!values.password) {
-      errors.password = 'Please enter a password';
+      errors.password = "Please enter a password";
     }
     if (values.password && !passRegex.test(values.password)) {
       errors.password =
-        'Password must be eight characters or longer and contain at least 1 lowercase, 1 uppercase, 1 numeric, and one special character';
+        "Password must be eight characters or longer and contain at least 1 lowercase, 1 uppercase, 1 numeric, and one special character";
     }
 
     if (!values.name) {
-      errors.name = 'Please enter a username';
+      errors.name = "Please enter a username";
     }
 
     if (!values.orgName) {
-      errors.orgName = 'Please enter an organization name';
+      errors.orgName = "Please enter an organization name";
     }
 
     return errors;
@@ -113,10 +121,10 @@ const validateInput = {
     let errors = {};
 
     if (!values.note) {
-      errors.note = 'A note is required';
+      errors.note = "A note is required";
     }
     if (values.note && (values.note.length === 0 || !values.note.trim())) {
-      errors.note = 'Description is required';
+      errors.note = "Description is required";
     }
 
     return errors;

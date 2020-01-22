@@ -11,18 +11,29 @@ const dbServices = {
         .set({
           name: org
         });
+    user.role = "owner";
     addOrg().then(() => this.createUserInOrg(user, org));
     return "success";
   },
 
+  async getAllOrgs() {
+    return db.collection("organizations").get();
+  },
+
   createUserInOrg(newUser, org) {
     newUser.new = true;
-    return db
-      .collection("organizations")
-      .doc(org)
-      .collection("users")
-      .doc(newUser.email)
-      .set(newUser);
+    const orgRef = db.collection("organizations").doc(org);
+
+    return orgRef.get().then(docSnapshot => {
+      if (docSnapshot.exists) {
+        return orgRef.onSnapshot(() => {
+          orgRef
+            .collection("users")
+            .doc(newUser.email)
+            .set(newUser);
+        });
+      } else throw new Error("org not found");
+    });
   },
 
   jobsListener(org, id) {
@@ -32,6 +43,15 @@ const dbServices = {
       .collection("projects")
       .doc(id)
       .collection("jobs");
+  },
+
+  promoteUser(org, email) {
+    return db
+      .collection("organizations")
+      .doc(org)
+      .collection("users")
+      .doc(email)
+      .update({ role: "project manager" });
   },
 
   projectsListener(org, id) {
@@ -48,6 +68,15 @@ const dbServices = {
       .doc(org)
       .collection("projects")
       .where("project_workers", "array-contains", name)
+      .get();
+  },
+
+  async getManagerProjects(name, org) {
+    return db
+      .collection("organizations")
+      .doc(org)
+      .collection("projects")
+      .where("project_manager", "==", name)
       .get();
   },
 

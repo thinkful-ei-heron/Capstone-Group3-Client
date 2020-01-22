@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { AuthContext } from '../../../services/Auth';
-import './Jobs.css';
-import JobItem from './JobItem';
-import LogHours from '../../LogHours/LogHours';
-import dbServices from '../../../services/dbServices';
+import React, { Component } from "react";
+import { AuthContext } from "../../../services/Auth";
+import "./Jobs.css";
+import JobItem from "./JobItem";
+import LogHours from "../../LogHours/LogHours";
+import dbServices from "../../../services/dbServices";
+import { faHollyBerry } from "@fortawesome/free-solid-svg-icons";
 
 export default class Jobs extends Component {
   constructor(props) {
@@ -43,6 +44,19 @@ export default class Jobs extends Component {
       jobs,
       loading: false
     });
+
+    this.grabProgress();
+  };
+
+  grabProgress = () => {
+    let totalHours = 0;
+    let totalProgress = 0;
+    this.state.jobs.map(job => {
+      totalHours = parseInt(job.total_hours) + totalHours;
+      totalProgress = parseInt(job.hours_completed) + totalProgress;
+      return null;
+    });
+    this.props.getProgress(totalProgress, totalHours);
   };
 
   componentDidMount() {
@@ -84,7 +98,7 @@ export default class Jobs extends Component {
             {jobs.length > 0 ? (
               jobs.map(job => <JobItem job={job} key={job.id} />)
             ) : (
-              <span>There are currently no jobs to display for this project.</span>
+              <span>There are currently no tasks to display for this project.</span>
             )}
           </ul>
         </>

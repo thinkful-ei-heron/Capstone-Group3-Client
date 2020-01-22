@@ -28,7 +28,7 @@ const LogHours = props => {
 
       return (
         <span>
-          This job has {hoursWorked} hours worked out of an estimated{" "}
+          This task has {hoursWorked} hours worked out of an estimated{" "}
           {hoursNeeded} hours needed.
         </span>
       );
@@ -62,7 +62,7 @@ const LogHours = props => {
   return (
     <form onSubmit={e => handleJobHoursSubmit(e)}>
       <Label htmlFor="job_name">
-        Select Job:
+        Select Task:
         <select name="job_name" {...bindJob} required>
           <option>...</option>
           {populateSelect()}

@@ -68,7 +68,7 @@ export default class JobNotification extends Component {
       let employees = [];
       let completed = [];
       let newProj = [];
-      console.log("employees");
+      // console.log("employees");
       await dbServices
         .getEmployees(this.context.currentUser.org)
         .then(snapshot => {
@@ -80,7 +80,7 @@ export default class JobNotification extends Component {
             notificationCount: this.state.notificationCount + employees.length
           });
         });
-      console.log("projects");
+      // console.log("projects");
       await dbServices
         .getProjectsByRole(this.context.currentUser)
         .then(snapshot => {

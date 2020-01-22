@@ -141,8 +141,8 @@ class JobItem extends Component {
               <ProgressBar percentage={progress} />
             </div>
             <span className="JobItem__date">Due: {dateConversions.TStoDisplayDate(job.deadline)}</span>
-          {dateConversions.dateDiff(job.deadline)
-             && `Overdue by ${dateConversions.dateDiff(job.deadline)} days`}
+          {job.status !== 'completed' ? (dateConversions.dateDiff(job.deadline)
+             && `Overdue by ${dateConversions.dateDiff(job.deadline)} days`) : ''}
           </div>
           <div className="JobItem__buttons">
             {this.renderProjectButtons(

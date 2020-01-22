@@ -70,7 +70,7 @@ const ProjectForm = props => {
   )
   if (error) return null
   return (
-    <form className="ProjectForm" onSubmit={handleSubmit}>
+    <form className="ProjectForm Form" onSubmit={handleSubmit}>
       {errors.name && <span className="error">{errors.name}</span>}
       <Label htmlFor="project_name">Name</Label>
       <Input

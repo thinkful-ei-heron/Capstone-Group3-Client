@@ -30,7 +30,7 @@ const Login = (setPath, { history }) => {
         <Label>
           Email
           <Input
-            id="login-email"
+            test-id="login-email"
             name="email"
             type="email"
             placeholder="Email"
@@ -40,14 +40,14 @@ const Login = (setPath, { history }) => {
         <Label>
           Password
           <Input
-            id="login-password"
+            test-id="login-password"
             name="password"
             type="password"
             placeholder="Password"
             required
           />
         </Label>
-        <button type="submit" id="login-button">
+        <button type="submit" test-id="login-button">
           Log in
         </button>
       </form>

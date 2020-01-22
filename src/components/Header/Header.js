@@ -27,8 +27,12 @@ export default class Header extends Component {
     return (
       <div className="Header__sub_container">
         <div className="Header__user_info">
-          <span>Welcome, {this.context.currentUser.name}!</span>
-          <span>Role: {this.context.currentUser.role}</span>
+          <span test-id="header-name">
+            Welcome, {this.context.currentUser.name}!
+          </span>
+          <span test-id="header-role">
+            Role: {this.context.currentUser.role}
+          </span>
         </div>
         <div className="Header__db_logout">
           <Link to="/dashboard">
@@ -40,7 +44,7 @@ export default class Header extends Component {
             onClick={() => app.auth().signOut()}
             className="Header__btn  Header__alt"
             to="/"
-            id="logout-button"
+            test-id="logout-button"
           >
             Log Out
           </Link>

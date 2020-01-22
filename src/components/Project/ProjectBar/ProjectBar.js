@@ -15,28 +15,23 @@ const ProjectBar = props => {
 
   return (
     <div className="ProjectBar__project_container">
-      <Link
-        className="ProjectBar__link_wrapper"
-        to={`/project/${props.proj.id}`}
-        key={props.proj.id}
-      >
+      <Link className="ProjectBar__link_wrapper" to={`/project/${props.proj.id}`} key={props.proj.id}>
         <div className="ProjectBar__header">
           <span className="ProjectBar__proj_name" test-id="project-link">
             {props.proj.name}
           </span>
-          <span className="ProjectBar__proj_mgr">
-            Manager: {props.proj.project_manager}
-          </span>
+          <span className="ProjectBar__proj_mgr">Manager: {props.proj.project_manager}</span>
         </div>
         <div className="ProjectBar__description">
           <span>Description:</span>
-          <div className="ProjectBar__description_text">
-            {props.proj.description}
-          </div>
+          <div className="ProjectBar__description_text">{props.proj.description}</div>
         </div>
         <div className="ProjectBar__proj_prog_date">
           {props.proj.progress === 100 ? (
-            <p>Project Completed</p>
+            <p>
+              Project Completed on{" "}
+              {props.proj.date_completed && dateConversions.TStoDisplayDate(props.proj.date_completed)}
+            </p>
           ) : (
             <>
               <div className="ProjectBar__proj_prog">
@@ -44,14 +39,12 @@ const ProjectBar = props => {
               </div>
               <div className="ProjectBar__deadline">
                 <span className="ProjectBar__deadline_first">
-                  Deadline:{" "}
-                  {dateConversions.TStoDisplayDate(props.proj.deadline)}
+                  Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
                 </span>
                 <span className="ProjectBar__overdue">
-                  {dateConversions.dateDiff(props.proj.deadline) &&
-                    `Overdue by ${dateConversions.dateDiff(
-                      props.proj.deadline
-                    )} days`}
+                  {props.proj.progress !== 100 &&
+                    dateConversions.dateDiff(props.proj.deadline) &&
+                    `Overdue by ${dateConversions.dateDiff(props.proj.deadline)} days`}
                 </span>
               </div>
             </>

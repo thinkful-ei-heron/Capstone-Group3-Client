@@ -1,69 +1,69 @@
-import React, { useContext, useState } from "react";
-import Dropdown from "../../Dropdown/Dropdown";
-import { Input, Label, Textarea } from "../../Form/Form";
-import dbServices from "../../../services/dbServices";
-import { AuthContext } from "../../../services/Auth";
-import useFormValidation from "../../../hooks/useFormValidation";
-import validateInput from "../../../hooks/validateInput";
-import "./JobForm.css";
-import dateConversions from "../../../services/dateConversions";
-import Swal from "sweetalert2";
+import React, { useContext, useState } from 'react'
+import Dropdown from '../../Dropdown/Dropdown'
+import { Input, Label, Textarea } from '../../Form/Form'
+import dbServices from '../../../services/dbServices'
+import { AuthContext } from '../../../services/Auth'
+import useFormValidation from '../../../hooks/useFormValidation'
+import validateInput from '../../../hooks/validateInput'
+import './JobForm.css'
+import dateConversions from '../../../services/dateConversions'
+import Swal from 'sweetalert2'
 
 const NewJob = props => {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(0)
 
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext)
 
   const getEmployees = () => {
     if (props.job) {
-      let workers = [];
+      let workers = []
       props.job.project_workers.forEach(worker =>
         workers.push({ value: worker, label: worker })
-      );
-      return workers;
+      )
+      return workers
     }
-  };
+  }
 
   const INITIAL_STATE = {
-    name: props.job ? props.job.name : "",
-    description: props.job ? props.job.description : "",
-    deadline: props.job ? dateConversions.TStoFormDate(props.job.deadline) : "",
-    total_hours: props.job ? props.job.total_hours : ""
-  };
+    name: props.job ? props.job.name : '',
+    description: props.job ? props.job.description : '',
+    deadline: props.job ? dateConversions.TStoFormDate(props.job.deadline) : '',
+    total_hours: props.job ? props.job.total_hours : '',
+  }
 
   const handleSubmitForm = async () => {
-    const { name, description, total_hours, deadline } = values;
-    let employees = [];
-    if (selected) selected.map(itm => employees.push(itm.value));
+    const { name, description, total_hours, deadline } = values
+    let employees = []
+    if (selected) selected.map(itm => employees.push(itm.value))
 
-    let projectId = props.job ? props.job.project_id : props.projectId;
+    let projectId = props.job ? props.job.project_id : props.projectId
     let projectManager = props.job
       ? props.job.project_manager
-      : props.project.project_manager;
-    let id = props.job ? props.job.id : null;
-    let approval = props.job ? props.job.approval : false;
-    let date_created = props.job ? props.job.date_created : new Date();
-    let hours_completed = props.job ? props.job.hours_completed : 0;
-    let status = "in progress";
-    let edit = null;
-    let alert = [];
-    let employee_hours = [];
-    console.log(employees);
-    employees.forEach(emp => employee_hours.push({ name: emp, hours: 0 }));
+      : props.project.project_manager
+    let id = props.job ? props.job.id : null
+    let approval = props.job ? props.job.approval : false
+    let date_created = props.job ? props.job.date_created : new Date()
+    let hours_completed = props.job ? props.job.hours_completed : 0
+    let status = 'in progress'
+    let edit = null
+    let alert = []
+    let employee_hours = []
+    console.log(employees)
+    employees.forEach(emp => employee_hours.push({ name: emp, hours: 0 }))
 
     if (props.job) {
-      if (props.job.status === "edit request") status = "in progress";
-      else status = props.job.status;
+      if (props.job.status === 'edit request') status = 'in progress'
+      else status = props.job.status
 
       employees.map(employee => {
         if (!props.job.project_workers.includes(employee))
-          return alert.push(employee);
-        else return null;
-      });
+          return alert.push(employee)
+        else return null
+      })
     } else {
       employees.map(employee => {
-        return alert.push(employee);
-      });
+        return alert.push(employee)
+      })
     }
 
     const jobObj = {
@@ -82,83 +82,83 @@ const NewJob = props => {
       id,
       edit,
       alert,
-      employee_hours
-    };
-    console.log(jobObj);
+      employee_hours,
+    }
+    console.log(jobObj)
     if (props.job) {
       try {
-        console.log(jobObj);
-        await dbServices.editJob(id, jobObj);
+        console.log(jobObj)
+        await dbServices.editJob(id, jobObj)
       } catch (error) {
-        console.warn(error);
+        console.warn(error)
         Swal.fire({
-          title: "Error!",
+          title: 'Error!',
           text:
-            "There was an issue editing this task - please refresh the page and try again. 1",
-          icon: "error",
-          confirmButtonText: "Close"
-        });
+            'There was an issue editing this task - please refresh the page and try again. 1',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
       }
     } else {
       try {
-        await dbServices.addJob(jobObj, projectId);
+        await dbServices.addJob(jobObj, projectId)
       } catch (error) {
-        console.log(error);
+        console.log(error)
         Swal.fire({
-          title: "Error!",
-          text: "There was an issue - please refresh the page and try again. 2",
-          icon: "error",
-          confirmButtonText: "Close"
-        });
+          title: 'Error!',
+          text: 'There was an issue - please refresh the page and try again. 2',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
       }
     }
 
-    let updatedProjectWorkers = null;
+    let updatedProjectWorkers = null
 
     if (props.job) {
-      let projects = [];
+      let projects = []
       try {
         await dbServices
           .getProjectById(props.job.project_id, currentUser.org)
-          .then(project => projects.push(project.data()));
+          .then(project => projects.push(project.data()))
       } catch (error) {
-        console.warn(error);
+        console.warn(error)
         Swal.fire({
-          title: "Error!",
-          text: "There was an issue - please refresh the page and try again.",
-          icon: "error",
-          confirmButtonText: "Close"
-        });
+          title: 'Error!',
+          text: 'There was an issue - please refresh the page and try again.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
       }
-      let project = projects[0];
-      updatedProjectWorkers = project.project_workers;
+      let project = projects[0]
+      updatedProjectWorkers = project.project_workers
     } else {
-      updatedProjectWorkers = props.project.project_workers;
+      updatedProjectWorkers = props.project.project_workers
     }
 
     jobObj.project_workers.map(worker => {
       if (!updatedProjectWorkers.includes(worker)) {
-        return updatedProjectWorkers.push(worker);
-      } else return null;
-    });
+        return updatedProjectWorkers.push(worker)
+      } else return null
+    })
 
     try {
       await dbServices
         .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
         .then(() => {
-          props.showJobForm();
-        });
+          props.showJobForm()
+        })
     } catch (error) {
-      console.warn(error);
+      console.warn(error)
       Swal.fire({
-        title: "Error!",
+        title: 'Error!',
         text:
-          "There was an issue assigning employees to this project - please refresh the page and try again.",
-        icon: "error",
-        confirmButtonText: "Close"
-      });
+          'There was an issue assigning employees to this project - please refresh the page and try again.',
+        icon: 'error',
+        confirmButtonText: 'Close',
+      })
     }
-  };
+  }
 
   const {
     handleSubmit,
@@ -166,18 +166,18 @@ const NewJob = props => {
     handleBlur,
     values,
     errors,
-    isSubmitting
+    isSubmitting,
   } = useFormValidation(
     INITIAL_STATE,
     validateInput.validateJobForm,
     handleSubmitForm
-  );
+  )
 
   return (
     <>
       <form onSubmit={handleSubmit} className="Form">
         <fieldset>
-          <legend>{props.projectId ? "Add New Task" : "Edit Task"}</legend>
+          <legend>{props.projectId ? 'Add New Task' : 'Edit Task'}</legend>
           <div className="input">
             <Label htmlFor="name">Task Name: </Label>
             <Input
@@ -238,7 +238,7 @@ const NewJob = props => {
         </fieldset>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default NewJob;
+export default NewJob

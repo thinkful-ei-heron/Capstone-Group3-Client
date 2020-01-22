@@ -3,11 +3,9 @@ import { withRouter } from "react-router";
 import app from "../../services/base";
 import dbServices from "../../services/dbServices";
 import { Label, Input } from "../Form/Form";
-// import useFormValidation from "../../../hooks/useFormValidation";
-// import validateInput from "../../../hooks/validateInput";
 import useFormValidation from "../../hooks/useFormValidation";
 import validateInput from "../../hooks/validateInput";
-import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const SignUp = ({ history }, props) => {
   const functions = app.functions();
@@ -58,32 +56,67 @@ const SignUp = ({ history }, props) => {
           .then(() =>
             dbServices.createOwner({ ...infoNoPass, role: "owner" }, info.org)
           )
-          .catch(error => alert(`An error occurd: ${error}`));
+          .catch(error => {
+            console.warn(error);
+            Swal.fire({
+              title: "Error!",
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
+          });
         break;
       case "/worker-signup":
-        registerWorker(info).then(() =>
-          dbServices
-            .createUserInOrg({ ...infoNoPass, role: "project worker" }, orgName)
-            .catch(error => alert(`An error occurd: ${error}`))
-        );
+        registerWorker(info)
+          .then(() =>
+            dbServices.createUserInOrg(
+              { ...infoNoPass, role: "project worker" },
+              orgName
+            )
+          )
+          .catch(error => {
+            console.warn(error);
+            Swal.fire({
+              title: "Error!",
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
+          });
         break;
       case "/manager-signup":
-        registerProjectManager(info).then(() =>
-          dbServices
-            .createUserInOrg(
+        registerProjectManager(info)
+          .then(() =>
+            dbServices.createUserInOrg(
               { ...infoNoPass, role: "project manager" },
               orgName
             )
-            .catch(error => alert(`An error occurd: ${error}`))
-        );
-      default:
-        registerWorker(info);
+          )
+          .catch(error => {
+            console.warn(error);
+            Swal.fire({
+              title: "Error!",
+              text:
+                "There was an issue with registration - please refresh the page and try again.",
+              icon: "error",
+              confirmButtonText: "Close"
+            });
+          });
     }
     history.push("/login");
     return `${email} signed up`;
   };
 
-  const { handleSubmit, errors, handleChange, values } = useFormValidation(
+  const {
+    handleSubmit,
+    errors,
+    handleChange,
+    values,
+    handleBlur,
+    isSubmitting
+  } = useFormValidation(
     inputValues,
     validateInput.validateSignup,
     handleSignUp
@@ -100,9 +133,10 @@ const SignUp = ({ history }, props) => {
             type="email"
             onChange={handleChange}
             value={values.email}
+            onBlur={handleBlur}
             placeholder="Email"
-            required
           />
+          {errors.email && <p>*{errors.email}</p>}
         </Label>
         <Label>
           Password
@@ -111,8 +145,8 @@ const SignUp = ({ history }, props) => {
             type="password"
             placeholder="Password"
             onChange={handleChange}
+            onBlur={handleBlur}
             value={values.password}
-            required
           />
           {errors.password && <p>*{errors.password}</p>}
         </Label>
@@ -123,8 +157,8 @@ const SignUp = ({ history }, props) => {
             name="name"
             onChange={handleChange}
             value={values.name}
+            onBlur={handleBlur}
             placeholder="Username"
-            required
           />
           {errors.name && <p>*{errors.name}</p>}
         </Label>
@@ -135,8 +169,8 @@ const SignUp = ({ history }, props) => {
             name="orgName"
             onChange={handleChange}
             value={values.orgName}
+            onBlur={handleBlur}
             placeholder="Organization name"
-            required
           >
             {orgList && orgList.length > 0 ? (
               orgList.map((item, i) => {
@@ -150,16 +184,11 @@ const SignUp = ({ history }, props) => {
               <></>
             )}
           </select>
-          {/* <Input
-            type="text"
-            name="orgName"
-            onChange={handleChange}
-            value={values.orgName}
-            placeholder="Organization name"
-            required
-          /> */}
+          {errors.orgName && <p>*{errors.orgName}</p>}
         </Label>
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={isSubmitting}>
+          Sign Up
+        </button>
       </form>
     </div>
   );

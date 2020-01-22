@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import { ProgressBar } from '../../ProgressBar/ProgressBar';
-import JobForm from '../JobForm/JobForm';
-import dbServices from '../../../services/dbServices';
-import WorkerEditForm from '../WorkerEditForm/WorkerEditForm';
-import { AuthContext } from '../../../services/Auth';
-import StyleIcon from '../../StyleIcon/StyleIcon';
-import dateConversions from '../../../services/dateConversions';
+import React, { Component } from "react";
+import { ProgressBar } from "../../ProgressBar/ProgressBar";
+import JobForm from "../JobForm/JobForm";
+import dbServices from "../../../services/dbServices";
+import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
+import { AuthContext } from "../../../services/Auth";
+import StyleIcon from "../../StyleIcon/StyleIcon";
+import dateConversions from "../../../services/dateConversions";
+import { Bar, Line, Pie } from "react-chartjs-2";
+import Swal from "sweetalert2";
 
 class JobItem extends Component {
   constructor(props) {
@@ -13,20 +15,73 @@ class JobItem extends Component {
     this.state = {
       expandJob: false,
       showEditForm: false,
-      showWorkerEditForm: false
+      showWorkerEditForm: false,
+      employeeHours: {
+        labels: [],
+        datasets: [
+          {
+            label: `Logged Hours by Employee`,
+            data: [],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+              "rgba(255, 159, 64, 0.6)",
+              "rgba(255, 99, 132, 0.6)"
+            ]
+          }
+        ]
+      }
     };
   }
 
   static contextType = AuthContext;
 
+  componentDidMount = async () => {
+    let employeeHours = [];
+    let labels = [];
+    this.props.job.employee_hours &&
+      this.props.job.employee_hours.forEach(emp => {
+        labels.push(emp.name);
+        employeeHours.push(emp.hours);
+      });
+    if (employeeHours.every(item => item === 0)) {
+      employeeHours = [];
+    }
+    await this.setState({
+      employeeHours: {
+        labels: labels,
+        datasets: [
+          {
+            label: this.state.employeeHours.datasets[0].label,
+            data: employeeHours,
+            backgroundColor: this.state.employeeHours.datasets[0].backgroundColor
+          }
+        ]
+      }
+    });
+  };
+
   handleApprovalSubmit = async (id, status, approval = false) => {
-    await dbServices.updateJobStatus(
-      id,
-      status,
-      this.props.job.project_id,
-      approval,
-      this.props.job.organization
-    );
+    try {
+      await dbServices.updateJobStatus(
+        id,
+        status,
+        this.props.job.project_id,
+        approval,
+        this.props.job.organization
+      );
+    } catch (error) {
+      console.warn(error);
+      Swal.fire({
+        title: "Error!",
+        text: "There was an issue approving this task - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
+    }
   };
 
   renderEmployeeList = jobWorkers => {
@@ -39,14 +94,14 @@ class JobItem extends Component {
 
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
     const progress = Math.floor((hours_completed / total_hours) * 100);
-    if (this.context.currentUser.role === 'project worker') {
-      if (status === 'completed') return <span>Project Completed</span>;
-      if (status === 'submitted' || status === 'completed') return <></>;
+    if (this.context.currentUser.role === "project worker") {
+      if (status === "completed") return <span>Project Completed</span>;
+      if (status === "submitted" || status === "completed") return <></>;
       if (approval || progress !== 100) {
         return (
           <>
             <button disabled>Submit for Approval</button>
-            {(status !== 'completed' || status !== 'submitted') && status !== 'edit request' ? (
+            {(status !== "completed" || status !== "submitted") && status !== "edit request" ? (
               <button onClick={e => this.showWorkerEditForm()}>Request Edit</button>
             ) : (
               <></>
@@ -56,8 +111,8 @@ class JobItem extends Component {
       } else {
         return (
           <>
-            {status === 'revisions' ? <span>Revision Requested</span> : <></>}
-            <button onClick={e => this.handleApprovalSubmit(id, 'submitted', false)}>
+            {status === "revisions" ? <span>Revision Requested</span> : <></>}
+            <button onClick={e => this.handleApprovalSubmit(id, "submitted", false)}>
               Submit for Approval
             </button>
           </>
@@ -65,19 +120,19 @@ class JobItem extends Component {
       }
     }
 
-    if (this.context.currentUser.role === 'project manager' || this.context.currentUser.role === 'owner') {
-      if (status === 'completed') return <span>Task Completed</span>;
+    if (this.context.currentUser.role === "project manager" || this.context.currentUser.role === "owner") {
+      if (status === "completed") return <span>Task Completed</span>;
       return (
         <>
-          {!approval && progress === 100 && status !== 'revisions' ? <span>AWAITING APPROVAL</span> : <></>}
-          {!approval && progress === 100 && status === 'revisions' ? <span>Revision Requested</span> : <></>}
+          {!approval && progress === 100 && status !== "revisions" ? <span>AWAITING APPROVAL</span> : <></>}
+          {!approval && progress === 100 && status === "revisions" ? <span>Revision Requested</span> : <></>}
           <div className="JobItem__edit" onClick={this.showEditForm}>
-            {StyleIcon({ style: 'edit' })}
+            {StyleIcon({ style: "edit" })}
           </div>
-          {status === 'submitted' ? (
+          {status === "submitted" ? (
             <div>
-              <button onClick={e => this.handleApprovalSubmit(id, 'completed', true)}>Approve</button>{' '}
-              <button onClick={e => this.handleApprovalSubmit(id, 'revisions')}>Request Revision</button>
+              <button onClick={e => this.handleApprovalSubmit(id, "completed", true)}>Approve</button>{" "}
+              <button onClick={e => this.handleApprovalSubmit(id, "revisions")}>Request Revision</button>
             </div>
           ) : (
             <></>
@@ -113,7 +168,7 @@ class JobItem extends Component {
         <div className="JobItem__container">
           <div className="JobItem__icon">
             {StyleIcon({
-              style: `${this.state.expandJob ? 'expand' : 'collapse'}`
+              style: `${this.state.expandJob ? "expand" : "collapse"}`
             })}
           </div>
           <span className="JobItem__name">{job.name}</span>
@@ -125,6 +180,11 @@ class JobItem extends Component {
             <div>
               <span>Est. Progress</span>
               <ProgressBar percentage={progress} />
+              {this.state.employeeHours.datasets[0].data.length !== 0 ? (
+                <Pie data={this.state.employeeHours} options={{ maintainAspectRatio: false }} />
+              ) : (
+                <></>
+              )}
             </div>
             <span className="JobItem__date">Due: {dateConversions.TStoDisplayDate(job.deadline)}</span>
             {dateConversions.dateDiff(job.deadline) &&
@@ -147,7 +207,7 @@ class JobItem extends Component {
               <JobForm showJobForm={this.showEditForm} job={job} />
             </div>
           )}
-          {this.state.showWorkerEditForm && this.context.currentUser.role === 'project worker' && (
+          {this.state.showWorkerEditForm && this.context.currentUser.role === "project worker" && (
             <WorkerEditForm
               job={job}
               renderEditForm={this.showWorkerEditForm}

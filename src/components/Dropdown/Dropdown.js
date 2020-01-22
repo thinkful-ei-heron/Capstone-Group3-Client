@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import Select from 'react-select';
-import { AuthContext } from '../../services/Auth';
-import dbServices from '../../services/dbServices';
+import React, { Component } from "react";
+import Select from "react-select";
+import { AuthContext } from "../../services/Auth";
+import dbServices from "../../services/dbServices";
+import Swal from "sweetalert2";
 
 export default class Dropdown extends Component {
   constructor(props) {
@@ -18,19 +19,41 @@ export default class Dropdown extends Component {
     let employees = [];
 
     if (this.props.pm) {
-      await dbServices.getProjectManagers(this.context.currentUser.org).then(snapshot => {
-        snapshot.forEach(doc => {
-          employees.push(doc.data().name);
+      await dbServices
+        .getProjectManagers(this.context.currentUser.org)
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            employees.push(doc.data().name);
+          });
+        })
+        .catch(error => {
+          console.warn(error);
+          Swal.fire({
+            title: "Error!",
+            text: "There was an issue - please refresh the page and try again.",
+            icon: "error",
+            confirmButtonText: "Close"
+          });
         });
-      });
     }
 
     if (!this.props.pm) {
-      await dbServices.getEmployees(this.context.currentUser.org).then(snapshot => {
-        snapshot.forEach(doc => {
-          employees.push(doc.data().name);
+      await dbServices
+        .getEmployees(this.context.currentUser.org)
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            employees.push(doc.data().name);
+          });
+        })
+        .catch(error => {
+          console.warn(error);
+          Swal.fire({
+            title: "Error!",
+            text: "There was an issue - please refresh the page and try again.",
+            icon: "error",
+            confirmButtonText: "Close"
+          });
         });
-      });
     }
 
     this.setState({ employees });
@@ -57,7 +80,9 @@ export default class Dropdown extends Component {
   };
 
   render() {
-    console.log('In dropdown defaultValue for pm is ' + this.props.defaultValue);
+    console.log(
+      "In dropdown defaultValue for pm is " + this.props.defaultValue
+    );
     const { selectedOption, employees } = this.state;
     return (
       <Select
@@ -68,7 +93,9 @@ export default class Dropdown extends Component {
         isMulti={this.props.isMulti ? true : false}
         isSearchable={true}
         defaultValue={this.props.defaultValue ? this.props.defaultValue : false}
-        placeholder={this.props.placeholder ? this.props.placeholder : 'Select...'}
+        placeholder={
+          this.props.placeholder ? this.props.placeholder : "Select..."
+        }
       />
     );
   }

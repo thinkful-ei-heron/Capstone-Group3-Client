@@ -3,6 +3,7 @@ import { useInput } from "../../hooks/useInput";
 import { Label, Input } from "../Form/Form";
 import dbServices from "../../services/dbServices";
 import { AuthContext } from "../../services/Auth";
+import Swal from "sweetalert2";
 
 const LogHours = props => {
   const { currentUser } = useContext(AuthContext);
@@ -40,12 +41,31 @@ const LogHours = props => {
     let jobObj = props.jobs.find(item => item.name === job);
     let oldHours = parseInt(jobObj.hours_completed);
     let newHours = oldHours + parseInt(hours);
+    let employeeHoursObj = jobObj.employee_hours.find(
+      item => item.name === currentUser.name
+    );
+    let oldEmpHours = parseInt(employeeHoursObj.hours);
+    let newEmpHours = oldEmpHours + parseInt(hours);
+    employeeHoursObj.hours = newEmpHours;
+    let index = jobObj.employee_hours.findIndex(
+      item => item.name === employeeHoursObj.name
+    );
+    jobObj.employee_hours[index] = employeeHoursObj;
     jobObj.hours_completed = newHours;
 
     dbServices
       .editJob(jobObj.id, jobObj)
       .then(setSubmitted(true))
-      .then(props.renderLogHoursForm());
+      .then(props.renderLogHoursForm())
+      .catch(error => {
+        console.warn(error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an issue - please refresh the page and try again.",
+          icon: "error",
+          confirmButtonText: "Close"
+        });
+      });
   };
 
   useEffect(() => {

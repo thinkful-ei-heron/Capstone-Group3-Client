@@ -22,7 +22,8 @@ export default class ProjectView extends Component {
       loading: true,
       toggleState: false,
       progress: 0,
-      total: 0
+      total: 0,
+      error: null
     };
   }
 
@@ -72,6 +73,9 @@ export default class ProjectView extends Component {
         }
       );
     } catch (error) {
+      this.setState({
+        error: 'Error'
+      })
       console.warn(error)
         Swal.fire({
           title: "Error!",
@@ -96,8 +100,10 @@ export default class ProjectView extends Component {
     const { project, showJobForm } = this.state;
     const user = this.context.currentUser;
 
-    if (this.state.loading) {
+    if (this.state.loading && !this.state.error) {
       return <Loading />;
+    } else if (this.state.error) {
+      return <h2>Project was unable to load</h2>
     } else {
       return (
         <>

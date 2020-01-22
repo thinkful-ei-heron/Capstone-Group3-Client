@@ -34,8 +34,8 @@ export default class Statistics extends Component {
       ],
       datasets: [
         {
-          label: `Job's Due`,
-          data: [5, 1, 2, 0, 3],
+          label: `Tasks Due`,
+          data: [],
           backgroundColor: [
             "rgba(255, 99, 132, 0.6)",
             "rgba(54, 162, 235, 0.6)",
@@ -74,8 +74,8 @@ export default class Statistics extends Component {
       ],
       datasets: [
         {
-          label: `Job Completion History (previous week)`,
-          data: [0, 1, 2, 1, 4],
+          label: `Task Completion History (7 days)`,
+          data: [],
           backgroundColor: [
             "rgba(255, 99, 132, 0.6)",
             "rgba(54, 162, 235, 0.6)",

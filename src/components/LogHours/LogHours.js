@@ -11,6 +11,7 @@ const LogHours = props => {
   const { value: job, bind: bindJob, reset: resetJob } = useInput("");
   const [submitted, setSubmitted] = useState(false);
 
+
   const populateSelect = () => {
     return props.jobs.map(job => {
       if (job.project_workers.includes(currentUser.name))
@@ -40,6 +41,12 @@ const LogHours = props => {
     let jobObj = props.jobs.find(item => item.name === job);
     let oldHours = parseInt(jobObj.hours_completed);
     let newHours = oldHours + parseInt(hours);
+    let employeeHoursObj = jobObj.employee_hours.find(item => item.name === currentUser.name)
+    let oldEmpHours = parseInt(employeeHoursObj.hours)
+    let newEmpHours = oldEmpHours + parseInt(hours)
+    employeeHoursObj.hours = newEmpHours
+    let index = jobObj.employee_hours.findIndex(item => item.name === employeeHoursObj.name)
+    jobObj.employee_hours[index] = employeeHoursObj
     jobObj.hours_completed = newHours;
 
     dbServices

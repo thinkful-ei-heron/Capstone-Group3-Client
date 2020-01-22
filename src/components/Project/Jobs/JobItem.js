@@ -66,7 +66,7 @@ class JobItem extends Component {
     }
 
     if (this.context.currentUser.role === 'project manager' || this.context.currentUser.role === 'owner') {
-      if (status === 'completed') return <span>Job Completed</span>;
+      if (status === 'completed') return <span>Task Completed</span>;
       return (
         <>
           {!approval && progress === 100 && status !== 'revisions' ? <span>AWAITING APPROVAL</span> : <></>}
@@ -127,6 +127,8 @@ class JobItem extends Component {
               <ProgressBar percentage={progress} />
             </div>
             <span className="JobItem__date">Due: {dateConversions.TStoDisplayDate(job.deadline)}</span>
+            {dateConversions.dateDiff(job.deadline) &&
+              `Overdue by ${dateConversions.dateDiff(job.deadline)} days`}
           </div>
           <div className="JobItem__buttons">
             {this.renderProjectButtons(

@@ -47,14 +47,11 @@ const useFormValidation = (initialState, validate, runOnSubmit) => {
   };
 
   const handleSubmit = event => {
-    console.log('handling submit in useFormValidation');
     event.preventDefault();
     const validationErrors = validate(values);
     setErrors(validationErrors);
     setSubmitting(true);
   };
-
-  console.log(values);
 
   return {
     handleSubmit,

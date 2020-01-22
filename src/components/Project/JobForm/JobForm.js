@@ -171,7 +171,7 @@ const NewJob = props => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="newjob__form">
+      <form onSubmit={handleSubmit} className="Form">
         <fieldset>
           <legend>{props.projectId ? "Add New Task" : "Edit Task"}</legend>
           <div className="input">

@@ -38,7 +38,6 @@ const Login = (setPath, { history }) => {
 
   return (
     <div className="Login">
-      <h1>Log in</h1>
       <form className="Login__form" onSubmit={handleLogin}>
         <Label>
           Email

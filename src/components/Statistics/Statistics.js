@@ -135,15 +135,15 @@ export default class Statistics extends Component {
           jobDue.push(jobDueCount);
           jobHistory.push(jobHistoryCount);
         });
-        if (jobDue.every(item => item === 0)) {
-          jobDue = []
-        }
-        if (jobHistory.every(item => item === 0)) {
-          jobHistory = []
-        }
+      if (jobDue.every(item => item === 0)) {
+        jobDue = [];
+      }
+      if (jobHistory.every(item => item === 0)) {
+        jobHistory = [];
+      }
     }
-    console.log(jobDue)
-    console.log(jobHistory)
+    console.log(jobDue);
+    console.log(jobHistory);
     this.setState({
       jobDue: {
         labels: this.state.jobDue.labels,
@@ -173,9 +173,24 @@ export default class Statistics extends Component {
       <div className="Statistics">
         <h5>STATISTICS</h5>
 
-        {this.state.jobDue.datasets[0].data.length !== 0 ? <Bar className="due" data={this.state.jobDue} options={{ maintainAspectRatio: false }}/> : <span>You have no tasks due soon</span>}
-        {this.state.jobHistory.datasets[0].data.length !== 0 ? <Bar className="history" data={this.state.jobHistory} options={{ maintainAspectRatio: false }} /> : <span>You have not completed any tasks in the last 7 days</span>}
-
+        {this.state.jobDue.datasets[0].data.length !== 0 ? (
+          <Bar
+            className="due"
+            data={this.state.jobDue}
+            options={{ maintainAspectRatio: false }}
+          />
+        ) : (
+          <span>You have no tasks due soon</span>
+        )}
+        {this.state.jobHistory.datasets[0].data.length !== 0 ? (
+          <Bar
+            className="history"
+            data={this.state.jobHistory}
+            options={{ maintainAspectRatio: false }}
+          />
+        ) : (
+          <span>You have not completed any tasks in the last 7 days</span>
+        )}
       </div>
     );
   }

@@ -54,7 +54,7 @@ export default class Dashboard extends Component {
       let sortedProjectsIncomplete = [];
 
       data.projects.map((project, index) => {
-        if (project.progress === 100) {
+        if (project.progress === 100 || project.autoComplete) {
           return sortedProjectsComplete.push(project);
         } else return sortedProjectsIncomplete.push(project);
       });

@@ -51,7 +51,7 @@ class JobItem extends Component {
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
     const progress = Math.floor((hours_completed / total_hours) * 100);
     if (this.context.currentUser.role === 'project worker') {
-      if (status === 'completed') return <span>Project Completed</span>;
+      if (status === 'completed') return <span>Task Completed</span>;
       if (status === 'submitted' || status === 'completed') return <></>;
       if (approval || progress !== 100) {
         return (

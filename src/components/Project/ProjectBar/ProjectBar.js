@@ -35,15 +35,23 @@ const ProjectBar = props => {
           </div>
         </div>
         {props.proj.progress === 100 ? (
-          <p>Project Completed on {props.proj.date_completed && dateConversions.TStoDisplayDate(props.proj.date_completed)}</p>
+          <p>
+            Project Completed on{" "}
+            {props.proj.date_completed &&
+              dateConversions.TStoDisplayDate(props.proj.date_completed)}
+          </p>
         ) : (
           <div className="ProjectBar__proj_prog_date">
             <div className="ProjectBar__proj_prog">
               Est. Progress <ProgressBar percentage={props.proj.progress} />
             </div>
             Deadline: {dateConversions.TStoDisplayDate(props.proj.deadline)}
-            {props.proj.progress !== 100 ? (dateConversions.dateDiff(props.proj.deadline)
-             && `Overdue by ${dateConversions.dateDiff(props.proj.deadline)} days`) : ''}
+            {props.proj.progress !== 100
+              ? dateConversions.dateDiff(props.proj.deadline) &&
+                `Overdue by ${dateConversions.dateDiff(
+                  props.proj.deadline
+                )} days`
+              : ""}
           </div>
         )}
       </Link>

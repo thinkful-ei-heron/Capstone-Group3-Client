@@ -91,7 +91,7 @@ export default class ProjectView extends Component {
       text: 
         'By clicking the button below, you will automatically mark this project as complete along with any unfinished tasks.',
       icon: 'question',
-      confirmButtonText: 'I\'m sure',
+      confirmButtonText: 'I\'m sure!',
       onAfterClose: () => {
         let proj = this.state.project;
         proj.autoComplete = true;

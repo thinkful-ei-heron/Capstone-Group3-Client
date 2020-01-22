@@ -34,7 +34,7 @@ const ProjectBar = props => {
             {props.proj.description}
           </div>
         </div>
-        {props.proj.progress === 100 ? (
+        {props.proj.progress === 10000 ? (
           <p>Project Completed</p>
         ) : (
           <div className="ProjectBar__proj_prog_date">

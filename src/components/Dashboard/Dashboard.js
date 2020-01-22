@@ -137,7 +137,7 @@ export default class Dashboard extends Component {
                 <span className="Dashboard__date">
                   {new Date().toLocaleString()}
                 </span>
-                <JobNotification user={this.state.user} />
+                {/* <JobNotification user={this.state.user} /> */}
               </div>
 
               <div className="Dashboard__main">

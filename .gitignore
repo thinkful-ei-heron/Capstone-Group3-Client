@@ -7,3 +7,4 @@ cypress.env.json
 .firebaserc
 serviceAccount.json
 cypress/config.json
+cypress/support/commands.js

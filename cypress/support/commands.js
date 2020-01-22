@@ -1,15 +1,13 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/database";
 import "firebase/firestore";
 import { attachCustomCommands } from "cypress-firebase";
 
 const projectId = Cypress.env("FIREBASE_PROJECT_ID");
 const env = Cypress.env("env") || "stage";
-const apiKey = Cypress.env("FIREBASE_API_KEY");
 
 const fbConfig = {
-  apiKey,
+  apiKey: "AIzaSyDSpoWy8Ewzv50_et07LvZE6InGXw0sfng",
   authDomain: `${projectId}.firebaseapp.com`,
   databaseURL: `https://${projectId}.firebaseio.com`,
   projectId: `${projectId}`,

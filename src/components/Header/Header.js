@@ -32,12 +32,15 @@ export default class Header extends Component {
         </div>
         <div className="Header__db_logout">
           <Link to="/dashboard">
-            <h3 className="Header__dashboard">Dashboard</h3>
+            <h3 className="Header__dashboard" id="dashboard-button">
+              Dashboard
+            </h3>
           </Link>
           <Link
             onClick={() => app.auth().signOut()}
             className="Header__btn  Header__alt"
             to="/"
+            id="logout-button"
           >
             Log Out
           </Link>

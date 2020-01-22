@@ -83,8 +83,6 @@ class JobItem extends Component {
       if (status === "completed") return <span>Task Completed</span>;
       return (
         <>
-          {!approval && progress === 100 && status !== 'revisions' ? <span>AWAITING APPROVAL</span> : <></>}
-          {!approval && progress === 100 && status === 'revisions' ? <span>Revision Requested</span> : <></>}
           <div className="JobItem__edit" onClick={this.showEditForm}>
             {StyleIcon({ style: 'edit' })}
           </div>
@@ -141,6 +139,8 @@ class JobItem extends Component {
               <ProgressBar percentage={progress} />
             </div>
             <span className="JobItem__date">Due: {dateConversions.TStoDisplayDate(job.deadline)}</span>
+          {!job.approval && progress === 100 && job.status !== 'revisions' ? <span>AWAITING APPROVAL</span> : <></>}
+          {!job.approval && progress === 100 && job.status === 'revisions' ? <span>Revision Requested</span> : <></>}
           {job.status !== 'completed' ? (dateConversions.dateDiff(job.deadline)
              && `Overdue by ${dateConversions.dateDiff(job.deadline)} days`) : ''}
           </div>

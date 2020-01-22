@@ -1,5 +1,5 @@
 describe("catchall Page", () => {
-  describe("it works", () => {
+  describe("/testing redir to /", () => {
     before(() => {
       // Attempt to go to /dashboard (requires user to be logged in)
       cy.visit("/testing", { timeout: 8000 });
@@ -12,7 +12,7 @@ describe("catchall Page", () => {
 });
 
 describe("Redirect", () => {
-  describe("landing page with no auth", () => {
+  describe("/dashboard redir to /", () => {
     before(() => {
       // Attempt to go to /dashboard (requires user to be logged in)
       cy.visit("/dashboard", { timeout: 8000 });

@@ -28,7 +28,8 @@ const WorkerEditForm = props => {
       description: description,
       total_hours: parseInt(totalHours),
       note: note,
-      employee: currentUser.name
+      employee: currentUser.name,
+      // logged_hours: {name: currentUser.name, hours:}
     };
     if (
       props.job.name === name &&

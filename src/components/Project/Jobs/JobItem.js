@@ -4,8 +4,11 @@ import JobForm from "../JobForm/JobForm";
 import dbServices from "../../../services/dbServices";
 import WorkerEditForm from "../WorkerEditForm/WorkerEditForm";
 import { AuthContext } from "../../../services/Auth";
+import StyleIcon from "../../StyleIcon/StyleIcon";
 import dateConversions from "../../../services/dateConversions";
 import { Bar, Line, Pie } from "react-chartjs-2";
+import Swal from "sweetalert2";
+
 
 class JobItem extends Component {
   constructor(props) {
@@ -62,13 +65,24 @@ class JobItem extends Component {
   };
 
   handleApprovalSubmit = async (id, status, approval = false) => {
-    await dbServices.updateJobStatus(
-      id,
-      status,
-      this.props.job.project_id,
-      approval,
-      this.props.job.organization
-    );
+    try {
+      await dbServices.updateJobStatus(
+        id,
+        status,
+        this.props.job.project_id,
+        approval,
+        this.props.job.organization
+      );
+    } catch (error) {
+      console.warn(error);
+      Swal.fire({
+        title: "Error!",
+        text:
+          "There was an issue approving this task - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
+    }
   };
 
   renderEmployeeList = jobWorkers => {
@@ -130,7 +144,9 @@ class JobItem extends Component {
           ) : (
             <></>
           )}
-          <button onClick={this.showEditForm}>Edit</button>
+          <div className="JobItem__edit" onClick={this.showEditForm}>
+            {StyleIcon({ style: "edit" })}
+          </div>
           {status === "submitted" ? (
             <div>
               <button
@@ -172,47 +188,63 @@ class JobItem extends Component {
     const job = this.props.job;
     const progress = Math.floor((job.hours_completed / job.total_hours) * 100);
     return (
-      <li key={job.id} id={job.id}>
-        <div className="job_details">
-          <button onClick={this.toggleExpand}>
-            {this.state.expandJob ? "-" : "+"}
-          </button>
-          <h4>{job.name}</h4>
-          <span>{job.description}</span>
-          <ProgressBar percentage={progress} />
-          {this.state.employeeHours.datasets[0].data.length !== 0 ? <Pie data={this.state.employeeHours} options={{ maintainAspectRatio: false }}/> : <></>} 
-          <span>{dateConversions.TStoDisplayDate(job.deadline)}</span>
-          {dateConversions.dateDiff(job.deadline)
-            ? `Overdue by ${dateConversions.dateDiff(job.deadline)} days`
-            : ""}
-          {this.renderProjectButtons(
-            job.approval,
-            job.total_hours,
-            job.hours_completed,
-            job.id,
-            job.status
-          )}
+      <li
+        className="JobItem"
+        key={job.id}
+        id={job.id}
+        onClick={this.toggleExpand}
+      >
+        <div className="JobItem__container">
+          <div className="JobItem__icon">
+            {StyleIcon({
+              style: `${this.state.expandJob ? "expand" : "collapse"}`
+            })}
+          </div>
+          <span className="JobItem__name">{job.name}</span>
+          <div className="JobItem__details">
+            <span>Details:</span>
+            <div className="JobItem__details_text">{job.description}</div>
+          </div>
+          <div className="JobItem__progress">
+            <div>
+              <span>Est. Progress</span>
+              <ProgressBar percentage={progress} />
+              {this.state.employeeHours.datasets[0].data.length !== 0 ? <Pie data={this.state.employeeHours} options={{ maintainAspectRatio: false }}/> : <></>}
+            </div>
+            <span className="JobItem__date">
+              Due: {dateConversions.TStoDisplayDate(job.deadline)}
+            </span>
+            {dateConversions.dateDiff(job.deadline) &&
+              `Overdue by ${dateConversions.dateDiff(job.deadline)} days`}
+          </div>
+          <div className="JobItem__buttons">
+            {this.renderProjectButtons(
+              job.approval,
+              job.total_hours,
+              job.hours_completed,
+              job.id,
+              job.status
+            )}
+          </div>
         </div>
-        {this.state.showEditForm ? (
-          <JobForm showJobForm={this.showEditForm} job={job} />
-        ) : (
-          ""
-        )}
-        {this.state.showWorkerEditForm &&
-        this.context.currentUser.role === "project worker" ? (
-          <WorkerEditForm
-            job={job}
-            renderEditForm={this.showWorkerEditForm}
-            handleStatus={this.handleApprovalSubmit}
-          />
-        ) : (
-          <></>
-        )}
-        {this.state.expandJob ? (
+        {this.state.expandJob && (
           <ul>{this.renderEmployeeList(job.project_workers)}</ul>
-        ) : (
-          ""
         )}
+        <div className="JobItem__form_container">
+          {this.state.showEditForm && (
+            <div className="JobItem__form">
+              <JobForm showJobForm={this.showEditForm} job={job} />
+            </div>
+          )}
+          {this.state.showWorkerEditForm &&
+            this.context.currentUser.role === "project worker" && (
+              <WorkerEditForm
+                job={job}
+                renderEditForm={this.showWorkerEditForm}
+                handleStatus={this.handleApprovalSubmit}
+              />
+            )}
+        </div>
       </li>
     );
   }

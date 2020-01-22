@@ -4,7 +4,7 @@ import "./Jobs.css";
 import JobItem from "./JobItem";
 import LogHours from "../../LogHours/LogHours";
 import dbServices from "../../../services/dbServices";
-import { faHollyBerry } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 
 export default class Jobs extends Component {
   constructor(props) {
@@ -62,9 +62,19 @@ export default class Jobs extends Component {
   };
 
   componentDidMount() {
-    this.unsubscribe = dbServices
-      .jobsListener(this.context.currentUser.org, this.props.projectId)
-      .onSnapshot(this.onJobsUpdate);
+    try {
+      this.unsubscribe = dbServices
+        .jobsListener(this.context.currentUser.org, this.props.projectId)
+        .onSnapshot(this.onJobsUpdate);
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text:
+          "There was an issue loading this project's tasks - please refresh the page and try again.",
+        icon: "error",
+        confirmButtonText: "Close"
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -87,27 +97,27 @@ export default class Jobs extends Component {
       return (
         <>
           <div>
-            <h2>
+            <div>
               {user.role === "project worker" ? (
                 <button onClick={this.renderLogHoursForm}>LOG HOURS</button>
               ) : (
                 <></>
               )}
-            </h2>
-            {this.state.showLogHours ? (
+            </div>
+            {this.state.showLogHours && (
               <LogHours
                 jobs={jobs}
                 renderLogHoursForm={this.renderLogHoursForm}
               />
-            ) : (
-              <></>
             )}
           </div>
-          <ul>
+          <ul className="Jobs__list">
             {jobs.length > 0 ? (
               jobs.map(job => <JobItem projectId={this.props.projectId} job={job} key={job.id} />)
             ) : (
-              <h4>There are currently no tasks to display for this project.</h4>
+              <span>
+                There are currently no tasks to display for this project.
+              </span>
             )}
           </ul>
         </>

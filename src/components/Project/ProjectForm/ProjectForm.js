@@ -23,7 +23,7 @@ const ProjectForm = props => {
     let id = null;
     if (props.proj) id = props.proj.id;
     const data = {
-      alert: false,
+      alert: true,
       name: name,
       description: description,
       project_manager: selected.value || "Unassigned",
@@ -40,6 +40,7 @@ const ProjectForm = props => {
         await dbServices.setProjId(docRef.id, data.org_id);
         props.addToProjState({ ...data, id: docRef.id });
       } else {
+        data.alert = false;
         await dbServices.updateProject(data);
         props.updateProjInState({ ...data });
         props.toggleForm();

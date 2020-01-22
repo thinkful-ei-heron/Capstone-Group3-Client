@@ -4,6 +4,7 @@ import { AuthContext } from "../../services/Auth";
 import lazy from "../../images/lazy.svg";
 import "./Header.css";
 import app from "../../services/base";
+import JobNotification from "../../components/JobNotification/JobNotification";
 
 export default class Header extends Component {
   static contextType = AuthContext;
@@ -77,6 +78,9 @@ export default class Header extends Component {
             ? this.renderLogoutLink()
             : this.renderLoginLink()}
         </nav>
+        {this.context.currentUser && (
+          <JobNotification user={this.context.currentUser} />
+        )}
       </>
     );
   }

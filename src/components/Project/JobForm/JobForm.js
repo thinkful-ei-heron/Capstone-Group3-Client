@@ -83,6 +83,7 @@ const NewJob = props => {
 
     if (props.job) {
       try {
+        console.log(jobObj);
         await dbServices.editJob(id, jobObj);
       } catch (error) {
         console.warn(error);
@@ -95,7 +96,6 @@ const NewJob = props => {
         });
       }
     } else {
-      console.log(jobObj, projectId);
       try {
         await dbServices.addJob(jobObj, projectId);
       } catch (error) {

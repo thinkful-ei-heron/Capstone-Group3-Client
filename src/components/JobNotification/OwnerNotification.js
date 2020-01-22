@@ -17,8 +17,8 @@ export default class OwnerNotification extends Component {
     try {
       e.preventDefault();
       employee.new = false;
-      await dbServices.updateWorker();
-      // await dbServices.updateWorker(employee, this.context.currentUser.org);
+      // await dbServices.updateWorker();
+      await dbServices.updateWorker(employee, this.context.currentUser.org);
       this.props.updateList(employee);
       this.setState({
         newEmployees: this.props.newEmployees

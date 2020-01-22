@@ -11,8 +11,8 @@ describe("catchall Page", () => {
   });
 });
 
-describe("Dashboard Page", () => {
-  describe("redir with no auth", () => {
+describe("Redirect", () => {
+  describe("landing page with no auth", () => {
     before(() => {
       // Attempt to go to /dashboard (requires user to be logged in)
       cy.visit("/dashboard", { timeout: 8000 });

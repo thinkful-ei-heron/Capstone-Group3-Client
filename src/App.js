@@ -12,7 +12,6 @@ import { AuthContext } from './services/Auth.js';
 import Profile from './components/Profile/Profile';
 import './App.css';
 import { CatchAll } from './components/CatchAll/CatchAll';
-// import Sidebar from "./components/Sidebar/Sidebar";
 
 const App = props => {
   const { currentUser } = useContext(AuthContext);
@@ -51,7 +50,12 @@ const App = props => {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" setPath={setPath} component={Login} />
-          <PrivateRoute path="/profile/:id" component={props => <Profile id={props.match.params.id} />} />
+          <PrivateRoute
+            location={props.location}
+            setPath={setPath}
+            path="/profile/:id"
+            component={props => <Profile id={props.match.params.id} />}
+          />
           <Route
             // drop down instead for selecting owner/worker?
             path="/(worker|manager|owner)-signup/"
@@ -71,7 +75,7 @@ const App = props => {
             setPath={setPath}
             component={props => <ProjectView id={props.match.params.id} />}
           />
-          <Route render={() => handleBrokenUrl()} />
+          <Route exact path="*" render={() => handleBrokenUrl(props.location)} />
         </Switch>
       </main>
     </>

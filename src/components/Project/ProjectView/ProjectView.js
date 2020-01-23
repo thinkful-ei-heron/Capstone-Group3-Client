@@ -10,7 +10,9 @@ import JobForm from '../JobForm/JobForm'
 import dbServices from '../../../services/dbServices'
 import dateConversions from '../../../services/dateConversions'
 import Swal from 'sweetalert2'
+import StyleIcon from '../../StyleIcon/StyleIcon'
 import { CatchAll } from '../../CatchAll/CatchAll'
+import ProjectBar from '../../Project/ProjectBar/ProjectBar'
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -24,6 +26,8 @@ export default class ProjectView extends Component {
       progress: 0,
       total: 0,
       error: null,
+      expandStats: false,
+      expandJobs: false,
     }
   }
 
@@ -123,6 +127,18 @@ export default class ProjectView extends Component {
     })
   }
 
+  expandStats = () => {
+    this.setState({
+      expandStats: !this.state.expandStats,
+    })
+  }
+
+  expandJobs = () => {
+    this.setState({
+      expandJobs: !this.state.expandJobs,
+    })
+  }
+
   render() {
     const { project, showJobForm } = this.state
     const user = this.context.currentUser
@@ -139,7 +155,17 @@ export default class ProjectView extends Component {
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
-            <header className="ProjectView__header" id="project_header">
+            <div className="Dashboard__list">
+              <ProjectBar
+                proj={project}
+                role={this.context.currentUser.role}
+                // projectManagers={this.state.projectManagers}
+                // updatePM={this.updatePM}
+                // updateProjInState={this.updateProjInState}
+              />
+            </div>
+
+            {/* <header className="ProjectView__header" id="project_header">
               <div id="name_manager">
                 <h3 id="projectName">{project.name}</h3>
                 <h4 id="projectManager" test-id="manager-name">
@@ -186,21 +212,50 @@ export default class ProjectView extends Component {
                   </span>
                 )}
               </div>
-            </header>
+            </header> */}
           </div>
           <div id="projectView_main">
             <div className="ProjectView__jobs_stats">
               {user.role === 'project worker' ? (
                 <></>
               ) : (
-                <Statistics {...this.props} />
+                <div className="ProjectView__stats">
+                  <div
+                    className="App__section_header"
+                    onClick={() => this.expandStats()}
+                  >
+                    <div className="App__fa_h1">
+                      {StyleIcon({
+                        style: `${this.state.expandStats ? 'minus' : 'plus'}`,
+                      })}
+                      <h3>Statistics</h3>
+                    </div>
+                  </div>
+                  <div className="App__fa_h1">
+                    {this.state.expandStats ? (
+                      <Statistics {...this.props} />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </div>
               )}
-              <div className="ProjectView__jobs_header">
-                {user.role === 'project worker' ? (
-                  <h3>Your Tasks</h3>
-                ) : (
-                  <h3>Tasks</h3>
-                )}
+              <div
+                className="App__section_header"
+                onClick={() => this.expandJobs()}
+              >
+                <div className="App__fa_h1">
+                  {' '}
+                  {StyleIcon({
+                    style: `${this.state.expandJobs ? 'minus' : 'plus'}`,
+                  })}
+                  {user.role === 'project worker' ? (
+                    <h3>Your Tasks</h3>
+                  ) : (
+                    <h3>Tasks</h3>
+                  )}
+                </div>
+
                 {user.role === 'project worker' ? (
                   ''
                 ) : (
@@ -212,17 +267,29 @@ export default class ProjectView extends Component {
                   </button>
                 )}
               </div>
-              {showJobForm && (
-                <JobForm
-                  {...this.props}
-                  setJob={this.setJob}
-                  project={project}
-                  showJobForm={this.showJobForm}
-                  projectId={this.props.id}
-                />
+
+              {this.state.expandJobs ? (
+                <>
+                  {' '}
+                  {showJobForm && (
+                    <JobForm
+                      {...this.props}
+                      setJob={this.setJob}
+                      project={project}
+                      showJobForm={this.showJobForm}
+                      projectId={this.props.id}
+                    />
+                  )}
+                  <Jobs
+                    projectId={this.props.id}
+                    getProgress={this.getProgress}
+                  />
+                </>
+              ) : (
+                <></>
               )}
-              <Jobs projectId={this.props.id} getProgress={this.getProgress} />
             </div>
+
             <div className="App__personnel App__separate_top">
               <Sidebar view="project" project={this.state.project} />
             </div>

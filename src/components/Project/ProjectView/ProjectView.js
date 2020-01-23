@@ -200,7 +200,12 @@ export default class ProjectView extends Component {
                 {user.role === 'project worker' ? (
                   ''
                 ) : (
-                  <button onClick={this.showJobForm}>Add Task</button>
+                  <button
+                    className="ProjectView__add"
+                    onClick={this.showJobForm}
+                  >
+                    Add Task
+                  </button>
                 )}
               </div>
               {showJobForm && (

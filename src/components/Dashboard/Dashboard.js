@@ -209,7 +209,7 @@ export default class Dashboard extends Component {
                   </div>
                 )}
                 <div
-                  className="App__section_header"
+                  className="App__section_header  App__separate_top_always"
                   onClick={this.toggleExpandCompleteProjects}
                 >
                   <div className="App__fa_h1">

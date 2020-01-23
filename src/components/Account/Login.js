@@ -4,7 +4,6 @@ import app from '../../services/base.js'
 import { AuthContext } from '../../services/Auth.js'
 import { Label, Input } from '../Form/Form'
 import Swal from 'sweetalert2'
-import './Login.css'
 
 const Login = (setPath, { history }) => {
   const { currentUser } = useContext(AuthContext)
@@ -38,7 +37,7 @@ const Login = (setPath, { history }) => {
 
   return (
     <div className="Login">
-      <form className="Login__form" onSubmit={handleLogin}>
+      <form className="Form" onSubmit={handleLogin}>
         <Label>
           Email
           <Input
@@ -59,7 +58,11 @@ const Login = (setPath, { history }) => {
             required
           />
         </Label>
-        <button type="submit" test-id="login-button">
+        <button
+          className="btn_highlight_color"
+          type="submit"
+          test-id="login-button"
+        >
           Log in
         </button>
       </form>

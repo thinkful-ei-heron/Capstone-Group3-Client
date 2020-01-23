@@ -81,11 +81,11 @@ export default class Jobs extends Component {
     this.unsubscribe()
   }
 
-  renderLogHoursForm = () => {
-    this.setState({
-      showLogHours: !this.state.showLogHours,
-    })
-  }
+  // renderLogHoursForm = () => {
+  //   this.setState({
+  //     showLogHours: !this.state.showLogHours,
+  //   })
+  // }
 
   render() {
     const { jobs } = this.state
@@ -96,7 +96,7 @@ export default class Jobs extends Component {
     } else {
       return (
         <>
-          <div>
+          {/* <div>
             <div>
               {user.role === 'project worker' ||
               user.role === 'project manager' ? (
@@ -111,7 +111,7 @@ export default class Jobs extends Component {
                 renderLogHoursForm={this.renderLogHoursForm}
               />
             )}
-          </div>
+          </div> */}
           <ul className="Jobs__list">
             {jobs.length > 0 ? (
               jobs.map(job => (

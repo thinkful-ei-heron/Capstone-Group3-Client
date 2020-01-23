@@ -9,34 +9,22 @@ const LogHours = props => {
   const { currentUser } = useContext(AuthContext)
 
   const { value: hours, bind: bindHours, reset: resetHours } = useInput('')
-  const { value: job, bind: bindJob, reset: resetJob } = useInput('')
+
 
   const [submitted, setSubmitted] = useState(false)
 
-  const populateSelect = () => {
-    return props.jobs.map(job => {
-      if (job.project_workers.includes(currentUser.name))
-        return <option key={job.id}>{job.name}</option>
-      else return null
-    })
-  }
 
   const getMaxHours = () => {
-    if (job === '...' || !job) return null
-    else {
-      let selectedJob = props.jobs.find(item => item.name === job)
+      let selectedJob = props.job
       let maxHours =
         parseInt(selectedJob.total_hours) -
         parseInt(selectedJob.hours_completed)
 
       return maxHours
-    }
   }
 
   const renderJobHours = () => {
-    if (job === '...' || !job) return <></>
-    else {
-      let selectedJob = props.jobs.find(item => item.name === job)
+      let selectedJob = props.job
       let hoursWorked = selectedJob.hours_completed
       let hoursNeeded = selectedJob.total_hours
 
@@ -46,12 +34,11 @@ const LogHours = props => {
           {hoursNeeded} hours needed.
         </span>
       )
-    }
   }
 
   const handleJobHoursSubmit = e => {
     e.preventDefault()
-    let jobObj = props.jobs.find(item => item.name === job)
+    let jobObj = props.job
     let oldHours = parseInt(jobObj.hours_completed)
     let newHours = oldHours + parseInt(hours)
     let employeeHoursObj = jobObj.employee_hours.find(
@@ -86,7 +73,6 @@ const LogHours = props => {
   useEffect(() => {
     const resetFunction = async () => {
       resetHours()
-      resetJob()
     }
     if (submitted)
       return function resetAll() {
@@ -95,14 +81,7 @@ const LogHours = props => {
   })
 
   return (
-    <form onSubmit={e => handleJobHoursSubmit(e)}>
-      <Label htmlFor="job_name">
-        Select Task:
-        <select name="job_name" {...bindJob} required>
-          <option>...</option>
-          {populateSelect()}
-        </select>
-      </Label>
+    <form onSubmit={e => handleJobHoursSubmit(e)} className="Form">
       <Label htmlFor="job_hours">
         Number of Hours Worked:
         <Input
@@ -115,11 +94,12 @@ const LogHours = props => {
         />
       </Label>
       <div>{renderJobHours()}</div>
-      {job === '...' || job === '' ? (
-        <></>
-      ) : (
-        <button type="submit">Submit Hours</button>
-      )}
+      <button 
+        onClick={() => props.renderLogHoursForm()} 
+        className="btn_secondary_color">
+          Cancel
+      </button>
+      <button type="submit" className="btn_highlight_color">Submit Hours</button>
     </form>
   )
 }

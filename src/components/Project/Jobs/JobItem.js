@@ -6,6 +6,7 @@ import WorkerEditForm from '../WorkerEditForm/WorkerEditForm'
 import { AuthContext } from '../../../services/Auth'
 import StyleIcon from '../../StyleIcon/StyleIcon'
 import dateConversions from '../../../services/dateConversions'
+import LogHours from '../../LogHours/LogHours'
 import { Bar, Line, Pie } from 'react-chartjs-2'
 import Swal from 'sweetalert2'
 
@@ -15,25 +16,8 @@ class JobItem extends Component {
     this.state = {
       expandJob: false,
       showEditForm: false,
-      showWorkerEditForm: false,
-      employeeHours: {
-        labels: [],
-        datasets: [
-          {
-            label: `Logged Hours by Employee`,
-            data: [],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.6)',
-              'rgba(54, 162, 235, 0.6)',
-              'rgba(255, 206, 86, 0.6)',
-              'rgba(75, 192, 192, 0.6)',
-              'rgba(153, 102, 255, 0.6)',
-              'rgba(255, 159, 64, 0.6)',
-              'rgba(255, 99, 132, 0.6)',
-            ],
-          },
-        ],
-      },
+      showLogHours: false,
+      showWorkerEditForm: false
     }
   }
 
@@ -79,6 +63,7 @@ class JobItem extends Component {
       if (approval || progress !== 100) {
         return (
           <>
+            <button onClick={this.renderLogHoursForm}>Log Hours</button>
             <button disabled>Submit for Approval</button>
             {(status !== 'completed' || status !== 'submitted') &&
             status !== 'edit request' ? (
@@ -111,6 +96,9 @@ class JobItem extends Component {
       if (status === 'completed') return <span>Task Completed</span>
       return (
         <>
+          {this.context.currentUser.role === 'project manager' && (progress !== 100)
+            ? <button onClick={this.renderLogHoursForm}>Log Hours</button>
+            : ''}
           <div className="JobItem__edit" onClick={this.showEditForm}>
             {StyleIcon({ style: 'edit' })}
           </div>
@@ -201,13 +189,29 @@ class JobItem extends Component {
   }
 
   showEditForm = e => {
+    e.stopPropagation()
     this.setState({
       showEditForm: !this.state.showEditForm,
       expandJob: false,
     })
   }
 
+  submitLogHours = () => {
+    this.setState({
+      showLogHours: !this.state.showLogHours
+    })
+  }
+
+  renderLogHoursForm = e => {
+    e.stopPropagation()
+    this.setState({
+      showLogHours: !this.state.showLogHours,
+      expandJob: false
+    })
+  }
+
   showWorkerEditForm = e => {
+    e.stopPropagation()
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm,
       expandJob: false,
@@ -218,6 +222,7 @@ class JobItem extends Component {
     const job = this.props.job
     const progress = Math.floor((job.hours_completed / job.total_hours) * 100)
     return (
+    <>
       <li className="JobItem" key={job.id} id={job.id}>
         <div className="JobItem__container" onClick={this.toggleExpand}>
           <div className="JobItem__icon">
@@ -269,17 +274,14 @@ class JobItem extends Component {
         {this.state.expandJob && (
           <ul>{this.renderEmployeeList(job.project_workers)}</ul>
         )}
-        {/* {this.state.expandJob &&
-        this.state.employeeHours.datasets[0].data.length !== 0 ? (
-          <Pie
-            data={this.state.employeeHours}
-            options={{ maintainAspectRatio: false }}
-          />
-        ) : (
-          <></>
-        )} */}
         {this.state.expandJob && this.renderChart(job)}
         <div className="JobItem__form_container">
+          {this.state.showLogHours && (
+            <LogHours
+              job={job}
+              renderLogHoursForm={this.submitLogHours}
+            />
+          )}
           {this.state.showEditForm && (
             <div className="JobItem__form">
               <JobForm showJobForm={this.showEditForm} job={job} />
@@ -295,6 +297,7 @@ class JobItem extends Component {
             )}
         </div>
       </li>
+    </>
     )
   }
 }

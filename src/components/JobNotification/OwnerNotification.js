@@ -13,9 +13,8 @@ export default class OwnerNotification extends Component {
 
   static contextType = AuthContext
 
-  handleNewEmployee = async (e, employee) => {
+  handleNewEmployee = async employee => {
     try {
-      e.preventDefault()
       employee.new = false
       // await dbServices.updateWorker();
       await dbServices.updateWorker(employee, this.context.currentUser.org)
@@ -45,10 +44,17 @@ export default class OwnerNotification extends Component {
       return this.props.newEmployees.map((employee, index) => {
         return (
           <li key={index + employee}>
-            {employee.name} has joined your organization!
-            <button onClick={e => this.handleNewEmployee(e, employee)}>
+            <Link
+              to={`/profile/${employee.email}`}
+              onClick={() => this.handleNewEmployee(employee)}
+            >
+              {employee.name} has joined your organization!
+            </Link>
+            <button onClick={() => this.handleNewEmployee(employee)}>X</button>
+
+            {/* <button onClick={e => this.handleNewEmployee(e, employee)}>
               Cool.
-            </button>
+            </button> */}
           </li>
         )
       })
@@ -66,6 +72,7 @@ export default class OwnerNotification extends Component {
             >
               {project.name} has started.
             </Link>
+            <button onClick={() => this.handleClick(project, 'new')}>X</button>
           </li>
         )
       })
@@ -83,6 +90,9 @@ export default class OwnerNotification extends Component {
             >
               {project.name} has been completed!
             </Link>
+            <button onClick={() => this.handleClick(project, 'completed')}>
+              X
+            </button>
           </li>
         )
       })

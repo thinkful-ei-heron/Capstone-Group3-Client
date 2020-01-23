@@ -64,7 +64,7 @@ export default class JobNotificationList extends Component {
           name => name !== this.context.currentUser.name
         )
         jobObj.alert = newAlert
-        await dbServices.updateJob(jobObj)
+        await dbServices.updateJobAlert(jobObj)
         this.props.updateList(jobObj)
         this.setState({
           notificationList: this.props.notificationList,
@@ -127,6 +127,14 @@ export default class JobNotificationList extends Component {
           >
             {jobObj.name}
           </Link>
+          {this.context.currentUser.role === 'project worker' ? (
+            <button onClick={() => this.handleClick(jobObj.id, jobObj)}>
+              X
+            </button>
+          ) : (
+            <></>
+          )}
+
           {this.context.currentUser.role === 'project manager' ? (
             <>
               {jobObj.status === 'submitted' ? (

@@ -36,7 +36,8 @@
   background-color: var(--header-bg-color);
 }
 
-.App__separate_top {
+.App__separate_top,
+.App__separate_top_always {
   margin-top: 40px;
 }
 

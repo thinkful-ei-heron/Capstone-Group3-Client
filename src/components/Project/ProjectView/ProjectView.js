@@ -203,6 +203,7 @@ export default class ProjectView extends Component {
                   <button
                     className="ProjectView__add"
                     onClick={this.showJobForm}
+                    test-id="add-task"
                   >
                     Add Task
                   </button>

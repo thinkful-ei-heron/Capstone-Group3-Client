@@ -110,7 +110,7 @@ const WorkerEditForm = props => {
             onBlur={handleBlur}
           />
         </Label>
-        <input type="button" value="cancel" onClick={props.renderEditForm} />
+        <input type="button" value="Cancel" onClick={props.renderEditForm} />
         <input type="submit" disabled={isSubmitting} value="Submit" />
       </form>
       {errors.note && <p>{errors.note}</p>}

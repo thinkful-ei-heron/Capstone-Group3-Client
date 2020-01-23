@@ -264,6 +264,17 @@ const dbServices = {
       .update({ edit: edit })
   },
 
+  async updateJobAlert(jobObj) {
+    await db
+      .collection('organizations')
+      .doc(jobObj.organization)
+      .collection('projects')
+      .doc(jobObj.project_id)
+      .collection('jobs')
+      .doc(jobObj.id)
+      .update({ alert: jobObj.alert })
+  },
+
   async updateProjectWorkers(id, workers, org) {
     await db
       .collection('organizations')

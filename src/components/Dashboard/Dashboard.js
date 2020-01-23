@@ -53,7 +53,7 @@ export default class Dashboard extends Component {
       let sortedProjectsIncomplete = []
 
       data.projects.map((project, index) => {
-        if (project.progress === 100 || project.autoComplete) {
+        if (project.date_completed || project.autoComplete) {
           return sortedProjectsComplete.push(project)
         } else return sortedProjectsIncomplete.push(project)
       })
@@ -194,7 +194,7 @@ export default class Dashboard extends Component {
                     ) : (
                       <div className="Dashboard__no_projects">
                         <span className="Dashboard__welcome">Welcome!</span>
-                        {this.state.user.role === 'project worker' ? (
+                        {this.state.user.role !== 'project worker' ? (
                           <span>
                             You currently have no projects, click the NEW button
                             above to add one.
@@ -204,6 +204,47 @@ export default class Dashboard extends Component {
                             You are not currently assigned to any projects.
                           </span>
                         )}
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div
+                  className="App__section_header  App__separate_top_always"
+                  onClick={this.toggleExpandCompleteProjects}
+                >
+                  <div className="App__fa_h1">
+                    {StyleIcon({
+                      style: `${
+                        this.state.expandCompleteProjects ? 'minus' : 'plus'
+                      }`,
+                    })}
+                    <h1>Completed Projects</h1>
+                  </div>
+                </div>
+                {this.state.expandCompleteProjects && (
+                  <div className="Dashboard__projects_container">
+                    {this.state.completeProjects.length !== 0 ? (
+                      <ul className="Dashboard__list">
+                        {this.state.completeProjects.map(proj => {
+                          return (
+                            <li key={proj.id}>
+                              <ProjectBar
+                                proj={proj}
+                                role={this.state.user.role}
+                                projectManagers={this.state.projectManagers}
+                                updatePM={this.updatePM}
+                                updateProjInState={this.updateProjInState}
+                              />
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    ) : (
+                      <div className="Dashboard__no_projects">
+                        <span>
+                          You currently have no complete projects. Time to get
+                          to work!
+                        </span>
                       </div>
                     )}
                   </div>

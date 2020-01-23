@@ -163,15 +163,19 @@ class JobItem extends Component {
     })
   }
 
-  showEditForm = () => {
+  showEditForm = e => {
+    e.stopPropagation()
     this.setState({
       showEditForm: !this.state.showEditForm,
+      expandJob: false
     })
   }
 
-  showWorkerEditForm = () => {
+  showWorkerEditForm = e => {
+    e.stopPropagation()
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm,
+      expandJob: false
     })
   }
 
@@ -183,9 +187,8 @@ class JobItem extends Component {
         className="JobItem"
         key={job.id}
         id={job.id}
-        onClick={this.toggleExpand}
       >
-        <div className="JobItem__container">
+        <div className="JobItem__container" onClick={this.toggleExpand}>
           <div className="JobItem__icon">
             {StyleIcon({
               style: `${this.state.expandJob ? 'expand' : 'collapse'}`,
@@ -241,7 +244,7 @@ class JobItem extends Component {
               ) : (
                 <></>
               )}
-        <div className="JobItem__form_container">
+          <div className="JobItem__form_container">
           {this.state.showEditForm && (
             <div className="JobItem__form">
               <JobForm showJobForm={this.showEditForm} job={job} />

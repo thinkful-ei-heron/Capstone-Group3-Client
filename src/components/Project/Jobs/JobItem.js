@@ -179,14 +179,15 @@ class JobItem extends Component {
     const job = this.props.job
     const progress = Math.floor((job.hours_completed / job.total_hours) * 100)
     return (
+      <>
       <li
         className="JobItem"
         key={job.id}
         id={job.id}
-        onClick={this.toggleExpand}
+        //onClick={this.toggleExpand}
       >
         <div className="JobItem__container">
-          <div className="JobItem__icon">
+          <div className="JobItem__icon" onClick={this.toggleExpand}>
             {StyleIcon({
               style: `${this.state.expandJob ? 'expand' : 'collapse'}`,
             })}
@@ -241,7 +242,8 @@ class JobItem extends Component {
               ) : (
                 <></>
               )}
-        <div className="JobItem__form_container">
+      </li>
+      <div className="JobItem__form_container">
           {this.state.showEditForm && (
             <div className="JobItem__form">
               <JobForm showJobForm={this.showEditForm} job={job} />
@@ -256,7 +258,7 @@ class JobItem extends Component {
               />
             )}
         </div>
-      </li>
+      </>
     )
   }
 }

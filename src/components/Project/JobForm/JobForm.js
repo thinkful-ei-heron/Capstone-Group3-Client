@@ -206,6 +206,7 @@ const NewJob = props => {
               type="text"
               name="name"
               id="name"
+              test-id='task-name'
               onChange={handleChange}
               value={values.name}
               onBlur={handleBlur}

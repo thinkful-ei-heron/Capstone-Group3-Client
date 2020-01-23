@@ -77,6 +77,7 @@ const ProjectForm = props => {
       <Input
         name="name"
         id="project_name"
+        test-id='project_name'
         type="text"
         placeholder="Project Name"
         onChange={handleChange}
@@ -91,6 +92,7 @@ const ProjectForm = props => {
       <Textarea
         name="description"
         id="project_description"
+        test-id='project_desc'
         type="text"
         placeholder="Project Description"
         onChange={handleChange}
@@ -100,6 +102,7 @@ const ProjectForm = props => {
       <Label htmlFor="project_manager">Project Manager</Label>
       <Dropdown
         id="project_manager"
+        test-id="project_man"
         pm={true}
         isMulti={false}
         setSelected={setSelected}
@@ -110,6 +113,7 @@ const ProjectForm = props => {
       <input
         name="deadline"
         id="project_deadline"
+        test-id='project_deadline'
         type="date"
         onChange={handleChange}
         value={values.deadline}

@@ -127,6 +127,14 @@ export default class JobNotificationList extends Component {
           >
             {jobObj.name}
           </Link>
+          {this.context.currentUser.role === 'project worker' ? (
+            <button onClick={() => this.handleClick(jobObj.id, jobObj)}>
+              X
+            </button>
+          ) : (
+            <button onClick={() => this.props.updateList(jobObj)}>X</button>
+          )}
+
           {this.context.currentUser.role === 'project manager' ? (
             <>
               {jobObj.status === 'submitted' ? (

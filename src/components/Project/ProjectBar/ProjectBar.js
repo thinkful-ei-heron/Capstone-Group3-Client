@@ -35,7 +35,7 @@ const ProjectBar = props => {
           </div>
         </div>
         <div className="ProjectBar__proj_prog_date">
-          {props.proj.progress === 100 || props.proj.autoComplete ? (
+          {props.proj.date_completed ? (
             <p>
               Project Completed on{' '}
               {props.proj.date_completed &&

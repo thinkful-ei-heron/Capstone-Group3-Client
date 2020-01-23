@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import { Bar, Line, Pie } from 'react-chartjs-2'
-import { AuthContext } from '../../services/Auth'
-import app from '../../services/base'
+import React, { Component } from "react";
+import { Bar, Line, Pie } from "react-chartjs-2";
+import { AuthContext } from "../../services/Auth";
+import app from "../../services/base";
 import './Statistics.css'
-const db = app.firestore()
+const db = app.firestore();
 
 export default class Statistics extends Component {
-  static contextType = AuthContext
+  static contextType = AuthContext;
   state = {
     jobDue: {
       labels: [

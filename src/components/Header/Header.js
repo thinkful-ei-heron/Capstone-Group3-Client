@@ -78,9 +78,11 @@ export default class Header extends Component {
             ? this.renderLogoutLink()
             : this.renderLoginLink()}
         </nav>
-        {this.context.currentUser && (
-          <JobNotification user={this.context.currentUser} />
-        )}
+        <div className="Header__notifications">
+          {this.context.currentUser && (
+            <JobNotification user={this.context.currentUser} />
+          )}
+        </div>
       </>
     )
   }

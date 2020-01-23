@@ -17,14 +17,15 @@
 }
 
 .ProjectView__header {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 95%;
-  margin: 0 auto;
+  width: 100%;
   padding: 1em;
   margin-top: 10px;
+  margin-bottom: 30px;
   background-color: rgba(127, 204, 233, 0.8);
 }
 
@@ -48,15 +49,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    padding: 1em;
   }
 
   .ProjectView__jobs_stats {
     width: calc(100% - 170px);
-  }
-
-  .ProjectView__sidebar {
-    margin-left: 10px;
-    width: 150px;
   }
 }

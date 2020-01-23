@@ -70,7 +70,7 @@ const ProjectForm = props => {
   )
   if (error) return null
   return (
-    <form className="ProjectForm Form" onSubmit={handleSubmit}>
+    <form className="Form" onSubmit={handleSubmit}>
       <legend>{props.proj ? 'Update Project' : 'New Project'}</legend>
       {errors.name && <span className="error">{errors.name}</span>}
       <Label htmlFor="project_name">Name</Label>
@@ -115,8 +115,12 @@ const ProjectForm = props => {
         value={values.deadline}
         onBlur={handleBlur}
       />
-      <button type="submit">SUBMIT</button>
-      <button onClick={props.toggleForm}>CANCEL</button>
+      <button className="btn_highlight_color" type="submit">
+        Submit
+      </button>
+      <button className="btn_secondary_color" onClick={props.toggleForm}>
+        Cancel
+      </button>
     </form>
   )
 }

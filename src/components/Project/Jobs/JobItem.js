@@ -82,7 +82,7 @@ class JobItem extends Component {
             <button disabled>Submit for Approval</button>
             {(status !== 'completed' || status !== 'submitted') &&
             status !== 'edit request' ? (
-              <button onClick={e => this.showWorkerEditForm()}>
+              <button onClick={e => this.showWorkerEditForm(e)}>
                 Request Edit
               </button>
             ) : (

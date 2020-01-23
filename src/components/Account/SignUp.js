@@ -18,8 +18,8 @@ const SignUp = ({ history }, props) => {
     orgName: '',
   }
 
-  const [orgList, setOrgList] = useState([]);
-  const [role, setRole] = useState('worker');
+  const [orgList, setOrgList] = useState([])
+  const [role, setRole] = useState('worker')
 
   const getOrgs = async () => {
     let orgs = []
@@ -168,12 +168,32 @@ const SignUp = ({ history }, props) => {
       <form className="Login__form" onSubmit={handleSubmit}>
         <h1>I am a: </h1>
         <div className="radio-toolbar">
-          <Input 
-            type="radio" value="worker" id="check_worker" name="role" checked={role === 'worker'} onChange={e => changeRole(e, 'worker')} />
+          <Input
+            type="radio"
+            value="worker"
+            id="check_worker"
+            name="role"
+            checked={role === 'worker'}
+            onChange={e => changeRole(e, 'worker')}
+          />
           <Label htmlFor="check_worker">Project Worker</Label>
-          <Input type="radio" value="manager" id="check_manager" name="role" checked={role === 'manager'} onChange={e => changeRole(e, 'manager')} />
+          <Input
+            type="radio"
+            value="manager"
+            id="check_manager"
+            name="role"
+            checked={role === 'manager'}
+            onChange={e => changeRole(e, 'manager')}
+          />
           <Label htmlFor="check_manager">Project Manager</Label>
-          <Input type="radio" value="owner" id="check_owner" name="role" checked={role === 'owner'} onChange={e => changeRole(e, 'owner')} />
+          <Input
+            type="radio"
+            value="owner"
+            id="check_owner"
+            name="role"
+            checked={role === 'owner'}
+            onChange={e => changeRole(e, 'owner')}
+          />
           <Label htmlFor="check_owner">Company Owner</Label>
         </div>
         <Label>

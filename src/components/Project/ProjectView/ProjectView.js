@@ -88,16 +88,16 @@ export default class ProjectView extends Component {
   autoComplete = () => {
     Swal.fire({
       title: 'Are you sure?',
-      text: 
+      text:
         'By clicking the button below, you will automatically mark this project as complete along with any unfinished tasks.',
       icon: 'question',
-      confirmButtonText: 'I\'m sure!',
+      confirmButtonText: "I'm sure!",
       onAfterClose: () => {
-        let proj = this.state.project;
-        proj.autoComplete = true;
-        proj.date_completed = dateConversions.dateToTimestamp(new Date());
+        let proj = this.state.project
+        proj.autoComplete = true
+        proj.date_completed = dateConversions.dateToTimestamp(new Date())
         dbServices.updateProject(proj)
-      }
+      },
     })
   }
 
@@ -143,9 +143,12 @@ export default class ProjectView extends Component {
                   percentage={parseInt(this.state.project.progress)}
                 />
               </div>
-              {!this.state.project.autoComplete && this.state.project.progress !== 100 
-                ? <button onClick={this.autoComplete}>Mark as Complete</button>
-                : ''}
+              {!this.state.project.autoComplete &&
+              this.state.project.progress !== 100 ? (
+                <button onClick={this.autoComplete}>Mark as Complete</button>
+              ) : (
+                ''
+              )}
               <div id="project_deadline">
                 <span>
                   Deadline: {dateConversions.TStoDisplayDate(project.deadline)}

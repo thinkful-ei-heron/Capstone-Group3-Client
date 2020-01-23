@@ -1,10 +1,8 @@
 .Dashboard__main {
   box-sizing: border-box;
-  padding: 1em;
 }
 
-.Dashboard__project_header,
-.Dashboard__personnel_header {
+.Dashboard__project_header {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -17,20 +15,6 @@
   font-size: 1.3rem;
   font-weight: 600;
   background-color: var(--header-bg-color);
-}
-
-.Dashboard__fa_h1 .fa_plus,
-.Dashboard__fa_h1 .fa_minus {
-  font-size: 1rem;
-}
-
-.Dashboard__fa_h1 {
-  display: flex;
-  align-items: center;
-}
-
-.Dashboard__fa_h1 h1 {
-  margin-left: 15px;
 }
 
 .Dashboard__new {
@@ -90,16 +74,7 @@
     align-items: flex-start;
   }
 
-  .Dashboard__personnel_header {
-    margin-top: 0;
-  }
-
   .Dashboard__projects {
     width: calc(100% - 170px);
-  }
-
-  .Dashboard__personnel {
-    width: 160px;
-    margin-left: 30px;
   }
 }

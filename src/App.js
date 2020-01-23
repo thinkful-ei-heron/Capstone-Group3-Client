@@ -50,7 +50,7 @@ const App = props => {
           setPath={setPath}
         />
       </header>
-      <main className="app__main">
+      <main className="App__main">
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" setPath={setPath} component={Login} />

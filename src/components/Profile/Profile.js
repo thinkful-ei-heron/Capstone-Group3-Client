@@ -7,11 +7,14 @@ import dbServices from '../../services/dbServices'
 import Swal from 'sweetalert2'
 import { functions } from 'firebase'
 import Sidebar from '../Sidebar/Sidebar'
+import StyleIcon from '../StyleIcon/StyleIcon'
+import './Profile.css'
 
 const Profile = props => {
   const { currentUser } = useContext(AuthContext)
   const [userInfo, setUserInfo] = useState({})
   const [userProjects, setUserProjects] = useState([])
+  const [expandPersonnel, setExpandPersonnel] = useState(true)
   const functions = app.functions()
 
   const handleClick = async event => {
@@ -120,43 +123,71 @@ const Profile = props => {
 
   if (userInfo && userInfo.role)
     return (
-      <>
-        <div>
-          <h3>User Info:</h3>
-          <ul>
-            <li>Role: {userInfo.role}</li>
-            <li>Email: {userInfo.email}</li>
-            <li>Name: {userInfo.name}</li>
-            <li>Org: {userInfo.org}</li>
-          </ul>
-          <h3>User Projects:</h3>
-          {userProjects.length > 0 ? (
-            <ul>
-              {userProjects.map((proj, i) => {
-                return (
-                  <li key={i}>
-                    <Link to={`/project/${proj.id}`}>{proj.name}</Link>
-                  </li>
-                )
-              })}
+      <section className="Profile__container">
+        <div className="App__org_header">
+          {<h2>{userInfo.org}</h2>}
+          <span className="App__date">{new Date().toDateString()}</span>
+        </div>
+        <div className="Profile__main">
+          <section className="Profile__user">
+            <div className="App__section_header">
+              <h1>{userInfo.name}</h1>
+            </div>
+            <ul className="Profile__user_info">
+              <li>
+                <span className="Profile__bold">Role:</span> {userInfo.role}
+              </li>
+              <li>
+                <span className="Profile__bold">Email:</span>
+                {userInfo.email}
+              </li>
+              <li>
+                <span className="Profile__bold">Org:</span>
+                {userInfo.org}
+              </li>
             </ul>
-          ) : (
-            <p>No Projects assigned.</p>
-          )}
+            <h2>User Projects:</h2>
+            {userProjects.length > 0 ? (
+              <ul className="Profile__user_projects">
+                {userProjects.map((proj, i) => {
+                  return (
+                    <li key={i}>
+                      <Link to={`/project/${proj.id}`}>{proj.name}</Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            ) : (
+              <p>No Projects assigned.</p>
+            )}
+            {/* yes I know this is kind of gross. */}
+            <div>
+              {currentUser &&
+                currentUser.role === 'owner' &&
+                userInfo &&
+                userInfo.role === 'project worker' && (
+                  <button onClick={event => handleClick(event)}>
+                    Promote User
+                  </button>
+                )}
+            </div>
+          </section>
+          <section className="App__personnel App__separate_top">
+            <div
+              className="App__section_header"
+              onClick={() => setExpandPersonnel(!expandPersonnel)}
+            >
+              <div className="App__fa_h1">
+                {StyleIcon({
+                  style: `${expandPersonnel ? 'minus' : 'plus'}`,
+                })}
+                <h1>Personnel</h1>
+              </div>
+            </div>
+            {expandPersonnel && <Sidebar />}
+          </section>
         </div>
-        {/* yes I know this is kind of gross. */}
-        <div>
-          {currentUser &&
-          currentUser.role === 'owner' &&
-          userInfo &&
-          userInfo.role === 'project worker' ? (
-            <button onClick={event => handleClick(event)}>Promote User</button>
-          ) : (
-            <></>
-          )}
-        </div>
-        <Sidebar />
-      </>
+      </section>
     )
   return <></>
 }

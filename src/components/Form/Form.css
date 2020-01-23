@@ -3,16 +3,22 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 300px;
+  width: 280px;
   margin: 15px auto;
   padding: 10px;
   background-color: white;
 }
 
+.Form legend {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
 .Form label,
 label {
   width: 250px;
-  margin-bottom: 5px;
+  line-height: 1.3rem;
   text-align: left;
 }
 
@@ -53,13 +59,30 @@ textarea {
   margin-bottom: 15px;
 }
 
+.Form .error {
+  color: red;
+}
+
 @media only screen and (min-width: 750px) {
-  .form label {
+  .Form {
+    width: 420px;
+  }
+  .Form label,
+  label {
     width: 400px;
   }
 
-  .form input {
+  .Form textarea,
+  textarea {
     width: 400px;
-    margin-bottom: 0;
+  }
+
+  .Form input,
+  input {
+    width: 400px;
+  }
+
+  .Form .select {
+    width: 420px;
   }
 }

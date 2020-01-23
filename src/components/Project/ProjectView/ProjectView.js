@@ -121,9 +121,9 @@ export default class ProjectView extends Component {
       return <h2>Project was unable to load</h2>
     } else {
       return (
-        <>
+        <section>
           <div test-id="projectContainer" test-data={project.id}>
-            <header id="company_header">
+            <header className="App__org_header">
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
@@ -186,11 +186,11 @@ export default class ProjectView extends Component {
               )}
               <Jobs projectId={this.props.id} getProgress={this.getProgress} />
             </div>
-            <div className="ProjectView__sidebar">
+            <div className="App__personnel App__separate_top">
               <Sidebar view="project" project={this.state.project} />
             </div>
           </div>
-        </>
+        </section>
       )
     }
   }

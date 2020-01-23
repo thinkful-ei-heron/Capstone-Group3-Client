@@ -93,8 +93,14 @@
   margin: 0;
 }
 
-.app__header ul li {
-  padding: 10px;
+.Header__notifications {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+}
+
+.Header__notifications button {
+  margin-right: 20px;
 }
 
 @media only screen and (min-width: 750px) {

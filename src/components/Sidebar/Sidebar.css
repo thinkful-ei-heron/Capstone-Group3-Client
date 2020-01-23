@@ -4,6 +4,10 @@
   background-color: var(--list-odd-color);
 }
 
+.Sidebar__list {
+  padding: 10px;
+}
+
 .Sidebar__list li {
   padding: 5px;
 }

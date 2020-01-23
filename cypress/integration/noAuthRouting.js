@@ -5,7 +5,7 @@ describe('catchall Page', () => {
     })
     it('Redirects to Home (/)', () => {
       console.log(cy.url())
-      cy.url().should('equal', 'http://localhost:3000/testing')
+      cy.url().should('equal', 'http://localhost:3000/')
     })
   })
 })

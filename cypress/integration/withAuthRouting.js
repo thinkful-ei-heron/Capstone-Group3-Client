@@ -1,4 +1,6 @@
 describe('when authenticated', () => {
+  const email = 'bridgerrhammond@gmail.com'
+  const password = 'password'
   const login = () => {
     cy.visit('/login')
     cy.get('[test-id=login-email]').type('bridgerrhammond@gmail.com')

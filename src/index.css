@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Oxygen|Noto+Serif&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oxygen|Roboto+Slab&display=swap');
 
 html,
 body {
@@ -10,7 +10,7 @@ body {
   --header-bg-color: #5c9ad1;
   --highlight-color: #dc2e5e;
   --oxygen: 'Oxygen', sans-serif;
-  --roboto-slab: 'Noto Serif', serif;
+  --roboto-slab: 'Roboto Slab', serif;
   --text-color: #000925;
 }
 

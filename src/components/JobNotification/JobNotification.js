@@ -195,6 +195,28 @@ export default class JobNotification extends Component {
     })
   }
 
+  updateProjectList = (projObj, list) => {
+    console.log(projObj)
+    if (list === 'completed') {
+      let updatedCompletedProjects = this.state.completedProjects.filter(
+        item => item.id !== projObj.id
+      )
+      this.setState({
+        completedProjects: updatedCompletedProjects,
+        notificationCount: this.state.notificationCount - 1,
+      })
+    } else if (list === 'new') {
+      let updatedNewProjects = this.state.newProjects.filter(
+        item => item.id !== projObj.id
+      )
+      console.log(updatedNewProjects)
+      this.setState({
+        newProjects: updatedNewProjects,
+        notificationCount: this.state.notificationCount - 1,
+      })
+    }
+  }
+
   render() {
     if (this.state.error) return null
     else {
@@ -211,6 +233,7 @@ export default class JobNotification extends Component {
                 newProjects={this.state.newProjects}
                 user={this.context.currentUser}
                 updateList={this.updateNewEmployees}
+                updateProjectList={this.updateProjectList}
               />
             ) : (
               <></>

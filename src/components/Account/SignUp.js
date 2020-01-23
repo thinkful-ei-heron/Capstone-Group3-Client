@@ -19,7 +19,7 @@ const SignUp = ({ history }, props) => {
   }
 
   const [orgList, setOrgList] = useState([])
-  const [role, setRole] = useState(null)
+  const [role, setRole] = useState('worker')
 
   const getOrgs = async () => {
     let orgs = []
@@ -172,7 +172,8 @@ const SignUp = ({ history }, props) => {
             type="radio"
             value="worker"
             id="check_worker"
-            name="entry_type"
+            name="role"
+            checked={role === 'worker'}
             onChange={e => changeRole(e, 'worker')}
           />
           <Label htmlFor="check_worker">Project Worker</Label>
@@ -180,7 +181,8 @@ const SignUp = ({ history }, props) => {
             type="radio"
             value="manager"
             id="check_manager"
-            name="entry_type"
+            name="role"
+            checked={role === 'manager'}
             onChange={e => changeRole(e, 'manager')}
           />
           <Label htmlFor="check_manager">Project Manager</Label>
@@ -188,7 +190,8 @@ const SignUp = ({ history }, props) => {
             type="radio"
             value="owner"
             id="check_owner"
-            name="entry_type"
+            name="role"
+            checked={role === 'owner'}
             onChange={e => changeRole(e, 'owner')}
           />
           <Label htmlFor="check_owner">Company Owner</Label>

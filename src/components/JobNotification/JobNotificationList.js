@@ -65,6 +65,10 @@ export default class JobNotificationList extends Component {
         )
         jobObj.alert = newAlert
         await dbServices.updateJob(jobObj)
+        this.props.updateList(jobObj)
+        this.setState({
+          notificationList: this.props.notificationList,
+        })
       } catch (error) {
         Swal.fire({
           title: 'Error!',

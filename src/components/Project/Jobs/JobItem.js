@@ -39,7 +39,7 @@ class JobItem extends Component {
 
   static contextType = AuthContext
 
-  componentDidMount = async () => {}
+  
 
   handleApprovalSubmit = async (id, status, approval = false) => {
     try {
@@ -145,31 +145,58 @@ class JobItem extends Component {
     }
   }
 
-  toggleExpand = () => {
-    let employeeHours = []
+  renderChart(job) {
+    let employeeHoursArr = []
     let labels = []
-    this.props.job.employee_hours &&
-      this.props.job.employee_hours.forEach(emp => {
+
+    job.employee_hours &&
+      job.employee_hours.forEach(emp => {
         labels.push(emp.name)
-        employeeHours.push(emp.hours)
+        employeeHoursArr.push(emp.hours)
       })
 
-    if (employeeHours.every(item => item === 0)) {
-      employeeHours = []
+    if (employeeHoursArr.every(item => item === 0)) {
+      employeeHoursArr = []
     }
-    this.setState({
-      expandJob: !this.state.expandJob,
-      employeeHours: {
+
+    let employeeHours = {
         labels: labels,
         datasets: [
           {
-            label: this.state.employeeHours.datasets[0].label,
-            data: employeeHours,
-            backgroundColor: this.state.employeeHours.datasets[0]
-              .backgroundColor,
+            label: `Logged Hours by Employee`,
+            data: employeeHoursArr,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)',
+              'rgba(75, 192, 192, 0.6)',
+              'rgba(153, 102, 255, 0.6)',
+              'rgba(255, 159, 64, 0.6)',
+              'rgba(255, 99, 132, 0.6)',
+            ],
           },
         ],
-      },
+      }
+
+      if (employeeHoursArr.length !== 0) {
+        return (
+          <Pie 
+            data={employeeHours} 
+            options={{ 
+              responsive: true, 
+              maintainAspectRatio: false, 
+              title:{ display:true, text: 'Hours Logged', fontSize: 25, }, 
+            }} 
+          />
+        )
+      } else {
+        return <></>
+      }
+  }
+
+  toggleExpand = () => {
+    this.setState({
+      expandJob: !this.state.expandJob,
     })
   }
 
@@ -242,7 +269,7 @@ class JobItem extends Component {
         {this.state.expandJob && (
           <ul>{this.renderEmployeeList(job.project_workers)}</ul>
         )}
-        {this.state.expandJob &&
+        {/* {this.state.expandJob &&
         this.state.employeeHours.datasets[0].data.length !== 0 ? (
           <Pie
             data={this.state.employeeHours}
@@ -250,7 +277,8 @@ class JobItem extends Component {
           />
         ) : (
           <></>
-        )}
+        )} */}
+        {this.state.expandJob && this.renderChart(job)}
         <div className="JobItem__form_container">
           {this.state.showEditForm && (
             <div className="JobItem__form">

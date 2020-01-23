@@ -69,7 +69,9 @@ const LogHours = props => {
     dbServices
       .editJob(jobObj.id, jobObj)
       .then(setSubmitted(true))
-      .then(props.renderLogHoursForm())
+      .then(() => {
+        props.renderLogHoursForm()
+      })
       .catch(error => {
         console.warn(error)
         Swal.fire({

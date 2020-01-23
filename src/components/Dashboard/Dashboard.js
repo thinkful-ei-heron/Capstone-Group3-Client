@@ -55,9 +55,9 @@ export default class Dashboard extends Component {
 
       data.projects.map((project, index) => {
         if (project.progress === 100 || project.autoComplete) {
-          return sortedProjectsComplete.push(project);
-        } else return sortedProjectsIncomplete.push(project);
-      });
+          return sortedProjectsComplete.push(project)
+        } else return sortedProjectsIncomplete.push(project)
+      })
 
       sortedProjectsIncomplete.sort((a, b) => {
         return a.deadline.seconds - b.deadline.seconds
@@ -208,7 +208,9 @@ export default class Dashboard extends Component {
                   >
                     <div className="Dashboard__fa_h1">
                       {StyleIcon({
-                        style: `${this.state.expandCompleteProjects ? "minus" : "plus"}`
+                        style: `${
+                          this.state.expandCompleteProjects ? 'minus' : 'plus'
+                        }`,
                       })}
                       <h1>Completed Projects</h1>
                     </div>
@@ -228,13 +230,14 @@ export default class Dashboard extends Component {
                                   updateProjInState={this.updateProjInState}
                                 />
                               </li>
-                            );
+                            )
                           })}
                         </ul>
                       ) : (
                         <div className="Dashboard__no_projects">
                           <span>
-                            You currently have no complete projects. Time to get to work!
+                            You currently have no complete projects. Time to get
+                            to work!
                           </span>
                         </div>
                       )}

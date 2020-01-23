@@ -59,7 +59,7 @@ const validateInput = {
     )
 
     if (!values.role) {
-      errors.role = "Please select a role";
+      errors.role = 'Please select a role'
     }
 
     if (!values.email) {

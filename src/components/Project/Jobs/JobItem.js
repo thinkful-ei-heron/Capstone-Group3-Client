@@ -126,7 +126,19 @@ class JobItem extends Component {
               </button>
             </div>
           ) : (
-            <></>
+            <>
+              {hours_completed / total_hours === 1 ? (
+                <button
+                  onClick={e =>
+                    this.handleApprovalSubmit(id, 'submitted', false)
+                  }
+                >
+                  Submit for Approval
+                </button>
+              ) : (
+                <></>
+              )}
+            </>
           )}
         </>
       )
@@ -162,7 +174,6 @@ class JobItem extends Component {
   }
 
   showEditForm = e => {
-    e.stopPropagation()
     this.setState({
       showEditForm: !this.state.showEditForm,
       expandJob: false,
@@ -170,7 +181,6 @@ class JobItem extends Component {
   }
 
   showWorkerEditForm = e => {
-    e.stopPropagation()
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm,
       expandJob: false,
@@ -201,7 +211,10 @@ class JobItem extends Component {
             <span className="JobItem__date">
               Due: {dateConversions.TStoDisplayDate(job.deadline)}
             </span>
-            {!job.approval && progress === 100 && job.status !== 'revisions' ? (
+            {!job.approval &&
+            progress === 100 &&
+            job.status !== 'revisions' &&
+            this.context.currentUser.role !== 'project manager' ? (
               <span>AWAITING APPROVAL</span>
             ) : (
               <></>

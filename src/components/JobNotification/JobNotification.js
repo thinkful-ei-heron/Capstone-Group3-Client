@@ -127,9 +127,9 @@ export default class JobNotification extends Component {
           .getProjectsByRole(this.context.currentUser)
           .then(snapshot => {
             snapshot.forEach(doc => {
-              if (doc.data().alert === true && doc.data().completed === true)
+              if (doc.data().alert === true && doc.data().date_completed)
                 completed.push(doc.data())
-              if (doc.data().alert === true && !doc.data().completed)
+              if (doc.data().alert === true && !doc.data().date_completed)
                 newProj.push(doc.data())
             })
             this.setState({

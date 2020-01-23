@@ -53,7 +53,7 @@ export default class Dashboard extends Component {
       let sortedProjectsIncomplete = []
 
       data.projects.map((project, index) => {
-        if (project.progress === 100 || project.autoComplete) {
+        if (project.date_completed || project.autoComplete) {
           return sortedProjectsComplete.push(project)
         } else return sortedProjectsIncomplete.push(project)
       })
@@ -194,7 +194,7 @@ export default class Dashboard extends Component {
                     ) : (
                       <div className="Dashboard__no_projects">
                         <span className="Dashboard__welcome">Welcome!</span>
-                        {this.state.user.role === 'project worker' ? (
+                        {this.state.user.role !== 'project worker' ? (
                           <span>
                             You currently have no projects, click the NEW button
                             above to add one.

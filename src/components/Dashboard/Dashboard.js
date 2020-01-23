@@ -224,7 +224,7 @@ export default class Dashboard extends Component {
                 {this.state.expandCompleteProjects && (
                   <div className="Dashboard__projects_container">
                     {this.state.completeProjects.length !== 0 ? (
-                      <ul className="Dashboard__list">
+                      <ul className="Dashboard__list"> 
                         {this.state.completeProjects.map(proj => {
                           return (
                             <li key={proj.id}>

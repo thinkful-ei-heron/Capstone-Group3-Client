@@ -40,7 +40,7 @@ const ProjectBar = props => {
   }
 
   return (
-    <div className="ProjectBar__project_container">
+    <div className="ProjectBar__project_container"> 
       <Link
         className="ProjectBar__link_wrapper"
         to={`/project/${props.proj.id}`}

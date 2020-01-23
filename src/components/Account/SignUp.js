@@ -172,7 +172,7 @@ const SignUp = ({ history }, props) => {
             type="radio"
             value="worker"
             id="check_worker"
-            name="role"
+            name="entry_type"
             checked={role === 'worker'}
             onChange={e => changeRole(e, 'worker')}
           />
@@ -181,7 +181,7 @@ const SignUp = ({ history }, props) => {
             type="radio"
             value="manager"
             id="check_manager"
-            name="role"
+            name="entry_type"
             checked={role === 'manager'}
             onChange={e => changeRole(e, 'manager')}
           />
@@ -190,7 +190,7 @@ const SignUp = ({ history }, props) => {
             type="radio"
             value="owner"
             id="check_owner"
-            name="role"
+            name="entry_type"
             checked={role === 'owner'}
             onChange={e => changeRole(e, 'owner')}
           />

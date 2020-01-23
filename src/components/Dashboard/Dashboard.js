@@ -53,7 +53,7 @@ export default class Dashboard extends Component {
       let sortedProjectsIncomplete = []
 
       data.projects.map((project, index) => {
-        if (project.progress === 100) {
+        if (project.progress === 100 || project.autoComplete) {
           return sortedProjectsComplete.push(project)
         } else return sortedProjectsIncomplete.push(project)
       })
@@ -61,9 +61,9 @@ export default class Dashboard extends Component {
       sortedProjectsIncomplete.sort((a, b) => {
         return a.deadline.seconds - b.deadline.seconds
       })
-      let sortedProjects = sortedProjectsIncomplete.concat(
-        sortedProjectsComplete
-      )
+      // let sortedProjects = sortedProjectsIncomplete.concat(
+      //   sortedProjectsComplete
+      // )
       this.setState({
         user: {
           id: email,
@@ -71,7 +71,7 @@ export default class Dashboard extends Component {
           org: org,
           role: role,
         },
-        projects: sortedProjects,
+        projects: sortedProjectsIncomplete,
         completeProjects: sortedProjectsComplete,
         projectManagers: data.project_managers,
         loading: false,

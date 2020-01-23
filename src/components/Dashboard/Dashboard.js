@@ -208,6 +208,44 @@ export default class Dashboard extends Component {
                     )}
                   </div>
                 )}
+                <div
+                    className="App__section_header"
+                    onClick={this.toggleExpandCompleteProjects}
+                  >
+                    <div className="App__fa_h1">
+                      {StyleIcon({
+                        style: `${this.state.expandCompleteProjects ? "minus" : "plus"}`
+                      })}
+                      <h1>Completed Projects</h1>
+                    </div>
+                  </div>
+                  {this.state.expandCompleteProjects && (
+                    <div className="Dashboard__projects_container">
+                      {this.state.completeProjects.length !== 0 ? (
+                        <ul className="Dashboard__list">
+                          {this.state.completeProjects.map(proj => {
+                            return (
+                              <li key={proj.id}>
+                                <ProjectBar
+                                  proj={proj}
+                                  role={this.state.user.role}
+                                  projectManagers={this.state.projectManagers}
+                                  updatePM={this.updatePM}
+                                  updateProjInState={this.updateProjInState}
+                                />
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <div className="Dashboard__no_projects">
+                          <span>
+                            You currently have no complete projects. Time to get to work!
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
               </section>
               <section className="App__personnel App__separate_top">
                 <div

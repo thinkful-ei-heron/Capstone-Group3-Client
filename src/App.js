@@ -8,6 +8,7 @@ import SignUp from './components/Account/SignUp'
 import ProjectView from './components/Project/ProjectView/ProjectView'
 import LandingPage from './components/LandingPage/LandingPage'
 import PrivateRoute from './services/PrivateRoute'
+import PublicRoute from './services/PublicRoute';
 import { AuthContext } from './services/Auth.js'
 import Profile from './components/Profile/Profile'
 import './App.css'
@@ -34,12 +35,12 @@ const App = props => {
     }
   }, [currentUser, path, props.history])
 
-  const handleBrokenUrl = location => {
-    setPath(null)
-    localStorage.removeItem('path')
+  // const handleBrokenUrl = location => {
+  //   setPath(null)
+  //   localStorage.removeItem('path')
 
-    return <CatchAll />
-  }
+  //   return <CatchAll />
+  // }
 
   return (
     <>
@@ -60,10 +61,10 @@ const App = props => {
             path="/profile/:id"
             component={props => <Profile id={props.match.params.id} />}
           />
-          <Route
-            // drop down instead for selecting owner/worker?
+          <PublicRoute
             path="/register"
-            render={() => <SignUp />}
+            setPath={setPath}
+            component={() => <SignUp />}
           />
           <PrivateRoute
             exact
@@ -79,13 +80,13 @@ const App = props => {
             setPath={setPath}
             component={props => <ProjectView id={props.match.params.id} />}
           />
-          <Route
+          <PublicRoute
             exact
             path="*"
-            render={() => handleBrokenUrl(props.location)}
+            setPath={setPath}
+            component={CatchAll}
           />
         </Switch>
-        <Route exact path="/catchall" component={CatchAll} />
       </main>
     </>
   )

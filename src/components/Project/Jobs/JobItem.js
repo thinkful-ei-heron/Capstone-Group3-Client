@@ -40,30 +40,7 @@ class JobItem extends Component {
   static contextType = AuthContext
 
   componentDidMount = async () => {
-    let employeeHours = []
-    let labels = []
-    this.props.job.employee_hours &&
-      this.props.job.employee_hours.forEach(emp => {
-        labels.push(emp.name)
-        employeeHours.push(emp.hours)
-      })
-
-    if (employeeHours.every(item => item === 0)) {
-      employeeHours = []
-    }
-    await this.setState({
-      employeeHours: {
-        labels: labels,
-        datasets: [
-          {
-            label: this.state.employeeHours.datasets[0].label,
-            data: employeeHours,
-            backgroundColor: this.state.employeeHours.datasets[0]
-              .backgroundColor,
-          },
-        ],
-      },
-    })
+    
   }
 
   handleApprovalSubmit = async (id, status, approval = false) => {
@@ -159,8 +136,30 @@ class JobItem extends Component {
   }
 
   toggleExpand = () => {
+    let employeeHours = []
+    let labels = []
+    this.props.job.employee_hours &&
+      this.props.job.employee_hours.forEach(emp => {
+        labels.push(emp.name)
+        employeeHours.push(emp.hours)
+      })
+
+    if (employeeHours.every(item => item === 0)) {
+      employeeHours = []
+    }
     this.setState({
       expandJob: !this.state.expandJob,
+      employeeHours: {
+        labels: labels,
+        datasets: [
+          {
+            label: this.state.employeeHours.datasets[0].label,
+            data: employeeHours,
+            backgroundColor: this.state.employeeHours.datasets[0]
+              .backgroundColor,
+          },
+        ],
+      },
     })
   }
 
@@ -201,14 +200,6 @@ class JobItem extends Component {
             <div>
               <span>Est. Progress</span>
               <ProgressBar percentage={progress} />
-              {this.state.employeeHours.datasets[0].data.length !== 0 ? (
-                <Pie
-                  data={this.state.employeeHours}
-                  options={{ maintainAspectRatio: false }}
-                />
-              ) : (
-                <></>
-              )}
             </div>
             <span className="JobItem__date">
               Due: {dateConversions.TStoDisplayDate(job.deadline)}
@@ -241,6 +232,14 @@ class JobItem extends Component {
         {this.state.expandJob && (
           <ul>{this.renderEmployeeList(job.project_workers)}</ul>
         )}
+        {this.state.expandJob && this.state.employeeHours.datasets[0].data.length !== 0 ? (
+                <Pie
+                  data={this.state.employeeHours}
+                  options={{ maintainAspectRatio: false }}
+                />
+              ) : (
+                <></>
+              )}
         <div className="JobItem__form_container">
           {this.state.showEditForm && (
             <div className="JobItem__form">

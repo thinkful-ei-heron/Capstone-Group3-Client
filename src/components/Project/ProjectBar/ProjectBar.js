@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import dbServices from '../../../services/dbServices'
 import dateConversions from '../../../services/dateConversions'
 import { ProgressBar } from '../../ProgressBar/ProgressBar'
 import ProjectForm from '../ProjectForm/ProjectForm'
 import StyleIcon from '../../StyleIcon/StyleIcon'
+import Swal from 'sweetalert2'
 import './ProjectBar.css'
 
 const ProjectBar = props => {
@@ -11,6 +13,30 @@ const ProjectBar = props => {
 
   const toggleEdit = () => {
     setEdit(!edit)
+  }
+
+  const approveProject = async () => {
+    let proj = props.project
+    proj.date_completed = dateConversions.dateToTimestamp(new Date())
+    proj.alert = true
+    await dbServices.updateProject(proj)
+  }
+
+  const autoComplete = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text:
+        'By clicking the button below, you will automatically mark this project as complete along with any unfinished tasks.',
+      icon: 'question',
+      confirmButtonText: "I'm sure!",
+      onAfterClose: () => {
+        let proj = props.project
+        proj.autoComplete = true
+        proj.alert = true
+        proj.date_completed = dateConversions.dateToTimestamp(new Date())
+        dbServices.updateProject(proj)
+      },
+    })
   }
 
   return (
@@ -48,7 +74,7 @@ const ProjectBar = props => {
               </div>
               <div className="ProjectBar__deadline">
                 <span className="ProjectBar__deadline_first">
-                  Deadline:{' '}
+                  Deadline:
                   {dateConversions.TStoDisplayDate(props.proj.deadline)}
                 </span>
                 <span className="ProjectBar__overdue">
@@ -68,6 +94,21 @@ const ProjectBar = props => {
           <div className="ProjectBar__edit" onClick={toggleEdit}>
             {StyleIcon({ style: 'edit' })}
           </div>
+        </div>
+      )}
+      {props.role === 'project manager' && (
+        <div className="ProjectBar__buttons">
+          {props.proj.date_completed ? (
+            <></>
+          ) : (
+            <>
+              {!props.proj.autoComplete && props.proj.progress !== 100 ? (
+                <button onClick={autoComplete}>Mark as Complete</button>
+              ) : (
+                <button onClick={approveProject}>Approve Project</button>
+              )}
+            </>
+          )}
         </div>
       )}
       {edit && (

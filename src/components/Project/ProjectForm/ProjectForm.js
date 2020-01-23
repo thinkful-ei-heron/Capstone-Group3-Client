@@ -71,6 +71,7 @@ const ProjectForm = props => {
   if (error) return null
   return (
     <form className="ProjectForm Form" onSubmit={handleSubmit}>
+      <legend>{props.proj ? 'Update Project' : 'New Project'}</legend>
       {errors.name && <span className="error">{errors.name}</span>}
       <Label htmlFor="project_name">Name</Label>
       <Input
@@ -96,8 +97,9 @@ const ProjectForm = props => {
         value={values.description}
         onBlur={handleBlur}
       />
-      <Label htmlFor="project_description">Project Manager</Label>
+      <Label htmlFor="project_manager">Project Manager</Label>
       <Dropdown
+        id="project_manager"
         pm={true}
         isMulti={false}
         setSelected={setSelected}

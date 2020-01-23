@@ -155,7 +155,7 @@ export default class ProjectView extends Component {
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
-            <div className="Dashboard__list">
+            <div className="projectbar_container">
               <ProjectBar
                 proj={project}
                 role={this.context.currentUser.role}
@@ -164,55 +164,6 @@ export default class ProjectView extends Component {
                 // updateProjInState={this.updateProjInState}
               />
             </div>
-
-            {/* <header className="ProjectView__header" id="project_header">
-              <div id="name_manager">
-                <h3 id="projectName">{project.name}</h3>
-                <h4 id="projectManager" test-id="manager-name">
-                  Manager: {project.project_manager}
-                </h4>
-              </div>
-              <div id="project_description">
-                <span>{project.description}</span>
-              </div>
-              <div id="project_progress">
-                <span>Est. Progress</span>
-                <ProgressBar
-                  percentage={parseInt(this.state.project.progress)}
-                />
-              </div>
-              {this.state.project.date_completed ? (
-                <></>
-              ) : (
-                <>
-                  {' '}
-                  {!this.state.project.autoComplete &&
-                  this.state.project.progress !== 100 ? (
-                    <button onClick={this.autoComplete}>
-                      Mark as Complete
-                    </button>
-                  ) : (
-                    <button onClick={this.approveProject}>
-                      Approve Project
-                    </button>
-                  )}{' '}
-                </>
-              )}
-
-              <div id="project_deadline">
-                {this.state.project.date_completed ? (
-                  <span>
-                    Project Completed On:{' '}
-                    {dateConversions.TStoDisplayDate(project.date_completed)}
-                  </span>
-                ) : (
-                  <span>
-                    Deadline:{' '}
-                    {dateConversions.TStoDisplayDate(project.deadline)}
-                  </span>
-                )}
-              </div>
-            </header> */}
           </div>
           <div id="projectView_main">
             <div className="ProjectView__jobs_stats">
@@ -231,7 +182,7 @@ export default class ProjectView extends Component {
                       <h3>Statistics</h3>
                     </div>
                   </div>
-                  <div className="App__fa_h1">
+                  <div className="stats_container">
                     {this.state.expandStats ? (
                       <Statistics {...this.props} />
                     ) : (

@@ -1,16 +1,3 @@
-.ProjectView__jobs_header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  font-family: var(--oxygen);
-  font-size: 1.2rem;
-  font-weight: 600;
-
-  background-color: var(--header-bg-color);
-}
-
 #projectView__container {
   display: flex;
   flex-direction: row;
@@ -27,6 +14,30 @@
   margin-top: 10px;
   margin-bottom: 30px;
   background-color: rgba(127, 204, 233, 0.8);
+}
+
+.ProjectView__jobs_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  font-family: var(--oxygen);
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  background-color: var(--header-bg-color);
+}
+
+.ProjectView__add {
+  height: 35px;
+  width: 100px;
+  font-family: var(--oxygen);
+  font-size: 1.1rem;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--highlight-color);
 }
 
 #project_progress {

@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import FirebaseContext from "../../services/context";
-import { Label, Input, Textarea } from "../Form/Form";
-import { useInput } from "../../hooks/useInput";
+import React, { useContext, useEffect, useState } from 'react'
+import FirebaseContext from '../../services/context'
+import { Label, Input, Textarea } from '../Form/Form'
+import { useInput } from '../../hooks/useInput'
 
 const WorkerEditForm = props => {
   // const [name, setName] = useState(props.job.name);
@@ -9,62 +9,62 @@ const WorkerEditForm = props => {
   // const [totalHours, setTotalHours] = useState(prop.job.total_hours);
   // const [note, setNote] = useState("");
 
-  const context = useContext(FirebaseContext);
-  const [submitted, setSubmitted] = useState(false);
-  const { value: name, bind: bindName, reset: resetName } = useInput("");
+  const context = useContext(FirebaseContext)
+  const [submitted, setSubmitted] = useState(false)
+  const { value: name, bind: bindName, reset: resetName } = useInput('')
   const {
     value: description,
     bind: bindDescription,
-    reset: resetDescription
-  } = useInput("");
+    reset: resetDescription,
+  } = useInput('')
   const {
     value: totalHours,
     bind: bindTotalHours,
-    reset: resetTotalHours
-  } = useInput("");
-  const { value: note, bind: bindNote, reset: resetNote } = useInput("");
+    reset: resetTotalHours,
+  } = useInput('')
+  const { value: note, bind: bindNote, reset: resetNote } = useInput('')
 
   //request edit on name, description, total_hours, note
 
   const submitRequest = async e => {
-    e.preventDefault();
+    e.preventDefault()
     const editObj = {
       name: name,
       description: description,
       total_hours: parseInt(totalHours),
       note: note,
-      employee: context.user.name
-    };
+      employee: context.user.name,
+    }
     if (
       props.job.name === name &&
       props.job.description === description &&
       props.job.total_hours === totalHours &&
-      note === ""
+      note === ''
     ) {
-      console.log("nothing to update");
+      console.log('nothing to update')
     } else {
-      await context.updateEdit(editObj, props.job.id, props.job.project_id);
+      await context.updateEdit(editObj, props.job.id, props.job.project_id)
       await props
-        .handleStatus(props.job.id, "edit request")
-        .then(setSubmitted(true));
+        .handleStatus(props.job.id, 'edit request')
+        .then(setSubmitted(true))
     }
-  };
+  }
 
   useEffect(() => {
     const resetFunction = () => {
-      resetName();
-      resetNote();
-      resetTotalHours();
-      resetDescription();
-    };
+      resetName()
+      resetNote()
+      resetTotalHours()
+      resetDescription()
+    }
     if (submitted)
       return function resetAll() {
-        resetFunction();
-      };
-  });
+        resetFunction()
+      }
+  })
 
   return (
-    <div>
+    <form className="Form">
       <Label htmlFor="job_name">
         Job name
         <Input
@@ -101,9 +101,11 @@ const WorkerEditForm = props => {
           {...bindNote}
         />
       </Label>
-      <button onClick={e => submitRequest(e)}>Submit Edit Request</button>
-    </div>
-  );
-};
+      <button className="btn_highlight_color" onClick={e => submitRequest(e)}>
+        Submit Edit Request
+      </button>
+    </form>
+  )
+}
 
-export default WorkerEditForm;
+export default WorkerEditForm

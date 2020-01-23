@@ -39,9 +39,7 @@ class JobItem extends Component {
 
   static contextType = AuthContext
 
-  componentDidMount = async () => {
-    
-  }
+  componentDidMount = async () => {}
 
   handleApprovalSubmit = async (id, status, approval = false) => {
     try {
@@ -128,7 +126,19 @@ class JobItem extends Component {
               </button>
             </div>
           ) : (
-            <></>
+            <>
+              {hours_completed / total_hours === 1 ? (
+                <button
+                  onClick={e =>
+                    this.handleApprovalSubmit(id, 'submitted', false)
+                  }
+                >
+                  Submit for Approval
+                </button>
+              ) : (
+                <></>
+              )}
+            </>
           )}
         </>
       )
@@ -163,15 +173,17 @@ class JobItem extends Component {
     })
   }
 
-  showEditForm = () => {
+  showEditForm = e => {
     this.setState({
       showEditForm: !this.state.showEditForm,
+      expandJob: false,
     })
   }
 
-  showWorkerEditForm = () => {
+  showWorkerEditForm = e => {
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm,
+      expandJob: false,
     })
   }
 
@@ -179,13 +191,8 @@ class JobItem extends Component {
     const job = this.props.job
     const progress = Math.floor((job.hours_completed / job.total_hours) * 100)
     return (
-      <li
-        className="JobItem"
-        key={job.id}
-        id={job.id}
-        onClick={this.toggleExpand}
-      >
-        <div className="JobItem__container">
+      <li className="JobItem" key={job.id} id={job.id}>
+        <div className="JobItem__container" onClick={this.toggleExpand}>
           <div className="JobItem__icon">
             {StyleIcon({
               style: `${this.state.expandJob ? 'expand' : 'collapse'}`,
@@ -200,12 +207,14 @@ class JobItem extends Component {
             <div>
               <span>Est. Progress</span>
               <ProgressBar percentage={progress} />
-              
             </div>
             <span className="JobItem__date">
               Due: {dateConversions.TStoDisplayDate(job.deadline)}
             </span>
-            {!job.approval && progress === 100 && job.status !== 'revisions' ? (
+            {!job.approval &&
+            progress === 100 &&
+            job.status !== 'revisions' &&
+            this.context.currentUser.role !== 'project manager' ? (
               <span>AWAITING APPROVAL</span>
             ) : (
               <></>
@@ -233,14 +242,15 @@ class JobItem extends Component {
         {this.state.expandJob && (
           <ul>{this.renderEmployeeList(job.project_workers)}</ul>
         )}
-        {this.state.expandJob && this.state.employeeHours.datasets[0].data.length !== 0 ? (
-                <Pie
-                  data={this.state.employeeHours}
-                  options={{ maintainAspectRatio: false }}
-                />
-              ) : (
-                <></>
-              )}
+        {this.state.expandJob &&
+        this.state.employeeHours.datasets[0].data.length !== 0 ? (
+          <Pie
+            data={this.state.employeeHours}
+            options={{ maintainAspectRatio: false }}
+          />
+        ) : (
+          <></>
+        )}
         <div className="JobItem__form_container">
           {this.state.showEditForm && (
             <div className="JobItem__form">

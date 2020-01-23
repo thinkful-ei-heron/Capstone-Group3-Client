@@ -95,10 +95,18 @@ export default class ProjectView extends Component {
       onAfterClose: () => {
         let proj = this.state.project
         proj.autoComplete = true
+        proj.alert = true
         proj.date_completed = dateConversions.dateToTimestamp(new Date())
         dbServices.updateProject(proj)
       },
     })
+  }
+
+  approveProject = async () => {
+    let proj = this.state.project
+    proj.date_completed = dateConversions.dateToTimestamp(new Date())
+    proj.alert = true
+    await dbServices.updateProject(proj)
   }
 
   componentWillUnmount() {
@@ -143,16 +151,36 @@ export default class ProjectView extends Component {
                   percentage={parseInt(this.state.project.progress)}
                 />
               </div>
-              {!this.state.project.autoComplete &&
-              this.state.project.progress !== 100 ? (
-                <button onClick={this.autoComplete}>Mark as Complete</button>
+              {this.state.project.date_completed ? (
+                <></>
               ) : (
-                ''
+                <>
+                  {' '}
+                  {!this.state.project.autoComplete &&
+                  this.state.project.progress !== 100 ? (
+                    <button onClick={this.autoComplete}>
+                      Mark as Complete
+                    </button>
+                  ) : (
+                    <button onClick={this.approveProject}>
+                      Approve Project
+                    </button>
+                  )}{' '}
+                </>
               )}
+
               <div id="project_deadline">
-                <span>
-                  Deadline: {dateConversions.TStoDisplayDate(project.deadline)}
-                </span>
+                {this.state.project.date_completed ? (
+                  <span>
+                    Project Completed On:{' '}
+                    {dateConversions.TStoDisplayDate(project.date_completed)}
+                  </span>
+                ) : (
+                  <span>
+                    Deadline:{' '}
+                    {dateConversions.TStoDisplayDate(project.deadline)}
+                  </span>
+                )}
               </div>
             </header>
           </div>

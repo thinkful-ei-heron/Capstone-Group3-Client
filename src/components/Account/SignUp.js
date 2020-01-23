@@ -164,8 +164,8 @@ const SignUp = ({ history }, props) => {
 
   return (
     <div className="Login">
-      <h1>Sign up</h1>
-      <form className="Login__form" onSubmit={handleSubmit}>
+      <form className="Form" onSubmit={handleSubmit}>
+        <legend>Sign Up</legend>
         <h1>I am a: </h1>
         <div className="radio-toolbar">
           <Input
@@ -196,8 +196,9 @@ const SignUp = ({ history }, props) => {
           />
           <Label htmlFor="check_owner">Company Owner</Label>
         </div>
+        {errors.email && <span className="error">*{errors.email}</span>}
         <Label>
-          email
+          Email
           <Input
             name="email"
             type="email"
@@ -206,8 +207,8 @@ const SignUp = ({ history }, props) => {
             onBlur={handleBlur}
             placeholder="Email"
           />
-          {errors.email && <p>*{errors.email}</p>}
         </Label>
+        {errors.password && <span className="error">*{errors.password}</span>}
         <Label>
           Password
           <Input
@@ -218,8 +219,8 @@ const SignUp = ({ history }, props) => {
             onBlur={handleBlur}
             value={values.password}
           />
-          {errors.password && <p>*{errors.password}</p>}
         </Label>
+        {errors.name && <span className="error">*{errors.name}</span>}
         <Label htmlFor="username">
           Username
           <Input
@@ -230,14 +231,15 @@ const SignUp = ({ history }, props) => {
             onBlur={handleBlur}
             placeholder="Username"
           />
-          {errors.name && <p>*{errors.name}</p>}
         </Label>
-        <Label htmlFor="orgName">
-          Organization Name
-          {renderOrgSelect()}
-          {errors.orgName && <p>*{errors.orgName}</p>}
-        </Label>
-        <button type="submit" disabled={isSubmitting}>
+        {errors.orgName && <span className="error">*{errors.orgName}</span>}
+        <Label htmlFor="orgName">Organization Name</Label>
+        {renderOrgSelect()}
+        <button
+          className="btn_highlight_color"
+          type="submit"
+          disabled={isSubmitting}
+        >
           Sign Up
         </button>
       </form>

@@ -20,6 +20,7 @@ const ProjectBar = props => {
     proj.date_completed = dateConversions.dateToTimestamp(new Date())
     proj.alert = true
     await dbServices.updateProject(proj)
+    props.updateProjInState(proj)
   }
 
   const autoComplete = () => {
@@ -29,12 +30,13 @@ const ProjectBar = props => {
         'By clicking the button below, you will automatically mark this project as complete along with any unfinished tasks.',
       icon: 'question',
       confirmButtonText: "I'm sure!",
-      onAfterClose: () => {
+      onAfterClose: async () => {
         let proj = props.project
         proj.autoComplete = true
         proj.alert = true
         proj.date_completed = dateConversions.dateToTimestamp(new Date())
-        dbServices.updateProject(proj)
+        await dbServices.updateProject(proj)
+        props.updateProjInState(proj)
       },
     })
   }
@@ -96,7 +98,7 @@ const ProjectBar = props => {
           </div>
         </div>
       )}
-      {props.role === 'project manager' && (
+      {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
           {props.proj.date_completed ? (
             <></>

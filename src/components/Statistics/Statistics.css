@@ -17,3 +17,15 @@
 .due {
   width: 20%;
 }
+
+.Statistics__no_tasks {
+  display: block;
+  margin-top: 20px;
+  line-height: 2rem;
+}
+
+@media only screen and (min-width: 750px) {
+  .Statistics__no_tasks {
+    line-height: 5rem;
+  }
+}

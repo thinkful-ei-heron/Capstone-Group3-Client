@@ -22,6 +22,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: var(--roboto-slab);
   color: var(--text-color);
+  overflow-x: hidden;
 }
 
 a,

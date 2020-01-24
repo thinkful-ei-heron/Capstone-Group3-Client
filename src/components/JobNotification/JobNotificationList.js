@@ -54,6 +54,7 @@ export default class JobNotificationList extends Component {
   }
 
   handleClick = async (id, jobObj, e) => {
+    e.stopPropagation()
     if (
       this.context.currentUser.role === 'project manager' ||
       this.context.currentUser.role === 'owner'
@@ -84,7 +85,8 @@ export default class JobNotificationList extends Component {
     }
   }
 
-  openEdit = (jobObj = null) => {
+  openEdit = (jobObj = null, e) => {
+    e.stopPropagation()
     if (jobObj === null) this.props.updateList(this.state.editJob)
     this.setState({
       editing: !this.state.editing,
@@ -126,7 +128,7 @@ export default class JobNotificationList extends Component {
                 to={{
                   pathname: `/project/${jobObj.project_id}`,
                 }}
-                onClick={() => this.handleClick(jobObj.id, jobObj)}
+                onClick={e => this.handleClick(jobObj.id, jobObj, e)}
               >
                 {jobObj.name}
               </Link>
@@ -137,7 +139,7 @@ export default class JobNotificationList extends Component {
           {this.context.currentUser.role === 'project worker' ? (
             <div
               className="JobNotification__close"
-              onClick={() => this.handleClick(jobObj.id, jobObj)}
+              onClick={e => this.handleClick(jobObj.id, jobObj, e)}
             >
               {StyleIcon({ style: 'close' })}
             </div>
@@ -181,7 +183,7 @@ export default class JobNotificationList extends Component {
               {jobObj.status === 'edit request' ? (
                 <div>
                   <ul>{this.renderJobEdit(jobObj)}</ul>
-                  <button onClick={() => this.openEdit(jobObj)}>
+                  <button onClick={e => this.openEdit(jobObj, e)}>
                     Submit Edit
                   </button>
                 </div>

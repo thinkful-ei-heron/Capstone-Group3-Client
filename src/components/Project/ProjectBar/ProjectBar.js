@@ -17,11 +17,14 @@ const ProjectBar = props => {
   }
 
   const approveProject = async () => {
-    let proj = props.project
+    console.log(props.proj)
+    let proj = { ...props.proj, date_completed: null }
     proj.date_completed = dateConversions.dateToTimestamp(new Date())
     proj.alert = true
+    console.log(proj)
     await dbServices.updateProject(proj)
-    props.updateProjInState(proj)
+    if (window.location.href.includes('dashboard'))
+      props.updateProjInState(proj)
   }
 
   const autoComplete = () => {
@@ -41,7 +44,9 @@ const ProjectBar = props => {
         proj.alert = true
         proj.date_completed = dateConversions.dateToTimestamp(new Date())
         dbServices.updateProject(proj)
-        props.updateProjInState(proj)
+        if (window.location.href.includes('dashboard')) {
+          props.updateProjInState(proj)
+        }
       }
     })
   }
@@ -89,7 +94,7 @@ const ProjectBar = props => {
                 <span className="ProjectBar__overdue">
                   {props.proj.progress !== 100 &&
                     dateConversions.dateDiff(props.proj.deadline) &&
-                      dateConversions.dateDiff(props.proj.deadline)}
+                    dateConversions.dateDiff(props.proj.deadline)}
                 </span>
               </div>
             </>
@@ -99,7 +104,11 @@ const ProjectBar = props => {
       {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
           {props.role === 'owner' && (
-            <div className="ProjectBar__fa" onClick={toggleEdit} data-tip="Edit Project">
+            <div
+              className="ProjectBar__fa"
+              onClick={toggleEdit}
+              data-tip="Edit Project"
+            >
               {StyleIcon({ style: 'edit' })}
             </div>
           )}
@@ -109,13 +118,21 @@ const ProjectBar = props => {
             <div>
               {!props.proj.autoComplete && props.proj.progress !== 100 ? (
                 <>
-                <div className="ProjectBar__fa" onClick={autoComplete} data-tip="Mark Complete">
-                  {StyleIcon({ style: 'complete' })}
-                </div>
-                {/* <ReactTooltip /> */}
+                  <div
+                    className="ProjectBar__fa"
+                    onClick={autoComplete}
+                    data-tip="Mark Complete"
+                  >
+                    {StyleIcon({ style: 'complete' })}
+                  </div>
+                  {/* <ReactTooltip /> */}
                 </>
               ) : (
-                <div className="ProjectBar__fa" onClick={approveProject} data-tip="Approve Project">
+                <div
+                  className="ProjectBar__fa"
+                  onClick={approveProject}
+                  data-tip="Approve Project"
+                >
                   {StyleIcon({ style: 'approve' })}
                 </div>
               )}
@@ -131,7 +148,7 @@ const ProjectBar = props => {
           proj={props.proj}
         />
       )}
-      <ReactTooltip place="bottom" type="dark" effect="float"/>
+      <ReactTooltip place="bottom" type="dark" effect="float" />
     </div>
   )
 }

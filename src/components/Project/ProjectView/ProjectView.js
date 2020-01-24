@@ -112,9 +112,11 @@ export default class ProjectView extends Component {
   }
 
   approveProject = async () => {
-    let proj = this.state.project
+    let proj = { ...this.state.project, date_completed: null }
+
     proj.date_completed = dateConversions.dateToTimestamp(new Date())
     proj.alert = true
+    console.log(proj)
     await dbServices.updateProject(proj)
   }
 

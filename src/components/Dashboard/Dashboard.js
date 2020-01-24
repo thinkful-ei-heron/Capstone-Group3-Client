@@ -117,9 +117,15 @@ export default class Dashboard extends Component {
     })
 
   updateProjInState = proj => {
+    console.log('removing')
     let projects = this.state.projects
-    projects = projects.map(p => (p.id === proj.id ? proj : p))
-    this.setState({ projects: projects })
+    let completedProjects = this.state.completeProjects
+    let updatedProjects = projects.filter(item => item.id !== proj.id)
+    completedProjects.push(proj)
+    this.setState({
+      projects: updatedProjects,
+      completeProjects: completedProjects,
+    })
   }
 
   updatePM = (projId, pm) => {
@@ -161,7 +167,7 @@ export default class Dashboard extends Component {
                     <button
                       className="Dashboard__new"
                       onClick={this.toggleNewProj}
-                      test-id='new-project'
+                      test-id="new-project"
                     >
                       New
                     </button>

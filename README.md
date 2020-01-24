@@ -69,9 +69,9 @@ Contributors:
  - [Bridger Hammond](https://github.com/reifnotreef)
  - [Dan Wagar](https://github.com/danWagar) 
 
-Distributed under the XYZ license. See `LICENSE` for more information.
+Distributed under the MIT license. See [LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE) for more information.
 
-[LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE)
+
 
 ## [Contributing](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/CONTRIBUTING.md)
 

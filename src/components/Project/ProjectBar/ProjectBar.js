@@ -6,6 +6,7 @@ import { ProgressBar } from '../../ProgressBar/ProgressBar'
 import ProjectForm from '../ProjectForm/ProjectForm'
 import StyleIcon from '../../StyleIcon/StyleIcon'
 import Swal from 'sweetalert2'
+import ReactTooltip from 'react-tooltip'
 import './ProjectBar.css'
 
 const ProjectBar = props => {
@@ -98,7 +99,7 @@ const ProjectBar = props => {
       {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
           {props.role === 'owner' && (
-            <div className="ProjectBar__fa" onClick={toggleEdit}>
+            <div className="ProjectBar__fa" onClick={toggleEdit} data-tip="Edit Project">
               {StyleIcon({ style: 'edit' })}
             </div>
           )}
@@ -107,11 +108,14 @@ const ProjectBar = props => {
           ) : (
             <div>
               {!props.proj.autoComplete && props.proj.progress !== 100 ? (
-                <div className="ProjectBar__fa" onClick={autoComplete}>
+                <>
+                <div className="ProjectBar__fa" onClick={autoComplete} data-tip="Mark Complete">
                   {StyleIcon({ style: 'complete' })}
                 </div>
+                {/* <ReactTooltip /> */}
+                </>
               ) : (
-                <div className="ProjectBar__fa" onClick={approveProject}>
+                <div className="ProjectBar__fa" onClick={approveProject} data-tip="Approve Project">
                   {StyleIcon({ style: 'approve' })}
                 </div>
               )}
@@ -127,6 +131,7 @@ const ProjectBar = props => {
           proj={props.proj}
         />
       )}
+      <ReactTooltip place="bottom" type="dark" effect="float"/>
     </div>
   )
 }

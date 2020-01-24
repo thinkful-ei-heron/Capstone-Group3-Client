@@ -8,6 +8,7 @@ import StyleIcon from '../../StyleIcon/StyleIcon'
 import dateConversions from '../../../services/dateConversions'
 import LogHours from '../../LogHours/LogHours'
 import { Bar, Line, Pie } from 'react-chartjs-2'
+import ReactTooltip from 'react-tooltip'
 import Swal from 'sweetalert2'
 
 class JobItem extends Component {
@@ -61,7 +62,7 @@ class JobItem extends Component {
       if (approval || progress !== 100) {
         return (
           <>
-            <div className="JobItem__fa" onClick={this.renderLogHoursForm}>
+            <div className="JobItem__fa" onClick={this.renderLogHoursForm} data-tip="Log Hours">
               {StyleIcon({ style: 'clock' })}
             </div>
             <button disabled>Submit for Approval</button>
@@ -98,13 +99,13 @@ class JobItem extends Component {
         <>
           {this.context.currentUser.role === 'project manager' &&
           progress !== 100 ? (
-            <div className="JobItem__fa" onClick={this.renderLogHoursForm}>
+            <div className="JobItem__fa" onClick={this.renderLogHoursForm} data-tip="Log Hours">
               {StyleIcon({ style: 'clock' })}
             </div>
           ) : (
             ''
           )}
-          <div className="JobItem__fa" onClick={this.showEditForm}>
+          <div className="JobItem__fa" onClick={this.showEditForm} data-tip="Edit Task">
             {StyleIcon({ style: 'edit' })}
           </div>
           {status === 'submitted' ? (
@@ -112,12 +113,14 @@ class JobItem extends Component {
               <div
                 className="JobItem__fa_bigger"
                 onClick={e => this.handleApprovalSubmit(id, 'completed', true)}
+                data-tip="Approve"
               >
                 {StyleIcon({ style: 'approve' })}
               </div>
               <div
                 className="JobItem__fa_bigger"
                 onClick={e => this.handleApprovalSubmit(id, 'revisions')}
+                data-tip="Make Revisions"
               >
                 {StyleIcon({ style: 'revise' })}
               </div>
@@ -130,6 +133,7 @@ class JobItem extends Component {
                   onClick={e =>
                     this.handleApprovalSubmit(id, 'submitted', false)
                   }
+                  data-tip="Submit Approval"
                 >
                   {StyleIcon({ style: 'submit' })}
                 </div>
@@ -325,6 +329,7 @@ class JobItem extends Component {
                 />
               )}
           </div>
+          <ReactTooltip place="bottom" type="dark" effect="float"/>
         </li>
       </>
     )

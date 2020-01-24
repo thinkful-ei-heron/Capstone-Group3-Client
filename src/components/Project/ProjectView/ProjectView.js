@@ -100,7 +100,6 @@ class ProjectView extends Component {
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
     }).then(value => {
-      console.log(value)
       if (value.dismiss === 'cancel') return null
       else {
         let proj = this.state.project
@@ -114,10 +113,8 @@ class ProjectView extends Component {
 
   approveProject = async () => {
     let proj = { ...this.state.project, date_completed: null }
-
     proj.date_completed = dateConversions.dateToTimestamp(new Date())
     proj.alert = true
-    console.log(proj)
     await dbServices.updateProject(proj)
   }
 
@@ -175,7 +172,7 @@ class ProjectView extends Component {
     } else if (this.state.error) {
       return <h2>Project was unable to load</h2>
     } else if (!project) {
-      return <Redirect to='/dashboard'/>
+      return <Redirect to="/dashboard" />
     } else {
       return (
         <section>
@@ -189,9 +186,6 @@ class ProjectView extends Component {
                 proj={project}
                 role={this.context.currentUser.role}
                 view="project"
-                // projectManagers={this.state.projectManagers}
-                // updatePM={this.updatePM}
-                // updateProjInState={this.updateProjInState}
               />
             </div>
           </div>

@@ -10,30 +10,27 @@ const LogHours = props => {
 
   const { value: hours, bind: bindHours, reset: resetHours } = useInput('')
 
-
   const [submitted, setSubmitted] = useState(false)
 
-
   const getMaxHours = () => {
-      let selectedJob = props.job
-      let maxHours =
-        parseInt(selectedJob.total_hours) -
-        parseInt(selectedJob.hours_completed)
+    let selectedJob = props.job
+    let maxHours =
+      parseInt(selectedJob.total_hours) - parseInt(selectedJob.hours_completed)
 
-      return maxHours
+    return maxHours
   }
 
   const renderJobHours = () => {
-      let selectedJob = props.job
-      let hoursWorked = selectedJob.hours_completed
-      let hoursNeeded = selectedJob.total_hours
+    let selectedJob = props.job
+    let hoursWorked = selectedJob.hours_completed
+    let hoursNeeded = selectedJob.total_hours
 
-      return (
-        <span>
-          This task has {hoursWorked} hours worked out of an estimated{' '}
-          {hoursNeeded} hours needed.
-        </span>
-      )
+    return (
+      <span>
+        This task has {hoursWorked} hours worked out of an estimated{' '}
+        {hoursNeeded} hours needed.
+      </span>
+    )
   }
 
   const handleJobHoursSubmit = e => {
@@ -94,12 +91,15 @@ const LogHours = props => {
         />
       </Label>
       <div>{renderJobHours()}</div>
-      <button 
-        onClick={() => props.renderLogHoursForm()} 
-        className="btn_secondary_color">
-          Cancel
+      <button
+        onClick={() => props.renderLogHoursForm()}
+        className="btn_secondary_color"
+      >
+        Cancel
       </button>
-      <button type="submit" className="btn_highlight_color">Submit Hours</button>
+      <button type="submit" className="btn_highlight_color">
+        Submit Hours
+      </button>
     </form>
   )
 }

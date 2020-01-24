@@ -20,7 +20,6 @@ const Profile = props => {
   const handleClick = async event => {
     event.preventDefault()
     const promoteFunc = await functions.httpsCallable('promoteUser')
-    console.log(promoteFunc)
     promoteFunc({
       email: userInfo.email,
       org: userInfo.org,
@@ -58,7 +57,6 @@ const Profile = props => {
           })
         })
     } catch (error) {
-      console.log('caught error!')
       console.warn(error)
       Swal.fire({
         title: 'Error!',
@@ -132,7 +130,6 @@ const Profile = props => {
           <section className="Profile__user">
             <div className="App__section_header">
               <h1>{userInfo.name}</h1>
-              {/* yes I know this is kind of gross. */}
               {currentUser &&
                 currentUser.role === 'owner' &&
                 userInfo &&
@@ -172,7 +169,6 @@ const Profile = props => {
             ) : (
               <p>No Projects assigned.</p>
             )}
-            {/* yes I know this is kind of gross. */}
             <div className="App__personnel_promote_button">
               {currentUser &&
                 currentUser.role === 'owner' &&

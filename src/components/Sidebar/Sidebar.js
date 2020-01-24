@@ -35,7 +35,6 @@ const Sidebar = props => {
       let employees = []
       try {
         return await dbServices.getEmployees(currentUser.org).then(snapshot => {
-          // return await dbServices.getEmployees().then(snapshot => {
           snapshot.forEach(doc => {
             employees.push(doc.data())
           })
@@ -102,12 +101,6 @@ const Sidebar = props => {
   }
 
   if (error) return null
-  // <div>
-  //   <img
-  //     src="https://media.giphy.com/media/jWexOOlYe241y/giphy.gif"
-  //     alt="where is it?"
-  //   />
-  // </div>
   else
     return (
       <div className="Sidebar">

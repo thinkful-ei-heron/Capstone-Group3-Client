@@ -274,7 +274,7 @@ class JobItem extends Component {
                 )}
                 {job.status !== 'completed'
                   ? dateConversions.dateDiff(job.deadline) &&
-                    `Overdue by ${dateConversions.dateDiff(job.deadline)} days`
+                    dateConversions.dateDiff(job.deadline)
                   : ''}
               </div>
             </div>

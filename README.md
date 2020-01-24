@@ -24,7 +24,7 @@ project management software.
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_task.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_task.png" width='80%' height='auto'> |
 | Project View | Log Hours|
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/project_view.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/log_hours.png" width='80%' height='auto'> |
-| Profile View ||
+| Profile View | Catch All Page |
 |<img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/user_profile.png" width='80%' height='auto'>|<img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/catchall.png" width='80%' height='auto'>|
 
 ## Development setup

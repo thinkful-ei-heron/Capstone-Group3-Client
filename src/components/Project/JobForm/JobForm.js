@@ -165,6 +165,9 @@ const NewJob = props => {
     })
 
     try {
+      console.log('projectId', projectId)
+      console.log('pWorkers', updatedProjectWorkers)
+      console.log('org', currentUser.org)
       await dbServices
         .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
         .then(() => {

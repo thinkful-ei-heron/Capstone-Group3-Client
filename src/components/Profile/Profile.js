@@ -132,6 +132,18 @@ const Profile = props => {
           <section className="Profile__user">
             <div className="App__section_header">
               <h1>{userInfo.name}</h1>
+              {/* yes I know this is kind of gross. */}
+              {currentUser &&
+                currentUser.role === 'owner' &&
+                userInfo &&
+                userInfo.role === 'project worker' && (
+                  <button
+                    className="Profile__promote_btn"
+                    onClick={event => handleClick(event)}
+                  >
+                    Promote User
+                  </button>
+                )}
             </div>
             <ul className="Profile__user_info">
               <li>
@@ -161,12 +173,16 @@ const Profile = props => {
               <p>No Projects assigned.</p>
             )}
             {/* yes I know this is kind of gross. */}
-            <div>
+            <div className="App__personnel_promote_button">
               {currentUser &&
                 currentUser.role === 'owner' &&
                 userInfo &&
                 userInfo.role === 'project worker' && (
-                  <button onClick={event => handleClick(event)}>
+                  <button
+                    id="btn_promote_user"
+                    className="btn_highlight_color"
+                    onClick={event => handleClick(event)}
+                  >
                     Promote User
                   </button>
                 )}

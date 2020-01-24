@@ -223,7 +223,10 @@ export default class JobNotification extends Component {
       if (this.context.currentUser.role === 'owner')
         return (
           <>
-            <button onClick={e => this.renderList(e)}>
+            <button
+              className="JobNotificaion__btn"
+              onClick={e => this.renderList(e)}
+            >
               Notifications: {this.state.notificationCount}
             </button>
             {this.state.notificationDropDown ? (
@@ -242,7 +245,10 @@ export default class JobNotification extends Component {
         )
       return (
         <>
-          <button onClick={e => this.renderList(e)}>
+          <button
+            className="JobNotificaion__btn"
+            onClick={e => this.renderList(e)}
+          >
             Notifications: {this.state.notificationCount}
           </button>
           {this.state.notificationDropDown ? (

@@ -17,11 +17,14 @@ const ProjectBar = props => {
   }
 
   const approveProject = async () => {
-    let proj = props.project
+    console.log(props.proj)
+    let proj = { ...props.proj, date_completed: null }
     proj.date_completed = dateConversions.dateToTimestamp(new Date())
     proj.alert = true
+    console.log(proj)
     await dbServices.updateProject(proj)
-    props.updateProjInState(proj)
+    if (window.location.href.includes('dashboard'))
+      props.updateProjInState(proj)
   }
 
   const autoComplete = () => {
@@ -41,10 +44,48 @@ const ProjectBar = props => {
         proj.alert = true
         proj.date_completed = dateConversions.dateToTimestamp(new Date())
         dbServices.updateProject(proj)
-        props.updateProjInState(proj)
+        if (window.location.href.includes('dashboard')) {
+          props.updateProjInState(proj)
+        }
       }
     })
   }
+
+  const deleteProject = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text:
+        'By clicking the button below, you will be deleting this project and all associated tasks.',
+      icon: 'question',
+      confirmButtonText: "I'm sure!",
+      showCancelButton: true,
+    }).then(value => {
+      console.log(value)
+      if (value.dismiss === 'cancel') return null
+      else {
+        let id = props.proj.id
+        let org = props.proj.org_id
+        let complete = props.proj.date_completed
+
+        if (props.view === 'project') {
+          dbServices.deleteProjectById(id, org)
+        }
+        
+        if (props.view === 'dashboard') {
+          dbServices.deleteProjectById(id, org)
+          .then(() => {
+            if (complete) {
+              props.deleteProjInState(id, 'complete')
+            } else {
+              props.deleteProjInState(id, 'incomplete')
+            }
+          })
+        }
+      }
+    })
+  }
+
+  console.log(props)
 
   return (
     <div className="ProjectBar__project_container">
@@ -89,7 +130,7 @@ const ProjectBar = props => {
                 <span className="ProjectBar__overdue">
                   {props.proj.progress !== 100 &&
                     dateConversions.dateDiff(props.proj.deadline) &&
-                      dateConversions.dateDiff(props.proj.deadline)}
+                    dateConversions.dateDiff(props.proj.deadline)}
                 </span>
               </div>
             </>
@@ -98,8 +139,13 @@ const ProjectBar = props => {
       </Link>
       {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
+          <button onClick={deleteProject}>Delete</button>
           {props.role === 'owner' && (
-            <div className="ProjectBar__fa" onClick={toggleEdit} data-tip="Edit Project">
+            <div
+              className="ProjectBar__fa"
+              onClick={toggleEdit}
+              data-tip="Edit Project"
+            >
               {StyleIcon({ style: 'edit' })}
             </div>
           )}
@@ -109,13 +155,21 @@ const ProjectBar = props => {
             <div>
               {!props.proj.autoComplete && props.proj.progress !== 100 ? (
                 <>
-                <div className="ProjectBar__fa" onClick={autoComplete} data-tip="Mark Complete">
-                  {StyleIcon({ style: 'complete' })}
-                </div>
-                {/* <ReactTooltip /> */}
+                  <div
+                    className="ProjectBar__fa"
+                    onClick={autoComplete}
+                    data-tip="Mark Complete"
+                  >
+                    {StyleIcon({ style: 'complete' })}
+                  </div>
+                  {/* <ReactTooltip /> */}
                 </>
               ) : (
-                <div className="ProjectBar__fa" onClick={approveProject} data-tip="Approve Project">
+                <div
+                  className="ProjectBar__fa"
+                  onClick={approveProject}
+                  data-tip="Approve Project"
+                >
                   {StyleIcon({ style: 'approve' })}
                 </div>
               )}
@@ -131,7 +185,7 @@ const ProjectBar = props => {
           proj={props.proj}
         />
       )}
-      <ReactTooltip place="bottom" type="dark" effect="float"/>
+      <ReactTooltip place="bottom" type="dark" effect="float" />
     </div>
   )
 }

@@ -57,7 +57,7 @@ export default class JobNotificationList extends Component {
   }
 
   handleClick = async (id, jobObj, e) => {
-    e.stopPropagation()
+    // e.stopPropagation()
     if (
       this.context.currentUser.role === 'project manager' ||
       this.context.currentUser.role === 'owner'
@@ -90,7 +90,7 @@ export default class JobNotificationList extends Component {
   }
 
   openEdit = (jobObj = null, e) => {
-    e.stopPropagation()
+    // e.stopPropagation()
     if (jobObj === null) this.props.updateList(this.state.editJob)
     this.setState({
       editing: !this.state.editing,

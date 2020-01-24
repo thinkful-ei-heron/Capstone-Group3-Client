@@ -117,9 +117,28 @@ export default class Dashboard extends Component {
     })
 
   updateProjInState = proj => {
+    console.log('removing')
     let projects = this.state.projects
-    projects = projects.map(p => (p.id === proj.id ? proj : p))
-    this.setState({ projects: projects })
+    let completedProjects = this.state.completeProjects
+    let updatedProjects = projects.filter(item => item.id !== proj.id)
+    completedProjects.push(proj)
+    this.setState({
+      projects: updatedProjects,
+      completeProjects: completedProjects,
+    })
+  }
+
+  deleteProjInState = (id, status) => {
+    if (status === 'incomplete') {
+      let projects = this.state.projects
+      projects = projects.filter(p => p.id !== id)
+      this.setState({ projects: projects })
+    }
+    if (status === 'complete') {
+      let projects = this.state.completeProjects
+      projects = projects.filter(p => p.id !== id)
+      this.setState({ completeProjects: projects })
+    }
   }
 
   updatePM = (projId, pm) => {
@@ -161,7 +180,7 @@ export default class Dashboard extends Component {
                     <button
                       className="Dashboard__new"
                       onClick={this.toggleNewProj}
-                      test-id='new-project'
+                      test-id="new-project"
                     >
                       New
                     </button>
@@ -187,6 +206,8 @@ export default class Dashboard extends Component {
                                 projectManagers={this.state.projectManagers}
                                 updatePM={this.updatePM}
                                 updateProjInState={this.updateProjInState}
+                                deleteProjInState={this.deleteProjInState}
+                                view="dashboard"
                               />
                             </li>
                           )
@@ -235,6 +256,8 @@ export default class Dashboard extends Component {
                                 projectManagers={this.state.projectManagers}
                                 updatePM={this.updatePM}
                                 updateProjInState={this.updateProjInState}
+                                deleteProjInState={this.deleteProjInState}
+                                view="dashboard"
                               />
                             </li>
                           )

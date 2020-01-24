@@ -67,7 +67,7 @@ describe('navigate to a project', () => {
         cy.url().should('include', projId)
       })
   })
-  it('Allows PM to add Task', () => {
+  it('Allows PM to fill out task info', () => {
     cy.get('[test-id=add-task]')
       .click()
       .wait(200)
@@ -82,6 +82,9 @@ describe('navigate to a project', () => {
       .first()
       .click()
       .wait(200)
+  })
+  it('Allows PM to submit new task', () => {
+    // currently bugged, unable to submit tasks using WORC promotions?
     cy.get('[test-id=submit-task')
       .click()
       .wait(200)

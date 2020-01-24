@@ -86,7 +86,6 @@ class JobItem extends Component {
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
     const progress = Math.floor((hours_completed / total_hours) * 100)
     if (this.context.currentUser.role === 'project worker') {
-      if (status === 'completed') return <span>Task Completed</span>
       if (status === 'submitted' || status === 'completed') return <></>
       if (approval || progress !== 100) {
         return (
@@ -105,7 +104,7 @@ class JobItem extends Component {
                 onClick={e => this.showWorkerEditForm(e)}
                 data-tip="Request Edit"
               >
-                {StyleIcon({ style: 'edit' })}
+                {StyleIcon({ style: 'requestEdit' })}
               </div>
             ) : (
               <></>
@@ -115,7 +114,6 @@ class JobItem extends Component {
       } else {
         return (
           <>
-            {status === 'revisions' ? <span>Revision Requested</span> : <></>}
             <div
               className="JobItem__fa_bigger"
               onClick={e => this.handleApprovalSubmit(id, 'submitted', false)}
@@ -132,7 +130,6 @@ class JobItem extends Component {
       this.context.currentUser.role === 'project manager' ||
       this.context.currentUser.role === 'owner'
     ) {
-      if (status === 'completed') return <span>Task Completed</span>
       return (
         <>
           {this.context.currentUser.role === 'project manager' &&
@@ -317,6 +314,7 @@ class JobItem extends Component {
                 <span className="JobItem__date">
                   Due: {dateConversions.TStoDisplayDate(job.deadline)}
                 </span>
+                {job.status === 'completed' && <span>Task Completed</span>}
                 {!job.approval &&
                 progress === 100 &&
                 job.status !== 'revisions' &&

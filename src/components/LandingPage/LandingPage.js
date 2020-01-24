@@ -6,7 +6,6 @@ import './LandingPage.css'
 export default function LandingPage() {
   return (
     <section className="LandingPage">
-      <img src={skyscraper} alt="skyscraper" />
       <div className="LandingPage__hero_text">
         <h1>
           <span className="LandingPage__t1">Dream Bigger,</span>

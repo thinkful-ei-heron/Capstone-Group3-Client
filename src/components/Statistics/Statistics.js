@@ -106,17 +106,20 @@ export default class Statistics extends Component {
           let jobDueCount = 0
           let jobHistoryCount = 0
           snapshot.docs.forEach(doc => {
-            if (
-              this.state.jobDue.labels[i] ===
-              `${new Date(doc.data().deadline.seconds * 1000).getMonth() +
-                1}/${new Date(
-                doc.data().deadline.seconds * 1000
-              ).getDate()}/${new Date(
-                doc.data().deadline.seconds * 1000
-              ).getFullYear()}`
-            ) {
-              jobDueCount++
+            if (!doc.data().date_completed) {
+              if (
+                this.state.jobDue.labels[i] ===
+                `${new Date(doc.data().deadline.seconds * 1000).getMonth() +
+                  1}/${new Date(
+                  doc.data().deadline.seconds * 1000
+                ).getDate()}/${new Date(
+                  doc.data().deadline.seconds * 1000
+                ).getFullYear()}`
+              ) {
+                jobDueCount++
+              }
             }
+           
             console.log(this.state.jobHistory.labels[i])
             if (doc.data().date_completed) {
               if (

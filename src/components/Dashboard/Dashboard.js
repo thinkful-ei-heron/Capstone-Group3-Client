@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { AuthContext } from '../../services/Auth.js'
 import dbServices from '../../services/dbServices'
 import Loading from '../Loading/Loading'
-import NewProject from '../Project/NewProject/NewProject'
+import ProjectForm from '../Project/ProjectForm/ProjectForm'
 import Sidebar from '../Sidebar/Sidebar'
 import StyleIcon from '../StyleIcon/StyleIcon'
 import ProjectBar from '../Project/ProjectBar/ProjectBar'
 import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom'
 import './Dashboard.css'
 
 ////////////////////////////////////////////////////////////////////
@@ -53,7 +52,7 @@ export default class Dashboard extends Component {
       let sortedProjectsIncomplete = []
 
       data.projects.map((project, index) => {
-        if (project.progress === 100 || project.autoComplete) {
+        if (project.date_completed || project.autoComplete) {
           return sortedProjectsComplete.push(project)
         } else return sortedProjectsIncomplete.push(project)
       })
@@ -150,6 +149,7 @@ export default class Dashboard extends Component {
                 <div
                   className="App__section_header"
                   onClick={this.toggleExpandProjects}
+                  test-id="dash-header"
                 >
                   <div className="App__fa_h1">
                     {StyleIcon({
@@ -161,13 +161,14 @@ export default class Dashboard extends Component {
                     <button
                       className="Dashboard__new"
                       onClick={this.toggleNewProj}
+                      test-id='new-project'
                     >
                       New
                     </button>
                   )}
                 </div>
                 {this.state.newProj && (
-                  <NewProject
+                  <ProjectForm
                     org={this.state.user.org}
                     addToProjState={this.addToProjState}
                     toggleForm={this.toggleNewProj}
@@ -194,7 +195,7 @@ export default class Dashboard extends Component {
                     ) : (
                       <div className="Dashboard__no_projects">
                         <span className="Dashboard__welcome">Welcome!</span>
-                        {this.state.user.role === 'project worker' ? (
+                        {this.state.user.role !== 'project worker' ? (
                           <span>
                             You currently have no projects, click the NEW button
                             above to add one.
@@ -208,8 +209,49 @@ export default class Dashboard extends Component {
                     )}
                   </div>
                 )}
+                <div
+                  className="App__section_header  App__separate_top_always"
+                  onClick={this.toggleExpandCompleteProjects}
+                >
+                  <div className="App__fa_h1">
+                    {StyleIcon({
+                      style: `${
+                        this.state.expandCompleteProjects ? 'minus' : 'plus'
+                      }`,
+                    })}
+                    <h1>Completed Projects</h1>
+                  </div>
+                </div>
+                {this.state.expandCompleteProjects && (
+                  <div className="Dashboard__projects_container App__separate_bottom">
+                    {this.state.completeProjects.length !== 0 ? (
+                      <ul className="Dashboard__list">
+                        {this.state.completeProjects.map(proj => {
+                          return (
+                            <li key={proj.id}>
+                              <ProjectBar
+                                proj={proj}
+                                role={this.state.user.role}
+                                projectManagers={this.state.projectManagers}
+                                updatePM={this.updatePM}
+                                updateProjInState={this.updateProjInState}
+                              />
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    ) : (
+                      <div className="Dashboard__no_projects">
+                        <span>
+                          You currently have no complete projects. Time to get
+                          to work!
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </section>
-              <section className="App__personnel App__separate_top">
+              <section className="App__personnel App__separate_top App__separate_bottom">
                 <div
                   className="App__section_header"
                   onClick={this.toggleExpandPersonnel}

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import dbServices from '../../../services/dbServices'
 import dateConversions from '../../../services/dateConversions'
 import { ProgressBar } from '../../ProgressBar/ProgressBar'
 import ProjectForm from '../ProjectForm/ProjectForm'
 import StyleIcon from '../../StyleIcon/StyleIcon'
+import Swal from 'sweetalert2'
 import './ProjectBar.css'
 
 const ProjectBar = props => {
@@ -11,6 +13,36 @@ const ProjectBar = props => {
 
   const toggleEdit = () => {
     setEdit(!edit)
+  }
+
+  const approveProject = async () => {
+    let proj = props.project
+    proj.date_completed = dateConversions.dateToTimestamp(new Date())
+    proj.alert = true
+    await dbServices.updateProject(proj)
+    props.updateProjInState(proj)
+  }
+
+  const autoComplete = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text:
+        'By clicking the button below, you will automatically mark this project as complete along with any unfinished tasks.',
+      icon: 'question',
+      confirmButtonText: "I'm sure!",
+      showCancelButton: true,
+    }).then(value => {
+      console.log(value)
+      if (value.dismiss === 'cancel') return null
+      else {
+        let proj = props.proj
+        proj.autoComplete = true
+        proj.alert = true
+        proj.date_completed = dateConversions.dateToTimestamp(new Date())
+        dbServices.updateProject(proj)
+        props.updateProjInState(proj)
+      }
+    })
   }
 
   return (
@@ -35,7 +67,7 @@ const ProjectBar = props => {
           </div>
         </div>
         <div className="ProjectBar__proj_prog_date">
-          {props.proj.progress === 100 || props.proj.autoComplete ? (
+          {props.proj.date_completed ? (
             <p>
               Project Completed on{' '}
               {props.proj.date_completed &&
@@ -47,10 +79,12 @@ const ProjectBar = props => {
                 Est. Progress <ProgressBar percentage={props.proj.progress} />
               </div>
               <div className="ProjectBar__deadline">
-                <span className="ProjectBar__deadline_first">
-                  Deadline:{' '}
-                  {dateConversions.TStoDisplayDate(props.proj.deadline)}
-                </span>
+                <div>
+                  <span className="ProjectBar__deadline_first">Deadline:</span>
+                  <span className="ProjectBar__deadline_second">
+                    {dateConversions.TStoDisplayDate(props.proj.deadline)}
+                  </span>
+                </div>
                 <span className="ProjectBar__overdue">
                   {props.proj.progress !== 100 &&
                     dateConversions.dateDiff(props.proj.deadline) &&
@@ -63,11 +97,28 @@ const ProjectBar = props => {
           )}
         </div>
       </Link>
-      {props.role === 'owner' && (
+      {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
-          <div className="ProjectBar__edit" onClick={toggleEdit}>
-            {StyleIcon({ style: 'edit' })}
-          </div>
+          {props.role === 'owner' && (
+            <div className="ProjectBar__fa" onClick={toggleEdit}>
+              {StyleIcon({ style: 'edit' })}
+            </div>
+          )}
+          {props.proj.date_completed ? (
+            <></>
+          ) : (
+            <div>
+              {!props.proj.autoComplete && props.proj.progress !== 100 ? (
+                <div className="ProjectBar__fa" onClick={autoComplete}>
+                  {StyleIcon({ style: 'complete' })}
+                </div>
+              ) : (
+                <div className="ProjectBar__fa" onClick={approveProject}>
+                  {StyleIcon({ style: 'approve' })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
       {edit && (

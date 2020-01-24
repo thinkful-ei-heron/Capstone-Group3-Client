@@ -1,3 +1,15 @@
+.Profile__promote_btn {
+  cursor: pointer;
+  height: 35px;
+  width: 140px;
+  font-family: var(--oxygen);
+  font-size: 1.1rem;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--highlight-color);
+}
+
 .Profile__user_info,
 .Profile__user_projects {
   padding: 10px;
@@ -23,6 +35,15 @@
   padding: 8px;
 }
 
+.Profile__user_projects a,
+.Profile__user_projects a:visited {
+  color: var(--link-color);
+}
+
+.Profile__user_projects a:hover {
+  color: var(--link-hover-color);
+}
+
 .Profile__user_header {
   box-sizing: border-box;
   display: flex;
@@ -36,6 +57,23 @@
   font-size: 1.3rem;
   font-weight: 600;
   background-color: var(--header-bg-color);
+}
+#btn_promote_user {
+  display: grid;
+  place-items: center;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1rem;
+  color: white;
+  border: none;
+  padding: 7px 20px 7px 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+.App__personnel_promote_button {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 @media only screen and (min-width: 750px) {

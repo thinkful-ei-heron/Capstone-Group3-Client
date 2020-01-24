@@ -1,4 +1,5 @@
 import * as firebase from 'firebase/app'
+import React from 'react'
 
 const dateConversions = {
   //Convert <input type='date'> format to firestore timestamp
@@ -34,12 +35,12 @@ const dateConversions = {
     if (currDate > dueDate) {
       let res = Math.abs(currDate - dueDate) / 1000
       let days = Math.floor(res / 86400)
-      return `Overdue by ${days + 1} day(s)`
+      return <h2>Overdue by {days + 1} day(s)</h2>
     } else if (currDate < dueDate) {
       let res = Math.abs(currDate - dueDate) / 1000
       let days = Math.floor(res / 86400)
-      if (days === 0) {
-        return 'Due Today'
+      if ((days + 1) === 0) {
+        return <h2>Due Today</h2>
       }
     } else {
       return null

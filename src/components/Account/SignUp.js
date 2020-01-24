@@ -5,6 +5,7 @@ import dbServices from '../../services/dbServices'
 import { Label, Input } from '../Form/Form'
 import useFormValidation from '../../hooks/useFormValidation'
 import validateInput from '../../hooks/validateInput'
+import skyscraper from '../../images/skyscraper.svg'
 import Swal from 'sweetalert2'
 import './SignUp.css'
 
@@ -163,8 +164,9 @@ const SignUp = ({ history }, props) => {
   } = useFormValidation(inputValues, validateInput.validateSignup, handleSignUp)
 
   return (
-    <div className="Login">
-      <form className="Form" onSubmit={handleSubmit}>
+    <div className="Register">
+      <img src={skyscraper} alt="skyscraper" />
+      <form className="Form  LoginRegister" onSubmit={handleSubmit}>
         <legend>Sign Up</legend>
         <h1>I am a: </h1>
         <div className="radio-toolbar">

@@ -12,7 +12,8 @@ project management software.
 
 [See the Live App Here](https://managelazily.com/)
 
-## Usage
+## Screenshots
+
 | Landing Page | Dashboard|
 | :-------------: |:-------------:|
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/dashboard.png" width='80%' height='auto'> |
@@ -104,7 +105,7 @@ npm run test:open
 | Bridger Hammond | Product Manager | [link](https://github.com/reifnotreef) |
 | Dan Wagar | UI/UX Design | [link](https://github.com/danWagar) |
 
-## Meta
+## License
 
 Distributed under the MIT license. See [LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE) for more information.
 

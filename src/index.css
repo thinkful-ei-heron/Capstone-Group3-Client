@@ -12,8 +12,6 @@ body {
   --oxygen: 'Oxygen', sans-serif;
   --roboto-slab: 'Roboto Slab', serif;
   --text-color: #000925;
-  font-size: 14px;
-  overflow-y: visible;
 }
 
 body {
@@ -22,14 +20,23 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Roboto Slab', serif;
+  font-family: var(--roboto-slab);
   color: var(--text-color);
+  overflow-x: hidden;
 }
 
 a,
 a:hover,
 a:visited {
   text-decoration: none;
+}
+
+.btn_highlight_color {
+  background-color: var(--highlight-color);
+}
+
+.btn_secondary_color {
+  background-color: var(--header-bg-color);
 }
 
 .Header {

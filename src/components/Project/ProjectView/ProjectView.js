@@ -10,7 +10,9 @@ import JobForm from '../JobForm/JobForm'
 import dbServices from '../../../services/dbServices'
 import dateConversions from '../../../services/dateConversions'
 import Swal from 'sweetalert2'
+import StyleIcon from '../../StyleIcon/StyleIcon'
 import { CatchAll } from '../../CatchAll/CatchAll'
+import ProjectBar from '../../Project/ProjectBar/ProjectBar'
 
 export default class ProjectView extends Component {
   constructor(props) {
@@ -24,6 +26,9 @@ export default class ProjectView extends Component {
       progress: 0,
       total: 0,
       error: null,
+      expandStats: true,
+      expandJobs: true,
+      expandPersonnel: true,
     }
   }
 
@@ -92,23 +97,57 @@ export default class ProjectView extends Component {
         'By clicking the button below, you will automatically mark this project as complete along with any unfinished tasks.',
       icon: 'question',
       confirmButtonText: "I'm sure!",
-      onAfterClose: () => {
+      showCancelButton: true,
+    }).then(value => {
+      console.log(value)
+      if (value.dismiss === 'cancel') return null
+      else {
         let proj = this.state.project
         proj.autoComplete = true
+        proj.alert = true
         proj.date_completed = dateConversions.dateToTimestamp(new Date())
         dbServices.updateProject(proj)
-      },
+      }
     })
+  }
+
+  approveProject = async () => {
+    let proj = this.state.project
+    proj.date_completed = dateConversions.dateToTimestamp(new Date())
+    proj.alert = true
+    await dbServices.updateProject(proj)
   }
 
   componentWillUnmount() {
     this.unsubscribe()
   }
 
-  showJobForm = () => {
+  showJobForm = e => {
+    e.stopPropagation()
+    if (this.state.showJobForm)
+      this.setState({ showJobForm: false, expandJobs: true })
+    else
+      this.setState({
+        showJobForm: true,
+        expandJobs: false,
+      })
+  }
+
+  expandStats = () => {
     this.setState({
-      showJobForm: !this.state.showJobForm,
+      expandStats: !this.state.expandStats,
     })
+  }
+
+  expandJobs = () => {
+    this.setState({
+      expandJobs: !this.state.expandJobs,
+    })
+  }
+
+  toggleExpandPersonnel = e => {
+    e.stopPropagation()
+    this.setState({ expandPersonnel: !this.state.expandPersonnel })
   }
 
   render() {
@@ -127,52 +166,66 @@ export default class ProjectView extends Component {
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
-            <header className="ProjectView__header" id="project_header">
-              <div id="name_manager">
-                <h3 id="projectName">{project.name}</h3>
-                <h4 id="projectManager" test-id="manager-name">
-                  Manager: {project.project_manager}
-                </h4>
-              </div>
-              <div id="project_description">
-                <span>{project.description}</span>
-              </div>
-              <div id="project_progress">
-                <span>Est. Progress</span>
-                <ProgressBar
-                  percentage={parseInt(this.state.project.progress)}
-                />
-              </div>
-              {!this.state.project.autoComplete &&
-              this.state.project.progress !== 100 ? (
-                <button onClick={this.autoComplete}>Mark as Complete</button>
-              ) : (
-                ''
-              )}
-              <div id="project_deadline">
-                <span>
-                  Deadline: {dateConversions.TStoDisplayDate(project.deadline)}
-                </span>
-              </div>
-            </header>
+            <div className="projectbar_container App__separate_bottom">
+              <ProjectBar
+                proj={project}
+                role={this.context.currentUser.role}
+                // projectManagers={this.state.projectManagers}
+                // updatePM={this.updatePM}
+                // updateProjInState={this.updateProjInState}
+              />
+            </div>
           </div>
           <div id="projectView_main">
             <div className="ProjectView__jobs_stats">
               {user.role === 'project worker' ? (
                 <></>
               ) : (
-                <Statistics {...this.props} />
+                <div className="ProjectView__stats">
+                  <div
+                    className="App__section_header"
+                    onClick={() => this.expandStats()}
+                  >
+                    <div className="App__fa_h1">
+                      {StyleIcon({
+                        style: `${this.state.expandStats ? 'minus' : 'plus'}`,
+                      })}
+                      <h3>Statistics</h3>
+                    </div>
+                  </div>
+                  {this.state.expandStats && (
+                    <div className="ProjectView__stats_container">
+                      <Statistics {...this.props} />
+                    </div>
+                  )}
+                </div>
               )}
-              <div className="ProjectView__jobs_header">
-                {user.role === 'project worker' ? (
-                  <h3>Your Tasks</h3>
-                ) : (
-                  <h3>Tasks</h3>
-                )}
+              <div
+                className="App__section_header App__separate_top_always"
+                onClick={() => this.expandJobs()}
+              >
+                <div className="App__fa_h1">
+                  {' '}
+                  {StyleIcon({
+                    style: `${this.state.expandJobs ? 'minus' : 'plus'}`,
+                  })}
+                  {user.role === 'project worker' ? (
+                    <h3>Your Tasks</h3>
+                  ) : (
+                    <h3>Tasks</h3>
+                  )}
+                </div>
+
                 {user.role === 'project worker' ? (
                   ''
                 ) : (
-                  <button onClick={this.showJobForm}>Add Task</button>
+                  <button
+                    className="ProjectView__add"
+                    onClick={this.showJobForm}
+                    test-id="add-task"
+                  >
+                    Add Task
+                  </button>
                 )}
               </div>
               {showJobForm && (
@@ -184,11 +237,30 @@ export default class ProjectView extends Component {
                   projectId={this.props.id}
                 />
               )}
-              <Jobs projectId={this.props.id} getProgress={this.getProgress} />
+              {this.state.expandJobs && (
+                <Jobs
+                  projectId={this.props.id}
+                  getProgress={this.getProgress}
+                />
+              )}
             </div>
-            <div className="App__personnel App__separate_top">
-              <Sidebar view="project" project={this.state.project} />
-            </div>
+
+            <section className="App__personnel App__separate_top App__separate_bottom">
+              <div
+                className="App__section_header App__separate_top"
+                onClick={this.toggleExpandPersonnel}
+              >
+                <div className="App__fa_h1">
+                  {StyleIcon({
+                    style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`,
+                  })}
+                  <h1>Personnel</h1>
+                </div>
+              </div>
+              {this.state.expandPersonnel && (
+                <Sidebar view="project" project={this.state.project} />
+              )}
+            </section>
           </div>
         </section>
       )

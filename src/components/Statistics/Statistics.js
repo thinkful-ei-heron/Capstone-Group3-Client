@@ -37,13 +37,13 @@ export default class Statistics extends Component {
           label: `Tasks Due`,
           data: [],
           backgroundColor: [
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(255, 206, 86, 0.6)',
-            'rgba(75, 192, 192, 0.6)',
-            'rgba(153, 102, 255, 0.6)',
-            'rgba(255, 159, 64, 0.6)',
-            'rgba(255, 99, 132, 0.6)',
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(255, 99, 132, 0.8)',
           ],
         },
       ],
@@ -77,13 +77,13 @@ export default class Statistics extends Component {
           label: `Task Completion History (7 days)`,
           data: [],
           backgroundColor: [
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(255, 206, 86, 0.6)',
-            'rgba(75, 192, 192, 0.6)',
-            'rgba(153, 102, 255, 0.6)',
-            'rgba(255, 159, 64, 0.6)',
-            'rgba(255, 99, 132, 0.6)',
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(255, 99, 132, 0.8)',
           ],
         },
       ],
@@ -171,13 +171,41 @@ export default class Statistics extends Component {
   render() {
     return (
       <div className="Statistics">
-        <h5>STATISTICS</h5>
-
         {this.state.jobDue.datasets[0].data.length !== 0 ? (
           <Bar
             className="due"
             data={this.state.jobDue}
-            options={{ maintainAspectRatio: false }}
+            options={{
+              legend: {
+                labels: {
+                  fontSize: 30,
+                },
+              },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      beginAtZero: true,
+                      callback: function(value) {
+                        if (value % 1 === 0) {
+                          return value
+                        }
+                      },
+                      fontSize: 20,
+                    },
+                  },
+                ],
+                xAxes: [
+                  {
+                    ticks: {
+                      fontSize: 20,
+                    },
+                  },
+                ],
+              },
+              responsive: true,
+              maintainAspectRatio: false,
+            }}
           />
         ) : (
           <span>You have no tasks due soon</span>
@@ -186,10 +214,12 @@ export default class Statistics extends Component {
           <Bar
             className="history"
             data={this.state.jobHistory}
-            options={{ maintainAspectRatio: false }}
+            options={{ responsive: true, maintainAspectRatio: false }}
           />
         ) : (
-          <span>You have not completed any tasks in the last 7 days</span>
+          <span className="Statistics__no_tasks">
+            You have not completed any tasks in the last 7 days
+          </span>
         )}
       </div>
     )

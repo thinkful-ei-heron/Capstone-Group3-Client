@@ -4,6 +4,8 @@ import JobNotificationList from './JobNotificationList'
 import OwnerNotification from './OwnerNotification'
 import { AuthContext } from '../../services/Auth'
 import Swal from 'sweetalert2'
+import './JobNotification.css'
+import StyleIcon from '../StyleIcon/StyleIcon'
 
 export default class JobNotification extends Component {
   state = {
@@ -127,9 +129,9 @@ export default class JobNotification extends Component {
           .getProjectsByRole(this.context.currentUser)
           .then(snapshot => {
             snapshot.forEach(doc => {
-              if (doc.data().alert === true && doc.data().completed === true)
+              if (doc.data().alert === true && doc.data().date_completed)
                 completed.push(doc.data())
-              if (doc.data().alert === true && !doc.data().completed)
+              if (doc.data().alert === true && !doc.data().date_completed)
                 newProj.push(doc.data())
             })
             this.setState({
@@ -182,6 +184,7 @@ export default class JobNotification extends Component {
     this.setState({
       notificationList: newNotifications,
       notificationCount: newNotifications.length,
+      notificationDropDown: !this.state.notificationDropDown,
     })
   }
 
@@ -223,9 +226,22 @@ export default class JobNotification extends Component {
       if (this.context.currentUser.role === 'owner')
         return (
           <>
-            <button onClick={e => this.renderList(e)}>
-              Notifications: {this.state.notificationCount}
-            </button>
+            {this.state.notificationCount > 0 && (
+              <button
+                className="JobNotification__btn"
+                onClick={e => this.renderList(e)}
+              >
+                <span className="JobNotification__icon">
+                  {this.state.notificationDropDown
+                    ? StyleIcon({ style: 'left' })
+                    : StyleIcon({ style: 'collapse' })}
+                </span>
+                Notifications:
+                <span className="JobNotification__number">
+                  {this.state.notificationCount}
+                </span>
+              </button>
+            )}
             {this.state.notificationDropDown ? (
               <OwnerNotification
                 newEmployees={this.state.newEmployees}
@@ -234,6 +250,7 @@ export default class JobNotification extends Component {
                 user={this.context.currentUser}
                 updateList={this.updateNewEmployees}
                 updateProjectList={this.updateProjectList}
+                renderList={this.renderList}
               />
             ) : (
               <></>
@@ -242,13 +259,27 @@ export default class JobNotification extends Component {
         )
       return (
         <>
-          <button onClick={e => this.renderList(e)}>
-            Notifications: {this.state.notificationCount}
-          </button>
+          {this.state.notificationCount > 0 && (
+            <button
+              className="JobNotification__btn"
+              onClick={e => this.renderList(e)}
+            >
+              <span className="JobNotification__icon">
+                {this.state.notificationDropDown
+                  ? StyleIcon({ style: 'left' })
+                  : StyleIcon({ style: 'right' })}
+              </span>
+              Notifications:{' '}
+              <span className="JobNotification__number">
+                {this.state.notificationCount}
+              </span>
+            </button>
+          )}
           {this.state.notificationDropDown ? (
             <JobNotificationList
               notificationList={this.state.notificationList}
               updateList={this.updateList}
+              renderList={this.renderList}
             />
           ) : null}
         </>

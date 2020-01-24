@@ -17,11 +17,9 @@ const ProjectBar = props => {
   }
 
   const approveProject = async () => {
-    console.log(props.proj)
     let proj = { ...props.proj, date_completed: null }
     proj.date_completed = dateConversions.dateToTimestamp(new Date())
     proj.alert = true
-    console.log(proj)
     await dbServices.updateProject(proj)
     if (window.location.href.includes('dashboard'))
       props.updateProjInState(proj)
@@ -36,7 +34,6 @@ const ProjectBar = props => {
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
     }).then(value => {
-      console.log(value)
       if (value.dismiss === 'cancel') return null
       else {
         let proj = props.proj
@@ -60,7 +57,6 @@ const ProjectBar = props => {
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
     }).then(value => {
-      console.log(value)
       if (value.dismiss === 'cancel') return null
       else {
         let id = props.proj.id
@@ -83,8 +79,6 @@ const ProjectBar = props => {
       }
     })
   }
-
-  console.log(props)
 
   return (
     <div className="ProjectBar__project_container">

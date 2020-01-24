@@ -119,8 +119,7 @@ export default class Statistics extends Component {
                 jobDueCount++
               }
             }
-           
-            console.log(this.state.jobHistory.labels[i])
+
             if (doc.data().date_completed) {
               if (
                 this.state.jobHistory.labels[i] ===
@@ -133,24 +132,12 @@ export default class Statistics extends Component {
                   ).getFullYear()}` &&
                 doc.data().status === 'completed'
               ) {
-                console.log('match')
-                console.log(
-                  `${new Date(
-                    doc.data().date_completed.seconds * 1000
-                  ).getMonth() + 1}/${new Date(
-                    doc.data().date_completed.seconds * 1000
-                  ).getDate()}/${new Date(
-                    doc.data().date_completed.seconds * 1000
-                  ).getFullYear()}`
-                )
                 jobHistoryCount++
               }
             }
           })
-          console.log(jobHistoryCount)
           jobDue[i] = jobDueCount
           jobHistory[i] = jobHistoryCount
-          console.log(jobHistory)
         })
       if (jobDue.every(item => item === 0)) {
         jobDue = []
@@ -159,8 +146,6 @@ export default class Statistics extends Component {
         jobHistory = []
       }
     }
-    console.log(jobDue)
-    console.log(jobHistory)
     this.setState({
       jobDue: {
         labels: this.state.jobDue.labels,

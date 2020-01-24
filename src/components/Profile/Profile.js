@@ -20,7 +20,6 @@ const Profile = props => {
   const handleClick = async event => {
     event.preventDefault()
     const promoteFunc = await functions.httpsCallable('promoteUser')
-    console.log(promoteFunc)
     promoteFunc({
       email: userInfo.email,
       org: userInfo.org,
@@ -58,7 +57,6 @@ const Profile = props => {
           })
         })
     } catch (error) {
-      console.log('caught error!')
       console.warn(error)
       Swal.fire({
         title: 'Error!',

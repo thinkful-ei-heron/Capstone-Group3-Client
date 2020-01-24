@@ -55,6 +55,22 @@
   margin: 5px;
 }
 
+.App__section_header, .projectbar_container, .ProjectView__stats{
+  margin-bottom: 8px;
+}
+
+.ProjectBar__project_container {
+  background-color: var(--list-even-color);
+}
+
+.ProjectBar__project_container a {
+  color: black;
+}
+
+.App__fa_h1 h3 {
+  margin-left: 5px;
+}
+
 @media only screen and (min-width: 750px) {
   #projectView_main {
     display: flex;

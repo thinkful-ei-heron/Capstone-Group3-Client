@@ -152,6 +152,26 @@ const dbServices = {
       .get()
   },
 
+  deleteProjectById(id, org) {
+    return db
+      .collection('organizations')
+      .doc(org)
+      .collection('projects')
+      .doc(id)
+      .delete()
+  },
+
+  deleteJobById(id, projectId, org) {
+    return db
+      .collection('organizations')
+      .doc(org)
+      .collection('projects')
+      .doc(projectId)
+      .collection('jobs')
+      .doc(id)
+      .delete()
+  },
+
   addProject(newProject) {
     // console.log(newProject.org_id);
     if (!newProject.project_manager) newProject.project_manager = 'unassigned'

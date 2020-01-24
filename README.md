@@ -94,9 +94,7 @@ npm run test:open
 - 0.0.1
   - Work in progress
 
-## Meta
-
-Contributors:
+## Contributors
 
 | Name | Role | Github Profile |
 | :-------------: |:-------------:|:-------------:|
@@ -105,6 +103,8 @@ Contributors:
 | Balay Aydemir | Project Manager | [link](https://github.com/balayaydemir) |
 | Bridger Hammond | Product Manager | [link](https://github.com/reifnotreef) |
 | Dan Wagar | UI/UX Design | [link](https://github.com/danWagar) |
+
+## Meta
 
 Distributed under the MIT license. See [LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE) for more information.
 

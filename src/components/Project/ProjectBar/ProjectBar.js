@@ -70,10 +70,9 @@ const ProjectBar = props => {
         if (props.view === 'project') {
           dbServices.deleteProjectById(id, org)
         }
-        
+
         if (props.view === 'dashboard') {
-          dbServices.deleteProjectById(id, org)
-          .then(() => {
+          dbServices.deleteProjectById(id, org).then(() => {
             if (complete) {
               props.deleteProjInState(id, 'complete')
             } else {
@@ -139,7 +138,13 @@ const ProjectBar = props => {
       </Link>
       {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
-          <button onClick={deleteProject}>Delete</button>
+          <div
+            className="ProjectBar__fa"
+            data-tip="delete"
+            onClick={deleteProject}
+          >
+            {StyleIcon({ style: 'delete' })}
+          </div>
           {props.role === 'owner' && (
             <div
               className="ProjectBar__fa"

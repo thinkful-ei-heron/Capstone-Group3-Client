@@ -78,8 +78,7 @@ class JobItem extends Component {
     e.stopPropagation()
     Swal.fire({
       title: 'Are you sure?',
-      text:
-        'By clicking the button below, you will be deleting this task.',
+      text: 'By clicking the button below, you will be deleting this task.',
       icon: 'question',
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
@@ -90,7 +89,7 @@ class JobItem extends Component {
         let id = this.props.job.id
         let projectId = this.props.job.project_id
         let org = this.props.job.organization
-        
+
         dbServices.deleteJobById(id, projectId, org)
       }
     })
@@ -173,7 +172,13 @@ class JobItem extends Component {
           >
             {StyleIcon({ style: 'edit' })}
           </div>
-          <button onClick={this.deleteTask}>Delete</button>
+          <div
+            className="JobItem__fa"
+            data-tip="delete"
+            onClick={this.deleteTask}
+          >
+            {StyleIcon({ style: 'delete' })}
+          </div>
           {status === 'submitted' ? (
             <div>
               <div

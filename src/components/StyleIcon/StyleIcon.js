@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons'
 
 const styleIconMap = {
+  delete: <FontAwesomeIcon className="fa_trash" icon="trash-alt" />,
   requestEdit: <FontAwesomeIcon className="fa_user_edit" icon="user-edit" />,
   revise: (
     <FontAwesomeIcon className="fa_clipboard_list" icon="clipboard-list" />

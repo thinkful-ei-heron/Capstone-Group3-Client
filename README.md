@@ -4,9 +4,6 @@
 update, assign, track, and analyze their businesses projects securely on the cloud from 
 any location with access to the web.
 
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Downloads Stats][npm-downloads]][npm-url]
 
 ManageLazily enables company owners, project managers, and employees to have a one-stop
 project management hub where they can create projects, track project completion and due dates, 
@@ -16,47 +13,46 @@ project management software.
 
 ![](header.png)
 
-## Installation
-
-OS X & Linux:
-
-```sh
-npm install my-crazy-module --save
-```
-
-Windows:
-
-```sh
-edit autoexec.bat
-```
 
 ## Usage
 
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
+Landing Page
+Register
+Login
+Dashboard
+ProjectView
+Edit/Add Project
+Edit/Add Job
+Log Hours
+Profile View
 
-_For more examples and usage, please refer to the [Wiki][wiki]._
 
 ## Development setup
 
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
+General Setup:
+- Clone this repository to your local machine git clone PROJECT-URL NEW-PROJECTS-NAME
+- cd into the cloned repository
+- Make a fresh start of the git history for this project with rm -rf .git && git init
+- Install the node dependencies npm install
+- Move the example Environment file to .env - mv example.env .env
+- Edit the contents of the package.json to use NEW-PROJECT-NAME
 
-```sh
-make install
-npm test
-```
+Firebase Setup:
+- Create a Firebase project
+- Register your app with Firebase
+- Add Firebase project configuration to your .env file
+- Create Cloud Firestore database via the Firebase console - see [Cloud Firestore Setup](https://firebase.google.com/docs/firestore/quickstart)
+- Enable email authentication via the Firebase console
+- For in-depth instructions, please visit [Firebase Docs](https://firebase.google.com/docs/web/setup)
+
+## Scripts
+
+Start the application npm start
+
+Run the tests npm run cypress:open
 
 ## Release History
 
-- 0.2.1
-  - CHANGE: Update docs (module code remains unchanged)
-- 0.2.0
-  - CHANGE: Remove `setDefaultXYZ()`
-  - ADD: Add `init()`
-- 0.1.1
-  - FIX: Crash when calling `baz()` (Thanks @GenerousContributorName!)
-- 0.1.0
-  - The first proper release
-  - CHANGE: Rename `foo()` to `bar()`
 - 0.0.1
   - Work in progress
 

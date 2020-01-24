@@ -16,16 +16,27 @@ project management software.
 
 - Landing Page
 
-  <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='50%' height='auto'>
+  <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='40%' height='auto'>
 
 - Register
+  <!-- <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='40%' height='auto'> -->
 - Login
+  <!-- <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='40%' height='auto'> -->
 - Dashboard
+  <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/dashboard.png" width='40%' height='auto'>
 - ProjectView
-- Edit/Add Project
-- Edit/Add Job
+  <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/project_view.png" width='40%' height='auto'>
+  | Add Project | Edit Project |
+  | ------------- |:-------------:|
+  |<img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_project.png" width='40%' height='auto'>|
+  <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_project.png" width='40%' height='auto'>|
+  | Add Task | Edit Task |
+  | ------------- |:-------------:|
+  |<img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_task.png" width='40%' height='auto'>|<img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_task.png" width='40%' height='auto'>|
 - Log Hours
+  <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/log_hours.png" width='40%' height='auto'>
 - Profile View
+  <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/user_profile.png" width='40%' height='auto'>
 
 ## Development setup
 

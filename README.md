@@ -63,23 +63,17 @@ npm test
 ## Meta
 
 Contributors:
- - Bridger Hammond
- - Dan Wagar
- - Alex Bannow
- - Adam Newhouser
- - Balay Aydemir
+ - [Adam Newhouser](https://github.com/AdamNewhouser)
+ - [Alex Bannow](https://github.com/rbannal86)
+ - [Balay Aydemir](https://github.com/balayaydemir)
+ - [Bridger Hammond](https://github.com/reifnotreef)
+ - [Dan Wagar](https://github.com/danWagar) 
 
 Distributed under the XYZ license. See `LICENSE` for more information.
 
-[https://github.com/yourname/github-link](https://github.com/dbader/)
+[LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE)
 
-## Contributing
-
-1. Fork it (<https://github.com/yourname/yourproject/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
+## [Contributing](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/CONTRIBUTING.md)
 
 <!-- Markdown link & img dfn's -->
 

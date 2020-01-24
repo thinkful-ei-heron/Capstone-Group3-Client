@@ -179,6 +179,7 @@ const Profile = props => {
                 userInfo &&
                 userInfo.role === 'project worker' && (
                   <button
+                    id="btn_promote_user"
                     className="btn_highlight_color"
                     onClick={event => handleClick(event)}
                   >

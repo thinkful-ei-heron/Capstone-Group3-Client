@@ -75,7 +75,6 @@ export default class JobNotification extends Component {
             })
           }
         })
-      // console.log(userPromoted)
       let jobsList = []
       projectList.map(async project => {
         let snapshot
@@ -88,9 +87,14 @@ export default class JobNotification extends Component {
             )
               jobsList.push(doc.data())
           })
+          let newCount
+          if (this.state.promoted) newCount = jobsList.length + 1
+          else newCount = jobsList.length
+          console.log(this.state.promoted)
+          console.log(newCount)
           this.setState({
             notificationList: jobsList,
-            notificationCount: jobsList.length + this.state.notificationCount,
+            notificationCount: newCount,
           })
 
           return jobsList

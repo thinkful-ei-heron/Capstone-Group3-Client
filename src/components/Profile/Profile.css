@@ -58,7 +58,7 @@
   font-weight: 600;
   background-color: var(--header-bg-color);
 }
-button {
+#btn_promote_user {
   display: grid;
   place-items: center;
   font-family: 'Oxygen', sans-serif;

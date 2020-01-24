@@ -169,9 +169,10 @@ export default class JobNotificationList extends Component {
           {this.context.currentUser.role === 'project manager' ? (
             <>
               {jobObj.status === 'submitted' ? (
-                <div>
+                <div className="JobNotification__approval">
                   <h5>Task Submitted For Approval</h5>
                   <button
+                    className="btn_highlight_color notification_button"
                     onClick={e =>
                       this.handleApprovalSubmit(
                         jobObj.id,
@@ -184,6 +185,7 @@ export default class JobNotificationList extends Component {
                     Approve
                   </button>
                   <button
+                    className="btn_highlight_color notification_button"
                     onClick={e =>
                       this.handleApprovalSubmit(
                         jobObj.id,

@@ -16,15 +16,15 @@ project management software.
 
 ## Usage
 
-Landing Page
-Register
-Login
-Dashboard
-ProjectView
-Edit/Add Project
-Edit/Add Job
-Log Hours
-Profile View
+- Landing Page
+- Register
+- Login
+- Dashboard
+- ProjectView
+- Edit/Add Project
+- Edit/Add Job
+- Log Hours
+- Profile View
 
 
 ## Development setup

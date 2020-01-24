@@ -183,8 +183,8 @@ class JobItem extends Component {
           options={{
             responsive: true,
             maintainAspectRatio: false,
-            title: { display: true, text: 'Hours Logged', fontSize: 28 },
-            legend: { labels: { fontSize: 24 } },
+            title: { display: true, text: 'Hours Logged', fontSize: 22 },
+            legend: { labels: { fontSize: 16 } },
           }}
         />
       )
@@ -247,7 +247,7 @@ class JobItem extends Component {
               <div className="JobItem__details_text">{job.description}</div>
             </div>
             <div className="JobItem__progress">
-              <div>
+              <div className="JobItem__meter_container">
                 <span>Est. Progress</span>
                 <ProgressBar percentage={progress} />
               </div>

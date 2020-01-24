@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { AuthContext } from '../../services/Auth.js'
 import dbServices from '../../services/dbServices'
 import Loading from '../Loading/Loading'
-import NewProject from '../Project/NewProject/NewProject'
+import ProjectForm from '../Project/ProjectForm/ProjectForm'
 import Sidebar from '../Sidebar/Sidebar'
 import StyleIcon from '../StyleIcon/StyleIcon'
 import ProjectBar from '../Project/ProjectBar/ProjectBar'
 import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom'
 import './Dashboard.css'
 
 ////////////////////////////////////////////////////////////////////
@@ -167,7 +166,7 @@ export default class Dashboard extends Component {
                   )}
                 </div>
                 {this.state.newProj && (
-                  <NewProject
+                  <ProjectForm
                     org={this.state.user.org}
                     addToProjState={this.addToProjState}
                     toggleForm={this.toggleNewProj}
@@ -222,9 +221,9 @@ export default class Dashboard extends Component {
                   </div>
                 </div>
                 {this.state.expandCompleteProjects && (
-                  <div className="Dashboard__projects_container">
+                  <div className="Dashboard__projects_container App__separate_bottom">
                     {this.state.completeProjects.length !== 0 ? (
-                      <ul className="Dashboard__list"> 
+                      <ul className="Dashboard__list">
                         {this.state.completeProjects.map(proj => {
                           return (
                             <li key={proj.id}>
@@ -250,7 +249,7 @@ export default class Dashboard extends Component {
                   </div>
                 )}
               </section>
-              <section className="App__personnel App__separate_top">
+              <section className="App__personnel App__separate_top App__separate_bottom">
                 <div
                   className="App__section_header"
                   onClick={this.toggleExpandPersonnel}

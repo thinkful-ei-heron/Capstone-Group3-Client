@@ -9,9 +9,10 @@ const PrivateRoute = ({
   ...rest
 }) => {
   const { currentUser } = useContext(AuthContext)
+  console.log(currentUser)
+  console.log(location.pathname)
 
   if (currentUser) setPath(location.pathname)
-
   return (
     <Route
       {...rest}

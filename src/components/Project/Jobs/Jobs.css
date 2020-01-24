@@ -189,6 +189,10 @@
     margin-top: 0;
   }
 
+  .JobItem__expand_container {
+    display: flex;
+  }
+
   .JobItem__form {
     grid-column: 3/4;
   }

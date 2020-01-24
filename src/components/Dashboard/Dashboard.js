@@ -122,6 +122,19 @@ export default class Dashboard extends Component {
     this.setState({ projects: projects })
   }
 
+  deleteProjInState = (id, status) => {
+    if (status === 'incomplete') {
+      let projects = this.state.projects
+      projects = projects.filter(p => p.id !== id)
+      this.setState({ projects: projects })
+    }
+    if (status === 'complete') {
+      let projects = this.state.completeProjects
+      projects = projects.filter(p => p.id !== id)
+      this.setState({ completeProjects: projects })
+    }
+  }
+
   updatePM = (projId, pm) => {
     const projs = this.state.projects
     projs.map(proj => {
@@ -187,6 +200,8 @@ export default class Dashboard extends Component {
                                 projectManagers={this.state.projectManagers}
                                 updatePM={this.updatePM}
                                 updateProjInState={this.updateProjInState}
+                                deleteProjInState={this.deleteProjInState}
+                                view="dashboard"
                               />
                             </li>
                           )
@@ -235,6 +250,8 @@ export default class Dashboard extends Component {
                                 projectManagers={this.state.projectManagers}
                                 updatePM={this.updatePM}
                                 updateProjInState={this.updateProjInState}
+                                deleteProjInState={this.deleteProjInState}
+                                view="dashboard"
                               />
                             </li>
                           )

@@ -161,12 +161,15 @@ const Profile = props => {
               <p>No Projects assigned.</p>
             )}
             {/* yes I know this is kind of gross. */}
-            <div>
+            <div className="App__personnel_promote_button">
               {currentUser &&
                 currentUser.role === 'owner' &&
                 userInfo &&
                 userInfo.role === 'project worker' && (
-                  <button onClick={event => handleClick(event)}>
+                  <button
+                    className="btn_highlight_color"
+                    onClick={event => handleClick(event)}
+                  >
                     Promote User
                   </button>
                 )}

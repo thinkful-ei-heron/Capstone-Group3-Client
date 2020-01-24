@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import React, { Component } from 'react'
 import { Bar, Line, Pie } from 'react-chartjs-2'
 import { AuthContext } from '../../services/Auth'
@@ -90,9 +91,9 @@ export default class Statistics extends Component {
     },
   }
 
-  componentDidMount = async () => {
+  populateStats = async () => {
     let jobDue = []
-    let jobHistory = []
+    let jobHistory = new Array(this.state.jobDue.labels.length)
     for (let i = 0; i < this.state.jobDue.labels.length; i++) {
       await db
         .collection('organizations')
@@ -116,6 +117,7 @@ export default class Statistics extends Component {
             ) {
               jobDueCount++
             }
+            console.log(this.state.jobHistory.labels[i])
             if (doc.data().date_completed) {
               if (
                 this.state.jobHistory.labels[i] ===
@@ -128,12 +130,24 @@ export default class Statistics extends Component {
                   ).getFullYear()}` &&
                 doc.data().status === 'completed'
               ) {
+                console.log('match')
+                console.log(
+                  `${new Date(
+                    doc.data().date_completed.seconds * 1000
+                  ).getMonth() + 1}/${new Date(
+                    doc.data().date_completed.seconds * 1000
+                  ).getDate()}/${new Date(
+                    doc.data().date_completed.seconds * 1000
+                  ).getFullYear()}`
+                )
                 jobHistoryCount++
               }
             }
           })
+          console.log(jobHistoryCount)
           jobDue.push(jobDueCount)
-          jobHistory.push(jobHistoryCount)
+          jobHistory[i] = jobHistoryCount
+          console.log(jobHistory)
         })
       if (jobDue.every(item => item === 0)) {
         jobDue = []
@@ -166,9 +180,15 @@ export default class Statistics extends Component {
         ],
       },
     })
+    if (this.props.updated) this.props.turnOffUpdate()
+  }
+
+  componentDidMount = async () => {
+    this.populateStats()
   }
 
   render() {
+    if (this.props.updated) this.populateStats()
     return (
       <div className="Statistics">
         {this.state.jobDue.datasets[0].data.length !== 0 ? (
@@ -214,7 +234,37 @@ export default class Statistics extends Component {
           <Bar
             className="history"
             data={this.state.jobHistory}
-            options={{ responsive: true, maintainAspectRatio: false }}
+            options={{
+              legend: {
+                labels: {
+                  fontSize: 30,
+                },
+              },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      beginAtZero: true,
+                      callback: function(value) {
+                        if (value % 1 === 0) {
+                          return value
+                        }
+                      },
+                      fontSize: 20,
+                    },
+                  },
+                ],
+                xAxes: [
+                  {
+                    ticks: {
+                      fontSize: 20,
+                    },
+                  },
+                ],
+              },
+              responsive: true,
+              maintainAspectRatio: false,
+            }}
           />
         ) : (
           <span className="Statistics__no_tasks">

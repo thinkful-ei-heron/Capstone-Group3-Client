@@ -8,7 +8,6 @@ const WorkerEditForm = props => {
   // const [description, setDescription] = useState(prop.job.description);
   // const [totalHours, setTotalHours] = useState(prop.job.total_hours);
   // const [note, setNote] = useState("");
-
   const context = useContext(FirebaseContext)
   const [submitted, setSubmitted] = useState(false)
   const { value: name, bind: bindName, reset: resetName } = useInput('')
@@ -51,6 +50,10 @@ const WorkerEditForm = props => {
   }
 
   useEffect(() => {
+    console.log(props.className)
+  })
+
+  useEffect(() => {
     const resetFunction = () => {
       resetName()
       resetNote()
@@ -64,10 +67,11 @@ const WorkerEditForm = props => {
   })
 
   return (
-    <form className="Form">
+    <form id="workereditform__form" className={props.className}>
       <Label htmlFor="job_name">
         Job name
         <Input
+          className="input"
           name="job_name"
           type="text"
           placeholder={props.job.name}

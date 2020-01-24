@@ -38,8 +38,7 @@ const Login = (setPath, { history }) => {
 
   return (
     <div className="Login">
-      <img src={skyscraper} alt="skyscraper" />
-      <form className="Form LoginRegister" onSubmit={handleLogin}>
+      <form className="Form" onSubmit={handleLogin}>
         <legend>Login</legend>
         <Label>
           Email

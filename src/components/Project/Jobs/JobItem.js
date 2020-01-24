@@ -183,7 +183,7 @@ class JobItem extends Component {
           options={{
             responsive: true,
             maintainAspectRatio: false,
-            title: { display: true, text: 'Hours Logged', fontSize: 22 },
+            title: { display: true, text: 'Hours Logged', fontSize: 20 },
             legend: { labels: { fontSize: 16 } },
           }}
         />
@@ -209,7 +209,7 @@ class JobItem extends Component {
 
   submitEditForm = () => {
     this.setState({
-      showEditForm: false
+      showEditForm: false,
     })
   }
 
@@ -237,7 +237,7 @@ class JobItem extends Component {
 
   submitWorkerEdit = () => {
     this.setState({
-      showWorkerEditForm: false
+      showWorkerEditForm: false,
     })
   }
 
@@ -301,12 +301,14 @@ class JobItem extends Component {
             </div>
           </div>
           {this.state.expandJob && (
-            <div className="JobItem__assigned_employees">
-              <span>Assigned Employees: </span>
-              <ul>{this.renderEmployeeList(job.project_workers)}</ul>
+            <div className="JobItem__expand_container">
+              <div className="JobItem__assigned_employees">
+                <span>Assigned Employees: </span>
+                <ul>{this.renderEmployeeList(job.project_workers)}</ul>
+              </div>
+              {this.renderChart(job)}
             </div>
           )}
-          {this.state.expandJob && this.renderChart(job)}
           <div className="JobItem__form_container">
             {this.state.showLogHours && (
               <LogHours job={job} renderLogHoursForm={this.submitLogHours} />

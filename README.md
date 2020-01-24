@@ -1,12 +1,18 @@
-# Product Name
+# ManageLazily
 
-> Short blurb about what your product does.
+> A project management application built with small businesses in mind. Users can create, 
+update, assign, track, and analyze their businesses projects securely on the cloud from 
+any location with access to the web.
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url]
 
-One to two paragraph statement about your product and what it does.
+ManageLazily enables company owners, project managers, and employees to have a one-stop
+project management hub where they can create projects, track project completion and due dates, 
+add tasks to projects, log hours worked on project tasks, and more. Built with simplicity 
+and usability in mind, ManageLazily is a great alternative to more complex (and expensive) 
+project management software.
 
 ![](header.png)
 
@@ -24,7 +30,7 @@ Windows:
 edit autoexec.bat
 ```
 
-## Usage example
+## Usage
 
 A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
 
@@ -56,7 +62,12 @@ npm test
 
 ## Meta
 
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
+Contributors:
+ - Bridger Hammond
+ - Dan Wagar
+ - Alex Bannow
+ - Adam Newhouser
+ - Balay Aydemir
 
 Distributed under the XYZ license. See `LICENSE` for more information.
 

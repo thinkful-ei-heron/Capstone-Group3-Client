@@ -34,7 +34,13 @@ const dateConversions = {
     if (currDate > dueDate) {
       let res = Math.abs(currDate - dueDate) / 1000
       let days = Math.floor(res / 86400)
-      return days
+      return `Overdue by ${days + 1} day(s)`
+    } else if (currDate < dueDate) {
+      let res = Math.abs(currDate - dueDate) / 1000
+      let days = Math.floor(res / 86400)
+      if (days === 0) {
+        return 'Due Today'
+      }
     } else {
       return null
     }

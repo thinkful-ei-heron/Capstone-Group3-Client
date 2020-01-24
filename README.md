@@ -49,7 +49,7 @@ Firebase Setup:
 
 Start the application npm start
 
-Run the tests npm run cypress:open
+Run the tests npm run test:open
 
 ## Release History
 

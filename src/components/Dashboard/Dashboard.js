@@ -9,10 +9,6 @@ import ProjectBar from '../Project/ProjectBar/ProjectBar'
 import Swal from 'sweetalert2'
 import './Dashboard.css'
 
-////////////////////////////////////////////////////////////////////
-// This component is managed by Dan.  It is MIIIINE!!             //
-// Do not change it.  If something doesn't work ask me to fix it. //
-////////////////////////////////////////////////////////////////////
 export default class Dashboard extends Component {
   static contextType = AuthContext
   state = {
@@ -47,7 +43,6 @@ export default class Dashboard extends Component {
     let data = []
     try {
       data = await dbServices.initDashboard(name, role, org)
-      // data = await dbServices.initDashboard();
       let sortedProjectsComplete = []
       let sortedProjectsIncomplete = []
 
@@ -60,9 +55,7 @@ export default class Dashboard extends Component {
       sortedProjectsIncomplete.sort((a, b) => {
         return a.deadline.seconds - b.deadline.seconds
       })
-      // let sortedProjects = sortedProjectsIncomplete.concat(
-      //   sortedProjectsComplete
-      // )
+
       this.setState({
         user: {
           id: email,
@@ -117,7 +110,6 @@ export default class Dashboard extends Component {
     })
 
   updateProjInState = proj => {
-    console.log('removing')
     let projects = this.state.projects
     let completedProjects = this.state.completeProjects
     let updatedProjects = projects.filter(item => item.id !== proj.id)

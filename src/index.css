@@ -4,6 +4,8 @@ html,
 body {
   height: 100vh;
   --title-color: #021143;
+  --link-color: #0051bb;
+  --link-hover-color: #1275f7;
   --list-even-color: rgba(127, 204, 233, 0.6);
   --list-odd-color: rgba(127, 204, 233, 0.3);
   --text-bg-color: rgba(255, 255, 255, 0.5);

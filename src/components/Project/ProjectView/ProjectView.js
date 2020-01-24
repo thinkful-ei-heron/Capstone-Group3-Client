@@ -218,7 +218,7 @@ export default class ProjectView extends Component {
                 </div>
               )}
               <div
-                className="App__section_header App__separate_top_always"
+                className="App__section_header"
                 onClick={() => this.expandJobs()}
               >
                 <div className="App__fa_h1">

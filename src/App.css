@@ -23,6 +23,7 @@
 }
 
 .App__section_header {
+  cursor: pointer;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -35,6 +36,15 @@
   font-size: 1.3rem;
   font-weight: 600;
   background-color: var(--header-bg-color);
+}
+
+.App__personnel a,
+.App__personnel a:visited {
+  color: var(--link-color);
+}
+
+.App__personnel a:hover {
+  color: var(--link-hover-color);
 }
 
 .App__separate_top,

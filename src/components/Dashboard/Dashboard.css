@@ -75,6 +75,6 @@
   }
 
   .Dashboard__projects {
-    width: calc(100% - 170px);
+    width: calc(100% - 200px);
   }
 }

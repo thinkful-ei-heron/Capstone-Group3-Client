@@ -31,7 +31,7 @@ const NewJob = props => {
     total_hours: props.job ? props.job.total_hours : '',
   }
 
-  const handleSubmitForm = async () => {
+  const handleSubmitForm = async e => {
     const { name, description, total_hours, deadline } = values
     let employees = props.job
       ? [props.job.project_manager]
@@ -168,7 +168,7 @@ const NewJob = props => {
       await dbServices
         .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
         .then(() => {
-          props.showJobForm()
+          props.showJobForm(e)
         })
     } catch (error) {
       console.warn(error)
@@ -198,67 +198,70 @@ const NewJob = props => {
   return (
     <>
       <form onSubmit={handleSubmit} className="Form">
-        <fieldset>
-          <legend>{props.projectId ? 'Add New Task' : 'Edit Task'}</legend>
-          <div className="input">
-            <Label htmlFor="name">Task Name: </Label>
-            <Input
-              type="text"
-              name="name"
-              id="name"
-              test-id='task-name'
-              onChange={handleChange}
-              value={values.name}
-              onBlur={handleBlur}
-            />
-            {errors.name && <p>*{errors.name}</p>}
-          </div>
-          <div className="input">
-            <Label htmlFor="description">Details: </Label>
-            <Textarea
-              name="description"
-              id="description"
-              onChange={handleChange}
-              value={values.description}
-              onBlur={handleBlur}
-            />
-            {errors.description && <p>*{errors.description}</p>}
-          </div>
-          <div className="input">
-            <Label htmlFor="total_hours">Total Hours: </Label>
-            <input
-              type="number"
-              name="total_hours"
-              id="total_hours"
-              onChange={handleChange}
-              value={values.total_hours}
-              onBlur={handleBlur}
-            />
-            {errors.total_hours && <p>*{errors.total_hours}</p>}
-          </div>
-          <div className="input">
-            <Label htmlFor="deadline">Deadline: </Label>
-            <input
-              type="date"
-              name="deadline"
-              id="deadline"
-              onChange={handleChange}
-              value={values.deadline}
-              onBlur={handleBlur}
-            />
-            {errors.deadline && <p>*{errors.deadline}</p>}
-          </div>
-          <Dropdown
-            isMulti={true}
-            setSelected={setSelected}
-            defaultValue={getEmployees()}
-            placeholder="Assign Employees"
+        <legend>{props.projectId ? 'Add New Task' : 'Edit Task'}</legend>
+        <div className="input">
+          <Label htmlFor="name">Task Name: </Label>
+          <Input
+            type="text"
+            name="name"
+            id="name"
+            onChange={handleChange}
+            value={values.name}
+            onBlur={handleBlur}
           />
-          <div className="input">
-            <input type="button" value="Cancel" onClick={props.showJobForm} />
-            <input type="submit" disabled={isSubmitting} value="Submit" />
-          </div>
-        </fieldset>
+          {errors.name && <p>*{errors.name}</p>}
+        </div>
+        <div className="input">
+          <Label htmlFor="description">Details: </Label>
+          <Textarea
+            name="description"
+            id="description"
+            onChange={handleChange}
+            value={values.description}
+            onBlur={handleBlur}
+          />
+          {errors.description && <p>*{errors.description}</p>}
+        </div>
+        <div className="input">
+          <Label htmlFor="total_hours">Total Hours: </Label>
+          <input
+            type="number"
+            name="total_hours"
+            id="total_hours"
+            onChange={handleChange}
+            value={values.total_hours}
+            onBlur={handleBlur}
+          />
+          {errors.total_hours && <p>*{errors.total_hours}</p>}
+        </div>
+        <div className="input">
+          <Label htmlFor="deadline">Deadline: </Label>
+          <input
+            type="date"
+            name="deadline"
+            id="deadline"
+            onChange={handleChange}
+            value={values.deadline}
+            onBlur={handleBlur}
+          />
+          {errors.deadline && <p>*{errors.deadline}</p>}
+        </div>
+        <Dropdown
+          isMulti={true}
+          setSelected={setSelected}
+          defaultValue={getEmployees()}
+          placeholder="Assign Employees"
+        />
+        <button className="btn_secondary_color" onClick={props.showJobForm}>
+          Cancel
+        </button>
+        <button
+          className="btn_highlight_color"
+          type="submit"
+          disabled={isSubmitting}
+        >
+          Submit
+        </button>
       </form>
     </>
   )

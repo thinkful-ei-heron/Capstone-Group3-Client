@@ -8,7 +8,7 @@ import SignUp from './components/Account/SignUp'
 import ProjectView from './components/Project/ProjectView/ProjectView'
 import LandingPage from './components/LandingPage/LandingPage'
 import PrivateRoute from './services/PrivateRoute'
-import PublicRoute from './services/PublicRoute';
+import PublicRoute from './services/PublicRoute'
 import { AuthContext } from './services/Auth.js'
 import Profile from './components/Profile/Profile'
 import './App.css'
@@ -16,6 +16,7 @@ import { CatchAll } from './components/CatchAll/CatchAll'
 
 const App = props => {
   const { currentUser } = useContext(AuthContext)
+  const [loading, setLoading] = useState(false)
 
   if (currentUser === null) console.log(null)
   else console.log('found user')
@@ -30,66 +31,70 @@ const App = props => {
   useEffect(() => {
     if (!localStorage.getItem('path') && !path) return
     localStorage.setItem('path', path)
+  }, [path])
+
+  useEffect(() => {
     if (path && currentUser) {
-      props.history.push(path)
+      if (path !== props.location.pathname) props.history.push(path)
     }
-  }, [currentUser, path, props.history])
+  }, [currentUser, path])
 
-  // const handleBrokenUrl = location => {
-  //   setPath(null)
-  //   localStorage.removeItem('path')
-
-  //   return <CatchAll />
-  // }
-
-  return (
-    <>
-      <header>
-        <Header
-          userName={currentUser && currentUser.name}
-          role={currentUser && currentUser.role}
-          setPath={setPath}
-        />
-      </header>
-      <main className="App__main">
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/login" setPath={setPath} component={Login} />
-          <PrivateRoute
-            location={props.location}
+  if (loading) return <></>
+  else {
+    return (
+      <>
+        <header>
+          <Header
+            userName={currentUser && currentUser.name}
+            role={currentUser && currentUser.role}
             setPath={setPath}
-            path="/profile/:id"
-            component={props => <Profile id={props.match.params.id} />}
           />
-          <PublicRoute
-            path="/register"
-            setPath={setPath}
-            component={() => <SignUp />}
-          />
-          <PrivateRoute
-            exact
-            path="/dashboard"
-            location={props.location}
-            setPath={setPath}
-            component={Dashboard}
-          />
-          <PrivateRoute
-            exact
-            path="/project/:id"
-            location={props.location}
-            setPath={setPath}
-            component={props => <ProjectView id={props.match.params.id} />}
-          />
-          <PublicRoute
-            exact
-            path="*"
-            setPath={setPath}
-            component={CatchAll}
-          />
-        </Switch>
-      </main>
-    </>
-  )
+        </header>
+        <main className="App__main">
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <PublicRoute
+              exact
+              path="/login"
+              setPath={setPath}
+              component={Login}
+            />
+            <PrivateRoute
+              location={props.location}
+              setPath={setPath}
+              path="/profile/:id"
+              component={props => <Profile id={props.match.params.id} />}
+            />
+            <PublicRoute
+              path="/register"
+              setPath={setPath}
+              component={() => <SignUp />}
+            />
+            <PrivateRoute
+              exact
+              path="/dashboard"
+              location={props.location}
+              setPath={setPath}
+              component={Dashboard}
+            />
+            <PrivateRoute
+              exact
+              path="/project/:id"
+              location={props.location}
+              setPath={setPath}
+              component={props => <ProjectView id={props.match.params.id} />}
+            />
+            <PublicRoute
+              exact
+              path="*"
+              setPath={setPath}
+              component={CatchAll}
+            />
+          </Switch>
+        </main>
+      </>
+    )
+  }
 }
 
 export default withRouter(App)

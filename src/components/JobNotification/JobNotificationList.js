@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import dbServices from '../../services/dbServices'
 import JobForm from '../Project/JobForm/JobForm'
 import { AuthContext } from '../../services/Auth'
+import StyleIcon from '../StyleIcon/StyleIcon'
 import Swal from 'sweetalert2'
 
 export default class JobNotificationList extends Component {
@@ -52,7 +53,7 @@ export default class JobNotificationList extends Component {
     }
   }
 
-  handleClick = async (id, jobObj) => {
+  handleClick = async (id, jobObj, e) => {
     if (
       this.context.currentUser.role === 'project manager' ||
       this.context.currentUser.role === 'owner'
@@ -66,6 +67,7 @@ export default class JobNotificationList extends Component {
         jobObj.alert = newAlert
         await dbServices.updateJobAlert(jobObj)
         this.props.updateList(jobObj)
+        this.props.renderList(e)
         this.setState({
           notificationList: this.props.notificationList,
         })
@@ -106,31 +108,39 @@ export default class JobNotificationList extends Component {
 
   renderEmployeeNotificationDetails = jobObj => {
     if (jobObj.status === 'in progress')
-      return <span>You have been added to {jobObj.name}.</span>
+      return <span> - You have been added to this job.</span>
     if (jobObj.status === 'submitted')
-      return <span>{jobObj.name} has been submitted for review.</span>
+      return <span> has been submitted for review.</span>
     if (jobObj.status === 'revisions')
-      return <span>{jobObj.name} has been returned for revisions.</span>
-    if (jobObj.status === 'completed')
-      return <span>{jobObj.name} has been completed!</span>
+      return <span> has been returned for revisions.</span>
+    if (jobObj.status === 'completed') return <span> has been completed!</span>
   }
 
   renderJobList = () => {
     return this.state.notificationList.map(jobObj => {
       return (
         <li key={jobObj.id} className="notification_job">
-          <Link
-            to={{
-              pathname: `/project/${jobObj.project_id}`,
-            }}
-            onClick={() => this.handleClick(jobObj.id, jobObj)}
-          >
-            {jobObj.name}
-          </Link>
+          <div className="JobNotification__info">
+            <span className="JobNotification__job_link">
+              <Link
+                to={{
+                  pathname: `/project/${jobObj.project_id}`,
+                }}
+                onClick={() => this.handleClick(jobObj.id, jobObj)}
+              >
+                {jobObj.name}
+              </Link>
+            </span>
+            {this.context.currentUser.role === 'project worker' &&
+              this.renderEmployeeNotificationDetails(jobObj)}
+          </div>
           {this.context.currentUser.role === 'project worker' ? (
-            <button onClick={() => this.handleClick(jobObj.id, jobObj)}>
-              X
-            </button>
+            <div
+              className="JobNotification__close"
+              onClick={() => this.handleClick(jobObj.id, jobObj)}
+            >
+              {StyleIcon({ style: 'close' })}
+            </div>
           ) : (
             <></>
           )}
@@ -182,11 +192,6 @@ export default class JobNotificationList extends Component {
           ) : (
             <></>
           )}
-          {this.context.currentUser.role === 'project worker' ? (
-            <p>{this.renderEmployeeNotificationDetails(jobObj)}</p>
-          ) : (
-            <></>
-          )}
         </li>
       )
     })
@@ -197,7 +202,7 @@ export default class JobNotificationList extends Component {
     else {
       return (
         <div>
-          <ul>{this.renderJobList()}</ul>
+          <ul className="JobNotification__list">{this.renderJobList()}</ul>
           {this.state.editing ? (
             <JobForm showJobForm={this.openEdit} job={this.state.editJob} />
           ) : (

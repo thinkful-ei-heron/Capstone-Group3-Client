@@ -92,7 +92,7 @@ export default class Statistics extends Component {
   }
 
   populateStats = async () => {
-    let jobDue = []
+    let jobDue = new Array(this.state.jobDue.labels.length)
     let jobHistory = new Array(this.state.jobDue.labels.length)
     for (let i = 0; i < this.state.jobDue.labels.length; i++) {
       await db
@@ -145,7 +145,7 @@ export default class Statistics extends Component {
             }
           })
           console.log(jobHistoryCount)
-          jobDue.push(jobDueCount)
+          jobDue[i] = jobDueCount
           jobHistory[i] = jobHistoryCount
           console.log(jobHistory)
         })

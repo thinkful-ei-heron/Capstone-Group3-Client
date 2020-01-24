@@ -14,8 +14,9 @@ project management software.
 
 ## Usage
 | Landing Page    | Dashboard   |
-| ------------- |:-------------:|
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/dashboard.png" width='80%' height='auto'> |
+| Login    | Register   |
+| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/login_page.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/register.png" width='80%' height='auto'> |
 | Add Project    | Edit Project   |
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_project.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_project.png" width='80%' height='auto'> |
 | Add Task    | Edit Task   |

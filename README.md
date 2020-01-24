@@ -94,15 +94,16 @@ npm run test:open
 - 0.0.1
   - Work in progress
 
-## Meta
 
-Contributors:
+### Contributors
 
 - [Adam Newhouser](https://github.com/AdamNewhouser)
 - [Alex Bannow](https://github.com/rbannal86)
 - [Balay Aydemir](https://github.com/balayaydemir)
 - [Bridger Hammond](https://github.com/reifnotreef)
 - [Dan Wagar](https://github.com/danWagar)
+
+### License
 
 Distributed under the MIT license. See [LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE) for more information.
 

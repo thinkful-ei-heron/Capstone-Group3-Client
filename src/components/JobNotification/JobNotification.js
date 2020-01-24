@@ -231,7 +231,6 @@ export default class JobNotification extends Component {
       let updatedNewProjects = this.state.newProjects.filter(
         item => item.id !== projObj.id
       )
-
       this.setState({
         newProjects: updatedNewProjects,
         notificationCount: this.state.notificationCount - 1,

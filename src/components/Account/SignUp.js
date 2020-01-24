@@ -165,9 +165,7 @@ const SignUp = ({ history }, props) => {
 
   return (
     <div className="Register">
-      <img src={skyscraper} alt="skyscraper" />
-      <form className="Form  LoginRegister" onSubmit={handleSubmit}>
-        <legend>Sign Up</legend>
+      <form className="Form" onSubmit={handleSubmit}>
         <h1>I am a: </h1>
         <div className="radio-toolbar">
           <Input

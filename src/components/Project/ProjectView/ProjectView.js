@@ -9,12 +9,13 @@ import Sidebar from '../../Sidebar/Sidebar'
 import JobForm from '../JobForm/JobForm'
 import dbServices from '../../../services/dbServices'
 import dateConversions from '../../../services/dateConversions'
+import { withRouter, Redirect } from 'react-router'
 import Swal from 'sweetalert2'
 import StyleIcon from '../../StyleIcon/StyleIcon'
 import { CatchAll } from '../../CatchAll/CatchAll'
 import ProjectBar from '../../Project/ProjectBar/ProjectBar'
 
-export default class ProjectView extends Component {
+class ProjectView extends Component {
   constructor(props) {
     super(props)
     this.unsubscribe = null
@@ -112,9 +113,11 @@ export default class ProjectView extends Component {
   }
 
   approveProject = async () => {
-    let proj = this.state.project
+    let proj = { ...this.state.project, date_completed: null }
+
     proj.date_completed = dateConversions.dateToTimestamp(new Date())
     proj.alert = true
+    console.log(proj)
     await dbServices.updateProject(proj)
   }
 
@@ -171,6 +174,8 @@ export default class ProjectView extends Component {
       return <Loading />
     } else if (this.state.error) {
       return <h2>Project was unable to load</h2>
+    } else if (!project) {
+      return <Redirect to='/dashboard'/>
     } else {
       return (
         <section>
@@ -183,6 +188,7 @@ export default class ProjectView extends Component {
               <ProjectBar
                 proj={project}
                 role={this.context.currentUser.role}
+                view="project"
                 // projectManagers={this.state.projectManagers}
                 // updatePM={this.updatePM}
                 // updateProjInState={this.updateProjInState}
@@ -284,3 +290,5 @@ export default class ProjectView extends Component {
     }
   }
 }
+
+export default withRouter(ProjectView)

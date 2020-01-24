@@ -13,16 +13,19 @@ project management software.
 [See the Live App Here](https://managelazily.com/)
 
 ## Usage
-
-- Landing Page
-- Register
-- Login
-- Dashboard
-- ProjectView
-- Edit/Add Project
-- Edit/Add Job
-- Log Hours
-- Profile View
+| Landing Page    | Dashboard   |
+| ------------- |:-------------:|
+| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/dashboard.png" width='80%' height='auto'> |
+| Login    | Register   |
+| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/login_page.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/register.png" width='80%' height='auto'> |
+| Add Project    | Edit Project   |
+| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_project.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_project.png" width='80%' height='auto'> |
+| Add Task    | Edit Task   |
+| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_task.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_task.png" width='80%' height='auto'> |
+| Project View    | Log Hours   |
+| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/project_view.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/log_hours.png" width='80%' height='auto'> |
+| Profile View |   |
+|<img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/user_profile.png" width='80%' height='auto'>|   |
 
 ## Development setup
 

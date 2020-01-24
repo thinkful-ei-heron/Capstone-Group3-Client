@@ -8,6 +8,7 @@ import StyleIcon from '../../StyleIcon/StyleIcon'
 import dateConversions from '../../../services/dateConversions'
 import LogHours from '../../LogHours/LogHours'
 import { Bar, Line, Pie } from 'react-chartjs-2'
+import ReactTooltip from 'react-tooltip'
 import Swal from 'sweetalert2'
 
 class JobItem extends Component {
@@ -61,7 +62,7 @@ class JobItem extends Component {
       if (approval || progress !== 100) {
         return (
           <>
-            <div className="JobItem__fa" onClick={this.renderLogHoursForm}>
+            <div className="JobItem__fa" onClick={this.renderLogHoursForm} data-tip="Log Hours">
               {StyleIcon({ style: 'clock' })}
             </div>
             <button disabled>Submit for Approval</button>
@@ -98,13 +99,13 @@ class JobItem extends Component {
         <>
           {this.context.currentUser.role === 'project manager' &&
           progress !== 100 ? (
-            <div className="JobItem__fa" onClick={this.renderLogHoursForm}>
+            <div className="JobItem__fa" onClick={this.renderLogHoursForm} data-tip="Log Hours">
               {StyleIcon({ style: 'clock' })}
             </div>
           ) : (
             ''
           )}
-          <div className="JobItem__fa" onClick={this.showEditForm}>
+          <div className="JobItem__fa" onClick={this.showEditForm} data-tip="Edit Task">
             {StyleIcon({ style: 'edit' })}
           </div>
           {status === 'submitted' ? (
@@ -112,12 +113,14 @@ class JobItem extends Component {
               <div
                 className="JobItem__fa_bigger"
                 onClick={e => this.handleApprovalSubmit(id, 'completed', true)}
+                data-tip="Approve"
               >
                 {StyleIcon({ style: 'approve' })}
               </div>
               <div
                 className="JobItem__fa_bigger"
                 onClick={e => this.handleApprovalSubmit(id, 'revisions')}
+                data-tip="Make Revisions"
               >
                 {StyleIcon({ style: 'revise' })}
               </div>
@@ -130,6 +133,7 @@ class JobItem extends Component {
                   onClick={e =>
                     this.handleApprovalSubmit(id, 'submitted', false)
                   }
+                  data-tip="Submit Approval"
                 >
                   {StyleIcon({ style: 'submit' })}
                 </div>
@@ -183,8 +187,8 @@ class JobItem extends Component {
           options={{
             responsive: true,
             maintainAspectRatio: false,
-            title: { display: true, text: 'Hours Logged', fontSize: 28 },
-            legend: { labels: { fontSize: 24 } },
+            title: { display: true, text: 'Hours Logged', fontSize: 20 },
+            legend: { labels: { fontSize: 16 } },
           }}
         />
       )
@@ -209,7 +213,7 @@ class JobItem extends Component {
 
   submitEditForm = () => {
     this.setState({
-      showEditForm: false
+      showEditForm: false,
     })
   }
 
@@ -237,7 +241,7 @@ class JobItem extends Component {
 
   submitWorkerEdit = () => {
     this.setState({
-      showWorkerEditForm: false
+      showWorkerEditForm: false,
     })
   }
 
@@ -259,7 +263,7 @@ class JobItem extends Component {
               <div className="JobItem__details_text">{job.description}</div>
             </div>
             <div className="JobItem__progress">
-              <div>
+              <div className="JobItem__meter_container">
                 <span>Est. Progress</span>
                 <ProgressBar percentage={progress} />
               </div>
@@ -301,12 +305,14 @@ class JobItem extends Component {
             </div>
           </div>
           {this.state.expandJob && (
-            <div className="JobItem__assigned_employees">
-              <span>Assigned Employees: </span>
-              <ul>{this.renderEmployeeList(job.project_workers)}</ul>
+            <div className="JobItem__expand_container">
+              <div className="JobItem__assigned_employees">
+                <span>Assigned Employees: </span>
+                <ul>{this.renderEmployeeList(job.project_workers)}</ul>
+              </div>
+              {this.renderChart(job)}
             </div>
           )}
-          {this.state.expandJob && this.renderChart(job)}
           <div className="JobItem__form_container">
             {this.state.showLogHours && (
               <LogHours job={job} renderLogHoursForm={this.submitLogHours} />
@@ -325,6 +331,7 @@ class JobItem extends Component {
                 />
               )}
           </div>
+          <ReactTooltip place="bottom" type="dark" effect="float"/>
         </li>
       </>
     )

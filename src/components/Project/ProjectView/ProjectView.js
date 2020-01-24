@@ -135,7 +135,7 @@ export default class ProjectView extends Component {
 
   submitJobForm = () => {
     this.setState({
-      showJobForm: false
+      showJobForm: false,
     })
   }
 
@@ -200,14 +200,14 @@ export default class ProjectView extends Component {
                     </div>
                   </div>
                   {this.state.expandStats && (
-                    <div className="ProjectView__stats_container">
+                    <div className="ProjectView__stats_container App__separate_bottom">
                       <Statistics {...this.props} />
                     </div>
                   )}
                 </div>
               )}
               <div
-                className="App__section_header App__separate_top_always"
+                className="App__section_header"
                 onClick={() => this.expandJobs()}
               >
                 <div className="App__fa_h1">

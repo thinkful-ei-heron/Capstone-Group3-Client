@@ -74,6 +74,28 @@ class JobItem extends Component {
     }
   }
 
+  deleteTask = e => {
+    e.stopPropagation()
+    Swal.fire({
+      title: 'Are you sure?',
+      text:
+        'By clicking the button below, you will be deleting this task.',
+      icon: 'question',
+      confirmButtonText: "I'm sure!",
+      showCancelButton: true,
+    }).then(value => {
+      console.log(value)
+      if (value.dismiss === 'cancel') return null
+      else {
+        let id = this.props.job.id
+        let projectId = this.props.job.project_id
+        let org = this.props.job.organization
+        
+        dbServices.deleteJobById(id, projectId, org)
+      }
+    })
+  }
+
   renderEmployeeList = jobWorkers => {
     if (!jobWorkers || jobWorkers.length === 0)
       return <h5>No Workers Assigned</h5>
@@ -151,6 +173,7 @@ class JobItem extends Component {
           >
             {StyleIcon({ style: 'edit' })}
           </div>
+          <button onClick={this.deleteTask}>Delete</button>
           {status === 'submitted' ? (
             <div>
               <div

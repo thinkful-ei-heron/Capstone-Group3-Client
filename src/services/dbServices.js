@@ -173,7 +173,6 @@ const dbServices = {
   },
 
   addProject(newProject) {
-    // console.log(newProject.org_id);
     if (!newProject.project_manager) newProject.project_manager = 'unassigned'
     return db
       .collection(`organizations/${newProject.org_id}/projects`)
@@ -181,7 +180,6 @@ const dbServices = {
   },
 
   setProjId(id, orgId) {
-    // console.log(id, orgId);
     return db
       .collection(`organizations/${orgId}/projects`)
       .doc(`${id}`)

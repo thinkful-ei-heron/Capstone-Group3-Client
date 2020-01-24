@@ -106,10 +106,8 @@ const NewJob = props => {
       alert,
       employee_hours,
     }
-    console.log(jobObj)
     if (props.job) {
       try {
-        console.log(jobObj)
         await dbServices.editJob(id, jobObj)
       } catch (error) {
         console.warn(error)
@@ -125,7 +123,7 @@ const NewJob = props => {
       try {
         await dbServices.addJob(jobObj, projectId)
       } catch (error) {
-        console.log(error)
+        console.warn(error)
         Swal.fire({
           title: 'Error!',
           text: 'There was an issue - please refresh the page and try again. 2',
@@ -165,9 +163,6 @@ const NewJob = props => {
     })
 
     try {
-      console.log('projectId', projectId)
-      console.log('pWorkers', updatedProjectWorkers)
-      console.log('org', currentUser.org)
       await dbServices
         .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
         .then(() => {

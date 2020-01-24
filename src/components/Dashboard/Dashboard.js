@@ -117,7 +117,6 @@ export default class Dashboard extends Component {
     })
 
   updateProjInState = proj => {
-    console.log('removing')
     let projects = this.state.projects
     let completedProjects = this.state.completeProjects
     let updatedProjects = projects.filter(item => item.id !== proj.id)

@@ -83,7 +83,6 @@ class JobItem extends Component {
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
     }).then(value => {
-      console.log(value)
       if (value.dismiss === 'cancel') return null
       else {
         let id = this.props.job.id

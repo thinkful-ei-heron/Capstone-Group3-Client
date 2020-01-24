@@ -136,6 +136,13 @@ export default class ProjectView extends Component {
   submitJobForm = () => {
     this.setState({
       showJobForm: false,
+      statsUpdated: true,
+    })
+  }
+
+  turnOffUpdate = () => {
+    this.setState({
+      statsUpdated: false,
     })
   }
 
@@ -200,8 +207,12 @@ export default class ProjectView extends Component {
                     </div>
                   </div>
                   {this.state.expandStats && (
-                    <div className="ProjectView__stats_container App__separate_bottom">
-                      <Statistics {...this.props} />
+                    <div className="ProjectView__stats_container">
+                      <Statistics
+                        {...this.props}
+                        updated={this.state.statsUpdated}
+                        turnOffUpdate={this.turnOffUpdate}
+                      />
                     </div>
                   )}
                 </div>

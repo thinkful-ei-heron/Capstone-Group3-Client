@@ -39,7 +39,7 @@ export default class OwnerNotification extends Component {
     await dbServices
       .updateProject(project)
       .then(this.props.updateProjectList(project, type))
-    this.props.renderList(e)
+      .then(this.props.renderList(e))
   }
 
   renderNewEmployees = () => {

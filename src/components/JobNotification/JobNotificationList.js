@@ -5,6 +5,7 @@ import JobForm from '../Project/JobForm/JobForm'
 import { AuthContext } from '../../services/Auth'
 import StyleIcon from '../StyleIcon/StyleIcon'
 import Swal from 'sweetalert2'
+import dateConversions from '../../services/dateConversions'
 
 export default class JobNotificationList extends Component {
   state = {
@@ -36,6 +37,8 @@ export default class JobNotificationList extends Component {
       if (status === 'completed' || status === 'revisions') {
         jobObj.alert = jobObj.project_workers
       }
+      if (status === 'completed')
+        jobObj.date_completed = dateConversions.dateToTimestamp(new Date())
       jobObj.status = status
       await dbServices.updateJob(jobObj)
       this.props.updateList(jobObj)
@@ -73,6 +76,7 @@ export default class JobNotificationList extends Component {
           notificationList: this.props.notificationList,
         })
       } catch (error) {
+        console.log(error)
         Swal.fire({
           title: 'Error!',
           text:
@@ -118,6 +122,21 @@ export default class JobNotificationList extends Component {
     if (jobObj.status === 'completed') return <span> has been completed!</span>
   }
 
+  renderPromoted = () => {
+    if (this.props.promoted)
+      return (
+        <li>
+          You have been promoted to Project Manager!{' '}
+          <div
+            className="JobNotification__close"
+            onClick={() => this.props.dismissPromoted()}
+          >
+            {StyleIcon({ style: 'close' })}
+          </div>
+        </li>
+      )
+  }
+
   renderJobList = () => {
     return this.state.notificationList.map(jobObj => {
       return (
@@ -150,9 +169,10 @@ export default class JobNotificationList extends Component {
           {this.context.currentUser.role === 'project manager' ? (
             <>
               {jobObj.status === 'submitted' ? (
-                <div>
+                <div className="JobNotification__approval">
                   <h5>Task Submitted For Approval</h5>
                   <button
+                    className="btn_highlight_color notification_button"
                     onClick={e =>
                       this.handleApprovalSubmit(
                         jobObj.id,
@@ -165,6 +185,7 @@ export default class JobNotificationList extends Component {
                     Approve
                   </button>
                   <button
+                    className="btn_highlight_color notification_button"
                     onClick={e =>
                       this.handleApprovalSubmit(
                         jobObj.id,
@@ -204,7 +225,10 @@ export default class JobNotificationList extends Component {
     else {
       return (
         <div>
-          <ul className="JobNotification__list">{this.renderJobList()}</ul>
+          <ul className="JobNotification__list">
+            {this.renderPromoted()}
+            {this.renderJobList()}
+          </ul>
           {this.state.editing ? (
             <JobForm showJobForm={this.openEdit} job={this.state.editJob} />
           ) : (

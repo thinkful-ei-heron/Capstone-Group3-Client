@@ -52,7 +52,7 @@ const dbServices = {
       .doc(org)
       .collection('users')
       .doc(email)
-      .update({ role: 'project manager' })
+      .update({ role: 'project manager', promoted: true })
   },
 
   projectsListener(org, id) {
@@ -295,7 +295,7 @@ const dbServices = {
       .update({ ...jobObj })
   },
 
-  async updateJobStatus(id, status, project_id, approval, org) {
+  async updateJobStatus(id, status, project_id, approval, org, date_completed) {
     await db
       .collection('organizations')
       .doc(org)
@@ -306,6 +306,7 @@ const dbServices = {
       .update({
         status: status,
         approval: approval,
+        date_completed: date_completed,
       })
   },
 
@@ -357,6 +358,15 @@ const dbServices = {
       .collection('users')
       .doc(worker.email)
       .update({ ...worker })
+  },
+
+  async updatePromoted(worker) {
+    await db
+      .collection('organizations')
+      .doc(worker.org)
+      .collection('users')
+      .doc(worker.email)
+      .update({ promoted: false })
   },
 }
 

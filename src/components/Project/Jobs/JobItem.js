@@ -24,24 +24,53 @@ class JobItem extends Component {
 
   static contextType = AuthContext
 
-  handleApprovalSubmit = async (id, status, approval = false) => {
-    try {
-      await dbServices.updateJobStatus(
-        id,
-        status,
-        this.props.job.project_id,
-        approval,
-        this.props.job.organization
-      )
-    } catch (error) {
-      console.warn(error)
-      Swal.fire({
-        title: 'Error!',
-        text:
-          'There was an issue approving this task - please refresh the page and try again.',
-        icon: 'error',
-        confirmButtonText: 'Close',
-      })
+  handleApprovalSubmit = async (
+    id,
+    status,
+    approval = false,
+    date_completed = null
+  ) => {
+    if (!approval) {
+      try {
+        await dbServices.updateJobStatus(
+          id,
+          status,
+          this.props.job.project_id,
+          approval,
+          this.props.job.organization,
+          date_completed
+        )
+      } catch (error) {
+        console.warn(error)
+        Swal.fire({
+          title: 'Error!',
+          text:
+            'There was an issue approving this task - please refresh the page and try again.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
+      }
+    } else {
+      date_completed = dateConversions.dateToTimestamp(new Date())
+      try {
+        await dbServices.updateJobStatus(
+          id,
+          status,
+          this.props.job.project_id,
+          approval,
+          this.props.job.organization,
+          date_completed
+        )
+      } catch (error) {
+        console.warn(error)
+        Swal.fire({
+          title: 'Error!',
+          text:
+            'There was an issue approving this task - please refresh the page and try again.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
+      }
     }
   }
 
@@ -290,7 +319,7 @@ class JobItem extends Component {
                 progress === 100 &&
                 job.status !== 'revisions' &&
                 this.context.currentUser.role !== 'project manager' ? (
-                  <span>AWAITING APPROVAL</span>
+                  <span>Awaiting Approval</span>
                 ) : (
                   <></>
                 )}
@@ -343,6 +372,7 @@ class JobItem extends Component {
                   job={job}
                   renderEditForm={this.submitWorkerEdit}
                   handleStatus={this.handleApprovalSubmit}
+                  className={'Form'}
                 />
               )}
           </div>

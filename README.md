@@ -29,7 +29,7 @@ project management software.
 
 ## Development setup
 
-- Clone this repo and move to the new direcotry:
+- Clone this repo and move to the new directory:
 
   ```bash
   git clone https://github.com/balayaydemir/Capstone-Group3-Client.git YOUR_PROJECT_NAME
@@ -94,16 +94,17 @@ npm run test:open
 - 0.0.1
   - Work in progress
 
+## Contributors
 
-### Contributors
+| Name | Role | Github Profile |
+| :-------------: |:-------------:|:-------------:|
+| Adam Newhouser | Marketing and DBA | [link](https://github.com/AdamNewhouser) |
+| Alex Bannow | Marketing and QA | [link](https://github.com/rbannal86) |
+| Balay Aydemir | Project Manager | [link](https://github.com/balayaydemir) |
+| Bridger Hammond | Product Manager | [link](https://github.com/reifnotreef) |
+| Dan Wagar | UI/UX Design | [link](https://github.com/danWagar) |
 
-- [Adam Newhouser](https://github.com/AdamNewhouser)
-- [Alex Bannow](https://github.com/rbannal86)
-- [Balay Aydemir](https://github.com/balayaydemir)
-- [Bridger Hammond](https://github.com/reifnotreef)
-- [Dan Wagar](https://github.com/danWagar)
-
-### License
+## License
 
 Distributed under the MIT license. See [LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE) for more information.
 

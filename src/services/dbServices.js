@@ -295,7 +295,7 @@ const dbServices = {
       .update({ ...jobObj })
   },
 
-  async updateJobStatus(id, status, project_id, approval, org) {
+  async updateJobStatus(id, status, project_id, approval, org, date_completed) {
     await db
       .collection('organizations')
       .doc(org)
@@ -306,6 +306,7 @@ const dbServices = {
       .update({
         status: status,
         approval: approval,
+        date_completed: date_completed,
       })
   },
 

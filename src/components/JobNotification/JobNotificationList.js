@@ -5,6 +5,7 @@ import JobForm from '../Project/JobForm/JobForm'
 import { AuthContext } from '../../services/Auth'
 import StyleIcon from '../StyleIcon/StyleIcon'
 import Swal from 'sweetalert2'
+import dateConversions from '../../services/dateConversions'
 
 export default class JobNotificationList extends Component {
   state = {
@@ -36,6 +37,8 @@ export default class JobNotificationList extends Component {
       if (status === 'completed' || status === 'revisions') {
         jobObj.alert = jobObj.project_workers
       }
+      if (status === 'completed')
+        jobObj.date_completed = dateConversions.dateToTimestamp(new Date())
       jobObj.status = status
       await dbServices.updateJob(jobObj)
       this.props.updateList(jobObj)
@@ -72,6 +75,7 @@ export default class JobNotificationList extends Component {
           notificationList: this.props.notificationList,
         })
       } catch (error) {
+        console.log(error)
         Swal.fire({
           title: 'Error!',
           text:

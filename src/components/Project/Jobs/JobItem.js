@@ -24,24 +24,53 @@ class JobItem extends Component {
 
   static contextType = AuthContext
 
-  handleApprovalSubmit = async (id, status, approval = false) => {
-    try {
-      await dbServices.updateJobStatus(
-        id,
-        status,
-        this.props.job.project_id,
-        approval,
-        this.props.job.organization
-      )
-    } catch (error) {
-      console.warn(error)
-      Swal.fire({
-        title: 'Error!',
-        text:
-          'There was an issue approving this task - please refresh the page and try again.',
-        icon: 'error',
-        confirmButtonText: 'Close',
-      })
+  handleApprovalSubmit = async (
+    id,
+    status,
+    approval = false,
+    date_completed = null
+  ) => {
+    if (!approval) {
+      try {
+        await dbServices.updateJobStatus(
+          id,
+          status,
+          this.props.job.project_id,
+          approval,
+          this.props.job.organization,
+          date_completed
+        )
+      } catch (error) {
+        console.warn(error)
+        Swal.fire({
+          title: 'Error!',
+          text:
+            'There was an issue approving this task - please refresh the page and try again.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
+      }
+    } else {
+      date_completed = dateConversions.dateToTimestamp(new Date())
+      try {
+        await dbServices.updateJobStatus(
+          id,
+          status,
+          this.props.job.project_id,
+          approval,
+          this.props.job.organization,
+          date_completed
+        )
+      } catch (error) {
+        console.warn(error)
+        Swal.fire({
+          title: 'Error!',
+          text:
+            'There was an issue approving this task - please refresh the page and try again.',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        })
+      }
     }
   }
 
@@ -62,15 +91,22 @@ class JobItem extends Component {
       if (approval || progress !== 100) {
         return (
           <>
-            <div className="JobItem__fa" onClick={this.renderLogHoursForm} data-tip="Log Hours">
+            <div
+              className="JobItem__fa"
+              onClick={this.renderLogHoursForm}
+              data-tip="Log Hours"
+            >
               {StyleIcon({ style: 'clock' })}
             </div>
-            <button disabled>Submit for Approval</button>
             {(status !== 'completed' || status !== 'submitted') &&
             status !== 'edit request' ? (
-              <button onClick={e => this.showWorkerEditForm(e)}>
-                Request Edit
-              </button>
+              <div
+                className="JobItem__fa"
+                onClick={e => this.showWorkerEditForm(e)}
+                data-tip="Request Edit"
+              >
+                {StyleIcon({ style: 'edit' })}
+              </div>
             ) : (
               <></>
             )}
@@ -80,11 +116,13 @@ class JobItem extends Component {
         return (
           <>
             {status === 'revisions' ? <span>Revision Requested</span> : <></>}
-            <button
+            <div
+              className="JobItem__fa_bigger"
               onClick={e => this.handleApprovalSubmit(id, 'submitted', false)}
+              data-tip="Submit Approval"
             >
-              Submit for Approval
-            </button>
+              {StyleIcon({ style: 'submit' })}
+            </div>
           </>
         )
       }
@@ -99,13 +137,21 @@ class JobItem extends Component {
         <>
           {this.context.currentUser.role === 'project manager' &&
           progress !== 100 ? (
-            <div className="JobItem__fa" onClick={this.renderLogHoursForm} data-tip="Log Hours">
+            <div
+              className="JobItem__fa"
+              onClick={this.renderLogHoursForm}
+              data-tip="Log Hours"
+            >
               {StyleIcon({ style: 'clock' })}
             </div>
           ) : (
             ''
           )}
-          <div className="JobItem__fa" onClick={this.showEditForm} data-tip="Edit Task">
+          <div
+            className="JobItem__fa"
+            onClick={this.showEditForm}
+            data-tip="Edit Task"
+          >
             {StyleIcon({ style: 'edit' })}
           </div>
           {status === 'submitted' ? (
@@ -213,7 +259,7 @@ class JobItem extends Component {
 
   submitEditForm = () => {
     this.setState({
-      showEditForm: false
+      showEditForm: false,
     })
   }
 
@@ -241,7 +287,7 @@ class JobItem extends Component {
 
   submitWorkerEdit = () => {
     this.setState({
-      showWorkerEditForm: false
+      showWorkerEditForm: false,
     })
   }
 
@@ -275,7 +321,7 @@ class JobItem extends Component {
                 progress === 100 &&
                 job.status !== 'revisions' &&
                 this.context.currentUser.role !== 'project manager' ? (
-                  <span>AWAITING APPROVAL</span>
+                  <span>Awaiting Approval</span>
                 ) : (
                   <></>
                 )}
@@ -326,10 +372,11 @@ class JobItem extends Component {
                   job={job}
                   renderEditForm={this.submitWorkerEdit}
                   handleStatus={this.handleApprovalSubmit}
+                  className={'Form'}
                 />
               )}
           </div>
-          <ReactTooltip place="bottom" type="dark" effect="float"/>
+          <ReactTooltip place="bottom" type="dark" effect="float" />
         </li>
       </>
     )

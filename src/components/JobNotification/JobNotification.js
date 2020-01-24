@@ -196,7 +196,7 @@ export default class JobNotification extends Component {
   }
 
   renderList = e => {
-    e.preventDefault()
+    // e.preventDefault()
     this.setState({
       notificationDropDown: !this.state.notificationDropDown,
     })

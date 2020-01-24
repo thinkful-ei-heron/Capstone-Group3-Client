@@ -4,6 +4,7 @@ import app from '../../services/base.js'
 import { AuthContext } from '../../services/Auth.js'
 import { Label, Input } from '../Form/Form'
 import Swal from 'sweetalert2'
+import skyscraper from '../../images/skyscraper.svg'
 
 const Login = (setPath, { history }) => {
   const { currentUser } = useContext(AuthContext)
@@ -37,7 +38,9 @@ const Login = (setPath, { history }) => {
 
   return (
     <div className="Login">
-      <form className="Form" onSubmit={handleLogin}>
+      <img src={skyscraper} alt="skyscraper" />
+      <form className="Form LoginRegister" onSubmit={handleLogin}>
+        <legend>Login</legend>
         <Label>
           Email
           <Input

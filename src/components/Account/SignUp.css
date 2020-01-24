@@ -1,3 +1,38 @@
+.Login,
+.Register {
+  display: grid;
+  place-content: center;
+  position: fixed;
+  left: 0;
+  top: 150px;
+  width: 100vw;
+  height: calc(100% - 150px);
+  background-color: #6289b5;
+  background-image: linear-gradient(195deg, transparent 0 70%, #7fcce9 70% 100%),
+    linear-gradient(200deg, transparent 0 50%, #6bbde2 50% 80%),
+    linear-gradient(205deg, transparent 0 30%, #5c9ad1 30% 60%);
+  overflow-x: hidden;
+}
+
+.LoginRegister {
+  padding: 35px;
+  background-color: white;
+}
+
+.Register .LoginRegister {
+  position: absolute;
+  top: 50px;
+  left: calc(50% - 175px);
+}
+
+img {
+  position: fixed;
+  bottom: 0;
+  left: 10%;
+  height: 35%;
+  z-index: -1;
+}
+
 .radio-toolbar {
   display: flex;
   flex-direction: column;
@@ -28,6 +63,22 @@
 }
 
 @media only screen and (min-width: 750px) {
+  .Login {
+    top: 130px;
+    height: calc(100% - 130px);
+  }
+
+  .Register .LoginRegister {
+    position: fixed;
+    top: 250px;
+    left: calc(50% - 235px);
+  }
+
+  img {
+    left: 10%;
+    height: 45%;
+  }
+
   .radio-toolbar {
     flex-direction: row;
   }

@@ -88,9 +88,7 @@ const ProjectBar = props => {
                 <span className="ProjectBar__overdue">
                   {props.proj.progress !== 100 &&
                     dateConversions.dateDiff(props.proj.deadline) &&
-                    `Overdue by ${dateConversions.dateDiff(
-                      props.proj.deadline
-                    )} days`}
+                      dateConversions.dateDiff(props.proj.deadline)}
                 </span>
               </div>
             </>

@@ -31,8 +31,8 @@ project management software.
 
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_project.png" width='40%' height='auto'>| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_project.png" width='40%' height='auto'> |
 
-|Add Task | Edit Task |
-
+|                                                           Add Task                                                            |                                                           Edit Task                                                            |
+| :---------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_task.png" width='40%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_task.png" width='40%' height='auto'> |
 
 - Log Hours

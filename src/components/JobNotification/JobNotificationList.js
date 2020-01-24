@@ -197,7 +197,7 @@ export default class JobNotificationList extends Component {
     else {
       return (
         <div>
-          <ul>{this.renderJobList()}</ul>
+          <ul className="JobNotification__list">{this.renderJobList()}</ul>
           {this.state.editing ? (
             <JobForm showJobForm={this.openEdit} job={this.state.editJob} />
           ) : (

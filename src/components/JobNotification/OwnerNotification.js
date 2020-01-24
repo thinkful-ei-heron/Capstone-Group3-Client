@@ -110,7 +110,7 @@ export default class OwnerNotification extends Component {
   render() {
     return (
       <div>
-        <ul>
+        <ul className="JobNotification__list">
           {this.renderNewEmployees()}
           {this.renderNewProjects()}
           {this.renderCompletedProjects()}

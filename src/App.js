@@ -8,7 +8,7 @@ import SignUp from './components/Account/SignUp'
 import ProjectView from './components/Project/ProjectView/ProjectView'
 import LandingPage from './components/LandingPage/LandingPage'
 import PrivateRoute from './services/PrivateRoute'
-import PublicRoute from './services/PublicRoute';
+import PublicRoute from './services/PublicRoute'
 import { AuthContext } from './services/Auth.js'
 import Profile from './components/Profile/Profile'
 import './App.css'
@@ -30,17 +30,13 @@ const App = props => {
   useEffect(() => {
     if (!localStorage.getItem('path') && !path) return
     localStorage.setItem('path', path)
+  }, [path])
+
+  useEffect(() => {
     if (path && currentUser) {
       props.history.push(path)
     }
-  }, [currentUser, path, props.history])
-
-  // const handleBrokenUrl = location => {
-  //   setPath(null)
-  //   localStorage.removeItem('path')
-
-  //   return <CatchAll />
-  // }
+  }, [currentUser])
 
   return (
     <>
@@ -53,8 +49,13 @@ const App = props => {
       </header>
       <main className="App__main">
         <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/login" setPath={setPath} component={Login} />
+          <Route exact path="/" setPath={setPath} component={LandingPage} />
+          <PublicRoute
+            exact
+            path="/login"
+            setPath={setPath}
+            component={Login}
+          />
           <PrivateRoute
             location={props.location}
             setPath={setPath}
@@ -80,12 +81,7 @@ const App = props => {
             setPath={setPath}
             component={props => <ProjectView id={props.match.params.id} />}
           />
-          <PublicRoute
-            exact
-            path="*"
-            setPath={setPath}
-            component={CatchAll}
-          />
+          <PublicRoute exact path="*" setPath={setPath} component={CatchAll} />
         </Switch>
       </main>
     </>

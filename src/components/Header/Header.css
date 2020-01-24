@@ -95,7 +95,8 @@
 
 .Header__notifications {
   position: absolute;
-  right: 0;
+  right: -20px;
+  margin-top: 10px;
   z-index: 10;
 }
 
@@ -155,6 +156,7 @@
 
   .Header__user_info {
     margin-right: 30px;
+    line-height: 1.4rem;
   }
 
   .Header__db_logout {
@@ -165,5 +167,9 @@
 
   .Header__dashboard {
     font-size: 1rem;
+  }
+
+  .Header__notifications {
+    margin-top: 0;
   }
 }

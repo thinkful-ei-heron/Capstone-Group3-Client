@@ -55,10 +55,6 @@
   margin: 5px;
 }
 
-.App__section_header, .projectbar_container, .ProjectView__stats{
-  margin-bottom: 8px;
-}
-
 .ProjectBar__project_container {
   background-color: var(--list-even-color);
 }
@@ -71,14 +67,39 @@
   margin-left: 5px;
 }
 
+.ProjectView__stats_container {
+  padding: 15px;
+  background-color: var(--list-odd-color);
+}
+
+.ProjectView__stats_container canvas {
+  width: 320px !important;
+  height: 200px !important;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 374px) {
+  .ProjectView__stats_container canvas {
+    width: 230px !important;
+    height: 170px !important;
+  }
+}
+
 @media only screen and (min-width: 750px) {
   #projectView_main {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    width: 100%;
   }
 
   .ProjectView__jobs_stats {
-    width: calc(100% - 170px);
+    width: calc(100% - 200px);
+  }
+
+  .ProjectView__stats_container canvas {
+    width: auto !important;
+    height: 240px !important;
+    margin: 0 auto;
   }
 }

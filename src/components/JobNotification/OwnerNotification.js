@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import dbServices from '../../services/dbServices'
 import { AuthContext } from '../../services/Auth'
+import StyleIcon from '../StyleIcon/StyleIcon'
 import Swal from 'sweetalert2'
 
 export default class OwnerNotification extends Component {
@@ -13,12 +14,12 @@ export default class OwnerNotification extends Component {
 
   static contextType = AuthContext
 
-  handleNewEmployee = async employee => {
+  handleNewEmployee = async (employee, e) => {
     try {
       employee.new = false
       // await dbServices.updateWorker();
       await dbServices.updateWorker(employee, this.context.currentUser.org)
-      this.props.updateList(employee)
+      this.props.updateList(employee, e)
       this.setState({
         newEmployees: this.props.newEmployees,
       })
@@ -32,11 +33,12 @@ export default class OwnerNotification extends Component {
     }
   }
 
-  handleClick = async (project, type) => {
+  handleClick = async (project, type, e) => {
     project.alert = false
     await dbServices
       .updateProject(project)
       .then(this.props.updateProjectList(project, type))
+    this.props.renderList(e)
   }
 
   renderNewEmployees = () => {
@@ -46,11 +48,16 @@ export default class OwnerNotification extends Component {
           <li key={index + employee}>
             <Link
               to={`/profile/${employee.email}`}
-              onClick={() => this.handleNewEmployee(employee)}
+              onClick={e => this.handleNewEmployee(employee, e)}
             >
               {employee.name} has joined your organization!
             </Link>
-            <button onClick={() => this.handleNewEmployee(employee)}>X</button>
+            <div
+              className="JobNotification__close"
+              onClick={() => this.handleNewEmployee(employee)}
+            >
+              {StyleIcon({ style: 'close' })}
+            </div>
 
             {/* <button onClick={e => this.handleNewEmployee(e, employee)}>
               Cool.
@@ -67,12 +74,17 @@ export default class OwnerNotification extends Component {
         return (
           <li key={project.id}>
             <Link
-              onClick={() => this.handleClick(project, 'new')}
+              onClick={e => this.handleClick(project, 'new', e)}
               to={{ pathname: `/project/${project.id}` }}
             >
               {project.name} has started.
             </Link>
-            <button onClick={() => this.handleClick(project, 'new')}>X</button>
+            <div
+              className="JobNotification__close"
+              onClick={() => this.handleClick(project, 'new')}
+            >
+              {StyleIcon({ style: 'close' })}
+            </div>
           </li>
         )
       })
@@ -85,14 +97,17 @@ export default class OwnerNotification extends Component {
         return (
           <li key={project.id}>
             <Link
-              onClick={() => this.handleClick(project, 'completed')}
+              onClick={e => this.handleClick(project, 'completed', e)}
               to={{ pathname: `/project/${project.id}` }}
             >
               {project.name} has been completed!
             </Link>
-            <button onClick={() => this.handleClick(project, 'completed')}>
-              X
-            </button>
+            <div
+              className="JobNotification__close"
+              onClick={() => this.handleClick(project, 'completed')}
+            >
+              {StyleIcon({ style: 'close' })}
+            </div>
           </li>
         )
       })

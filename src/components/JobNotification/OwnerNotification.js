@@ -34,6 +34,7 @@ export default class OwnerNotification extends Component {
   }
 
   handleClick = async (project, type, e) => {
+    e.stopPropagation()
     project.alert = false
     await dbServices
       .updateProject(project)
@@ -81,7 +82,7 @@ export default class OwnerNotification extends Component {
             </Link>
             <div
               className="JobNotification__close"
-              onClick={() => this.handleClick(project, 'new')}
+              onClick={e => this.handleClick(project, 'new', e)}
             >
               {StyleIcon({ style: 'close' })}
             </div>
@@ -104,7 +105,7 @@ export default class OwnerNotification extends Component {
             </Link>
             <div
               className="JobNotification__close"
-              onClick={() => this.handleClick(project, 'completed')}
+              onClick={e => this.handleClick(project, 'completed', e)}
             >
               {StyleIcon({ style: 'close' })}
             </div>

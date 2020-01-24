@@ -26,7 +26,6 @@ const WorkerEditForm = props => {
       total_hours: parseInt(total_hours),
       note: note,
       employee: currentUser.name,
-      // logged_hours: {name: currentUser.name, hours:}
     }
     try {
       await dbServices.updateEdit(
@@ -35,7 +34,6 @@ const WorkerEditForm = props => {
         props.job.project_id,
         props.job.organization
       )
-      // await dbServices.updateEdit();
       await props
         .handleStatus(props.job.id, 'edit request')
         .then(setSubmitted(true))

@@ -81,7 +81,6 @@ export default class Dropdown extends Component {
   }
 
   render() {
-    console.log('In dropdown defaultValue for pm is ' + this.props.defaultValue)
     const { selectedOption, employees } = this.state
     return (
       <Select

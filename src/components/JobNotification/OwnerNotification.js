@@ -17,7 +17,6 @@ export default class OwnerNotification extends Component {
   handleNewEmployee = async (employee, e) => {
     try {
       employee.new = false
-      // await dbServices.updateWorker();
       await dbServices.updateWorker(employee, this.context.currentUser.org)
       this.props.updateList(employee, e)
       this.setState({
@@ -59,10 +58,6 @@ export default class OwnerNotification extends Component {
             >
               {StyleIcon({ style: 'close' })}
             </div>
-
-            {/* <button onClick={e => this.handleNewEmployee(e, employee)}>
-              Cool.
-            </button> */}
           </li>
         )
       })

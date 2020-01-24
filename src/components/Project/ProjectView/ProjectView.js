@@ -196,7 +196,7 @@ export default class ProjectView extends Component {
               {user.role === 'project worker' ? (
                 <></>
               ) : (
-                <div className="ProjectView__stats">
+                <div className="ProjectView__stats App__separate_bottom">
                   <div
                     className="App__section_header"
                     onClick={() => this.expandStats()}

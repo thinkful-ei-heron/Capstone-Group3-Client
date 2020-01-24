@@ -119,7 +119,7 @@ const ProjectForm = props => {
         value={values.deadline}
         onBlur={handleBlur}
       />
-      <button className="btn_highlight_color" type="submit">
+      <button test-id='project-submit' className="btn_highlight_color" type="submit">
         Submit
       </button>
       <button className="btn_secondary_color" onClick={props.toggleForm}>

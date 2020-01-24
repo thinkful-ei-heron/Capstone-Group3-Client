@@ -35,7 +35,7 @@ General Setup:
 - Make a fresh start of the git history for this project with rm -rf .git && git init
 - Install the node dependencies npm install
 - Move the example Environment file to .env - mv example.env .env
-- Edit the contents of the package.json to use NEW-PROJECT-NAME
+- Edit the contents of the package.json to use your new project's name
 
 Firebase Setup:
 - Create a Firebase project

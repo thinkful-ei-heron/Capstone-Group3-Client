@@ -73,7 +73,6 @@ export default class JobNotificationList extends Component {
           notificationList: this.props.notificationList,
         })
       } catch (error) {
-        console.warn(error)
         Swal.fire({
           title: 'Error!',
           text:

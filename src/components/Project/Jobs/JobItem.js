@@ -207,6 +207,12 @@ class JobItem extends Component {
     })
   }
 
+  submitEditForm = () => {
+    this.setState({
+      showEditForm: false
+    })
+  }
+
   submitLogHours = () => {
     this.setState({
       showLogHours: !this.state.showLogHours,
@@ -226,6 +232,12 @@ class JobItem extends Component {
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm,
       expandJob: false,
+    })
+  }
+
+  submitWorkerEdit = () => {
+    this.setState({
+      showWorkerEditForm: false
     })
   }
 
@@ -301,14 +313,14 @@ class JobItem extends Component {
             )}
             {this.state.showEditForm && (
               <div className="JobItem__form">
-                <JobForm showJobForm={this.showEditForm} job={job} />
+                <JobForm showJobForm={this.submitEditForm} job={job} />
               </div>
             )}
             {this.state.showWorkerEditForm &&
               this.context.currentUser.role === 'project worker' && (
                 <WorkerEditForm
                   job={job}
-                  renderEditForm={this.showWorkerEditForm}
+                  renderEditForm={this.submitWorkerEdit}
                   handleStatus={this.handleApprovalSubmit}
                 />
               )}

@@ -13,9 +13,8 @@ project management software.
 [See the Live App Here](https://managelazily.com/)
 
 ## Usage
-
-|                                                           Landing Page                                                            |                                                           Dashboard                                                            |
-| :-------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------: |
+| Landing Page    | Dashboard   |
+| ------------- |:-------------:|
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/dashboard.png" width='80%' height='auto'> |
 
 |                                                           Register                                                            |                                                             Login                                                              |

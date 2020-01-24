@@ -22,7 +22,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 70%;
+  height: 65%;
+  margin-top: 15px;
   font-family: 'Oxygen', sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
@@ -36,15 +37,17 @@
 }
 
 .LandingPage__blurb {
-  width: 230px;
+  width: 320px;
   margin-top: 20px;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   line-height: 1.3rem;
   padding: 10px;
   font-family: var(--roboto-slab);
   font-weight: 500;
+  text-align: center;
   color: white;
-  background-color: rgba(1, 7, 26, 0.7);
+  border-radius: 20px;
+  background-color: rgba(1, 7, 26, 0.6);
 }
 
 img {
@@ -60,7 +63,6 @@ img {
   height: 55px;
   display: grid;
   place-content: center;
-  margin-bottom: 0;
   border: none;
   border-radius: 20px;
   font-family: 'Oxygen', sans-serif;
@@ -79,12 +81,18 @@ img {
   .LandingPage__hero_text {
     font-size: 2.5rem;
     line-height: 4.5rem;
+    margin-top: 0;
+    height: 70%;
   }
 
   .LandingPage__blurb {
-    width: 500px;
+    width: 600px;
     font-size: 1.6rem;
     line-height: 2rem;
+  }
+
+  .LandingPage__btn {
+    margin-bottom: 50px;
   }
 
   img {
@@ -109,7 +117,8 @@ img {
 
   .LandingPage__blurb {
     width: 610px;
-    font-size: 1.2rem;
+    font-size: 1.7rem;
+    line-height: 2.5rem;
     margin-top: 30px;
   }
 

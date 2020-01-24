@@ -3,23 +3,21 @@
   position: relative;
   width: 100%;
   padding: 10px;
+  padding-top: 15px;
+  font-size: 0.9rem;
 }
 
 .ProjectBar__header {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
-  width: calc(100% - 70px);
+  width: calc(100% - 110px);
 }
 
 .ProjectBar__proj_name {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 600;
   line-height: 2rem;
-}
-
-.ProjectBar__proj_mgr {
-  font-size: 1rem;
 }
 
 .ProjectBar__description {
@@ -54,27 +52,51 @@
   justify-content: flex-end;
   align-items: flex-end;
   width: 150px;
-  height: 45px;
   margin-top: 5px;
 }
 
 .ProjectBar__deadline_first {
   margin-bottom: 10px;
+  margin-right: 10px;
 }
 
 .ProjectBar__overdue {
   font-weight: 600;
+  line-height: 1.8rem;
   color: var(--highlight-color);
 }
 
 .ProjectBar__buttons {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  width: 100px;
 }
 
-.ProjectBar__edit {
+.ProjectBar__fa {
+  cursor: pointer;
+  margin-left: 25px;
   font-size: 1.2rem;
+}
+
+@media only screen and (max-width: 374px) {
+  .ProjectBar__project_container {
+    font-size: 0.8rem;
+    padding: 2px;
+  }
+
+  .ProjectBar__proj_name {
+    font-size: 0.9rem;
+  }
+
+  .ProjectBar__buttons {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+  }
 }
 
 @media only screen and (min-width: 1024px) {
@@ -93,11 +115,7 @@
   }
 
   .ProjectBar__proj_name {
-    font-size: 1.3em;
-  }
-
-  .ProjectBar__proj_mgr {
-    font-size: 1em;
+    font-size: 1.15rem;
   }
 
   .ProjectBar__proj_prog {
@@ -138,7 +156,25 @@
     background-color: rgba(255, 255, 255, 0.5);
   }
 
-  .ProjectBar__edit {
-    margin-top: 0;
+  .ProjectBar__deadline {
+    display: inline-block;
+    width: 150px;
+  }
+
+  .ProjectBar__deadline_first {
+    margin-right: 7px;
+  }
+
+  .ProjectBar__overdue {
+    line-height: 2.4rem;
+  }
+
+  .ProjectBar__buttons {
+    top: 10px;
+    right: 10px;
+  }
+
+  .ProjectBar__fa {
+    font-size: 1.4rem;
   }
 }

@@ -46,6 +46,42 @@ const ProjectBar = props => {
     })
   }
 
+  const deleteProject = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text:
+        'By clicking the button below, you will be deleting this project and all associated tasks.',
+      icon: 'question',
+      confirmButtonText: "I'm sure!",
+      showCancelButton: true,
+    }).then(value => {
+      console.log(value)
+      if (value.dismiss === 'cancel') return null
+      else {
+        let id = props.proj.id
+        let org = props.proj.org_id
+        let complete = props.proj.date_completed
+
+        if (props.view === 'project') {
+          dbServices.deleteProjectById(id, org)
+        }
+        
+        if (props.view === 'dashboard') {
+          dbServices.deleteProjectById(id, org)
+          .then(() => {
+            if (complete) {
+              props.deleteProjInState(id, 'complete')
+            } else {
+              props.deleteProjInState(id, 'incomplete')
+            }
+          })
+        }
+      }
+    })
+  }
+
+  console.log(props)
+
   return (
     <div className="ProjectBar__project_container">
       <Link
@@ -98,6 +134,7 @@ const ProjectBar = props => {
       </Link>
       {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
+          <button onClick={deleteProject}>Delete</button>
           {props.role === 'owner' && (
             <div className="ProjectBar__fa" onClick={toggleEdit} data-tip="Edit Project">
               {StyleIcon({ style: 'edit' })}

@@ -23,8 +23,11 @@ project management software.
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_task.png" width='40%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_task.png" width='40%' height='auto'> |
 
 - Dashboard
+
   <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/dashboard.png" width='40%' height='auto'>
+
 - ProjectView
+
   <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/project_view.png" width='40%' height='auto'>
 
 |                                                           Add Project                                                            |                                                           Edit Project                                                            |
@@ -36,8 +39,11 @@ project management software.
 | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_task.png" width='40%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_task.png" width='40%' height='auto'> |
 
 - Log Hours
+
   <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/log_hours.png" width='40%' height='auto'>
+
 - Profile View
+
   <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/user_profile.png" width='40%' height='auto'>
 
 ## Development setup

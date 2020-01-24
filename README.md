@@ -16,7 +16,7 @@ project management software.
 
 - Landing Page
 
-  <img src='https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png'>
+  <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png">
 
 - Register
 - Login

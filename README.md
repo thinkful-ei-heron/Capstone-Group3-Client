@@ -30,11 +30,11 @@ project management software.
 ## Development setup
 
 General Setup:
-- Clone this repository to your local machine git clone PROJECT-URL NEW-PROJECTS-NAME
-- cd into the cloned repository
-- Make a fresh start of the git history for this project with rm -rf .git && git init
-- Install the node dependencies npm install
-- Move the example Environment file to .env - mv example.env .env
+- ``` git clone https://github.com/balayaydemir/Capstone-Group3-Client.git YOUR-PROJECT-NAME ```
+- ``` cd YOUR-PROJECT-NAME ```
+- Make a fresh start of the git history for this project ``` rm -rf .git && git init ```
+- Install the node dependencies ``` npm install ```
+- Move the example Environment file to .env - ``` mv example.env .env ```
 - Edit the contents of the package.json to use your new project's name
 
 Firebase Setup:
@@ -47,9 +47,9 @@ Firebase Setup:
 
 ## Scripts
 
-Start the application npm start
+Start the application ``` npm start ```
 
-Run the tests npm run test:open
+Run the tests ``` npm run test:open ```
 
 ## Release History
 

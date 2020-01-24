@@ -65,7 +65,7 @@ const WorkerEditForm = props => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="Form">
         <Label htmlFor="name">
           Task name
           <Input

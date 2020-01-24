@@ -11,7 +11,7 @@ add tasks to projects, log hours worked on project tasks, and more. Built with s
 and usability in mind, ManageLazily is a great alternative to more complex (and expensive) 
 project management software.
 
-[See the Live App Here!](https://managelazily.com/)
+[See the Live App Here](https://managelazily.com/)
 
 
 ## Usage

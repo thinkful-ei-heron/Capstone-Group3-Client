@@ -168,7 +168,7 @@ const NewJob = props => {
       await dbServices
         .updateProjectWorkers(projectId, updatedProjectWorkers, currentUser.org)
         .then(() => {
-          props.showJobForm(e)
+          props.showJobForm()
         })
     } catch (error) {
       console.warn(error)

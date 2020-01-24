@@ -18,7 +18,7 @@ import {
   faTimesCircle,
   faAngleLeft,
   faClipboardList,
-  faClipboard,
+  faUserEdit,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -41,7 +41,8 @@ library.add(
   faCheckSquare,
   faAngleDown,
   faClock,
-  faClipboardList
+  faClipboardList,
+  faUserEdit
 )
 
 ReactDOM.render(

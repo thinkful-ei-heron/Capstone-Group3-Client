@@ -57,20 +57,26 @@ class JobItem extends Component {
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
     const progress = Math.floor((hours_completed / total_hours) * 100)
     if (this.context.currentUser.role === 'project worker') {
-      if (status === 'completed') return <span>Task Completed</span>
       if (status === 'submitted' || status === 'completed') return <></>
       if (approval || progress !== 100) {
         return (
           <>
-            <div className="JobItem__fa" onClick={this.renderLogHoursForm} data-tip="Log Hours">
+            <div
+              className="JobItem__fa"
+              onClick={this.renderLogHoursForm}
+              data-tip="Log Hours"
+            >
               {StyleIcon({ style: 'clock' })}
             </div>
-            <button disabled>Submit for Approval</button>
             {(status !== 'completed' || status !== 'submitted') &&
             status !== 'edit request' ? (
-              <button onClick={e => this.showWorkerEditForm(e)}>
-                Request Edit
-              </button>
+              <div
+                className="JobItem__fa"
+                onClick={e => this.showWorkerEditForm(e)}
+                data-tip="Request Edit"
+              >
+                {StyleIcon({ style: 'requestEdit' })}
+              </div>
             ) : (
               <></>
             )}
@@ -79,12 +85,13 @@ class JobItem extends Component {
       } else {
         return (
           <>
-            {status === 'revisions' ? <span>Revision Requested</span> : <></>}
-            <button
+            <div
+              className="JobItem__fa_bigger"
               onClick={e => this.handleApprovalSubmit(id, 'submitted', false)}
+              data-tip="Submit Approval"
             >
-              Submit for Approval
-            </button>
+              {StyleIcon({ style: 'submit' })}
+            </div>
           </>
         )
       }
@@ -94,18 +101,25 @@ class JobItem extends Component {
       this.context.currentUser.role === 'project manager' ||
       this.context.currentUser.role === 'owner'
     ) {
-      if (status === 'completed') return <span>Task Completed</span>
       return (
         <>
           {this.context.currentUser.role === 'project manager' &&
           progress !== 100 ? (
-            <div className="JobItem__fa" onClick={this.renderLogHoursForm} data-tip="Log Hours">
+            <div
+              className="JobItem__fa"
+              onClick={this.renderLogHoursForm}
+              data-tip="Log Hours"
+            >
               {StyleIcon({ style: 'clock' })}
             </div>
           ) : (
             ''
           )}
-          <div className="JobItem__fa" onClick={this.showEditForm} data-tip="Edit Task">
+          <div
+            className="JobItem__fa"
+            onClick={this.showEditForm}
+            data-tip="Edit Task"
+          >
             {StyleIcon({ style: 'edit' })}
           </div>
           {status === 'submitted' ? (
@@ -271,6 +285,7 @@ class JobItem extends Component {
                 <span className="JobItem__date">
                   Due: {dateConversions.TStoDisplayDate(job.deadline)}
                 </span>
+                {job.status === 'completed' && <span>Task Completed</span>}
                 {!job.approval &&
                 progress === 100 &&
                 job.status !== 'revisions' &&
@@ -331,7 +346,7 @@ class JobItem extends Component {
                 />
               )}
           </div>
-          <ReactTooltip place="bottom" type="dark" effect="float"/>
+          <ReactTooltip place="bottom" type="dark" effect="float" />
         </li>
       </>
     )

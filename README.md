@@ -1,12 +1,18 @@
-# Product Name
+# ManageLazily
 
-> Short blurb about what your product does.
+> A project management application built with small businesses in mind. Users can create, 
+update, assign, track, and analyze their businesses projects securely on the cloud from 
+any location with access to the web.
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url]
 
-One to two paragraph statement about your product and what it does.
+ManageLazily enables company owners, project managers, and employees to have a one-stop
+project management hub where they can create projects, track project completion and due dates, 
+add tasks to projects, log hours worked on project tasks, and more. Built with simplicity 
+and usability in mind, ManageLazily is a great alternative to more complex (and expensive) 
+project management software.
 
 ![](header.png)
 
@@ -24,7 +30,7 @@ Windows:
 edit autoexec.bat
 ```
 
-## Usage example
+## Usage
 
 A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
 
@@ -56,19 +62,18 @@ npm test
 
 ## Meta
 
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
+Contributors:
+ - [Adam Newhouser](https://github.com/AdamNewhouser)
+ - [Alex Bannow](https://github.com/rbannal86)
+ - [Balay Aydemir](https://github.com/balayaydemir)
+ - [Bridger Hammond](https://github.com/reifnotreef)
+ - [Dan Wagar](https://github.com/danWagar) 
 
-Distributed under the XYZ license. See `LICENSE` for more information.
+Distributed under the MIT license. See [LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE) for more information.
 
-[https://github.com/yourname/github-link](https://github.com/dbader/)
 
-## Contributing
 
-1. Fork it (<https://github.com/yourname/yourproject/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
+## [Contributing](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/CONTRIBUTING.md)
 
 <!-- Markdown link & img dfn's -->
 

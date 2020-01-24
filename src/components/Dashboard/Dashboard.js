@@ -149,6 +149,7 @@ export default class Dashboard extends Component {
                 <div
                   className="App__section_header"
                   onClick={this.toggleExpandProjects}
+                  test-id="dash-header"
                 >
                   <div className="App__fa_h1">
                     {StyleIcon({
@@ -160,6 +161,7 @@ export default class Dashboard extends Component {
                     <button
                       className="Dashboard__new"
                       onClick={this.toggleNewProj}
+                      test-id='new-project'
                     >
                       New
                     </button>

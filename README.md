@@ -111,11 +111,11 @@ Distributed under the MIT license. See [LICENSE.md](https://github.com/balayayde
 
 ## [Contributing](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/CONTRIBUTING.md)
 
-1.  Fork it (https://github.com/yourname/yourproject/fork)
-2.  Create your feature branch (git checkout -b feature/fooBar)
-3.  Commit your changes (git commit -am 'Add some fooBar')
-4.  Push to the branch (git push origin feature/fooBar)
-5.  Create a new Pull Request
+1.  [Fork this](https://github.com/balayaydemir/Capstone-Group3-Client)
+2. Clone your fork and create your feature branch (`git checkout -b fooBar`)
+3.  Commit your changes (`git commit -m 'Add some fooBar'`)
+4.  Push to the branch (`git push`)
+5.  Create a [New Pull Request](https://github.com/balayaydemir/Capstone-Group3-Client/pull/new/master)
 
 <!-- Markdown link & img dfn's -->
 

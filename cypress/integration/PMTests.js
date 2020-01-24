@@ -45,8 +45,6 @@ describe('navigate to a project', () => {
       .first()
       .click()
       .wait(200)
-    // unable to test due to custom/React classes being used
-    // cy.get('[test-id=prject_man')
   })
   it('Submits filled out project form', () => {
     cy.get('[test-id=project-submit]')
@@ -84,7 +82,6 @@ describe('navigate to a project', () => {
       .wait(200)
   })
   it('Allows PM to submit new task', () => {
-    // currently bugged, unable to submit tasks using WORC promotions?
     cy.get('[test-id=submit-task')
       .click()
       .wait(200)

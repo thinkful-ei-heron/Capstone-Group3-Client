@@ -52,7 +52,6 @@ const validateInput = {
   },
 
   validateSignup(values) {
-
     let errors = {}
     let passRegex = new RegExp(
       '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'

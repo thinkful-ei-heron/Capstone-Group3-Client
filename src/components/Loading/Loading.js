@@ -3,7 +3,6 @@ import ReactLoading from 'react-loading'
 import './Loading.css'
 
 export default function Loading(props) {
-  //{props.className}
   return (
     <div className="Loading">
       <ReactLoading

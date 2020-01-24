@@ -39,7 +39,7 @@ const dateConversions = {
     } else if (currDate < dueDate) {
       let res = Math.abs(currDate - dueDate) / 1000
       let days = Math.floor(res / 86400)
-      if ((days + 1) === 0) {
+      if (days + 1 === 0) {
         return <h2>Due Today</h2>
       }
     } else {

@@ -53,21 +53,17 @@ export default class JobNotification extends Component {
 
   populateNotificationList = async (projectList = null) => {
     if (this.context.currentUser.role === 'project manager') {
-      console.log(this.context.currentUser)
       let promoted = false
       await dbServices
         .getUser(this.context.currentUser.email, this.context.currentUser.org)
         .then(snapshot => {
           return snapshot.forEach(doc => {
-            console.log(doc.data())
             if (doc.data().promoted) {
-              console.log('promoted')
               return (promoted = true)
             } else return (promoted = false)
           })
         })
         .then(res => {
-          console.log(promoted)
           if (promoted) {
             this.setState({
               notificationCount: this.state.notificationCount + 1,
@@ -90,8 +86,6 @@ export default class JobNotification extends Component {
           let newCount
           if (this.state.promoted) newCount = jobsList.length + 1
           else newCount = jobsList.length
-          console.log(this.state.promoted)
-          console.log(newCount)
           this.setState({
             notificationList: jobsList,
             notificationCount: newCount,
@@ -181,8 +175,6 @@ export default class JobNotification extends Component {
           onClose: this.setError(),
         })
       }
-
-      // console.log("projects");
     }
   }
 
@@ -200,7 +192,6 @@ export default class JobNotification extends Component {
   }
 
   renderList = e => {
-    // e.preventDefault()
     this.setState({
       notificationDropDown: !this.state.notificationDropDown,
     })
@@ -228,7 +219,6 @@ export default class JobNotification extends Component {
   }
 
   updateProjectList = (projObj, list) => {
-    console.log(projObj)
     if (list === 'completed') {
       let updatedCompletedProjects = this.state.completedProjects.filter(
         item => item.id !== projObj.id
@@ -241,7 +231,7 @@ export default class JobNotification extends Component {
       let updatedNewProjects = this.state.newProjects.filter(
         item => item.id !== projObj.id
       )
-      console.log(updatedNewProjects)
+
       this.setState({
         newProjects: updatedNewProjects,
         notificationCount: this.state.notificationCount - 1,

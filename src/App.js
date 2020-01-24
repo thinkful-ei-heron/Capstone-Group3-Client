@@ -4,7 +4,6 @@ import Dashboard from './components/Dashboard/Dashboard'
 import Header from './components/Header/Header'
 import Login from './components/Account/Login'
 import SignUp from './components/Account/SignUp'
-// import NewProject from "./components/NewProject/NewProject";
 import ProjectView from './components/Project/ProjectView/ProjectView'
 import LandingPage from './components/LandingPage/LandingPage'
 import PrivateRoute from './services/PrivateRoute'
@@ -17,9 +16,6 @@ import { CatchAll } from './components/CatchAll/CatchAll'
 const App = props => {
   const { currentUser } = useContext(AuthContext)
   const [loading, setLoading] = useState(false)
-
-  if (currentUser === null) console.log(null)
-  else console.log('found user')
 
   const initialPath = () => {
     if (localStorage.getItem('path')) return localStorage.getItem('path')

@@ -30,8 +30,6 @@ export default class JobNotificationList extends Component {
   }
 
   handleApprovalSubmit = async (id, status, approval = false, jobObj) => {
-    // let jobData = this.state.notificationList.find(item => item.id === id);
-    // let projectId = jobData.project_id;
     try {
       jobObj.approval = approval
       if (status === 'completed' || status === 'revisions') {
@@ -57,7 +55,6 @@ export default class JobNotificationList extends Component {
   }
 
   handleClick = async (id, jobObj, e) => {
-    // e.stopPropagation()
     if (
       this.context.currentUser.role === 'project manager' ||
       this.context.currentUser.role === 'owner'
@@ -76,7 +73,7 @@ export default class JobNotificationList extends Component {
           notificationList: this.props.notificationList,
         })
       } catch (error) {
-        console.log(error)
+        console.warn(error)
         Swal.fire({
           title: 'Error!',
           text:
@@ -90,7 +87,6 @@ export default class JobNotificationList extends Component {
   }
 
   openEdit = (jobObj = null, e) => {
-    // e.stopPropagation()
     if (jobObj === null) this.props.updateList(this.state.editJob)
     this.setState({
       editing: !this.state.editing,

@@ -1,0 +1,31 @@
+.LandingPage.CatchAll {
+  justify-self: start;
+  justify-content: start;
+}
+
+.CatchAll__h3 {
+  font-family: var(--oxygen);
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 40px;
+  margin-top: 50px;
+}
+
+.CatchAll__span {
+  font-size: 1.2rem;
+  color: white;
+  width: 80%;
+  text-align: center;
+  z-index: 1;
+}
+
+@media only screen and (min-width: 750px) {
+  .CatchAll__h3 {
+    margin-top: 150px;
+    font-size: 2.4rem;
+  }
+
+  .CatchAll__span {
+    font-size: 1.7rem;
+  }
+}

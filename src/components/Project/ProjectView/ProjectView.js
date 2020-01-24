@@ -26,8 +26,9 @@ export default class ProjectView extends Component {
       progress: 0,
       total: 0,
       error: null,
-      expandStats: false,
-      expandJobs: false,
+      expandStats: true,
+      expandJobs: true,
+      expandPersonnel: true,
     }
   }
 
@@ -121,10 +122,15 @@ export default class ProjectView extends Component {
     this.unsubscribe()
   }
 
-  showJobForm = () => {
-    this.setState({
-      showJobForm: !this.state.showJobForm,
-    })
+  showJobForm = e => {
+    e.stopPropagation()
+    if (this.state.showJobForm)
+      this.setState({ showJobForm: false, expandJobs: true })
+    else
+      this.setState({
+        showJobForm: true,
+        expandJobs: false,
+      })
   }
 
   expandStats = () => {
@@ -137,6 +143,11 @@ export default class ProjectView extends Component {
     this.setState({
       expandJobs: !this.state.expandJobs,
     })
+  }
+
+  toggleExpandPersonnel = e => {
+    e.stopPropagation()
+    this.setState({ expandPersonnel: !this.state.expandPersonnel })
   }
 
   render() {
@@ -155,7 +166,7 @@ export default class ProjectView extends Component {
               <h2 id="companyName">{this.context.currentUser.org}</h2>
               <span id="currentDate">{new Date().toDateString()}</span>
             </header>
-            <div className="projectbar_container">
+            <div className="projectbar_container App__separate_bottom">
               <ProjectBar
                 proj={project}
                 role={this.context.currentUser.role}
@@ -182,17 +193,15 @@ export default class ProjectView extends Component {
                       <h3>Statistics</h3>
                     </div>
                   </div>
-                  <div className="stats_container">
-                    {this.state.expandStats ? (
+                  {this.state.expandStats && (
+                    <div className="ProjectView__stats_container">
                       <Statistics {...this.props} />
-                    ) : (
-                      <></>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               )}
               <div
-                className="App__section_header"
+                className="App__section_header App__separate_top_always"
                 onClick={() => this.expandJobs()}
               >
                 <div className="App__fa_h1">
@@ -218,32 +227,39 @@ export default class ProjectView extends Component {
                   </button>
                 )}
               </div>
-
-              {this.state.expandJobs ? (
-                <>
-                  {' '}
-                  {showJobForm && (
-                    <JobForm
-                      {...this.props}
-                      setJob={this.setJob}
-                      project={project}
-                      showJobForm={this.showJobForm}
-                      projectId={this.props.id}
-                    />
-                  )}
-                  <Jobs
-                    projectId={this.props.id}
-                    getProgress={this.getProgress}
-                  />
-                </>
-              ) : (
-                <></>
+              {showJobForm && (
+                <JobForm
+                  {...this.props}
+                  setJob={this.setJob}
+                  project={project}
+                  showJobForm={this.showJobForm}
+                  projectId={this.props.id}
+                />
+              )}
+              {this.state.expandJobs && (
+                <Jobs
+                  projectId={this.props.id}
+                  getProgress={this.getProgress}
+                />
               )}
             </div>
 
-            <div className="App__personnel App__separate_top">
-              <Sidebar view="project" project={this.state.project} />
-            </div>
+            <section className="App__personnel App__separate_top App__separate_bottom">
+              <div
+                className="App__section_header App__separate_top"
+                onClick={this.toggleExpandPersonnel}
+              >
+                <div className="App__fa_h1">
+                  {StyleIcon({
+                    style: `${this.state.expandPersonnel ? 'minus' : 'plus'}`,
+                  })}
+                  <h1>Personnel</h1>
+                </div>
+              </div>
+              {this.state.expandPersonnel && (
+                <Sidebar view="project" project={this.state.project} />
+              )}
+            </section>
           </div>
         </section>
       )

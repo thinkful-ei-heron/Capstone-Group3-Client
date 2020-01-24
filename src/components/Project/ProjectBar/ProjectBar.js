@@ -46,7 +46,7 @@ const ProjectBar = props => {
   }
 
   return (
-    <div className="ProjectBar__project_container"> 
+    <div className="ProjectBar__project_container">
       <Link
         className="ProjectBar__link_wrapper"
         to={`/project/${props.proj.id}`}
@@ -79,10 +79,12 @@ const ProjectBar = props => {
                 Est. Progress <ProgressBar percentage={props.proj.progress} />
               </div>
               <div className="ProjectBar__deadline">
-                <span className="ProjectBar__deadline_first">
-                  Deadline:
-                  {dateConversions.TStoDisplayDate(props.proj.deadline)}
-                </span>
+                <div>
+                  <span className="ProjectBar__deadline_first">Deadline:</span>
+                  <span className="ProjectBar__deadline_second">
+                    {dateConversions.TStoDisplayDate(props.proj.deadline)}
+                  </span>
+                </div>
                 <span className="ProjectBar__overdue">
                   {props.proj.progress !== 100 &&
                     dateConversions.dateDiff(props.proj.deadline) &&
@@ -95,25 +97,27 @@ const ProjectBar = props => {
           )}
         </div>
       </Link>
-      {props.role === 'owner' && (
-        <div className="ProjectBar__buttons">
-          <div className="ProjectBar__edit" onClick={toggleEdit}>
-            {StyleIcon({ style: 'edit' })}
-          </div>
-        </div>
-      )}
       {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
+          {props.role === 'owner' && (
+            <div className="ProjectBar__fa" onClick={toggleEdit}>
+              {StyleIcon({ style: 'edit' })}
+            </div>
+          )}
           {props.proj.date_completed ? (
             <></>
           ) : (
-            <>
+            <div>
               {!props.proj.autoComplete && props.proj.progress !== 100 ? (
-                <button onClick={autoComplete}>Mark as Complete</button>
+                <div className="ProjectBar__fa" onClick={autoComplete}>
+                  {StyleIcon({ style: 'complete' })}
+                </div>
               ) : (
-                <button onClick={approveProject}>Approve Project</button>
+                <div className="ProjectBar__fa" onClick={approveProject}>
+                  {StyleIcon({ style: 'approve' })}
+                </div>
               )}
-            </>
+            </div>
           )}
         </div>
       )}

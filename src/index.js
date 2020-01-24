@@ -15,16 +15,33 @@ import {
   faChevronUp,
   faChevronDown,
   faEdit,
+  faTimesCircle,
+  faAngleLeft,
+  faClipboardList,
+  faClipboard,
 } from '@fortawesome/free-solid-svg-icons'
+
+import {
+  faCalendarCheck,
+  faCheckSquare,
+  faClock,
+} from '@fortawesome/free-regular-svg-icons'
 
 library.add(
   faAngleRight,
+  faAngleLeft,
   faAngleDown,
   faPlus,
   faMinus,
   faChevronUp,
   faChevronDown,
-  faEdit
+  faEdit,
+  faTimesCircle,
+  faCalendarCheck,
+  faCheckSquare,
+  faAngleDown,
+  faClock,
+  faClipboardList
 )
 
 ReactDOM.render(

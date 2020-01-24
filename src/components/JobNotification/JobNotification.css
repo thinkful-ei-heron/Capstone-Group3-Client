@@ -1,0 +1,63 @@
+.JobNotification__btn {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px 10px 15px;
+  border: none;
+  font-family: var(--oxygen);
+  font-size: 1rem;
+  line-height: 1.2rem;
+  text-align: right;
+  color: white;
+  background-color: #262b3b;
+}
+
+.JobNotification__icon {
+  position: absolute;
+  left: 5px;
+  font-size: 1.3rem;
+}
+
+.JobNotification__number {
+  padding-left: 10px;
+  padding-right: 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--highlight-color);
+}
+
+.JobNotification__list {
+  padding: 5px 20px 5px 15px;
+  border: 1px solid grey;
+  background-color: white;
+}
+
+.JobNotification__list li {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  border-bottom: 1px solid grey;
+}
+
+.JobNotification__info {
+  display: inline-block;
+}
+
+.JobNotification__close {
+  cursor: pointer;
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 1.3rem;
+  color: var(--title-color);
+}
+
+.JobNotification__list li:first-child {
+  border-bottom: 1px solid grey;
+}
+
+.JobNotification__list li:last-child {
+  border-bottom: none;
+}

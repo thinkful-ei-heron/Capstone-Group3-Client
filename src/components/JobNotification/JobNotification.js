@@ -236,7 +236,7 @@ export default class JobNotification extends Component {
                     ? StyleIcon({ style: 'left' })
                     : StyleIcon({ style: 'collapse' })}
                 </span>
-                Notifications:
+                Notifications
                 <span className="JobNotification__number">
                   {this.state.notificationCount}
                 </span>
@@ -267,9 +267,9 @@ export default class JobNotification extends Component {
               <span className="JobNotification__icon">
                 {this.state.notificationDropDown
                   ? StyleIcon({ style: 'left' })
-                  : StyleIcon({ style: 'right' })}
+                  : StyleIcon({ style: 'collapse' })}
               </span>
-              Notifications:{' '}
+              Notifications
               <span className="JobNotification__number">
                 {this.state.notificationCount}
               </span>

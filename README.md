@@ -29,7 +29,7 @@ project management software.
 
 ## Development setup
 
-- Clone this repo and move to the new direcotry:
+- Clone this repo and move to the new directory:
 
   ```bash
   git clone https://github.com/balayaydemir/Capstone-Group3-Client.git YOUR_PROJECT_NAME

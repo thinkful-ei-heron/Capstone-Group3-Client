@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.a2473da5.chunk.css",
+    "main.js": "/static/js/main.2fa98fae.chunk.js",
+    "main.js.map": "/static/js/main.2fa98fae.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.177a526c.js",
+    "runtime-main.js.map": "/static/js/runtime-main.177a526c.js.map",
+    "static/js/2.490c0891.chunk.js": "/static/js/2.490c0891.chunk.js",
+    "static/js/2.490c0891.chunk.js.map": "/static/js/2.490c0891.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.e840a8ff6f658c9236a0e744c7f372f1.js": "/precache-manifest.e840a8ff6f658c9236a0e744c7f372f1.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.a2473da5.chunk.css.map": "/static/css/main.a2473da5.chunk.css.map",
+    "static/js/2.490c0891.chunk.js.LICENSE": "/static/js/2.490c0891.chunk.js.LICENSE",
+    "static/media/lazy.svg": "/static/media/lazy.25ad2c34.svg",
+    "static/media/skyscraper.svg": "/static/media/skyscraper.ceda3298.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.177a526c.js",
+    "static/js/2.490c0891.chunk.js",
+    "static/css/main.a2473da5.chunk.css",
+    "static/js/main.2fa98fae.chunk.js"
+  ]
+}

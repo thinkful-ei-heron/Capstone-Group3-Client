@@ -16,6 +16,7 @@ export default class JobNotification extends Component {
     completedProjects: [],
     newProjects: [],
     error: false,
+    promoted: false,
   }
 
   static contextType = AuthContext
@@ -52,6 +53,29 @@ export default class JobNotification extends Component {
 
   populateNotificationList = async (projectList = null) => {
     if (this.context.currentUser.role === 'project manager') {
+      console.log(this.context.currentUser)
+      let promoted = false
+      await dbServices
+        .getUser(this.context.currentUser.email, this.context.currentUser.org)
+        .then(snapshot => {
+          return snapshot.forEach(doc => {
+            console.log(doc.data())
+            if (doc.data().promoted) {
+              console.log('promoted')
+              return (promoted = true)
+            } else return (promoted = false)
+          })
+        })
+        .then(res => {
+          console.log(promoted)
+          if (promoted) {
+            this.setState({
+              notificationCount: this.state.notificationCount + 1,
+              promoted: true,
+            })
+          }
+        })
+      // console.log(userPromoted)
       let jobsList = []
       projectList.map(async project => {
         let snapshot
@@ -66,8 +90,9 @@ export default class JobNotification extends Component {
           })
           this.setState({
             notificationList: jobsList,
-            notificationCount: jobsList.length,
+            notificationCount: jobsList.length + this.state.notificationCount,
           })
+
           return jobsList
         } catch (error) {
           Swal.fire({
@@ -220,6 +245,14 @@ export default class JobNotification extends Component {
     }
   }
 
+  dismissPromoted = () => {
+    this.setState({
+      notificationCount: this.state.notificationCount - 1,
+      promoted: false,
+    })
+    dbServices.updatePromoted(this.context.currentUser)
+  }
+
   render() {
     if (this.state.error) return null
     else {
@@ -242,7 +275,8 @@ export default class JobNotification extends Component {
                 </span>
               </button>
             )}
-            {this.state.notificationDropDown ? (
+            {this.state.notificationDropDown &&
+            this.state.notificationCount > 0 ? (
               <OwnerNotification
                 newEmployees={this.state.newEmployees}
                 completedProjects={this.state.completedProjects}
@@ -275,11 +309,14 @@ export default class JobNotification extends Component {
               </span>
             </button>
           )}
-          {this.state.notificationDropDown ? (
+          {this.state.notificationDropDown &&
+          this.state.notificationCount > 0 ? (
             <JobNotificationList
               notificationList={this.state.notificationList}
               updateList={this.updateList}
               renderList={this.renderList}
+              promoted={this.state.promoted}
+              dismissPromoted={this.dismissPromoted}
             />
           ) : null}
         </>

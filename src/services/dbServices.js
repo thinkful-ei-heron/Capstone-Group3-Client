@@ -52,7 +52,7 @@ const dbServices = {
       .doc(org)
       .collection('users')
       .doc(email)
-      .update({ role: 'project manager' })
+      .update({ role: 'project manager', promoted: true })
   },
 
   projectsListener(org, id) {
@@ -357,6 +357,15 @@ const dbServices = {
       .collection('users')
       .doc(worker.email)
       .update({ ...worker })
+  },
+
+  async updatePromoted(worker) {
+    await db
+      .collection('organizations')
+      .doc(worker.org)
+      .collection('users')
+      .doc(worker.email)
+      .update({ promoted: false })
   },
 }
 

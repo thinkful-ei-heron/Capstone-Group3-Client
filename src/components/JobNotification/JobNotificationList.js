@@ -116,6 +116,21 @@ export default class JobNotificationList extends Component {
     if (jobObj.status === 'completed') return <span> has been completed!</span>
   }
 
+  renderPromoted = () => {
+    if (this.props.promoted)
+      return (
+        <li>
+          You have been promoted to Project Manager!{' '}
+          <div
+            className="JobNotification__close"
+            onClick={() => this.props.dismissPromoted()}
+          >
+            {StyleIcon({ style: 'close' })}
+          </div>
+        </li>
+      )
+  }
+
   renderJobList = () => {
     return this.state.notificationList.map(jobObj => {
       return (
@@ -202,7 +217,10 @@ export default class JobNotificationList extends Component {
     else {
       return (
         <div>
-          <ul className="JobNotification__list">{this.renderJobList()}</ul>
+          <ul className="JobNotification__list">
+            {this.renderPromoted()}
+            {this.renderJobList()}
+          </ul>
           {this.state.editing ? (
             <JobForm showJobForm={this.openEdit} job={this.state.editJob} />
           ) : (

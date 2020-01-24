@@ -1,3 +1,15 @@
+.Profile__promote_btn {
+  cursor: pointer;
+  height: 35px;
+  width: 140px;
+  font-family: var(--oxygen);
+  font-size: 1.1rem;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--highlight-color);
+}
+
 .Profile__user_info,
 .Profile__user_projects {
   padding: 10px;
@@ -21,6 +33,15 @@
 
 .Profile__user_projects li {
   padding: 8px;
+}
+
+.Profile__user_projects a,
+.Profile__user_projects a:visited {
+  color: var(--link-color);
+}
+
+.Profile__user_projects a:hover {
+  color: var(--link-hover-color);
 }
 
 .Profile__user_header {

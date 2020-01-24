@@ -97,12 +97,13 @@ npm run test:open
 ## Meta
 
 Contributors:
-
-- [Adam Newhouser](https://github.com/AdamNewhouser)
-- [Alex Bannow](https://github.com/rbannal86)
-- [Balay Aydemir](https://github.com/balayaydemir)
-- [Bridger Hammond](https://github.com/reifnotreef)
-- [Dan Wagar](https://github.com/danWagar)
+| Name | Role | Github Profile |
+| :-------------: |:-------------:|:-------------:|
+| Adam Newhouser | Marketing and DBA | [github](https://github.com/AdamNewhouser) |
+| Alex Bannow | Marketing and QA | [github](https://github.com/rbannal86) |
+| Balay Aydemir | Project Manager | [github](https://github.com/balayaydemir) |
+| Bridger Hammond | Product Manager | [github](https://github.com/reifnotreef) |
+| Dan Wagar | UI/UX Design | [github](https://github.com/danWagar) |
 
 Distributed under the MIT license. See [LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE) for more information.
 

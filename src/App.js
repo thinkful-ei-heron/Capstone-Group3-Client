@@ -15,6 +15,7 @@ import { CatchAll } from './components/CatchAll/CatchAll'
 
 const App = props => {
   const { currentUser } = useContext(AuthContext)
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(false)
 
   const initialPath = () => {
@@ -27,12 +28,14 @@ const App = props => {
   useEffect(() => {
     if (!localStorage.getItem('path') && !path) return
     localStorage.setItem('path', path)
+    // eslint-disable-next-line
   }, [path])
 
   useEffect(() => {
     if (path && currentUser) {
       if (path !== props.location.pathname) props.history.push(path)
     }
+    // eslint-disable-next-line
   }, [currentUser, path])
 
   if (loading) return <></>

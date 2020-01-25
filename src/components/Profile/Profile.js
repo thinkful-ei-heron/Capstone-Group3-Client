@@ -175,7 +175,7 @@ const Profile = props => {
             ) : (
               <p>No Projects assigned.</p>
             )}
-            <div className="App__personnel_promote_button">
+            {/* <div className="App__personnel_promote_button">
               {currentUser &&
                 currentUser.role === 'owner' &&
                 userInfo &&
@@ -188,7 +188,7 @@ const Profile = props => {
                     Promote User
                   </button>
                 )}
-            </div>
+            </div> */}
           </section>
           <section className="App__personnel App__separate_top">
             <div

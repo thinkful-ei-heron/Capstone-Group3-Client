@@ -4,7 +4,6 @@ describe('catchall Page', () => {
       cy.visit('/testing', { timeout: 8000 })
     })
     it('Redirects to Home (/)', () => {
-      console.log(cy.url())
       cy.url().should('equal', 'http://localhost:3000/testing')
     })
   })
@@ -16,7 +15,6 @@ describe('Redirect', () => {
       cy.visit('/dashboard', { timeout: 8000 })
     })
     it('Redirects to Home (/)', () => {
-      console.log(cy.url())
       cy.url().should('equal', 'http://localhost:3000/')
     })
   })

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { ProgressBar } from '../../ProgressBar/ProgressBar'
 import './ProjectView.css'
 import Loading from '../../Loading/Loading'
 import { AuthContext } from '../../../services/Auth.js'
@@ -12,7 +11,6 @@ import dateConversions from '../../../services/dateConversions'
 import { withRouter, Redirect } from 'react-router'
 import Swal from 'sweetalert2'
 import StyleIcon from '../../StyleIcon/StyleIcon'
-import { CatchAll } from '../../CatchAll/CatchAll'
 import ProjectBar from '../../Project/ProjectBar/ProjectBar'
 
 class ProjectView extends Component {

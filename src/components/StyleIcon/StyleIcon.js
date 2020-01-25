@@ -10,7 +10,6 @@ import {
   faCheckSquare,
   faClock,
   faArrowAltCircleUp,
-  faUserEdit,
 } from '@fortawesome/free-regular-svg-icons'
 
 const styleIconMap = {

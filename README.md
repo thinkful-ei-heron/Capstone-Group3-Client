@@ -12,7 +12,7 @@ project management software.
 
 [See the Live App Here](https://managelazily.com/)
 
-[Screenshots below](##Screenshots)
+[Screenshots below](#Screenshots)
 
 ## Development setup
 
@@ -91,7 +91,7 @@ npm run test:open
 | Bridger Hammond | Product Manager | [link](https://github.com/reifnotreef) |
 | Dan Wagar | UI/UX Design | [link](https://github.com/danWagar) |
 
-## Screenshots
+# Screenshots
 
 | Landing Page | Dashboard|
 | :-------------: |:-------------:|

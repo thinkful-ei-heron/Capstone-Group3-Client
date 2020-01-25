@@ -10,6 +10,7 @@ import StyleIcon from '../StyleIcon/StyleIcon'
 import './Profile.css'
 
 const Profile = props => {
+  let isMounted = false 
   const { currentUser } = useContext(AuthContext)
   const [userInfo, setUserInfo] = useState({})
   const [userProjects, setUserProjects] = useState([])
@@ -80,7 +81,9 @@ const Profile = props => {
             snapshot.forEach(doc => {
               projects.push(doc.data())
             })
-            setUserProjects(projects)
+            if (isMounted) {
+              setUserProjects(projects)
+            }
           })
       } catch (error) {
         console.warn(error)
@@ -102,7 +105,9 @@ const Profile = props => {
             snapshot.forEach(doc => {
               projects.push(doc.data())
             })
-            setUserProjects(projects)
+            if (isMounted) {
+              setUserProjects(projects)
+            }   
           })
           .then(() => {
             dbServices.getEmployeeProjects(info.name, info.org)
@@ -129,10 +134,16 @@ const Profile = props => {
   }
 
   useEffect(() => {
+    isMounted = true
     getUserInfo().then(info => {
-      setUserInfo(info)
+      if (isMounted) {
+        setUserInfo(info)
+      }    
       getUserProjects(info)
     })
+    return () => {
+      isMounted = false 
+    }
     // eslint-disable-next-line
   }, [functions])
 

@@ -129,13 +129,13 @@ const SignUp = ({ history }, props) => {
     }
     return (
       <select
-        type="text"
         name="orgName"
         onChange={handleChange}
         value={values.orgName}
         onBlur={handleBlur}
         placeholder="Organization name"
       >
+        <option value="" disabled hidden>Choose Organization...</option>
         {orgList && orgList.length > 0 ? (
           orgList.map((item, i) => {
             return (

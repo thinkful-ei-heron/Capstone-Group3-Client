@@ -184,7 +184,11 @@ const Profile = props => {
                 })}
               </ul>
             ) : (
-              <p>No Projects Assigned.</p>
+              <ul className="Profile__user_projects">
+                <li>
+                  No Projects Assigned.
+                </li>
+              </ul>
             )}
             {userInfo.role === 'project manager' && workerProjects.length > 0 ?
               <>

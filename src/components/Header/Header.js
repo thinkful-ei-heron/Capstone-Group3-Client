@@ -24,6 +24,14 @@ export default class Header extends Component {
     )
   }
 
+  showRole = () => {
+    if (this.context.currentUser.role === 'owner') return 'Owner'
+    if (this.context.currentUser.role === 'project manager')
+      return 'Project Manager'
+    if (this.context.currentUser.role === 'project worker')
+      return 'Project Worker'
+  }
+
   renderLogoutLink() {
     return (
       <div className="Header__sub_container">
@@ -32,7 +40,7 @@ export default class Header extends Component {
             Welcome, {this.context.currentUser.name}!
           </span>
           <span test-id="header-role">
-            Role: {this.context.currentUser.role}
+            Role: {this.showRole()}
           </span>
         </div>
         <div className="Header__db_logout">

@@ -12,7 +12,7 @@ project management software.
 
 [See the Live App Here](https://managelazily.com/)
 
-[Screenshots below](/#user-content-screenshots)
+[Screenshots below](##Screenshots)
 
 ## Development setup
 

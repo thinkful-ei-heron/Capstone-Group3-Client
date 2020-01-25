@@ -10,9 +10,11 @@ import StyleIcon from '../StyleIcon/StyleIcon'
 import './Profile.css'
 
 const Profile = props => {
+  let isMounted = false 
   const { currentUser } = useContext(AuthContext)
   const [userInfo, setUserInfo] = useState({})
   const [userProjects, setUserProjects] = useState([])
+  const [workerProjects, setWorkerProjects] = useState([])
   const [expandPersonnel, setExpandPersonnel] = useState(true)
   const functions = app.functions()
 
@@ -26,7 +28,9 @@ const Profile = props => {
       try {
         dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
           getUserInfo().then(info => {
-            setUserInfo(info)
+            if (isMounted) {
+              setUserInfo(info)
+            }
           })
         )
       } catch (error) {
@@ -75,9 +79,13 @@ const Profile = props => {
         await dbServices
           .getEmployeeProjects(info.name, info.org)
           .then(snapshot => {
+            let projects = [];
             snapshot.forEach(doc => {
-              setUserProjects([...userProjects, doc.data()])
+              projects.push(doc.data())
             })
+            if (isMounted) {
+              setUserProjects(projects)
+            }
           })
       } catch (error) {
         console.warn(error)
@@ -91,12 +99,30 @@ const Profile = props => {
       }
     else if (info.role === 'project manager') {
       try {
+        let projects = [];
+        let workerProjects = [];
         await dbServices
           .getManagerProjects(info.name, info.org)
           .then(snapshot => {
             snapshot.forEach(doc => {
-              setUserProjects([...userProjects, doc.data()])
+              projects.push(doc.data())
             })
+            if (isMounted) {
+              setUserProjects(projects)
+            }   
+          })
+          .then(() => {
+            dbServices.getEmployeeProjects(info.name, info.org)
+              .then(snapshot => {
+                snapshot.forEach(doc => {
+                  if (doc.data().project_manager !== info.name) {
+                    workerProjects.push(doc.data())
+                  }
+                })
+                if (isMounted) {
+                  setWorkerProjects(workerProjects)
+                }   
+              })
           })
       } catch (error) {
         console.warn(error)
@@ -112,12 +138,18 @@ const Profile = props => {
   }
 
   useEffect(() => {
+    isMounted = true
     getUserInfo().then(info => {
-      setUserInfo(info)
+      if (isMounted) {
+        setUserInfo(info)
+      }    
       getUserProjects(info)
     })
+    return () => {
+      isMounted = false 
+    }
     // eslint-disable-next-line
-  }, [])
+  }, [functions])
 
   if (userInfo && userInfo.role)
     return (
@@ -155,7 +187,7 @@ const Profile = props => {
                 {userInfo.org}
               </li>
             </ul>
-            <h2>User Projects:</h2>
+            {userInfo.role === 'project worker' ? <h2>User Projects:</h2> : <h2>Managing:</h2>}
             {userProjects.length > 0 ? (
               <ul className="Profile__user_projects">
                 {userProjects.map((proj, i) => {
@@ -167,22 +199,27 @@ const Profile = props => {
                 })}
               </ul>
             ) : (
-              <p>No Projects assigned.</p>
+              <ul className="Profile__user_projects">
+                <li>
+                  No Projects Assigned.
+                </li>
+              </ul>
             )}
-            <div className="App__personnel_promote_button">
-              {currentUser &&
-                currentUser.role === 'owner' &&
-                userInfo &&
-                userInfo.role === 'project worker' && (
-                  <button
-                    id="btn_promote_user"
-                    className="btn_highlight_color"
-                    onClick={event => handleClick(event)}
-                  >
-                    Promote User
-                  </button>
-                )}
-            </div>
+            {userInfo.role === 'project manager' && workerProjects.length > 0 ?
+              <>
+                <h2>Working:</h2>
+                <ul className="Profile__user_projects">
+                {workerProjects.map((proj, i) => {
+                  return (
+                    <li key={i}>
+                      <Link to={`/project/${proj.id}`}>{proj.name}</Link>
+                    </li>
+                  )
+                })}
+              </ul>
+              </>
+              : ''
+            }
           </section>
           <section className="App__personnel App__separate_top">
             <div

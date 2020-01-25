@@ -105,7 +105,9 @@ const ProjectForm = props => {
         pm={true}
         isMulti={false}
         setSelected={setSelected}
-        defaultValue={proj && proj.project_manager}
+        defaultValue={
+          proj && { value: 'project_manager', label: proj.project_manager }
+        }
       />
       {errors.deadline && <span className="error">{errors.deadline}</span>}
       <Label htmlFor="project_deadline">Deadline</Label>

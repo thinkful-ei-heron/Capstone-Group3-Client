@@ -28,7 +28,9 @@ const Profile = props => {
       try {
         dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
           getUserInfo().then(info => {
-            setUserInfo(info)
+            if (isMounted) {
+              setUserInfo(info)
+            }
           })
         )
       } catch (error) {

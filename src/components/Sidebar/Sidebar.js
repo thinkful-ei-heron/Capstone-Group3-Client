@@ -78,6 +78,7 @@ const Sidebar = props => {
     getPMs().then(pms => {
       setPMList(pms)
     })
+    // eslint-disable-next-line
   }, [])
 
   const renderProjectManagers = () => {

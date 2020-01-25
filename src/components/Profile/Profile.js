@@ -5,7 +5,6 @@ import { AuthContext } from '../../services/Auth'
 import app from '../../services/base.js'
 import dbServices from '../../services/dbServices'
 import Swal from 'sweetalert2'
-import { functions } from 'firebase'
 import Sidebar from '../Sidebar/Sidebar'
 import StyleIcon from '../StyleIcon/StyleIcon'
 import './Profile.css'
@@ -117,6 +116,7 @@ const Profile = props => {
       setUserInfo(info)
       getUserProjects(info)
     })
+    // eslint-disable-next-line
   }, [])
 
   if (userInfo && userInfo.role)

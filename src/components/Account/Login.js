@@ -1,10 +1,9 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { withRouter, Redirect } from 'react-router'
 import app from '../../services/base.js'
 import { AuthContext } from '../../services/Auth.js'
 import { Label, Input } from '../Form/Form'
 import Swal from 'sweetalert2'
-import skyscraper from '../../images/skyscraper.svg'
 
 const Login = (setPath, { history }) => {
   const { currentUser } = useContext(AuthContext)
@@ -29,6 +28,7 @@ const Login = (setPath, { history }) => {
           })
         })
     },
+    // eslint-disable-next-line
     [history]
   )
 

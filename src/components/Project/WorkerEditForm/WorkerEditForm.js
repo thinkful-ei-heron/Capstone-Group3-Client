@@ -7,6 +7,7 @@ import useFormValidation from '../../../hooks/useFormValidation'
 import Swal from 'sweetalert2'
 
 const WorkerEditForm = props => {
+  // eslint-disable-next-line
   const [submitted, setSubmitted] = useState(false)
   const { currentUser } = useContext(AuthContext)
 

@@ -5,7 +5,6 @@ import dbServices from '../../services/dbServices'
 import { Label, Input } from '../Form/Form'
 import useFormValidation from '../../hooks/useFormValidation'
 import validateInput from '../../hooks/validateInput'
-import skyscraper from '../../images/skyscraper.svg'
 import Swal from 'sweetalert2'
 import './SignUp.css'
 
@@ -107,6 +106,9 @@ const SignUp = ({ history }, props) => {
               confirmButtonText: 'Close',
             })
           })
+        break
+      default:
+        break
     }
     history.push('/login')
     return `${email} signed up`

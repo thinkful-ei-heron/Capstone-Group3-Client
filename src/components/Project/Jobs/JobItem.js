@@ -7,7 +7,7 @@ import { AuthContext } from '../../../services/Auth'
 import StyleIcon from '../../StyleIcon/StyleIcon'
 import dateConversions from '../../../services/dateConversions'
 import LogHours from '../../LogHours/LogHours'
-import { Bar, Line, Pie } from 'react-chartjs-2'
+import { Pie } from 'react-chartjs-2'
 import ReactTooltip from 'react-tooltip'
 import Swal from 'sweetalert2'
 

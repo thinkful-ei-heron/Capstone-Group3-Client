@@ -1,6 +1,4 @@
 import app from './base'
-import Swal from 'sweetalert2'
-
 const db = app.firestore()
 
 const dbServices = {

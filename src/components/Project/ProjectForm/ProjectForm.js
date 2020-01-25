@@ -62,7 +62,6 @@ const ProjectForm = props => {
     handleBlur,
     values,
     errors,
-    isSubmitting,
   } = useFormValidation(
     INITIAL_STATE,
     validateInput.validateProjectForm,

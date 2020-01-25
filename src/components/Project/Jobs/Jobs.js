@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { AuthContext } from '../../../services/Auth'
 import './Jobs.css'
 import JobItem from './JobItem'
-import LogHours from '../../LogHours/LogHours'
 import dbServices from '../../../services/dbServices'
 import Swal from 'sweetalert2'
 
@@ -83,7 +82,6 @@ export default class Jobs extends Component {
 
   render() {
     const { jobs } = this.state
-    const user = this.context.currentUser
 
     if (this.state.loading) {
       return <div></div>

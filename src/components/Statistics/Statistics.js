@@ -1,6 +1,6 @@
 /* eslint-disable no-loop-func */
 import React, { Component } from 'react'
-import { Bar, Line, Pie } from 'react-chartjs-2'
+import { Bar } from 'react-chartjs-2'
 import { AuthContext } from '../../services/Auth'
 import app from '../../services/base'
 import './Statistics.css'

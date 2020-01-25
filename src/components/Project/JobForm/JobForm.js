@@ -41,6 +41,7 @@ const NewJob = props => {
         if (itm.value !== employees[0]) {
           employees.push(itm.value)
         }
+        return 'submitted'
       })
 
     let projectId = props.job ? props.job.project_id : props.projectId

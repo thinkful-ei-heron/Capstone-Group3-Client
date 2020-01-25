@@ -75,9 +75,12 @@ const Profile = props => {
         await dbServices
           .getEmployeeProjects(info.name, info.org)
           .then(snapshot => {
+            let projects = [];
             snapshot.forEach(doc => {
-              setUserProjects([...userProjects, doc.data()])
+              projects.push(doc.data())
+              //setUserProjects([...userProjects, doc.data()])
             })
+            setUserProjects(projects)
           })
       } catch (error) {
         console.warn(error)
@@ -94,9 +97,12 @@ const Profile = props => {
         await dbServices
           .getManagerProjects(info.name, info.org)
           .then(snapshot => {
+            let projects = [];
             snapshot.forEach(doc => {
-              setUserProjects([...userProjects, doc.data()])
+              projects.push(doc.data())
+              //setUserProjects([...userProjects, doc.data()])
             })
+            setUserProjects(projects)
           })
       } catch (error) {
         console.warn(error)

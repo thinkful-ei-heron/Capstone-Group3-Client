@@ -119,7 +119,9 @@ const Profile = props => {
                     workerProjects.push(doc.data())
                   }
                 })
-                setWorkerProjects(workerProjects)
+                if (isMounted) {
+                  setWorkerProjects(workerProjects)
+                }   
               })
           })
       } catch (error) {

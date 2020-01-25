@@ -39,9 +39,7 @@ export default class Header extends Component {
           <span test-id="header-name">
             Welcome, {this.context.currentUser.name}!
           </span>
-          <span test-id="header-role">
-            Role: {this.showRole()}
-          </span>
+          <span test-id="header-role">Role: {this.showRole()}</span>
         </div>
         <div className="Header__db_logout">
           <Link to="/dashboard">
@@ -73,7 +71,7 @@ export default class Header extends Component {
       <>
         <nav className="Header">
           <h1>
-            <Link className="Header__link" to="/">
+            <Link className="Header__link" to="/dashboard">
               <img
                 className="Header__logo"
                 src={lazy}

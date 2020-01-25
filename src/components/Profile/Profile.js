@@ -123,7 +123,7 @@ const Profile = props => {
       getUserProjects(info)
     })
     // eslint-disable-next-line
-  }, [])
+  }, [functions])
 
   if (userInfo && userInfo.role)
     return (

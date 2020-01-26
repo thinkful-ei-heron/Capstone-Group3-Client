@@ -7,7 +7,6 @@ export default function LandingPage() {
   return (
     <section className="LandingPage">
       <div className="LandingPage__hero_text">
-        <img src={skyscraper} alt="skyscraper" />
         <h1>
           <span className="LandingPage__t1">Dream Bigger,</span>
           <span className="LandingPage__t2">Build Faster,</span>
@@ -18,6 +17,8 @@ export default function LandingPage() {
           securely on the cloud from any location with access to the web.
         </span>
       </div>
+
+      <img src={skyscraper} alt="skyscraper" />
       <Link className="LandingPage__btn" to="/register">
         Register Now!
       </Link>

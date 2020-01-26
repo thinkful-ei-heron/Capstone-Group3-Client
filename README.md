@@ -12,7 +12,7 @@ project management software.
 
 [See the Live App Here](https://managelazily.com/)
 
-[Demo Logins available here](https://github.com/balayaydemir/Capstone-Group3-Client/DEMO_LOGINS.md)
+[Demo Logins available here](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/DEMO_LOGINS.md)
 
 [Screenshots below](#Screenshots)
 

@@ -74,6 +74,9 @@ npm start
 
 Run the tests:
 
+- First create a Service Account for your Firebase project, instructions [here.](https://firebase.google.com/docs/admin/setup#initialize-sdk)
+- Place that file in the root of your project directory and add it to your `.gitignore` file.
+
 ```bash
 npm run test:open
 ```

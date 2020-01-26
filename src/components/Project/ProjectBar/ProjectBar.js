@@ -134,7 +134,7 @@ const ProjectBar = props => {
         <div className="ProjectBar__buttons">
           <div
             className="ProjectBar__fa"
-            data-tip="delete"
+            data-tip="Delete Project"
             onClick={deleteProject}
           >
             {StyleIcon({ style: 'delete' })}

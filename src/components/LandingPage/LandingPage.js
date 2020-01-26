@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import skyscraper from '../../images/skyscraper.svg'
 import './LandingPage.css'
 
 export default function LandingPage() {
@@ -16,6 +17,8 @@ export default function LandingPage() {
           securely on the cloud from any location with access to the web.
         </span>
       </div>
+
+      <img src={skyscraper} alt="skyscraper" />
       <Link className="LandingPage__btn" to="/register">
         Register Now!
       </Link>

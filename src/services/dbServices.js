@@ -211,15 +211,6 @@ const dbServices = {
       .get();
   },
 
-  // getPeople(org, type) {
-  //   return db
-  //     .collection('organizations')
-  //     .doc(org)
-  //     .collection('users')
-  //     .where('role', '==', type)
-  //     .getString('name');
-  // },
-
   async getJobs(org, id) {
     return db
       .collection('organizations')

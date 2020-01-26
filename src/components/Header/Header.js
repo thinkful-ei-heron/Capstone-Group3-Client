@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import { AuthContext } from '../../services/Auth'
-import lazy from '../../images/lazy.svg'
-import './Header.css'
-import app from '../../services/base'
-import JobNotification from '../../components/JobNotification/JobNotification'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../services/Auth';
+import lazy from '../../images/lazy.svg';
+import './Header.css';
+import app from '../../services/base';
+import JobNotification from '../../components/JobNotification/JobNotification';
 
 export default class Header extends Component {
-  static contextType = AuthContext
+  static contextType = AuthContext;
 
   renderLoginLink() {
     return (
@@ -21,16 +21,16 @@ export default class Header extends Component {
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   showRole = () => {
-    if (this.context.currentUser.role === 'owner') return 'Owner'
+    if (this.context.currentUser.role === 'owner') return 'Owner';
     if (this.context.currentUser.role === 'project manager')
-      return 'Project Manager'
+      return 'Project Manager';
     if (this.context.currentUser.role === 'project worker')
-      return 'Project Worker'
-  }
+      return 'Project Worker';
+  };
 
   renderLogoutLink() {
     return (
@@ -57,14 +57,14 @@ export default class Header extends Component {
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   handleLogout = () => {
-    this.props.setPath(null)
-    localStorage.removeItem('path')
-    app.auth().signOut()
-  }
+    this.props.setPath(null);
+    localStorage.removeItem('path');
+    app.auth().signOut();
+  };
 
   render() {
     return (
@@ -90,6 +90,6 @@ export default class Header extends Component {
           )}
         </div>
       </>
-    )
+    );
   }
 }

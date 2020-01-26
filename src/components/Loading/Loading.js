@@ -1,6 +1,6 @@
-import React from 'react'
-import ReactLoading from 'react-loading'
-import './Loading.css'
+import React from 'react';
+import ReactLoading from 'react-loading';
+import './Loading.css';
 
 export default function Loading(props) {
   return (
@@ -12,5 +12,5 @@ export default function Loading(props) {
         width={125}
       />
     </div>
-  )
+  );
 }

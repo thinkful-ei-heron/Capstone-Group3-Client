@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import './ProjectView.css'
-import Loading from '../../Loading/Loading'
-import { AuthContext } from '../../../services/Auth.js'
-import Jobs from '../Jobs/Jobs'
-import Statistics from '../../Statistics/Statistics'
-import Sidebar from '../../Sidebar/Sidebar'
-import JobForm from '../JobForm/JobForm'
-import dbServices from '../../../services/dbServices'
-import dateConversions from '../../../services/dateConversions'
-import { withRouter, Redirect } from 'react-router'
-import Swal from 'sweetalert2'
-import StyleIcon from '../../StyleIcon/StyleIcon'
-import ProjectBar from '../../Project/ProjectBar/ProjectBar'
+import React, { Component } from 'react';
+import './ProjectView.css';
+import Loading from '../../Loading/Loading';
+import { AuthContext } from '../../../services/Auth.js';
+import Jobs from '../Jobs/Jobs';
+import Statistics from '../../Statistics/Statistics';
+import Sidebar from '../../Sidebar/Sidebar';
+import JobForm from '../JobForm/JobForm';
+import dbServices from '../../../services/dbServices';
+import dateConversions from '../../../services/dateConversions';
+import { withRouter, Redirect } from 'react-router';
+import Swal from 'sweetalert2';
+import StyleIcon from '../../StyleIcon/StyleIcon';
+import ProjectBar from '../../Project/ProjectBar/ProjectBar';
 
 class ProjectView extends Component {
   constructor(props) {
-    super(props)
-    this.unsubscribe = null
+    super(props);
+    this.unsubscribe = null;
     this.state = {
       project: null,
       showJobForm: false,
@@ -28,64 +28,64 @@ class ProjectView extends Component {
       expandStats: true,
       expandJobs: true,
       expandPersonnel: true,
-    }
+    };
   }
 
-  static contextType = AuthContext
+  static contextType = AuthContext;
 
   updateProject = data => {
     this.setState({
       project: data,
       loading: false,
-    })
-  }
+    });
+  };
 
   getProgress = (jobProg, jobTotal, job) => {
-    let currentProgress = 0
-    let currentTotal = 0
-    let newProject = this.state.project
+    let currentProgress = 0;
+    let currentTotal = 0;
+    let newProject = this.state.project;
 
-    currentProgress = currentProgress + jobProg
-    currentTotal = currentTotal + jobTotal
+    currentProgress = currentProgress + jobProg;
+    currentTotal = currentTotal + jobTotal;
     if (currentProgress === 0) {
       this.setState({
         progress: 0,
-      })
+      });
     } else {
       this.setState({
         progress: parseInt(currentProgress),
         total: currentTotal,
-      })
+      });
 
       newProject.progress = parseInt(
         ((currentProgress / currentTotal) * 100).toFixed(2)
-      )
-      dbServices.updateProject(newProject)
+      );
+      dbServices.updateProject(newProject);
       this.setState({
         project: newProject,
-      })
+      });
     }
-  }
+  };
 
   async componentDidMount() {
     try {
       this.unsubscribe = dbServices
         .projectsListener(this.context.currentUser.org, this.props.id)
         .onSnapshot(doc => {
-          this.updateProject(doc.data())
-        })
+          this.updateProject(doc.data());
+        });
     } catch (error) {
       this.setState({
         error: 'Error',
-      })
-      console.warn(error)
+      });
+      console.warn(error);
       Swal.fire({
         title: 'Error!',
         text:
           "There was an issue loading this project's information - please refresh the page and try again.",
         icon: 'error',
         confirmButtonText: 'Close',
-      })
+      });
     }
   }
 
@@ -98,79 +98,79 @@ class ProjectView extends Component {
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
     }).then(value => {
-      if (value.dismiss === 'cancel') return null
+      if (value.dismiss === 'cancel') return null;
       else {
-        let proj = this.state.project
-        proj.autoComplete = true
-        proj.alert = true
-        proj.date_completed = dateConversions.dateToTimestamp(new Date())
-        dbServices.updateProject(proj)
+        let proj = this.state.project;
+        proj.autoComplete = true;
+        proj.alert = true;
+        proj.date_completed = dateConversions.dateToTimestamp(new Date());
+        dbServices.updateProject(proj);
       }
-    })
-  }
+    });
+  };
 
   approveProject = async () => {
-    let proj = { ...this.state.project, date_completed: null }
-    proj.date_completed = dateConversions.dateToTimestamp(new Date())
-    proj.alert = true
-    await dbServices.updateProject(proj)
-  }
+    let proj = { ...this.state.project, date_completed: null };
+    proj.date_completed = dateConversions.dateToTimestamp(new Date());
+    proj.alert = true;
+    await dbServices.updateProject(proj);
+  };
 
   componentWillUnmount() {
-    this.unsubscribe()
+    this.unsubscribe();
   }
 
   showJobForm = e => {
-    e.stopPropagation()
+    e.stopPropagation();
     if (this.state.showJobForm)
-      this.setState({ showJobForm: false, expandJobs: true })
+      this.setState({ showJobForm: false, expandJobs: true });
     else
       this.setState({
         showJobForm: true,
         expandJobs: false,
-      })
-  }
+      });
+  };
 
   submitJobForm = () => {
     this.setState({
       showJobForm: false,
       statsUpdated: true,
-    })
-  }
+    });
+  };
 
   turnOffUpdate = () => {
     this.setState({
       statsUpdated: false,
-    })
-  }
+    });
+  };
 
   expandStats = () => {
     this.setState({
       expandStats: !this.state.expandStats,
-    })
-  }
+    });
+  };
 
   expandJobs = () => {
     this.setState({
       expandJobs: !this.state.expandJobs,
-    })
-  }
+    });
+  };
 
   toggleExpandPersonnel = e => {
-    e.stopPropagation()
-    this.setState({ expandPersonnel: !this.state.expandPersonnel })
-  }
+    e.stopPropagation();
+    this.setState({ expandPersonnel: !this.state.expandPersonnel });
+  };
 
   render() {
-    const { project, showJobForm } = this.state
-    const user = this.context.currentUser
+    const { project, showJobForm } = this.state;
+    const user = this.context.currentUser;
 
     if (this.state.loading && !this.state.error) {
-      return <Loading />
+      return <Loading />;
     } else if (this.state.error) {
-      return <h2>Project was unable to load</h2>
+      return <h2>Project was unable to load</h2>;
     } else if (!project) {
-      return <Redirect to="/dashboard" />
+      return <Redirect to="/dashboard" />;
     } else {
       return (
         <section>
@@ -278,9 +278,9 @@ class ProjectView extends Component {
             </section>
           </div>
         </section>
-      )
+      );
     }
   }
 }
 
-export default withRouter(ProjectView)
+export default withRouter(ProjectView);

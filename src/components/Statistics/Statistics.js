@@ -1,13 +1,13 @@
 /* eslint-disable no-loop-func */
-import React, { Component } from 'react'
-import { Bar } from 'react-chartjs-2'
-import { AuthContext } from '../../services/Auth'
-import app from '../../services/base'
-import './Statistics.css'
-const db = app.firestore()
+import React, { Component } from 'react';
+import { Bar } from 'react-chartjs-2';
+import { AuthContext } from '../../services/Auth';
+import app from '../../services/base';
+import './Statistics.css';
+const db = app.firestore();
 
 export default class Statistics extends Component {
-  static contextType = AuthContext
+  static contextType = AuthContext;
   state = {
     jobDue: {
       labels: [
@@ -89,11 +89,11 @@ export default class Statistics extends Component {
         },
       ],
     },
-  }
+  };
 
   populateStats = async () => {
-    let jobDue = new Array(this.state.jobDue.labels.length)
-    let jobHistory = new Array(this.state.jobDue.labels.length)
+    let jobDue = new Array(this.state.jobDue.labels.length);
+    let jobHistory = new Array(this.state.jobDue.labels.length);
     for (let i = 0; i < this.state.jobDue.labels.length; i++) {
       await db
         .collection('organizations')
@@ -103,8 +103,8 @@ export default class Statistics extends Component {
         .collection('jobs')
         .get()
         .then(snapshot => {
-          let jobDueCount = 0
-          let jobHistoryCount = 0
+          let jobDueCount = 0;
+          let jobHistoryCount = 0;
           snapshot.docs.forEach(doc => {
             if (!doc.data().date_completed) {
               if (
@@ -116,7 +116,7 @@ export default class Statistics extends Component {
                   doc.data().deadline.seconds * 1000
                 ).getFullYear()}`
               ) {
-                jobDueCount++
+                jobDueCount++;
               }
             }
             if (doc.data().date_completed) {
@@ -131,18 +131,18 @@ export default class Statistics extends Component {
                   ).getFullYear()}` &&
                 doc.data().status === 'completed'
               ) {
-                jobHistoryCount++
+                jobHistoryCount++;
               }
             }
-          })
-          jobDue[i] = jobDueCount
-          jobHistory[i] = jobHistoryCount
-        })
+          });
+          jobDue[i] = jobDueCount;
+          jobHistory[i] = jobHistoryCount;
+        });
       if (jobDue.every(item => item === 0)) {
-        jobDue = []
+        jobDue = [];
       }
       if (jobHistory.every(item => item === 0)) {
-        jobHistory = []
+        jobHistory = [];
       }
     }
     this.setState({
@@ -166,16 +166,16 @@ export default class Statistics extends Component {
           },
         ],
       },
-    })
-    if (this.props.updated) this.props.turnOffUpdate()
-  }
+    });
+    if (this.props.updated) this.props.turnOffUpdate();
+  };
 
   componentDidMount = async () => {
-    this.populateStats()
-  }
+    this.populateStats();
+  };
 
   render() {
-    if (this.props.updated) this.populateStats()
+    if (this.props.updated) this.populateStats();
     return (
       <div className="Statistics">
         {this.state.jobDue.datasets[0].data.length !== 0 ? (
@@ -195,7 +195,7 @@ export default class Statistics extends Component {
                       beginAtZero: true,
                       callback: function(value) {
                         if (value % 1 === 0) {
-                          return value
+                          return value;
                         }
                       },
                       fontSize: 20,
@@ -234,7 +234,7 @@ export default class Statistics extends Component {
                       beginAtZero: true,
                       callback: function(value) {
                         if (value % 1 === 0) {
-                          return value
+                          return value;
                         }
                       },
                       fontSize: 20,
@@ -259,6 +259,6 @@ export default class Statistics extends Component {
           </span>
         )}
       </div>
-    )
+    );
   }
 }

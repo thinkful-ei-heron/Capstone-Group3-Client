@@ -1,70 +1,70 @@
-import React, { Component } from 'react'
-import { AuthContext } from '../../../services/Auth'
-import './Jobs.css'
-import JobItem from './JobItem'
-import dbServices from '../../../services/dbServices'
-import Swal from 'sweetalert2'
+import React, { Component } from 'react';
+import { AuthContext } from '../../../services/Auth';
+import './Jobs.css';
+import JobItem from './JobItem';
+import dbServices from '../../../services/dbServices';
+import Swal from 'sweetalert2';
 
 export default class Jobs extends Component {
   constructor(props) {
-    super(props)
-    this.unsubscribe = null
+    super(props);
+    this.unsubscribe = null;
     this.state = {
       jobs: [],
       loading: true,
       showLogHours: false,
-    }
+    };
   }
 
-  static contextType = AuthContext
+  static contextType = AuthContext;
 
   onJobsUpdate = querySnapshot => {
-    const jobs = []
+    const jobs = [];
 
     if (this.context.currentUser.role === 'project worker') {
       querySnapshot.forEach(doc => {
         if (
           doc.data().project_workers.includes(this.context.currentUser.name)
         ) {
-          jobs.push(doc.data())
+          jobs.push(doc.data());
         }
-      })
+      });
     } else if (this.context.currentUser.role === 'project manager') {
       querySnapshot.forEach(doc => {
         if (doc.data().project_manager === this.context.currentUser.name) {
-          jobs.push(doc.data())
+          jobs.push(doc.data());
         }
-      })
+      });
     } else {
       querySnapshot.forEach(doc => {
-        jobs.push(doc.data())
-      })
+        jobs.push(doc.data());
+      });
     }
 
     this.setState({
       jobs,
       loading: false,
-    })
+    });
 
-    this.grabProgress()
-  }
+    this.grabProgress();
+  };
 
   grabProgress = () => {
-    let totalHours = 0
-    let totalProgress = 0
+    let totalHours = 0;
+    let totalProgress = 0;
     this.state.jobs.map(job => {
-      totalHours = parseInt(job.total_hours) + totalHours
-      totalProgress = parseInt(job.hours_completed) + totalProgress
-      return null
-    })
-    this.props.getProgress(totalProgress, totalHours)
-  }
+      totalHours = parseInt(job.total_hours) + totalHours;
+      totalProgress = parseInt(job.hours_completed) + totalProgress;
+      return null;
+    });
+    this.props.getProgress(totalProgress, totalHours);
+  };
 
   componentDidMount() {
     try {
       this.unsubscribe = dbServices
         .jobsListener(this.context.currentUser.org, this.props.projectId)
-        .onSnapshot(this.onJobsUpdate)
+        .onSnapshot(this.onJobsUpdate);
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -72,19 +72,19 @@ export default class Jobs extends Component {
           "There was an issue loading this project's tasks - please refresh the page and try again.",
         icon: 'error',
         confirmButtonText: 'Close',
-      })
+      });
     }
   }
 
   componentWillUnmount() {
-    this.unsubscribe()
+    this.unsubscribe();
   }
 
   render() {
-    const { jobs } = this.state
+    const { jobs } = this.state;
 
     if (this.state.loading) {
-      return <div></div>
+      return <div></div>;
     } else {
       return (
         <>
@@ -104,7 +104,7 @@ export default class Jobs extends Component {
             )}
           </ul>
         </>
-      )
+      );
     }
   }
 }

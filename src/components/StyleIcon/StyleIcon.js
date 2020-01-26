@@ -1,16 +1,16 @@
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMinus,
   faPlus,
   faTimesCircle,
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
 import {
   faCalendarCheck,
   faCheckSquare,
   faClock,
   faArrowAltCircleUp,
-} from '@fortawesome/free-regular-svg-icons'
+} from '@fortawesome/free-regular-svg-icons';
 
 const styleIconMap = {
   delete: <FontAwesomeIcon className="fa_trash" icon="trash-alt" />,
@@ -35,8 +35,8 @@ const styleIconMap = {
   collapseBig: <FontAwesomeIcon icon="chevron-up" />,
   expandBig: <FontAwesomeIcon icon="chevron-down" />,
   default: null,
-}
+};
 
 export default function StyleIcon({ style = 'default' }) {
-  return styleIconMap[style]
+  return styleIconMap[style];
 }

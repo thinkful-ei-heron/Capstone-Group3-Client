@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import dbServices from '../../services/dbServices'
-import JobForm from '../Project/JobForm/JobForm'
-import { AuthContext } from '../../services/Auth'
-import StyleIcon from '../StyleIcon/StyleIcon'
-import Swal from 'sweetalert2'
-import dateConversions from '../../services/dateConversions'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import dbServices from '../../services/dbServices';
+import JobForm from '../Project/JobForm/JobForm';
+import { AuthContext } from '../../services/Auth';
+import StyleIcon from '../StyleIcon/StyleIcon';
+import Swal from 'sweetalert2';
+import dateConversions from '../../services/dateConversions';
 
 export default class JobNotificationList extends Component {
   state = {
@@ -13,36 +13,36 @@ export default class JobNotificationList extends Component {
     editJob: null,
     notificationList: [],
     error: false,
-  }
+  };
 
-  static contextType = AuthContext
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.setState({
       notificationList: this.props.notificationList,
-    })
+    });
   }
 
   setError = () => {
     this.setState({
       error: true,
-    })
-  }
+    });
+  };
 
   handleApprovalSubmit = async (id, status, approval = false, jobObj) => {
     try {
-      jobObj.approval = approval
+      jobObj.approval = approval;
       if (status === 'completed' || status === 'revisions') {
-        jobObj.alert = jobObj.project_workers
+        jobObj.alert = jobObj.project_workers;
       }
       if (status === 'completed')
-        jobObj.date_completed = dateConversions.dateToTimestamp(new Date())
-      jobObj.status = status
-      await dbServices.updateJob(jobObj)
-      this.props.updateList(jobObj)
+        jobObj.date_completed = dateConversions.dateToTimestamp(new Date());
+      jobObj.status = status;
+      await dbServices.updateJob(jobObj);
+      this.props.updateList(jobObj);
       this.setState({
         notificationList: this.props.notificationList,
-      })
+      });
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -50,28 +50,28 @@ export default class JobNotificationList extends Component {
         icon: 'error',
         confirmButtonText: 'Close',
         onClose: this.setError(),
-      })
+      });
     }
-  }
+  };
 
   handleClick = async (id, jobObj, e) => {
     if (
       this.context.currentUser.role === 'project manager' ||
       this.context.currentUser.role === 'owner'
     )
-      return null
+      return null;
     else {
       try {
         let newAlert = jobObj.alert.filter(
           name => name !== this.context.currentUser.name
-        )
-        jobObj.alert = newAlert
-        await dbServices.updateJobAlert(jobObj)
-        this.props.updateList(jobObj)
-        this.props.renderList(e)
+        );
+        jobObj.alert = newAlert;
+        await dbServices.updateJobAlert(jobObj);
+        this.props.updateList(jobObj);
+        this.props.renderList(e);
         this.setState({
           notificationList: this.props.notificationList,
-        })
+        });
       } catch (error) {
         Swal.fire({
           title: 'Error!',
@@ -80,42 +80,42 @@ export default class JobNotificationList extends Component {
           icon: 'error',
           confirmButtonText: 'Close',
           onClose: this.setError(),
-        })
+        });
       }
     }
-  }
+  };
 
   openEdit = (jobObj = null, e) => {
-    if (jobObj === null) this.props.updateList(this.state.editJob)
+    if (jobObj === null) this.props.updateList(this.state.editJob);
     this.setState({
       editing: !this.state.editing,
       editJob: jobObj,
       notificationList: this.props.notificationList,
-    })
-  }
+    });
+  };
 
   renderJobEdit = job => {
-    let jobKeys = Object.keys(job.edit)
+    let jobKeys = Object.keys(job.edit);
     return jobKeys.map((jobKey, index) => {
       if (job.edit[jobKey] && jobKey !== 'employee') {
         return (
           <li key={index + jobKey}>
             {jobKey}: {job.edit[jobKey]}
           </li>
-        )
-      } else return <></>
-    })
-  }
+        );
+      } else return <></>;
+    });
+  };
 
   renderEmployeeNotificationDetails = jobObj => {
     if (jobObj.status === 'in progress')
-      return <span> - You have been added to this job.</span>
+      return <span> - You have been added to this job.</span>;
     if (jobObj.status === 'submitted')
-      return <span> has been submitted for review.</span>
+      return <span> has been submitted for review.</span>;
     if (jobObj.status === 'revisions')
-      return <span> has been returned for revisions.</span>
-    if (jobObj.status === 'completed') return <span> has been completed!</span>
-  }
+      return <span> has been returned for revisions.</span>;
+    if (jobObj.status === 'completed') return <span> has been completed!</span>;
+  };
 
   renderPromoted = () => {
     if (this.props.promoted)
@@ -129,8 +129,8 @@ export default class JobNotificationList extends Component {
             {StyleIcon({ style: 'close' })}
           </div>
         </li>
-      )
-  }
+      );
+  };
 
   renderJobList = () => {
     return this.state.notificationList.map(jobObj => {
@@ -211,12 +211,12 @@ export default class JobNotificationList extends Component {
             <></>
           )}
         </li>
-      )
-    })
-  }
+      );
+    });
+  };
 
   render() {
-    if (this.state.error) return null
+    if (this.state.error) return null;
     else {
       return (
         <div>
@@ -230,7 +230,7 @@ export default class JobNotificationList extends Component {
             <></>
           )}
         </div>
-      )
+      );
     }
   }
 }

@@ -1,45 +1,45 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { AuthContext } from '../../services/Auth'
-import dbServices from '../../services/dbServices'
-import { Link } from 'react-router-dom'
-import Swal from 'sweetalert2'
-import StyleIcon from '../StyleIcon/StyleIcon'
-import './Sidebar.css'
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../services/Auth';
+import dbServices from '../../services/dbServices';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import StyleIcon from '../StyleIcon/StyleIcon';
+import './Sidebar.css';
 
 const Sidebar = props => {
-  let [employeeList, setEmployeeList] = useState([])
-  let [pmList, setPMList] = useState([])
-  let [expanded, setExpanded] = useState([])
-  let [clicked, setClick] = useState(false)
-  let [error, setError] = useState(false)
-  const { currentUser } = useContext(AuthContext)
+  let [employeeList, setEmployeeList] = useState([]);
+  let [pmList, setPMList] = useState([]);
+  let [expanded, setExpanded] = useState([]);
+  let [clicked, setClick] = useState(false);
+  let [error, setError] = useState(false);
+  const { currentUser } = useContext(AuthContext);
 
-  if (clicked === true) setClick(false)
+  if (clicked === true) setClick(false);
 
   const toggleExpand = section => {
-    setClick(true)
-    let newExpanded = []
+    setClick(true);
+    let newExpanded = [];
     if (!expanded.includes(section)) {
-      newExpanded = expanded
-      newExpanded.push(section)
-      setExpanded(newExpanded)
+      newExpanded = expanded;
+      newExpanded.push(section);
+      setExpanded(newExpanded);
     } else {
-      newExpanded = expanded.filter(item => item !== section)
-      setExpanded(newExpanded)
+      newExpanded = expanded.filter(item => item !== section);
+      setExpanded(newExpanded);
     }
-    return expanded
-  }
+    return expanded;
+  };
 
   useEffect(() => {
     const getEmployees = async () => {
-      let employees = []
+      let employees = [];
       try {
         return await dbServices.getEmployees(currentUser.org).then(snapshot => {
           snapshot.forEach(doc => {
-            employees.push(doc.data())
-          })
-          return employees
-        })
+            employees.push(doc.data());
+          });
+          return employees;
+        });
       } catch (error) {
         Swal.fire({
           title: 'Error!',
@@ -47,21 +47,21 @@ const Sidebar = props => {
           icon: 'error',
           confirmButtonText: 'Close',
           onClose: setError(true),
-        })
+        });
       }
-    }
+    };
 
     const getPMs = async () => {
-      let pms = []
+      let pms = [];
       try {
         return await dbServices
           .getProjectManagers(currentUser.org)
           .then(snapshot => {
             snapshot.forEach(doc => {
-              pms.push(doc.data())
-            })
-            return pms
-          })
+              pms.push(doc.data());
+            });
+            return pms;
+          });
       } catch (error) {
         Swal.fire({
           title: 'Error!',
@@ -69,17 +69,17 @@ const Sidebar = props => {
           icon: 'error',
           confirmButtonText: 'Close',
           onClose: setError(true),
-        })
+        });
       }
-    }
+    };
     getEmployees().then(employees => {
-      setEmployeeList(employees)
-    })
+      setEmployeeList(employees);
+    });
     getPMs().then(pms => {
-      setPMList(pms)
-    })
+      setPMList(pms);
+    });
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   const renderProjectManagers = () => {
     return pmList.map((pm, index) => {
@@ -87,9 +87,9 @@ const Sidebar = props => {
         <li key={pm.name + index}>
           <Link to={`/profile/${pm.email}`}>{pm.name}</Link>
         </li>
-      )
-    })
-  }
+      );
+    });
+  };
 
   const renderEmployees = () => {
     return employeeList.map((emp, index) => {
@@ -97,11 +97,11 @@ const Sidebar = props => {
         <li key={emp.name + index}>
           <Link to={`/profile/${emp.email}`}>{emp.name}</Link>
         </li>
-      )
-    })
-  }
+      );
+    });
+  };
 
-  if (error) return null
+  if (error) return null;
   else
     return (
       <div className="Sidebar">
@@ -140,7 +140,7 @@ const Sidebar = props => {
           <></>
         )}
       </div>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

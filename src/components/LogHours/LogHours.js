@@ -1,81 +1,81 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { useInput } from '../../hooks/useInput'
-import { Label, Input } from '../Form/Form'
-import dbServices from '../../services/dbServices'
-import { AuthContext } from '../../services/Auth'
-import Swal from 'sweetalert2'
+import React, { useContext, useState, useEffect } from 'react';
+import { useInput } from '../../hooks/useInput';
+import { Label, Input } from '../Form/Form';
+import dbServices from '../../services/dbServices';
+import { AuthContext } from '../../services/Auth';
+import Swal from 'sweetalert2';
 
 const LogHours = props => {
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
 
-  const { value: hours, bind: bindHours, reset: resetHours } = useInput('')
+  const { value: hours, bind: bindHours, reset: resetHours } = useInput('');
 
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(false);
 
   const getMaxHours = () => {
-    let selectedJob = props.job
+    let selectedJob = props.job;
     let maxHours =
-      parseInt(selectedJob.total_hours) - parseInt(selectedJob.hours_completed)
+      parseInt(selectedJob.total_hours) - parseInt(selectedJob.hours_completed);
 
-    return maxHours
-  }
+    return maxHours;
+  };
 
   const renderJobHours = () => {
-    let selectedJob = props.job
-    let hoursWorked = selectedJob.hours_completed
-    let hoursNeeded = selectedJob.total_hours
+    let selectedJob = props.job;
+    let hoursWorked = selectedJob.hours_completed;
+    let hoursNeeded = selectedJob.total_hours;
 
     return (
       <span>
         This task has {hoursWorked} hours worked out of an estimated{' '}
         {hoursNeeded} hours needed.
       </span>
-    )
-  }
+    );
+  };
 
   const handleJobHoursSubmit = e => {
-    e.preventDefault()
-    let jobObj = props.job
-    let oldHours = parseInt(jobObj.hours_completed)
-    let newHours = oldHours + parseInt(hours)
+    e.preventDefault();
+    let jobObj = props.job;
+    let oldHours = parseInt(jobObj.hours_completed);
+    let newHours = oldHours + parseInt(hours);
     let employeeHoursObj = jobObj.employee_hours.find(
       item => item.name === currentUser.name
-    )
-    let oldEmpHours = parseInt(employeeHoursObj.hours)
-    let newEmpHours = oldEmpHours + parseInt(hours)
-    employeeHoursObj.hours = newEmpHours
+    );
+    let oldEmpHours = parseInt(employeeHoursObj.hours);
+    let newEmpHours = oldEmpHours + parseInt(hours);
+    employeeHoursObj.hours = newEmpHours;
     let index = jobObj.employee_hours.findIndex(
       item => item.name === employeeHoursObj.name
-    )
-    jobObj.employee_hours[index] = employeeHoursObj
-    jobObj.hours_completed = newHours
+    );
+    jobObj.employee_hours[index] = employeeHoursObj;
+    jobObj.hours_completed = newHours;
 
     dbServices
       .editJob(jobObj.id, jobObj)
       .then(setSubmitted(true))
       .then(() => {
-        props.renderLogHoursForm()
+        props.renderLogHoursForm();
       })
       .catch(error => {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: 'Error!',
           text: 'There was an issue - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close',
-        })
-      })
-  }
+        });
+      });
+  };
 
   useEffect(() => {
     const resetFunction = async () => {
-      resetHours()
-    }
+      resetHours();
+    };
     if (submitted)
       return function resetAll() {
-        resetFunction()
-      }
-  })
+        resetFunction();
+      };
+  });
 
   return (
     <form onSubmit={e => handleJobHoursSubmit(e)} className="Form">
@@ -101,7 +101,7 @@ const LogHours = props => {
         Submit Hours
       </button>
     </form>
-  )
-}
+  );
+};
 
-export default LogHours
+export default LogHours;

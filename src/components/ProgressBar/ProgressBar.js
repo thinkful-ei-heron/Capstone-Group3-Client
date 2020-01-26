@@ -1,5 +1,5 @@
-import React from 'react'
-import './ProgressBar.css'
+import React from 'react';
+import './ProgressBar.css';
 
 export const ProgressBar = props => {
   return (
@@ -10,5 +10,5 @@ export const ProgressBar = props => {
       ></span>
       <span className="ProgressBar__text">{props.percentage}%</span>
     </div>
-  )
-}
+  );
+};

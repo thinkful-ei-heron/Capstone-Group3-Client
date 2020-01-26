@@ -1,27 +1,27 @@
-import React, { useState } from 'react'
-import useFormValidation from '../../../hooks/useFormValidation'
-import validateInput from '../../../hooks/validateInput'
-import { Input, Label, Textarea } from '../../Form/Form'
-import dbServices from '../../../services/dbServices'
-import dateConversions from '../../../services/dateConversions'
-import Dropdown from '../../Dropdown/Dropdown'
-import Swal from 'sweetalert2'
+import React, { useState } from 'react';
+import useFormValidation from '../../../hooks/useFormValidation';
+import validateInput from '../../../hooks/validateInput';
+import { Input, Label, Textarea } from '../../Form/Form';
+import dbServices from '../../../services/dbServices';
+import dateConversions from '../../../services/dateConversions';
+import Dropdown from '../../Dropdown/Dropdown';
+import Swal from 'sweetalert2';
 
 const ProjectForm = props => {
-  const [error, setError] = useState(false)
-  const proj = props.proj
-  const [selected, setSelected] = useState(0)
+  const [error, setError] = useState(false);
+  const proj = props.proj;
+  const [selected, setSelected] = useState(0);
 
   const INITIAL_STATE = {
     name: proj ? proj.name : '',
     description: proj ? proj.description : '',
     deadline: proj ? dateConversions.TStoFormDate(props.proj.deadline) : '',
-  }
+  };
 
   const handleSubmitForm = async () => {
-    const { name, description, deadline } = values
-    let id = null
-    if (props.proj) id = props.proj.id
+    const { name, description, deadline } = values;
+    let id = null;
+    if (props.proj) id = props.proj.id;
     const data = {
       alert: true,
       name: name,
@@ -33,17 +33,17 @@ const ProjectForm = props => {
       progress: 0,
       project_workers: [],
       id: id,
-    }
+    };
     try {
       if (!props.proj) {
-        const docRef = await dbServices.addProject(data)
-        await dbServices.setProjId(docRef.id, data.org_id)
-        props.addToProjState({ ...data, id: docRef.id })
+        const docRef = await dbServices.addProject(data);
+        await dbServices.setProjId(docRef.id, data.org_id);
+        props.addToProjState({ ...data, id: docRef.id });
       } else {
-        data.alert = false
-        await dbServices.updateProject(data)
-        props.updateProjInState({ ...data })
-        props.toggleForm()
+        data.alert = false;
+        await dbServices.updateProject(data);
+        props.updateProjInState({ ...data });
+        props.toggleForm();
       }
     } catch (error) {
       Swal.fire({
@@ -52,9 +52,9 @@ const ProjectForm = props => {
         icon: 'error',
         confirmButtonText: 'Close',
         onClose: setError(true),
-      })
+      });
     }
-  }
+  };
 
   const {
     handleSubmit,
@@ -66,8 +66,8 @@ const ProjectForm = props => {
     INITIAL_STATE,
     validateInput.validateProjectForm,
     handleSubmitForm
-  )
-  if (error) return null
+  );
+  if (error) return null;
   return (
     <form className="Form" onSubmit={handleSubmit}>
       <legend>{props.proj ? 'Update Project' : 'New Project'}</legend>
@@ -131,7 +131,7 @@ const ProjectForm = props => {
         Cancel
       </button>
     </form>
-  )
-}
+  );
+};
 
-export default ProjectForm
+export default ProjectForm;

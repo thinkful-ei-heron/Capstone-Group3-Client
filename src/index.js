@@ -1,11 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router } from 'react-router-dom'
-import './index.css'
-import App from './App'
-import { AuthProvider } from './services/Auth'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import './reset.css'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import './index.css';
+import App from './App';
+import { AuthProvider } from './services/Auth';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import './reset.css';
 
 import {
   faAngleRight,
@@ -20,13 +20,13 @@ import {
   faClipboardList,
   faUserEdit,
   faTrashAlt,
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
 
 import {
   faCalendarCheck,
   faCheckSquare,
   faClock,
-} from '@fortawesome/free-regular-svg-icons'
+} from '@fortawesome/free-regular-svg-icons';
 
 library.add(
   faAngleRight,
@@ -45,7 +45,7 @@ library.add(
   faClipboardList,
   faUserEdit,
   faTrashAlt
-)
+);
 
 ReactDOM.render(
   <Router>
@@ -54,4 +54,4 @@ ReactDOM.render(
     </AuthProvider>
   </Router>,
   document.getElementById('root')
-)
+);

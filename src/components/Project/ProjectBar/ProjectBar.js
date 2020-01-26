@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import dbServices from '../../../services/dbServices'
-import dateConversions from '../../../services/dateConversions'
-import { ProgressBar } from '../../ProgressBar/ProgressBar'
-import ProjectForm from '../ProjectForm/ProjectForm'
-import StyleIcon from '../../StyleIcon/StyleIcon'
-import Swal from 'sweetalert2'
-import ReactTooltip from 'react-tooltip'
-import './ProjectBar.css'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import dbServices from '../../../services/dbServices';
+import dateConversions from '../../../services/dateConversions';
+import { ProgressBar } from '../../ProgressBar/ProgressBar';
+import ProjectForm from '../ProjectForm/ProjectForm';
+import StyleIcon from '../../StyleIcon/StyleIcon';
+import Swal from 'sweetalert2';
+import ReactTooltip from 'react-tooltip';
+import './ProjectBar.css';
 
 const ProjectBar = props => {
-  const [edit, setEdit] = useState(false)
+  const [edit, setEdit] = useState(false);
 
   const toggleEdit = () => {
-    setEdit(!edit)
-  }
+    setEdit(!edit);
+  };
 
   const approveProject = async () => {
-    let proj = { ...props.proj, date_completed: null }
-    proj.date_completed = dateConversions.dateToTimestamp(new Date())
-    proj.alert = true
-    await dbServices.updateProject(proj)
+    let proj = { ...props.proj, date_completed: null };
+    proj.date_completed = dateConversions.dateToTimestamp(new Date());
+    proj.alert = true;
+    await dbServices.updateProject(proj);
     if (window.location.href.includes('dashboard'))
-      props.updateProjInState(proj)
-  }
+      props.updateProjInState(proj);
+  };
 
   const autoComplete = () => {
     Swal.fire({
@@ -34,19 +34,19 @@ const ProjectBar = props => {
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
     }).then(value => {
-      if (value.dismiss === 'cancel') return null
+      if (value.dismiss === 'cancel') return null;
       else {
-        let proj = props.proj
-        proj.autoComplete = true
-        proj.alert = true
-        proj.date_completed = dateConversions.dateToTimestamp(new Date())
-        dbServices.updateProject(proj)
+        let proj = props.proj;
+        proj.autoComplete = true;
+        proj.alert = true;
+        proj.date_completed = dateConversions.dateToTimestamp(new Date());
+        dbServices.updateProject(proj);
         if (window.location.href.includes('dashboard')) {
-          props.updateProjInState(proj)
+          props.updateProjInState(proj);
         }
       }
-    })
-  }
+    });
+  };
 
   const deleteProject = () => {
     Swal.fire({
@@ -57,28 +57,28 @@ const ProjectBar = props => {
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
     }).then(value => {
-      if (value.dismiss === 'cancel') return null
+      if (value.dismiss === 'cancel') return null;
       else {
-        let id = props.proj.id
-        let org = props.proj.org_id
-        let complete = props.proj.date_completed
+        let id = props.proj.id;
+        let org = props.proj.org_id;
+        let complete = props.proj.date_completed;
 
         if (props.view === 'project') {
-          dbServices.deleteProjectById(id, org)
+          dbServices.deleteProjectById(id, org);
         }
 
         if (props.view === 'dashboard') {
           dbServices.deleteProjectById(id, org).then(() => {
             if (complete) {
-              props.deleteProjInState(id, 'complete')
+              props.deleteProjInState(id, 'complete');
             } else {
-              props.deleteProjInState(id, 'incomplete')
+              props.deleteProjInState(id, 'incomplete');
             }
-          })
+          });
         }
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="ProjectBar__project_container">
@@ -185,7 +185,7 @@ const ProjectBar = props => {
       )}
       <ReactTooltip place="bottom" type="dark" effect="float" />
     </div>
-  )
-}
+  );
+};
 
-export default ProjectBar
+export default ProjectBar;

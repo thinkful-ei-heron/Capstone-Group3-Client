@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import app from './base'
+import React, { useEffect, useState } from 'react';
+import app from './base';
 
-export const AuthContext = React.createContext()
+export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     app.auth().onAuthStateChanged(user => {
       if (user) {
@@ -13,19 +13,19 @@ export const AuthProvider = ({ children }) => {
           .currentUser.getIdTokenResult()
           .then(idTokenResult => {
             if (!!idTokenResult.claims) {
-              setCurrentUser(idTokenResult.claims)
+              setCurrentUser(idTokenResult.claims);
             } else {
-              alert('ruh roh')
+              alert('ruh roh');
             }
           })
           .catch(error => {
-            console.warn(error)
-          })
+            console.warn(error);
+          });
       } else {
-        setCurrentUser(null)
+        setCurrentUser(null);
       }
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -35,5 +35,5 @@ export const AuthProvider = ({ children }) => {
     >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};

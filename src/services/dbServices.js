@@ -1,5 +1,5 @@
-import app from './base'
-const db = app.firestore()
+import app from './base';
+const db = app.firestore();
 
 const dbServices = {
   createOwner(user, org) {
@@ -9,19 +9,19 @@ const dbServices = {
         .doc(org)
         .set({
           name: org,
-        })
-    user.role = 'owner'
-    addOrg().then(() => this.createUserInOrg(user, org))
-    return 'success'
+        });
+    user.role = 'owner';
+    addOrg().then(() => this.createUserInOrg(user, org));
+    return 'success';
   },
 
   async getAllOrgs() {
-    return db.collection('organizations').get()
+    return db.collection('organizations').get();
   },
 
   createUserInOrg(newUser, org) {
-    newUser.new = true
-    const orgRef = db.collection('organizations').doc(org)
+    newUser.new = true;
+    const orgRef = db.collection('organizations').doc(org);
 
     return orgRef.get().then(docSnapshot => {
       if (docSnapshot.exists) {
@@ -29,10 +29,10 @@ const dbServices = {
           orgRef
             .collection('users')
             .doc(newUser.email)
-            .set(newUser)
-        })
-      } else throw new Error('org not found')
-    })
+            .set(newUser);
+        });
+      } else throw new Error('org not found');
+    });
   },
 
   jobsListener(org, id) {
@@ -41,7 +41,7 @@ const dbServices = {
       .doc(org)
       .collection('projects')
       .doc(id)
-      .collection('jobs')
+      .collection('jobs');
   },
 
   promoteUser(org, email) {
@@ -50,7 +50,7 @@ const dbServices = {
       .doc(org)
       .collection('users')
       .doc(email)
-      .update({ role: 'project manager', promoted: true })
+      .update({ role: 'project manager', promoted: true });
   },
 
   projectsListener(org, id) {
@@ -58,7 +58,7 @@ const dbServices = {
       .collection('organizations')
       .doc(org)
       .collection('projects')
-      .doc(id)
+      .doc(id);
   },
 
   async getEmployeeProjects(name, org) {
@@ -67,7 +67,7 @@ const dbServices = {
       .doc(org)
       .collection('projects')
       .where('project_workers', 'array-contains', name)
-      .get()
+      .get();
   },
 
   async getManagerProjects(name, org) {
@@ -76,7 +76,7 @@ const dbServices = {
       .doc(org)
       .collection('projects')
       .where('project_manager', '==', name)
-      .get()
+      .get();
   },
 
   async getProjectJobsForEmployee(name, org, id) {
@@ -87,26 +87,26 @@ const dbServices = {
       .doc(id)
       .collection('jobs')
       .where('project_workers', 'array-contains', name)
-      .get()
+      .get();
   },
 
   async initDashboard(name, role, org) {
-    const projs = []
-    const managers = []
+    const projs = [];
+    const managers = [];
 
     //get projects
     const projects = await dbServices.getProjectsByRole({
       name: name,
       org: org,
       role: role,
-    })
+    });
 
-    projects.forEach(proj => projs.push(proj.data()))
+    projects.forEach(proj => projs.push(proj.data()));
 
     //get projectManagers
     if (role === 'owner') {
-      const PMs = await dbServices.getProjectManagers(org)
-      PMs.forEach(pm => managers.push(pm.data()))
+      const PMs = await dbServices.getProjectManagers(org);
+      PMs.forEach(pm => managers.push(pm.data()));
     }
 
     return {
@@ -114,7 +114,7 @@ const dbServices = {
       role: role,
       projects: projs,
       project_managers: managers,
-    }
+    };
   },
 
   getProjectsByRole(user) {
@@ -124,7 +124,7 @@ const dbServices = {
         .doc(user.org)
         .collection('projects')
         .where('project_workers', 'array-contains', user.name)
-        .get()
+        .get();
     }
     if (user.role === 'project manager') {
       return db
@@ -132,13 +132,13 @@ const dbServices = {
         .doc(user.org)
         .collection('projects')
         .where('project_manager', '==', user.name)
-        .get()
+        .get();
     }
     return db
       .collection('organizations')
       .doc(user.org)
       .collection('projects')
-      .get()
+      .get();
   },
 
   getProjectById(id, org) {
@@ -147,7 +147,7 @@ const dbServices = {
       .doc(org)
       .collection('projects')
       .doc(id)
-      .get()
+      .get();
   },
 
   deleteProjectById(id, org) {
@@ -156,7 +156,7 @@ const dbServices = {
       .doc(org)
       .collection('projects')
       .doc(id)
-      .delete()
+      .delete();
   },
 
   deleteJobById(id, projectId, org) {
@@ -167,21 +167,21 @@ const dbServices = {
       .doc(projectId)
       .collection('jobs')
       .doc(id)
-      .delete()
+      .delete();
   },
 
   addProject(newProject) {
-    if (!newProject.project_manager) newProject.project_manager = 'unassigned'
+    if (!newProject.project_manager) newProject.project_manager = 'unassigned';
     return db
       .collection(`organizations/${newProject.org_id}/projects`)
-      .add(newProject)
+      .add(newProject);
   },
 
   setProjId(id, orgId) {
     return db
       .collection(`organizations/${orgId}/projects`)
       .doc(`${id}`)
-      .update({ id: id })
+      .update({ id: id });
   },
 
   updateProject(proj) {
@@ -190,7 +190,7 @@ const dbServices = {
       .doc(proj.org_id)
       .collection('projects')
       .doc(proj.id)
-      .update(proj)
+      .update(proj);
   },
 
   setProjectsManager(projId, org, pm) {
@@ -199,7 +199,7 @@ const dbServices = {
       .doc(org)
       .collection('projects')
       .doc(projId)
-      .update({ project_manager: pm })
+      .update({ project_manager: pm });
   },
 
   getUser(email, org) {
@@ -208,7 +208,7 @@ const dbServices = {
       .doc(org)
       .collection('users')
       .where('email', '==', email)
-      .get()
+      .get();
   },
 
   // getPeople(org, type) {
@@ -227,7 +227,7 @@ const dbServices = {
       .collection('projects')
       .doc(id)
       .collection('jobs')
-      .get()
+      .get();
   },
 
   async getEmployees(org) {
@@ -236,7 +236,7 @@ const dbServices = {
       .doc(org)
       .collection('users')
       .where('role', '==', 'project worker')
-      .get()
+      .get();
   },
 
   getProjectManagers(org) {
@@ -245,7 +245,7 @@ const dbServices = {
       .doc(org)
       .collection('users')
       .where('role', '==', 'project manager')
-      .get()
+      .get();
   },
 
   async addJob(newJob, project_id) {
@@ -255,7 +255,7 @@ const dbServices = {
       )
       .add(newJob)
       .catch(error => {
-        return error
+        return error;
       })
       .then(function(docRef) {
         db.collection(
@@ -264,9 +264,9 @@ const dbServices = {
           .doc(`${docRef.id}`)
           .update({ id: docRef.id })
           .catch(error => {
-            return error
-          })
-      })
+            return error;
+          });
+      });
   },
 
   async updateEdit(edit, id, project_id, org) {
@@ -277,7 +277,7 @@ const dbServices = {
       .doc(project_id)
       .collection('jobs')
       .doc(id)
-      .update({ edit: edit })
+      .update({ edit: edit });
   },
 
   async updateJobAlert(jobObj) {
@@ -288,7 +288,7 @@ const dbServices = {
       .doc(jobObj.project_id)
       .collection('jobs')
       .doc(jobObj.id)
-      .update({ alert: jobObj.alert })
+      .update({ alert: jobObj.alert });
   },
 
   async updateProjectWorkers(id, workers, org) {
@@ -297,7 +297,7 @@ const dbServices = {
       .doc(org)
       .collection('projects')
       .doc(id)
-      .update({ project_workers: workers })
+      .update({ project_workers: workers });
   },
 
   async updateJob(jobObj) {
@@ -308,7 +308,7 @@ const dbServices = {
       .doc(jobObj.project_id)
       .collection('jobs')
       .doc(jobObj.id)
-      .update({ ...jobObj })
+      .update({ ...jobObj });
   },
 
   async updateJobStatus(id, status, project_id, approval, org, date_completed) {
@@ -323,7 +323,7 @@ const dbServices = {
         status: status,
         approval: approval,
         date_completed: date_completed,
-      })
+      });
   },
 
   async updateJobApproval(id, project_id) {
@@ -334,7 +334,7 @@ const dbServices = {
       .doc(project_id)
       .collection('job')
       .doc(id)
-      .update({ approval: true, status: 'complete' })
+      .update({ approval: true, status: 'complete' });
   },
 
   async editJob(id, jobObj) {
@@ -345,26 +345,26 @@ const dbServices = {
       .doc(jobObj.project_id)
       .collection('jobs')
       .doc(id)
-      .update(jobObj)
+      .update(jobObj);
   },
 
   async updateAndSetJobs(id, status, approval) {
-    let index = this.state.jobs.findIndex(job => job.id === id)
-    let newArray = this.state.jobs
-    newArray[index].status = status
-    newArray[index].approval = approval
+    let index = this.state.jobs.findIndex(job => job.id === id);
+    let newArray = this.state.jobs;
+    newArray[index].status = status;
+    newArray[index].approval = approval;
     this.setState({
       jobs: newArray,
-    })
+    });
   },
 
   async editAndSetJobs(id, jobObj) {
-    let index = this.state.jobs.findIndex(job => job.id === id)
-    let newArray = this.state.jobs
-    newArray[index] = jobObj
+    let index = this.state.jobs.findIndex(job => job.id === id);
+    let newArray = this.state.jobs;
+    newArray[index] = jobObj;
     this.setState({
       jobs: newArray,
-    })
+    });
   },
 
   async updateWorker(worker, org) {
@@ -373,7 +373,7 @@ const dbServices = {
       .doc(org)
       .collection('users')
       .doc(worker.email)
-      .update({ ...worker })
+      .update({ ...worker });
   },
 
   async updatePromoted(worker) {
@@ -382,8 +382,8 @@ const dbServices = {
       .doc(worker.org)
       .collection('users')
       .doc(worker.email)
-      .update({ promoted: false })
+      .update({ promoted: false });
   },
-}
+};
 
-export default dbServices
+export default dbServices;

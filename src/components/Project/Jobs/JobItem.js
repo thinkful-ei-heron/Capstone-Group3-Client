@@ -1,28 +1,28 @@
-import React, { Component } from 'react'
-import { ProgressBar } from '../../ProgressBar/ProgressBar'
-import JobForm from '../JobForm/JobForm'
-import dbServices from '../../../services/dbServices'
-import WorkerEditForm from '../WorkerEditForm/WorkerEditForm'
-import { AuthContext } from '../../../services/Auth'
-import StyleIcon from '../../StyleIcon/StyleIcon'
-import dateConversions from '../../../services/dateConversions'
-import LogHours from '../../LogHours/LogHours'
-import { Pie } from 'react-chartjs-2'
-import ReactTooltip from 'react-tooltip'
-import Swal from 'sweetalert2'
+import React, { Component } from 'react';
+import { ProgressBar } from '../../ProgressBar/ProgressBar';
+import JobForm from '../JobForm/JobForm';
+import dbServices from '../../../services/dbServices';
+import WorkerEditForm from '../WorkerEditForm/WorkerEditForm';
+import { AuthContext } from '../../../services/Auth';
+import StyleIcon from '../../StyleIcon/StyleIcon';
+import dateConversions from '../../../services/dateConversions';
+import LogHours from '../../LogHours/LogHours';
+import { Pie } from 'react-chartjs-2';
+import ReactTooltip from 'react-tooltip';
+import Swal from 'sweetalert2';
 
 class JobItem extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       expandJob: false,
       showEditForm: false,
       showLogHours: false,
       showWorkerEditForm: false,
-    }
+    };
   }
 
-  static contextType = AuthContext
+  static contextType = AuthContext;
 
   handleApprovalSubmit = async (
     id,
@@ -39,19 +39,19 @@ class JobItem extends Component {
           approval,
           this.props.job.organization,
           date_completed
-        )
+        );
       } catch (error) {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: 'Error!',
           text:
             'There was an issue approving this task - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close',
-        })
+        });
       }
     } else {
-      date_completed = dateConversions.dateToTimestamp(new Date())
+      date_completed = dateConversions.dateToTimestamp(new Date());
       try {
         await dbServices.updateJobStatus(
           id,
@@ -60,22 +60,22 @@ class JobItem extends Component {
           approval,
           this.props.job.organization,
           date_completed
-        )
+        );
       } catch (error) {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: 'Error!',
           text:
             'There was an issue approving this task - please refresh the page and try again.',
           icon: 'error',
           confirmButtonText: 'Close',
-        })
+        });
       }
     }
-  }
+  };
 
   deleteTask = e => {
-    e.stopPropagation()
+    e.stopPropagation();
     Swal.fire({
       title: 'Are you sure?',
       text: 'By clicking the button below, you will be deleting this task.',
@@ -83,30 +83,30 @@ class JobItem extends Component {
       confirmButtonText: "I'm sure!",
       showCancelButton: true,
     }).then(value => {
-      if (value.dismiss === 'cancel') return null
+      if (value.dismiss === 'cancel') return null;
       else {
-        let id = this.props.job.id
-        let projectId = this.props.job.project_id
-        let org = this.props.job.organization
+        let id = this.props.job.id;
+        let projectId = this.props.job.project_id;
+        let org = this.props.job.organization;
 
-        dbServices.deleteJobById(id, projectId, org)
+        dbServices.deleteJobById(id, projectId, org);
       }
-    })
-  }
+    });
+  };
 
   renderEmployeeList = jobWorkers => {
     if (!jobWorkers || jobWorkers.length === 0)
-      return <h5>No Workers Assigned</h5>
+      return <h5>No Workers Assigned</h5>;
     return jobWorkers.map((employee, index) => {
-      let itemKey = index + employee
-      return <li key={itemKey}>{employee}</li>
-    })
-  }
+      let itemKey = index + employee;
+      return <li key={itemKey}>{employee}</li>;
+    });
+  };
 
   renderProjectButtons(approval, total_hours, hours_completed, id, status) {
-    const progress = Math.floor((hours_completed / total_hours) * 100)
+    const progress = Math.floor((hours_completed / total_hours) * 100);
     if (this.context.currentUser.role === 'project worker') {
-      if (status === 'submitted' || status === 'completed') return <></>
+      if (status === 'submitted' || status === 'completed') return <></>;
       if (approval || progress !== 100) {
         return (
           <>
@@ -130,7 +130,7 @@ class JobItem extends Component {
               <></>
             )}
           </>
-        )
+        );
       } else {
         return (
           <>
@@ -142,7 +142,7 @@ class JobItem extends Component {
               {StyleIcon({ style: 'submit' })}
             </div>
           </>
-        )
+        );
       }
     }
 
@@ -213,22 +213,22 @@ class JobItem extends Component {
             </>
           )}
         </>
-      )
+      );
     }
   }
 
   renderChart(job) {
-    let employeeHoursArr = []
-    let labels = []
+    let employeeHoursArr = [];
+    let labels = [];
 
     job.employee_hours &&
       job.employee_hours.forEach(emp => {
-        labels.push(emp.name)
-        employeeHoursArr.push(emp.hours)
-      })
+        labels.push(emp.name);
+        employeeHoursArr.push(emp.hours);
+      });
 
     if (employeeHoursArr.every(item => item === 0)) {
-      employeeHoursArr = []
+      employeeHoursArr = [];
     }
 
     let employeeHours = {
@@ -248,7 +248,7 @@ class JobItem extends Component {
           ],
         },
       ],
-    }
+    };
 
     if (employeeHoursArr.length !== 0) {
       return (
@@ -261,63 +261,63 @@ class JobItem extends Component {
             legend: { labels: { fontSize: 16 } },
           }}
         />
-      )
+      );
     } else {
-      return <></>
+      return <></>;
     }
   }
 
   toggleExpand = () => {
     this.setState({
       expandJob: !this.state.expandJob,
-    })
-  }
+    });
+  };
 
   showEditForm = e => {
-    e.stopPropagation()
+    e.stopPropagation();
     this.setState({
       showEditForm: !this.state.showEditForm,
       expandJob: false,
-    })
-  }
+    });
+  };
 
   submitEditForm = () => {
     this.setState({
       showEditForm: false,
-    })
-  }
+    });
+  };
 
   submitLogHours = () => {
     this.setState({
       showLogHours: !this.state.showLogHours,
-    })
-  }
+    });
+  };
 
   renderLogHoursForm = e => {
-    e.stopPropagation()
+    e.stopPropagation();
     this.setState({
       showLogHours: !this.state.showLogHours,
       expandJob: false,
-    })
-  }
+    });
+  };
 
   showWorkerEditForm = e => {
-    e.stopPropagation()
+    e.stopPropagation();
     this.setState({
       showWorkerEditForm: !this.state.showWorkerEditForm,
       expandJob: false,
-    })
-  }
+    });
+  };
 
   submitWorkerEdit = () => {
     this.setState({
       showWorkerEditForm: false,
-    })
-  }
+    });
+  };
 
   render() {
-    const job = this.props.job
-    const progress = Math.floor((job.hours_completed / job.total_hours) * 100)
+    const job = this.props.job;
+    const progress = Math.floor((job.hours_completed / job.total_hours) * 100);
     return (
       <>
         <li className="JobItem" key={job.id} id={job.id}>
@@ -406,8 +406,8 @@ class JobItem extends Component {
           <ReactTooltip place="bottom" type="dark" effect="float" />
         </li>
       </>
-    )
+    );
   }
 }
 
-export default JobItem
+export default JobItem;

@@ -1,40 +1,40 @@
-import React, { Component } from 'react'
-import Select from 'react-select'
-import { AuthContext } from '../../services/Auth'
-import dbServices from '../../services/dbServices'
-import Swal from 'sweetalert2'
+import React, { Component } from 'react';
+import Select from 'react-select';
+import { AuthContext } from '../../services/Auth';
+import dbServices from '../../services/dbServices';
+import Swal from 'sweetalert2';
 
 export default class Dropdown extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       selectedOption: null,
       employees: [],
-    }
+    };
   }
 
-  static contextType = AuthContext
+  static contextType = AuthContext;
 
   async componentDidMount() {
-    let employees = []
+    let employees = [];
 
     if (this.props.pm) {
       await dbServices
         .getProjectManagers(this.context.currentUser.org)
         .then(snapshot => {
           snapshot.forEach(doc => {
-            employees.push(doc.data().name)
-          })
+            employees.push(doc.data().name);
+          });
         })
         .catch(error => {
-          console.warn(error)
+          console.warn(error);
           Swal.fire({
             title: 'Error!',
             text: 'There was an issue - please refresh the page and try again.',
             icon: 'error',
             confirmButtonText: 'Close',
-          })
-        })
+          });
+        });
     }
 
     if (!this.props.pm) {
@@ -42,46 +42,46 @@ export default class Dropdown extends Component {
         .getEmployees(this.context.currentUser.org)
         .then(snapshot => {
           snapshot.forEach(doc => {
-            employees.push(doc.data().name)
-          })
+            employees.push(doc.data().name);
+          });
         })
         .catch(error => {
-          console.warn(error)
+          console.warn(error);
           Swal.fire({
             title: 'Error!',
             text: 'There was an issue - please refresh the page and try again.',
             icon: 'error',
             confirmButtonText: 'Close',
-          })
-        })
+          });
+        });
     }
 
-    this.setState({ employees })
+    this.setState({ employees });
 
     if (this.props.defaultValue) {
       this.setState({
         selectedOption: this.props.defaultValue,
-      })
-      this.props.setSelected(this.props.defaultValue)
+      });
+      this.props.setSelected(this.props.defaultValue);
     }
   }
 
   handleChange = selectedOption => {
-    this.setState({ selectedOption })
-    this.props.setSelected(selectedOption)
-  }
+    this.setState({ selectedOption });
+    this.props.setSelected(selectedOption);
+  };
 
   populateOptions = array => {
-    let selectArray = []
+    let selectArray = [];
     array.map(name => {
-      let newObj = { value: name, label: name }
-      return selectArray.push(newObj)
-    })
-    return selectArray
-  }
+      let newObj = { value: name, label: name };
+      return selectArray.push(newObj);
+    });
+    return selectArray;
+  };
 
   render() {
-    const { selectedOption, employees } = this.state
+    const { selectedOption, employees } = this.state;
     return (
       <Select
         className="select"
@@ -95,6 +95,6 @@ export default class Dropdown extends Component {
           this.props.placeholder ? this.props.placeholder : 'Select...'
         }
       />
-    )
+    );
   }
 }

@@ -1,6 +1,6 @@
-import React from 'react'
-import skyscraper from '../../images/skyscraper.svg'
-import './CatchAll.css'
+import React from 'react';
+import skyscraper from '../../images/skyscraper.svg';
+import './CatchAll.css';
 
 export const CatchAll = () => {
   return (
@@ -11,5 +11,5 @@ export const CatchAll = () => {
         What you're looking for doesn't exist.
       </span>
     </div>
-  )
-}
+  );
+};

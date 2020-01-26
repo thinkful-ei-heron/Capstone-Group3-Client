@@ -1,44 +1,44 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
-import Dashboard from './components/Dashboard/Dashboard'
-import Header from './components/Header/Header'
-import Login from './components/Account/Login'
-import SignUp from './components/Account/SignUp'
-import ProjectView from './components/Project/ProjectView/ProjectView'
-import LandingPage from './components/LandingPage/LandingPage'
-import PrivateRoute from './services/PrivateRoute'
-import PublicRoute from './services/PublicRoute'
-import { AuthContext } from './services/Auth.js'
-import Profile from './components/Profile/Profile'
-import './App.css'
-import { CatchAll } from './components/CatchAll/CatchAll'
+import React, { useContext, useEffect, useState } from 'react';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import Dashboard from './components/Dashboard/Dashboard';
+import Header from './components/Header/Header';
+import Login from './components/Account/Login';
+import SignUp from './components/Account/SignUp';
+import ProjectView from './components/Project/ProjectView/ProjectView';
+import LandingPage from './components/LandingPage/LandingPage';
+import PrivateRoute from './services/PrivateRoute';
+import PublicRoute from './services/PublicRoute';
+import { AuthContext } from './services/Auth.js';
+import Profile from './components/Profile/Profile';
+import './App.css';
+import { CatchAll } from './components/CatchAll/CatchAll';
 
 const App = props => {
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
   // eslint-disable-next-line
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const initialPath = () => {
-    if (localStorage.getItem('path')) return localStorage.getItem('path')
-    return null
-  }
+    if (localStorage.getItem('path')) return localStorage.getItem('path');
+    return null;
+  };
 
-  const [path, setPath] = useState(initialPath)
+  const [path, setPath] = useState(initialPath);
 
   useEffect(() => {
-    if (!localStorage.getItem('path') && !path) return
-    localStorage.setItem('path', path)
+    if (!localStorage.getItem('path') && !path) return;
+    localStorage.setItem('path', path);
     // eslint-disable-next-line
-  }, [path])
+  }, [path]);
 
   useEffect(() => {
     if (path && currentUser) {
-      if (path !== props.location.pathname) props.history.push(path)
+      if (path !== props.location.pathname) props.history.push(path);
     }
     // eslint-disable-next-line
-  }, [currentUser, path])
+  }, [currentUser, path]);
 
-  if (loading) return <></>
+  if (loading) return <></>;
   else {
     return (
       <>
@@ -92,8 +92,8 @@ const App = props => {
           </Switch>
         </main>
       </>
-    )
+    );
   }
-}
+};
 
-export default withRouter(App)
+export default withRouter(App);

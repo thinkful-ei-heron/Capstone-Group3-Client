@@ -1,26 +1,26 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { withRouter, Link } from 'react-router-dom'
+import React, { useContext, useState, useEffect } from 'react';
+import { withRouter, Link } from 'react-router-dom';
 
-import { AuthContext } from '../../services/Auth'
-import app from '../../services/base.js'
-import dbServices from '../../services/dbServices'
-import Swal from 'sweetalert2'
-import Sidebar from '../Sidebar/Sidebar'
-import StyleIcon from '../StyleIcon/StyleIcon'
-import './Profile.css'
+import { AuthContext } from '../../services/Auth';
+import app from '../../services/base.js';
+import dbServices from '../../services/dbServices';
+import Swal from 'sweetalert2';
+import Sidebar from '../Sidebar/Sidebar';
+import StyleIcon from '../StyleIcon/StyleIcon';
+import './Profile.css';
 
 const Profile = props => {
-  let isMounted = false 
-  const { currentUser } = useContext(AuthContext)
-  const [userInfo, setUserInfo] = useState({})
-  const [userProjects, setUserProjects] = useState([])
-  const [workerProjects, setWorkerProjects] = useState([])
-  const [expandPersonnel, setExpandPersonnel] = useState(true)
-  const functions = app.functions()
+  let isMounted = false;
+  const { currentUser } = useContext(AuthContext);
+  const [userInfo, setUserInfo] = useState({});
+  const [userProjects, setUserProjects] = useState([]);
+  const [workerProjects, setWorkerProjects] = useState([]);
+  const [expandPersonnel, setExpandPersonnel] = useState(true);
+  const functions = app.functions();
 
   const handleClick = async event => {
-    event.preventDefault()
-    const promoteFunc = await functions.httpsCallable('promoteUser')
+    event.preventDefault();
+    const promoteFunc = await functions.httpsCallable('promoteUser');
     promoteFunc({
       email: userInfo.email,
       org: userInfo.org,
@@ -29,23 +29,23 @@ const Profile = props => {
         dbServices.promoteUser(userInfo.org, userInfo.email).then(() =>
           getUserInfo().then(info => {
             if (isMounted) {
-              setUserInfo(info)
+              setUserInfo(info);
             }
           })
-        )
+        );
       } catch (error) {
         Swal.fire({
           title: 'Error!',
           text: 'Failed to promote employee.',
           icon: 'error',
           confirmButtonText: 'Close',
-        })
+        });
       }
-    })
-  }
+    });
+  };
 
   const getUserInfo = async () => {
-    let info = {}
+    let info = {};
     try {
       await dbServices
         .getUser(props.match.params.id, currentUser.org)
@@ -56,22 +56,22 @@ const Profile = props => {
               email: doc.data().email,
               name: doc.data().name,
               org: doc.data().org,
-            }
-          })
-        })
+            };
+          });
+        });
     } catch (error) {
-      console.warn(error)
+      console.warn(error);
       Swal.fire({
         title: 'Error!',
         text:
           "There was an issue loading this employee's information - please refresh the page and try again.",
         icon: 'error',
         confirmButtonText: 'Close',
-      })
+      });
     }
 
-    return info
-  }
+    return info;
+  };
 
   const getUserProjects = async info => {
     if (info.role === 'project worker')
@@ -81,21 +81,21 @@ const Profile = props => {
           .then(snapshot => {
             let projects = [];
             snapshot.forEach(doc => {
-              projects.push(doc.data())
-            })
+              projects.push(doc.data());
+            });
             if (isMounted) {
-              setUserProjects(projects)
+              setUserProjects(projects);
             }
-          })
+          });
       } catch (error) {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: 'Error!',
           text:
             "There was an issue loading this employee's project information - please refresh the page and try again.",
           icon: 'error',
           confirmButtonText: 'Close',
-        })
+        });
       }
     else if (info.role === 'project manager') {
       try {
@@ -105,51 +105,52 @@ const Profile = props => {
           .getManagerProjects(info.name, info.org)
           .then(snapshot => {
             snapshot.forEach(doc => {
-              projects.push(doc.data())
-            })
+              projects.push(doc.data());
+            });
             if (isMounted) {
-              setUserProjects(projects)
-            }   
+              setUserProjects(projects);
+            }
           })
           .then(() => {
-            dbServices.getEmployeeProjects(info.name, info.org)
+            dbServices
+              .getEmployeeProjects(info.name, info.org)
               .then(snapshot => {
                 snapshot.forEach(doc => {
                   if (doc.data().project_manager !== info.name) {
-                    workerProjects.push(doc.data())
+                    workerProjects.push(doc.data());
                   }
-                })
+                });
                 if (isMounted) {
-                  setWorkerProjects(workerProjects)
-                }   
-              })
-          })
+                  setWorkerProjects(workerProjects);
+                }
+              });
+          });
       } catch (error) {
-        console.warn(error)
+        console.warn(error);
         Swal.fire({
           title: 'Error!',
           text:
             "There was an issue loading this employee's project information - please refresh the page and try again.",
           icon: 'error',
           confirmButtonText: 'Close',
-        })
+        });
       }
     }
-  }
+  };
 
   useEffect(() => {
-    isMounted = true
+    isMounted = true;
     getUserInfo().then(info => {
       if (isMounted) {
-        setUserInfo(info)
-      }    
-      getUserProjects(info)
-    })
+        setUserInfo(info);
+      }
+      getUserProjects(info);
+    });
     return () => {
-      isMounted = false 
-    }
+      isMounted = false;
+    };
     // eslint-disable-next-line
-  }, [functions])
+  }, [functions]);
 
   if (userInfo && userInfo.role)
     return (
@@ -187,7 +188,11 @@ const Profile = props => {
                 {userInfo.org}
               </li>
             </ul>
-            {userInfo.role === 'project worker' ? <h2>User Projects:</h2> : <h2>Managing:</h2>}
+            {userInfo.role === 'project worker' ? (
+              <h2>User Projects:</h2>
+            ) : (
+              <h2>Managing:</h2>
+            )}
             {userProjects.length > 0 ? (
               <ul className="Profile__user_projects">
                 {userProjects.map((proj, i) => {
@@ -195,31 +200,31 @@ const Profile = props => {
                     <li key={i}>
                       <Link to={`/project/${proj.id}`}>{proj.name}</Link>
                     </li>
-                  )
+                  );
                 })}
               </ul>
             ) : (
               <ul className="Profile__user_projects">
-                <li>
-                  No Projects Assigned.
-                </li>
+                <li>No Projects Assigned.</li>
               </ul>
             )}
-            {userInfo.role === 'project manager' && workerProjects.length > 0 ?
+            {userInfo.role === 'project manager' &&
+            workerProjects.length > 0 ? (
               <>
                 <h2>Working:</h2>
                 <ul className="Profile__user_projects">
-                {workerProjects.map((proj, i) => {
-                  return (
-                    <li key={i}>
-                      <Link to={`/project/${proj.id}`}>{proj.name}</Link>
-                    </li>
-                  )
-                })}
-              </ul>
+                  {workerProjects.map((proj, i) => {
+                    return (
+                      <li key={i}>
+                        <Link to={`/project/${proj.id}`}>{proj.name}</Link>
+                      </li>
+                    );
+                  })}
+                </ul>
               </>
-              : ''
-            }
+            ) : (
+              ''
+            )}
           </section>
           <section className="App__personnel App__separate_top">
             <div
@@ -237,8 +242,8 @@ const Profile = props => {
           </section>
         </div>
       </section>
-    )
-  return <></>
-}
+    );
+  return <></>;
+};
 
-export default withRouter(Profile)
+export default withRouter(Profile);

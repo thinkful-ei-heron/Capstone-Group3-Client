@@ -1,57 +1,57 @@
-import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router'
-import app from '../../services/base'
-import dbServices from '../../services/dbServices'
-import { Label, Input } from '../Form/Form'
-import useFormValidation from '../../hooks/useFormValidation'
-import validateInput from '../../hooks/validateInput'
-import Swal from 'sweetalert2'
-import './SignUp.css'
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router';
+import app from '../../services/base';
+import dbServices from '../../services/dbServices';
+import { Label, Input } from '../Form/Form';
+import useFormValidation from '../../hooks/useFormValidation';
+import validateInput from '../../hooks/validateInput';
+import Swal from 'sweetalert2';
+import './SignUp.css';
 
 const SignUp = ({ history }, props) => {
-  const functions = app.functions()
+  const functions = app.functions();
 
   const inputValues = {
     email: '',
     name: '',
     password: '',
     orgName: '',
-  }
+  };
 
-  const [orgList, setOrgList] = useState([])
-  const [role, setRole] = useState('worker')
+  const [orgList, setOrgList] = useState([]);
+  const [role, setRole] = useState('worker');
 
   const getOrgs = async () => {
-    let orgs = []
-    const dborgs = await dbServices.getAllOrgs()
-    dborgs.forEach(item => orgs.push(item.data().name))
-    return orgs
-  }
+    let orgs = [];
+    const dborgs = await dbServices.getAllOrgs();
+    dborgs.forEach(item => orgs.push(item.data().name));
+    return orgs;
+  };
 
   useEffect(() => {
-    getOrgs().then(list => setOrgList(list))
-  }, [])
+    getOrgs().then(list => setOrgList(list));
+  }, []);
 
   const handleSignUp = async () => {
-    const { email, name, password, orgName } = values
-    const registerOwner = await functions.httpsCallable('registerOwner')
-    const registerWorker = await functions.httpsCallable('registerWorker')
+    const { email, name, password, orgName } = values;
+    const registerOwner = await functions.httpsCallable('registerOwner');
+    const registerWorker = await functions.httpsCallable('registerWorker');
     const registerProjectManager = await functions.httpsCallable(
       'registerProjectManager'
-    )
+    );
     let info = {
       email: email,
       password: password,
       name: name,
       org: orgName,
       displayName: name,
-    }
+    };
     let infoNoPass = {
       email: email,
       name: name,
       org: orgName,
       displayName: name,
-    }
+    };
     switch (role) {
       case 'owner':
         registerOwner(info)
@@ -59,16 +59,16 @@ const SignUp = ({ history }, props) => {
             dbServices.createOwner({ ...infoNoPass, role: 'owner' }, info.org)
           )
           .catch(error => {
-            console.warn(error)
+            console.warn(error);
             Swal.fire({
               title: 'Error!',
               text:
                 'There was an issue with registration - please refresh the page and try again.',
               icon: 'error',
               confirmButtonText: 'Close',
-            })
-          })
-        break
+            });
+          });
+        break;
       case 'worker':
         registerWorker(info)
           .then(() =>
@@ -78,16 +78,16 @@ const SignUp = ({ history }, props) => {
             )
           )
           .catch(error => {
-            console.warn(error)
+            console.warn(error);
             Swal.fire({
               title: 'Error!',
               text:
                 'There was an issue with registration - please refresh the page and try again.',
               icon: 'error',
               confirmButtonText: 'Close',
-            })
-          })
-        break
+            });
+          });
+        break;
       case 'manager':
         registerProjectManager(info)
           .then(() =>
@@ -97,22 +97,22 @@ const SignUp = ({ history }, props) => {
             )
           )
           .catch(error => {
-            console.warn(error)
+            console.warn(error);
             Swal.fire({
               title: 'Error!',
               text:
                 'There was an issue with registration - please refresh the page and try again.',
               icon: 'error',
               confirmButtonText: 'Close',
-            })
-          })
-        break
+            });
+          });
+        break;
       default:
-        break
+        break;
     }
-    history.push('/login')
-    return `${email} signed up`
-  }
+    history.push('/login');
+    return `${email} signed up`;
+  };
 
   const renderOrgSelect = () => {
     if (role === 'owner') {
@@ -125,7 +125,7 @@ const SignUp = ({ history }, props) => {
           onBlur={handleBlur}
           placeholder="Organization name"
         />
-      )
+      );
     }
     return (
       <select
@@ -135,26 +135,28 @@ const SignUp = ({ history }, props) => {
         onBlur={handleBlur}
         placeholder="Organization name"
       >
-        <option value="" disabled hidden>Choose Organization...</option>
+        <option value="" disabled hidden>
+          Choose Organization...
+        </option>
         {orgList && orgList.length > 0 ? (
           orgList.map((item, i) => {
             return (
               <option key={i} value={item}>
                 {item}
               </option>
-            )
+            );
           })
         ) : (
           <></>
         )}
       </select>
-    )
-  }
+    );
+  };
 
   const changeRole = (e, role) => {
-    e.stopPropagation()
-    setRole(role)
-  }
+    e.stopPropagation();
+    setRole(role);
+  };
 
   const {
     handleSubmit,
@@ -163,7 +165,11 @@ const SignUp = ({ history }, props) => {
     values,
     handleBlur,
     isSubmitting,
-  } = useFormValidation(inputValues, validateInput.validateSignup, handleSignUp)
+  } = useFormValidation(
+    inputValues,
+    validateInput.validateSignup,
+    handleSignUp
+  );
 
   return (
     <div className="Register">
@@ -246,7 +252,7 @@ const SignUp = ({ history }, props) => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default withRouter(SignUp)
+export default withRouter(SignUp);

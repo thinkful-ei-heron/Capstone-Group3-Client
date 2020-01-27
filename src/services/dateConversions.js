@@ -35,7 +35,11 @@ const dateConversions = {
     if (currDate > dueDate) {
       let res = Math.abs(currDate - dueDate) / 1000;
       let days = Math.floor(res / 86400);
-      return <h2>Overdue by {days + 1} day(s)</h2>;
+      return (
+        <span className="ProjectBar__overdue">
+          Overdue by {days + 1} day(s)
+        </span>
+      );
     } else if (currDate < dueDate) {
       let res = Math.abs(currDate - dueDate) / 1000;
       let days = Math.floor(res / 86400);

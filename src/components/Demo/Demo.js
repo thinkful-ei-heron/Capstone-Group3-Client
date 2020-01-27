@@ -106,6 +106,7 @@ const Demo = () => {
             type="email"
             placeholder="Email"
             required
+            readOnly
           />
         </Label>
         <Label>
@@ -117,6 +118,7 @@ const Demo = () => {
             type="password"
             placeholder="Password"
             required
+            readOnly
           />
         </Label>
         <button

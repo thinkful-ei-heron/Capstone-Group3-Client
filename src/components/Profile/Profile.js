@@ -139,6 +139,7 @@ const Profile = props => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line
     isMounted = true;
     getUserInfo().then(info => {
       if (isMounted) {

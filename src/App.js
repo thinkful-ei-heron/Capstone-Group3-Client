@@ -12,6 +12,7 @@ import { AuthContext } from './services/Auth.js';
 import Profile from './components/Profile/Profile';
 import './App.css';
 import { CatchAll } from './components/CatchAll/CatchAll';
+import Demo from './components/Demo/Demo';
 
 const App = props => {
   const { currentUser } = useContext(AuthContext);
@@ -57,6 +58,12 @@ const App = props => {
               path="/login"
               setPath={setPath}
               component={Login}
+            />
+            <PublicRoute
+              exact
+              path="/demo"
+              setPath={setPath}
+              component={Demo}
             />
             <PrivateRoute
               location={props.location}

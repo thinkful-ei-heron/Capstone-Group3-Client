@@ -7,6 +7,11 @@
   margin: 15px auto;
   padding: 10px;
   background-color: white;
+  z-index: 1;
+}
+
+.Form__extra_padding {
+  padding: 35px;
 }
 
 .Form legend {

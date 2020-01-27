@@ -1,3 +1,7 @@
+.SignUp {
+  margin-top: 70px;
+}
+
 .radio-toolbar {
   display: flex;
   flex-direction: column;
@@ -28,20 +32,10 @@
 }
 
 @media only screen and (min-width: 750px) {
-  .Login {
-    top: 130px;
-    height: calc(100% - 130px);
-  }
-
   .Register .LoginRegister {
     position: fixed;
     top: 250px;
     left: calc(50% - 235px);
-  }
-
-  img {
-    left: 10%;
-    height: 45%;
   }
 
   .radio-toolbar {

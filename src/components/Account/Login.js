@@ -3,7 +3,9 @@ import { withRouter, Redirect } from 'react-router';
 import app from '../../services/base.js';
 import { AuthContext } from '../../services/Auth.js';
 import { Label, Input } from '../Form/Form';
+import skyscraper from '../../images/skyscraper.svg';
 import Swal from 'sweetalert2';
+import './SignUp.css';
 
 const Login = (setPath, { history }) => {
   const { currentUser } = useContext(AuthContext);
@@ -37,8 +39,8 @@ const Login = (setPath, { history }) => {
   }
 
   return (
-    <div className="Login">
-      <form className="Form" onSubmit={handleLogin}>
+    <div className="LandingPage">
+      <form className="Form Form__extra_padding SignUp" onSubmit={handleLogin}>
         <legend>Login</legend>
         <Label>
           Email
@@ -68,6 +70,7 @@ const Login = (setPath, { history }) => {
           Log in
         </button>
       </form>
+      <img src={skyscraper} alt="skyscraper" />
     </div>
   );
 };

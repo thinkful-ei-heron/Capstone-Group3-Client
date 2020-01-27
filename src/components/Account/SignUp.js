@@ -5,6 +5,7 @@ import dbServices from '../../services/dbServices';
 import { Label, Input } from '../Form/Form';
 import useFormValidation from '../../hooks/useFormValidation';
 import validateInput from '../../hooks/validateInput';
+import skyscraper from '../../images/skyscraper.svg';
 import Swal from 'sweetalert2';
 import './SignUp.css';
 
@@ -172,8 +173,8 @@ const SignUp = ({ history }, props) => {
   );
 
   return (
-    <div className="Register">
-      <form className="Form" onSubmit={handleSubmit}>
+    <div className="Register LandingPage">
+      <form className="Form Form__extra_padding SignUp" onSubmit={handleSubmit}>
         <h1>I am a: </h1>
         <div className="radio-toolbar">
           <Input
@@ -251,6 +252,7 @@ const SignUp = ({ history }, props) => {
           Sign Up
         </button>
       </form>
+      <img src={skyscraper} alt="skyscraper" />
     </div>
   );
 };

@@ -31,4 +31,7 @@ describe('when authenticated', () => {
       'Welcome, Bridger Hammond!'
     );
   });
+  it('Rendered Dashboard correctly', () => {
+    cy.get('[test-id=dashboard-company]').should('be.visible');
+  });
 });

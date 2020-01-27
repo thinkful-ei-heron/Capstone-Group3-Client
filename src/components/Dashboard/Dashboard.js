@@ -149,7 +149,7 @@ export default class Dashboard extends Component {
         return (
           <section className="Dashboard__container">
             <div className="App__org_header">
-              {<h2>{this.state.user.org}</h2>}
+              {<h2 test-id="dashboard-company">{this.state.user.org}</h2>}
               <span className="Dashboard__date">
                 {new Date().toDateString()}
               </span>

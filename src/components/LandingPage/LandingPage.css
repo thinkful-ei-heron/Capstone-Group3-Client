@@ -48,6 +48,7 @@
   text-align: center;
   color: white;
   background-color: rgba(1, 7, 26, 0.6);
+  z-index: 1;
 }
 
 img {
@@ -66,6 +67,7 @@ img {
   height: 125px;
   margin-bottom: 25px;
   margin-top: 25px;
+  z-index: 1;
 }
 
 .LandingPage__btn {

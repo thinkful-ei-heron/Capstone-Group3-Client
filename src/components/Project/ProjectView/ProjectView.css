@@ -60,7 +60,7 @@
 }
 
 .ProjectBar__project_container a {
-  color: black;
+  color: var(--text-color);
 }
 
 .App__fa_h1 h3 {

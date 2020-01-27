@@ -17,11 +17,17 @@ export default function LandingPage() {
           securely on the cloud from any location with access to the web.
         </span>
       </div>
+      <img src={skyscraper} alt="skyscraper" />
+      <div className="LandingPage__btns">
+        <Link className="LandingPage__btn" to="/register">
+          Register Now!
+        </Link>
+        <Link className="LandingPage__btn" to="/demo">
+          Demo
+        </Link>
+      </div>
 
       <img src={skyscraper} alt="skyscraper" />
-      <Link className="LandingPage__btn" to="/register">
-        Register Now!
-      </Link>
     </section>
   );
 }

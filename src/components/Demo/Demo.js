@@ -3,12 +3,13 @@ import { withRouter, Redirect } from 'react-router';
 import app from '../../services/base.js';
 import { AuthContext } from '../../services/Auth.js';
 import { Label, Input } from '../Form/Form';
+import skyscraper from '../../images/skyscraper.svg';
 import Swal from 'sweetalert2';
 import './Demo.css';
 
 const Demo = () => {
   const { currentUser } = useContext(AuthContext);
-  const [role, setRole] = useState('worker')
+  const [role, setRole] = useState('worker');
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -18,41 +19,41 @@ const Demo = () => {
       .signInWithEmailAndPassword(email.value, password.value)
       .catch(error => {
         console.warn(error);
-          Swal.fire({
-            title: 'Error!',
-            text:
-              error.code === 'auth/user-not-found'
-                ? 'Incorrect email'
-                : 'Incorrect password',
-            icon: 'error',
-            confirmButtonText: 'Close',
-          });
+        Swal.fire({
+          title: 'Error!',
+          text:
+            error.code === 'auth/user-not-found'
+              ? 'Incorrect email'
+              : 'Incorrect password',
+          icon: 'error',
+          confirmButtonText: 'Close',
+        });
       });
-  }
+  };
 
-  const getValue = (inputType) => {
+  const getValue = inputType => {
     if (role === 'worker') {
       if (inputType === 'email') {
-        return 'jhalpert@dundermifflin.com'
+        return 'jhalpert@dundermifflin.com';
       } else {
-        return 'Password1!'
+        return 'Password1!';
       }
     }
     if (role === 'manager') {
       if (inputType === 'email') {
-        return 'mscott@dundermifflin.com'
+        return 'mscott@dundermifflin.com';
       } else {
-        return 'Password1!'
+        return 'Password1!';
       }
     }
     if (role === 'owner') {
       if (inputType === 'email') {
-        return 'dwallace@dundermifflin.com'
+        return 'dwallace@dundermifflin.com';
       } else {
-        return 'Password1!'
+        return 'Password1!';
       }
     }
-  }
+  };
 
   const changeRole = (e, role) => {
     e.stopPropagation();
@@ -64,9 +65,9 @@ const Demo = () => {
   }
 
   return (
-    <div className="Login">
-      <form className="Form" onSubmit={handleLogin}>
-      <h1>I want to demo as a: </h1>
+    <div className="Login LandingPage">
+      <form className="Form Form__extra_padding SignUp" onSubmit={handleLogin}>
+        <h1>I want to demo as a: </h1>
         <div className="radio-toolbar">
           <Input
             type="radio"
@@ -126,8 +127,9 @@ const Demo = () => {
           Log in
         </button>
       </form>
+      <img src={skyscraper} alt="skyscraper" />
     </div>
   );
-}
+};
 
 export default withRouter(Demo);

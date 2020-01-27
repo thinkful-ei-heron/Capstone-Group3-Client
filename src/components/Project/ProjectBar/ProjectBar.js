@@ -132,13 +132,6 @@ const ProjectBar = props => {
       </Link>
       {props.role !== 'project worker' && (
         <div className="ProjectBar__buttons">
-          <div
-            className="ProjectBar__fa"
-            data-tip="Delete Project"
-            onClick={deleteProject}
-          >
-            {StyleIcon({ style: 'delete' })}
-          </div>
           {props.role === 'owner' && (
             <div
               className="ProjectBar__fa"
@@ -148,6 +141,13 @@ const ProjectBar = props => {
               {StyleIcon({ style: 'edit' })}
             </div>
           )}
+          <div
+            className="ProjectBar__fa"
+            data-tip="Delete Project"
+            onClick={deleteProject}
+          >
+            {StyleIcon({ style: 'delete' })}
+          </div>
           {props.proj.date_completed ? (
             <></>
           ) : (

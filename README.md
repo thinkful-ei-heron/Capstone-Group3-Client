@@ -81,6 +81,11 @@ Run the tests:
 npm run test:open
 ```
 
+## Cloud Functions
+
+- This app utilizes Google Cloud Functions for adding and promoting users.
+- To see the function code please look [here.](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/functions/index.js)
+
 ## Release History
 
 - 0.0.1

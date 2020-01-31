@@ -1,19 +1,17 @@
 .LandingPage {
-  position: absolute;
-  left: 0;
-  top: 150px;
+  position: static;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   width: 100vw;
-  height: calc(100% - 150px);
+  height: 100%;
+  min-height: calc(100vh - 150px);
   background-color: #6289b5;
   background-image: linear-gradient(195deg, transparent 0 70%, #7fcce9 70% 100%),
     linear-gradient(200deg, transparent 0 50%, #6bbde2 50% 80%),
     linear-gradient(205deg, transparent 0 30%, #5c9ad1 30% 60%);
   background-attachment: fixed;
-  overflow: auto;
 }
 
 .LandingPage__hero_text {
@@ -27,9 +25,9 @@
   margin-top: 30px;
   text-align: center;
   font-family: 'Oxygen', sans-serif;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 600;
-  line-height: 2.5rem;
+  line-height: 2.2rem;
   color: #fff;
   z-index: 1;
 }
@@ -41,8 +39,8 @@
 .LandingPage__blurb {
   width: 320px;
   margin-top: 20px;
-  font-size: 1.1rem;
-  line-height: 1.3rem;
+  font-size: 1.05rem;
+  line-height: 1.2rem;
   padding: 10px;
   font-family: var(--roboto-slab);
   font-weight: 500;
@@ -72,14 +70,14 @@ img {
 }
 
 .LandingPage__btn {
-  padding: 15px 25px 15px 25px;
+  padding: 12px 20px 12px 20px;
   display: grid;
   place-content: center;
   margin-bottom: 25px;
   border: none;
-  border-radius: 20px;
+  border-radius: 15px;
   font-family: 'Oxygen', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   color: white;
   background-color: #dc2e5e;
   z-index: 1;
@@ -87,8 +85,7 @@ img {
 
 @media only screen and (min-width: 750px) {
   .LandingPage {
-    top: 130px;
-    height: calc(100% - 130px);
+    min-height: calc(100vh - 130px);
   }
 
   .LandingPage__hero_text {
@@ -106,6 +103,11 @@ img {
   .LandingPage__btns {
     flex-direction: row;
     width: 400px;
+  }
+
+  .LandingPage__btn {
+    padding: 15px 25px 15px 25px;
+    border-radius: 20px;
   }
 
   img {

@@ -173,7 +173,7 @@ class ProjectView extends Component {
       return <Redirect to="/dashboard" />;
     } else {
       return (
-        <section>
+        <section className="App__view">
           <div test-id="projectContainer" test-data={project.id}>
             <header className="App__org_header">
               <h2 id="companyName">{this.context.currentUser.org}</h2>

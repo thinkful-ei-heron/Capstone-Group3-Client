@@ -54,7 +54,19 @@
   margin-bottom: 20px;
 }
 
+.Dashboard__container a,
+.Dashboard__container a:hover,
+.Dashboard__container a:visited {
+  color: var(--text-color);
+}
+
 @media only screen and (min-width: 750px) {
+  .Dashboard__container {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+  }
+
   .Dashboard__main {
     width: 100%;
     display: flex;

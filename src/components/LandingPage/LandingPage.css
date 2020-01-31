@@ -1,5 +1,4 @@
 .LandingPage {
-  position: static;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -12,6 +11,7 @@
     linear-gradient(200deg, transparent 0 50%, #6bbde2 50% 80%),
     linear-gradient(205deg, transparent 0 30%, #5c9ad1 30% 60%);
   background-attachment: fixed;
+  overflow: auto;
 }
 
 .LandingPage__hero_text {
@@ -27,7 +27,7 @@
   font-family: 'Oxygen', sans-serif;
   font-size: 1.6rem;
   font-weight: 600;
-  line-height: 2.2rem;
+  line-height: 2.3rem;
   color: #fff;
   z-index: 1;
 }
@@ -85,7 +85,7 @@ img {
 
 @media only screen and (min-width: 750px) {
   .LandingPage {
-    min-height: calc(100vh - 130px);
+    height: calc(100vh - 130px);
   }
 
   .LandingPage__hero_text {

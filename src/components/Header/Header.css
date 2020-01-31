@@ -48,7 +48,6 @@
 .Header__login {
   display: flex;
   justify-content: space-around;
-  align-items: flex-end;
   width: 100%;
 }
 

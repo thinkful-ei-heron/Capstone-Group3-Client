@@ -30,8 +30,7 @@
 }
 
 .ProjectView__add {
-  height: 35px;
-  width: 100px;
+  padding: 7px 20px 7px 20px;
   font-family: var(--oxygen);
   font-size: 1.1rem;
   color: white;
@@ -73,16 +72,9 @@
 }
 
 .ProjectView__stats_container canvas {
-  width: 320px !important;
-  height: 200px !important;
-  margin: 0 auto;
-}
-
-@media only screen and (max-width: 374px) {
-  .ProjectView__stats_container canvas {
-    width: 230px !important;
-    height: 170px !important;
-  }
+  width: auto !important;
+  height: 250px !important;
+  margin: 10px auto;
 }
 
 @media only screen and (min-width: 750px) {
@@ -95,11 +87,5 @@
 
   .ProjectView__jobs_stats {
     width: calc(100% - 200px);
-  }
-
-  .ProjectView__stats_container canvas {
-    width: auto !important;
-    height: 240px !important;
-    margin: 0 auto;
   }
 }

@@ -12,6 +12,7 @@
   background-image: linear-gradient(195deg, transparent 0 70%, #7fcce9 70% 100%),
     linear-gradient(200deg, transparent 0 50%, #6bbde2 50% 80%),
     linear-gradient(205deg, transparent 0 30%, #5c9ad1 30% 60%);
+  background-attachment: fixed;
   overflow: auto;
 }
 

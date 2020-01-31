@@ -147,7 +147,7 @@ export default class Dashboard extends Component {
       if (this.state.loading) return <Loading />;
       else
         return (
-          <section className="Dashboard__container">
+          <section className="App__view">
             <div className="App__org_header">
               {<h2 test-id="dashboard-company">{this.state.user.org}</h2>}
               <span className="Dashboard__date">

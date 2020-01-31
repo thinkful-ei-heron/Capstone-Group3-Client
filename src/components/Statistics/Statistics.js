@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { AuthContext } from '../../services/Auth';
 import app from '../../services/base';
-import './Statistics.css';
 const db = app.firestore();
 
 export default class Statistics extends Component {
@@ -75,7 +74,7 @@ export default class Statistics extends Component {
       ],
       datasets: [
         {
-          label: `Task Completion History (7 days)`,
+          label: `Completed Tasks (7 days)`,
           data: [],
           backgroundColor: [
             'rgba(255, 99, 132, 0.8)',
@@ -224,7 +223,7 @@ export default class Statistics extends Component {
             options={{
               legend: {
                 labels: {
-                  fontSize: 30,
+                  fontSize: 22,
                 },
               },
               scales: {

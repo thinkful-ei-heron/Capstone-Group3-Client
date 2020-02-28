@@ -105,17 +105,17 @@ npm run test:open
 
 | Landing Page | Dashboard|
 | :-------------: |:-------------:|
-| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/landing_page.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/dashboard.png" width='80%' height='auto'> |
+| <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/landing_page.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/dashboard.png" width='80%' height='auto'> |
 | Login | Register|
-| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/login_page.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/register.png" width='80%' height='auto'> |
+| <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/login_page.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/register.png" width='80%' height='auto'> |
 | Add Project | Edit Project|
-| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/add_project.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/edit_project.png" width='80%' height='auto'> |
+| <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/add_project.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/edit_project.png" width='80%' height='auto'> |
 | Add Task | Edit Task|
-| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/add_task.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/edit_task.png" width='80%' height='auto'> |
+| <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/add_task.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/edit_task.png" width='80%' height='auto'> |
 | Project View | Log Hours|
-| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/project_view.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/log_hours.png" width='80%' height='auto'> |
+| <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/project_view.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/log_hours.png" width='80%' height='auto'> |
 | Profile View | Catch All Page |
-|<img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/user_profile.png" width='80%' height='auto'>|<img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/catchall.png" width='80%' height='auto'>|
+|<img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/user_profile.png" width='80%' height='auto'>|<img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/catchall.png" width='80%' height='auto'>|
 
 
 ## License

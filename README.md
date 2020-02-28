@@ -109,7 +109,7 @@ npm run test:open
 | Login | Register|
 | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/login_page.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/register.png" width='80%' height='auto'> |
 | Add Project | Edit Project|
-| <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/add_project.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/edit_project.png" width='80%' height='auto'> |
+| <img src="https://github.com/reifnotreef/manageLazily/raw/master/screenshots/add_project.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/edit_project.png" width='80%' height='auto'> |
 | Add Task | Edit Task|
 | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/add_task.png" width='80%' height='auto'> | <img src="https://raw.githubusercontent.com/reifnotreef/manageLazily/tree/master/screenshots/edit_task.png" width='80%' height='auto'> |
 | Project View | Log Hours|

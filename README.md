@@ -12,7 +12,7 @@ project management software.
 
 [See the Live App Here](https://managelazily.com/)
 
-[Demo Logins available here](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/DEMO_LOGINS.md)
+[Demo Logins available here](https://github.com/reifnotreef/manageLazily/blob/master/DEMO_LOGINS.md)
 
 [Screenshots below](#Screenshots)
 
@@ -21,7 +21,7 @@ project management software.
 - Clone this repo and move to the new directory:
 
   ```bash
-  git clone https://github.com/balayaydemir/Capstone-Group3-Client.git YOUR_PROJECT_NAME
+  git clone https://github.com/reifnotreef/manageLazily.git YOUR_PROJECT_NAME
 
   cd YOUR_PROJECT_NAME
   ```
@@ -84,7 +84,7 @@ npm run test:open
 ## Cloud Functions
 
 - This app utilizes Google Cloud Functions for adding and promoting users.
-- To see the function code please look [here.](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/functions/index.js)
+- To see the function code please look [here.](https://github.com/reifnotreef/manageLazily/blob/master/functions/index.js)
 
 ## Release History
 
@@ -105,30 +105,30 @@ npm run test:open
 
 | Landing Page | Dashboard|
 | :-------------: |:-------------:|
-| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/landing_page.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/dashboard.png" width='80%' height='auto'> |
+| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/landing_page.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/dashboard.png" width='80%' height='auto'> |
 | Login | Register|
-| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/login_page.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/register.png" width='80%' height='auto'> |
+| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/login_page.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/register.png" width='80%' height='auto'> |
 | Add Project | Edit Project|
-| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_project.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_project.png" width='80%' height='auto'> |
+| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/add_project.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/edit_project.png" width='80%' height='auto'> |
 | Add Task | Edit Task|
-| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/add_task.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/edit_task.png" width='80%' height='auto'> |
+| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/add_task.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/edit_task.png" width='80%' height='auto'> |
 | Project View | Log Hours|
-| <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/project_view.png" width='80%' height='auto'> | <img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/log_hours.png" width='80%' height='auto'> |
+| <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/project_view.png" width='80%' height='auto'> | <img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/log_hours.png" width='80%' height='auto'> |
 | Profile View | Catch All Page |
-|<img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/user_profile.png" width='80%' height='auto'>|<img src="https://github.com/balayaydemir/Capstone-Group3-Client/blob/rc/screenshots/catchall.png" width='80%' height='auto'>|
+|<img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/user_profile.png" width='80%' height='auto'>|<img src="https://github.com/reifnotreef/manageLazily/tree/master/screenshots/catchall.png" width='80%' height='auto'>|
 
 
 ## License
 
-Distributed under the MIT license. See [LICENSE.md](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/LICENSE) for more information.
+Distributed under the MIT license. See [LICENSE.md](https://github.com/reifnotreef/manageLazily/blob/master/LICENSE) for more information.
 
-## [Contributing](https://github.com/balayaydemir/Capstone-Group3-Client/blob/master/CONTRIBUTING.md)
+## [Contributing](https://github.com/reifnotreef/manageLazily/blob/master/CONTRIBUTING.md)
 
-1.  [Fork this](https://github.com/balayaydemir/Capstone-Group3-Client)
+1.  [Fork this](https://github.com/reifnotreef/manageLazily)
 2. Clone your fork and create your feature branch (`git checkout -b fooBar`)
 3.  Commit your changes (`git commit -m 'Add some fooBar'`)
 4.  Push to the branch (`git push`)
-5.  Create a [New Pull Request](https://github.com/balayaydemir/Capstone-Group3-Client/pull/new/master)
+5.  Create a [New Pull Request](https://github.com/reifnotreef/manageLazily/pull/new/master)
 
 <!-- Markdown link & img dfn's -->
 
